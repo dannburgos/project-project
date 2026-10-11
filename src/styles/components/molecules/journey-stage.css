@@ -1,0 +1,152 @@
+/* ---------- Móvil: tarjeta tocable ---------- */
+/* Experiencia laboral: borde sólido. Estudios: borde punteado y fondo suave.
+   Además, una etiqueta con ícono dice de qué tipo es cada una. */
+.journey-card {
+  @apply border-border bg-background w-full overflow-clip rounded-lg border transition-colors duration-300;
+}
+
+.journey-card--academic {
+  @apply bg-muted/50 border-dashed;
+}
+
+.journey-card--pinned {
+  @apply border-foreground;
+}
+
+.journey-card__trigger {
+  @apply focus-visible:ring-ring/50 relative grid w-full gap-1 p-4 pr-10 text-left outline-none focus-visible:ring-[3px];
+}
+
+.journey-card__type {
+  @apply text-muted-foreground mb-1 inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wide uppercase;
+}
+
+.journey-card__type svg {
+  @apply size-3.5;
+}
+
+.journey-card__period {
+  @apply text-muted-foreground text-xs;
+}
+
+.journey-card__organization {
+  @apply text-base leading-tight font-semibold;
+}
+
+.journey-card__title {
+  @apply text-sm;
+}
+
+.journey-card__chevron {
+  @apply text-muted-foreground absolute top-4 right-3 size-4 transition-transform duration-300;
+}
+
+.journey-card--pinned .journey-card__chevron {
+  @apply rotate-180;
+}
+
+/* El detalle se despliega dentro de la tarjeta, con una transición de alto */
+.journey-card__expand {
+  @apply grid transition-[grid-template-rows] duration-300 ease-out;
+  grid-template-rows: 0fr;
+}
+
+.journey-card__expand[data-open='true'] {
+  grid-template-rows: 1fr;
+}
+
+.journey-card__expand-inner {
+  @apply min-h-0 overflow-hidden;
+}
+
+.journey-card__expand-inner > * {
+  @apply px-4 pb-4;
+}
+
+/* ---------- Detalle compartido: etiquetas y frase ---------- */
+.journey-detail {
+  @apply flex flex-col gap-3;
+}
+
+.journey-detail__tags {
+  @apply flex flex-wrap gap-1.5;
+}
+
+.journey-detail__tag {
+  @apply border-border bg-muted rounded-full border px-2.5 py-0.5 text-xs;
+}
+
+.journey-detail__summary {
+  @apply text-sm leading-relaxed;
+}
+
+/* ---------- Escritorio: tarjeta fija en el centro ---------- */
+/* La tarjeta mantiene su ancho siempre; solo su alto cambia, con una
+   transición, cuando cambia el contenido. */
+.journey-focus-card {
+  @apply border-border bg-background w-80 shrink-0 overflow-clip rounded-lg border;
+  transition: height 400ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.journey-focus-card--academic {
+  @apply border-dashed;
+}
+
+/* El contenido nuevo define el alto; el anterior queda encima, en el mismo
+   lugar, mientras se va. Es un cambio breve y en secuencia: primero se va el
+   anterior y luego aparece el nuevo, sin cruzarse ni desplazarse. */
+.journey-focus-card__window {
+  @apply relative;
+}
+
+.journey-focus-card__content {
+  @apply flex flex-col gap-3 p-4;
+}
+
+.journey-focus-card__content[data-state='leaving'] {
+  @apply pointer-events-none absolute inset-x-0 top-0;
+  animation: fade-out 140ms ease-in forwards;
+}
+
+.journey-focus-card__content[data-state='entering'] {
+  animation: fade-in 220ms ease-out 140ms backwards;
+}
+
+.journey-focus-card__header {
+  @apply flex flex-col gap-0.5;
+}
+
+.journey-focus-card__period {
+  @apply text-muted-foreground text-xs;
+}
+
+.journey-focus-card__organization {
+  @apply text-base leading-tight font-semibold;
+}
+
+.journey-focus-card__title {
+  @apply text-sm;
+}
+
+/* Pantallas bajas: tarjeta más compacta para que todo quepa sin scroll */
+@media (min-width: 1024px) and (max-height: 760px) {
+  .journey-focus-card {
+    @apply w-96;
+  }
+
+  .journey-focus-card__content {
+    @apply gap-2 p-3;
+  }
+
+  .journey-detail {
+    @apply gap-2;
+  }
+
+  .journey-detail__tag {
+    @apply px-2 py-0 text-[11px];
+  }
+
+  .journey-detail__summary {
+    @apply text-xs leading-snug;
+  }
+}

@@ -1,0 +1,24 @@
+/* Toma el color del texto que lo rodea (sirve en fondo claro u oscuro) */
+.copy-button {
+  @apply relative inline-flex size-10 shrink-0 items-center justify-center rounded-lg border border-current/30 transition-colors outline-none hover:border-current focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current md:size-12 [&_svg]:size-4 md:[&_svg]:size-5;
+}
+
+/* Aviso "copiado" que aparece encima del botón */
+.copy-button__status {
+  @apply pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 rounded-full border border-current px-3 py-1 text-xs whitespace-nowrap opacity-0 transition duration-200;
+}
+
+.copy-button__status:empty {
+  @apply border-0 p-0;
+}
+
+.copy-button--copied .copy-button__status {
+  @apply translate-y-0 opacity-100;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy-button,
+  .copy-button__status {
+    transition: none;
+  }
+}

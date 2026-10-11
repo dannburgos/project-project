@@ -1,0 +1,30 @@
+/* Módulo 2: frase grande y presentación. Sube por encima de la portada (que
+   queda quieta) con las esquinas de arriba redondeadas. */
+.home-intro {
+  @apply bg-background relative z-10 flex items-center rounded-t-3xl px-4 py-6 md:px-8 md:py-16 lg:px-12;
+  min-height: calc(100svh - var(--site-header-height, 5.5rem));
+}
+
+.home-intro__inner {
+  @apply mx-auto flex w-full max-w-5xl flex-col gap-6 md:gap-16;
+}
+
+.home-intro__statement {
+  @apply text-[2rem] leading-[1.05] font-medium tracking-tight sm:text-4xl md:text-6xl lg:text-7xl;
+}
+
+.home-intro__columns {
+  @apply grid gap-4 md:gap-8 lg:grid-cols-[1.5fr_1fr] lg:gap-16;
+}
+
+.home-intro__about {
+  @apply text-lg leading-snug md:text-2xl;
+}
+
+.home-intro__secondary {
+  @apply text-sm leading-relaxed md:text-base;
+}
+
+.home-intro__action {
+  @apply self-start;
+}

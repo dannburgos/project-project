@@ -1,0 +1,22 @@
+/* Espacio vacío de una pantalla completa: la barra de arriba y este módulo
+   suman el alto de la ventana. */
+.home-placeholder {
+  @apply bg-background relative z-10 flex flex-col gap-4 px-4 py-6 md:px-8 lg:px-12;
+  min-height: calc(100svh - var(--site-header-height, 5.5rem));
+}
+
+.home-placeholder__label {
+  @apply text-muted-foreground text-sm tracking-wide uppercase;
+}
+
+.home-placeholder__area {
+  @apply border-border bg-muted flex flex-1 flex-col items-center justify-center gap-2 rounded-xl border border-dashed p-8 text-center;
+}
+
+.home-placeholder__title {
+  @apply text-2xl font-semibold md:text-3xl;
+}
+
+.home-placeholder__note {
+  @apply text-muted-foreground max-w-prose text-sm md:text-base;
+}

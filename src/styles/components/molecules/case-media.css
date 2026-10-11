@@ -1,0 +1,34 @@
+/* Imagen principal del caso. La tarjeta crece hacia los lados con el scroll:
+   --media-progress va de 0 (márgenes amplios) a 1 (márgenes pequeños). Nunca
+   llega al borde de la pantalla y conserva sus esquinas redondeadas. */
+.case-media {
+  @apply flex justify-center py-10 md:py-16;
+  --media-inset-start: 12vw;
+  --media-inset-end: 1rem;
+  padding-inline: calc(
+    var(--media-inset-start) -
+      (var(--media-inset-start) - var(--media-inset-end)) *
+      var(--media-progress, 0)
+  );
+}
+
+@media (min-width: 768px) {
+  .case-media {
+    --media-inset-start: 18vw;
+    --media-inset-end: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .case-media {
+    --media-inset-end: 3rem;
+  }
+}
+
+.case-media__card {
+  @apply bg-muted text-muted-foreground flex aspect-[4/5] w-full flex-col items-center justify-center gap-3 rounded-3xl text-sm md:aspect-video;
+}
+
+.case-media__card svg {
+  @apply size-10;
+}

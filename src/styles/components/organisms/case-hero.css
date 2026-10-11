@@ -1,0 +1,71 @@
+/* Banner del caso: fondo oscuro (como la portada del Home), de borde a borde y
+   del alto de la pantalla. Título centrado; ficha e introducción abajo. Cada
+   parte entra con un pequeño desfase. */
+.case-hero {
+  @apply flex flex-col gap-10 bg-black px-4 pt-6 pb-10 text-white md:px-8 md:pb-14 lg:px-12;
+  min-height: calc(100svh - var(--site-header-height, 5.5rem));
+}
+
+.case-hero > * {
+  animation: fade-up 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.case-hero > :nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.case-hero > :nth-child(3) {
+  animation-delay: 240ms;
+}
+
+.case-hero > :nth-child(4) {
+  animation-delay: 360ms;
+}
+
+.case-hero__back {
+  @apply flex w-fit items-center gap-2 text-sm text-white/60 hover:text-white;
+}
+
+.case-hero__back svg {
+  @apply size-4;
+}
+
+.case-hero__heading {
+  @apply my-auto flex flex-col items-center gap-4 text-center;
+}
+
+.case-hero__title {
+  @apply text-5xl font-semibold tracking-tight md:text-7xl lg:text-8xl;
+}
+
+.case-hero__meta {
+  @apply text-sm text-white/60 md:text-base;
+}
+
+/* Ficha del proyecto: una fila de datos con una línea encima */
+.case-hero__facts {
+  @apply grid grid-cols-2 gap-x-6 gap-y-5 border-t border-white/20 pt-6 md:grid-cols-5;
+}
+
+.case-hero__fact {
+  @apply flex flex-col gap-1;
+}
+
+.case-hero__fact-label {
+  @apply text-xs tracking-wide text-white/50 uppercase;
+}
+
+.case-hero__fact-value {
+  @apply text-sm md:text-base;
+}
+
+/* Introducción conceptual en dos columnas */
+.case-hero__intro {
+  @apply grid gap-4 text-base text-white/80 md:grid-cols-2 md:gap-12 md:text-lg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-hero > * {
+    animation: none;
+  }
+}

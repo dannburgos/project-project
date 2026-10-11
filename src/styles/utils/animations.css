@@ -1,0 +1,147 @@
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Entrada: sube suavemente y se aclara */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+    transform: translateX(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* La línea se dibuja de izquierda a derecha (escritorio) y de arriba hacia
+   abajo (móvil) */
+@keyframes line-draw-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes line-draw-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes dot-pulse {
+  from {
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--foreground) 35%, transparent);
+  }
+  to {
+    box-shadow: 0 0 0 0.6rem transparent;
+  }
+}
+
+/* Título: cada palabra sube desde detrás de una línea invisible */
+@keyframes word-up {
+  from {
+    transform: translateY(110%) rotate(3deg);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Botones: llegan con un pequeño rebote */
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Año que se enciende cuando la chispa pasa por él */
+@keyframes tick-pop {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  60% {
+    opacity: 1;
+    transform: scaleY(2.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes tick-label-pop {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Ancho del lugar de una tarjeta al aparecer (las vecinas se acomodan) */
+@keyframes slot-grow {
+  from {
+    width: 0;
+  }
+}
+
+/* Flecha de "desplázate": sube y baja suavemente */
+@keyframes nudge-down {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(0.3rem);
+  }
+}

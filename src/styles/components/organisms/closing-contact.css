@@ -1,0 +1,69 @@
+/* Cierre de contacto de Home y Work (referencia: karolinahess.com). Ocupa una
+   pantalla y queda pegado al fondo de la ventana, detrás de la cortina: al
+   subir la cortina, aparece sin moverse. Negro con blanco mientras se define
+   el sistema visual. El espacio de arriba deja libre la barra superior, que
+   queda encima. */
+.closing-contact {
+  @apply sticky bottom-0 z-0 flex h-svh flex-col bg-black px-4 pt-32 pb-6 text-white md:px-8 md:pt-28 lg:px-12;
+}
+
+/* En pantallas muy bajas no cabría en una pantalla: se muestra en su lugar,
+   sin cortina, para que nada quede oculto */
+@media (max-height: 599px) {
+  .closing-contact {
+    position: relative;
+    height: auto;
+    min-height: 100svh;
+  }
+}
+
+.closing-contact__body {
+  @apply flex flex-1 flex-col items-center justify-center gap-10 text-center md:gap-12;
+}
+
+/* 48 px en celular → 96 px en escritorio */
+.closing-contact__title {
+  @apply flex flex-col text-5xl leading-none font-medium tracking-tight sm:text-6xl md:text-7xl lg:text-8xl;
+}
+
+.closing-contact__title-muted {
+  @apply text-white/50;
+}
+
+.closing-contact__email {
+  @apply flex flex-col items-center gap-2;
+}
+
+.closing-contact__label {
+  @apply text-sm text-white/60 md:text-base;
+}
+
+.closing-contact__email-row {
+  @apply flex items-center gap-3;
+}
+
+.closing-contact__email-link {
+  @apply rounded-sm text-lg underline-offset-4 outline-none hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:text-2xl md:text-4xl;
+}
+
+.closing-contact__links {
+  @apply flex flex-wrap justify-center gap-3;
+}
+
+.closing-contact__link {
+  @apply inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-2.5 text-sm transition-colors outline-none hover:bg-white hover:text-black focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white md:text-base [&_svg]:size-4;
+}
+
+.closing-contact__footer {
+  @apply flex items-end justify-between gap-4 text-xs tracking-wide text-white/60 uppercase;
+}
+
+.closing-contact__top {
+  @apply inline-flex items-center gap-1 rounded-sm outline-none hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white [&_svg]:size-3.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closing-contact__link {
+    transition: none;
+  }
+}

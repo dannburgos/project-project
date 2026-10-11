@@ -1,0 +1,66 @@
+/* Módulo 1: portada a pantalla completa, con fondo oscuro para distinguirla del
+   resto (como el cierre de contacto). Queda pegada bajo la barra mientras el
+   siguiente módulo sube por encima y la va tapando. */
+.home-cover {
+  @apply sticky z-0 flex flex-col overflow-clip bg-black px-4 pt-8 text-white md:px-8 md:pt-10 lg:px-12;
+  /* Permite medir la palabra gigante con el ancho de la portada (cqw) */
+  container-type: inline-size;
+  top: var(--site-header-height, 5.5rem);
+  height: calc(100svh - var(--site-header-height, 5.5rem));
+}
+
+/* Frase corta: en escritorio queda en la mitad derecha, arriba */
+.home-cover__tagline {
+  @apply max-w-md text-3xl leading-tight font-medium tracking-tight md:ml-[52%] md:text-4xl;
+}
+
+.home-cover__meta {
+  @apply mt-auto mb-4 flex items-end justify-between gap-4 text-sm text-white/60 md:mb-6;
+}
+
+.home-cover__facts {
+  @apply flex flex-col gap-1 md:flex-row md:gap-8;
+}
+
+.home-cover__place {
+  @apply flex items-center gap-2;
+}
+
+.home-cover__hint {
+  @apply hidden items-center gap-1.5 md:flex;
+}
+
+.home-cover__hint svg {
+  @apply size-4;
+  animation: nudge-down 1.8s ease-in-out infinite;
+}
+
+/* Palabra gigante: abajo, de borde a borde, y cortada por el borde inferior.
+   En celular se parte en dos líneas para que sea más grande. El tamaño sale del
+   ancho útil de la portada (cqw ya descuenta sus márgenes): la palabra más larga mide 2.23 veces el tamaño de la
+   letra y la frase completa (en una línea), 4.24. */
+.home-cover__word {
+  @apply pointer-events-none flex flex-col font-black tracking-[-0.06em] whitespace-nowrap text-white/10 select-none lg:flex-row lg:gap-[0.18em];
+  font-size: calc(100cqw / 2.23);
+  line-height: 0.78;
+  /* La línea base de las letras queda justo en el borde inferior (medido) */
+  margin-bottom: -0.016em;
+}
+
+@media (min-width: 768px) {
+  .home-cover__word {
+    font-size: calc(100cqw / 2.23);
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-cover__word {
+    font-size: calc(100cqw / 4.24);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-cover__hint svg {
+    animation: none;
+  }
+}

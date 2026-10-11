@@ -1,0 +1,32 @@
+/* Cada palabra aparece desenfocada y un poco más abajo, y luego se aclara. Las
+   palabras clave quedan en el color de texto; el resto, en gris. */
+.blur-reveal__word {
+  @apply text-muted-foreground inline-block;
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(0.35em);
+  transition:
+    opacity 700ms ease-out,
+    filter 800ms ease-out,
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.blur-reveal__word--key {
+  @apply text-foreground;
+}
+
+.blur-reveal--visible .blur-reveal__word {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blur-reveal__word {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+}

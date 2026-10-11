@@ -1,0 +1,72 @@
+/* Bloques de una etapa: tarjetas con esquinas redondeadas (imagen, gráfica,
+   antes y después, galería, resultado), texto y citas. */
+.case-block--text {
+  @apply text-muted-foreground max-w-prose text-base md:text-lg;
+}
+
+.case-block__media {
+  @apply bg-muted text-muted-foreground flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-3xl p-4 text-center text-sm;
+}
+
+.case-block__media svg {
+  @apply size-8;
+}
+
+.case-block__media--chart {
+  @apply border-border aspect-[16/7] border border-dashed;
+}
+
+.case-block--quote {
+  @apply border-border flex flex-col gap-4 rounded-3xl border p-6 md:p-10;
+}
+
+.case-block--quote svg {
+  @apply text-muted-foreground size-6;
+}
+
+.case-block--quote p {
+  @apply text-xl leading-snug font-medium md:text-3xl;
+}
+
+.case-block--quote footer {
+  @apply text-muted-foreground text-sm;
+}
+
+/* Antes y después: dos tarjetas lado a lado */
+.case-block--pair {
+  @apply grid gap-4 md:grid-cols-2 md:gap-6;
+}
+
+.case-block--pair .case-block__media {
+  @apply aspect-[4/5];
+}
+
+/* Galería: una grande arriba y dos debajo */
+.case-block--gallery {
+  @apply grid grid-cols-2 gap-4 md:gap-6;
+}
+
+.case-block--gallery .case-block__media:first-child {
+  @apply col-span-2;
+}
+
+.case-block--gallery .case-block__media:not(:first-child) {
+  @apply aspect-square;
+}
+
+/* Resultado: métricas en tarjetas */
+.case-block--result {
+  @apply grid gap-4 sm:grid-cols-3 md:gap-6;
+}
+
+.case-block__metric {
+  @apply bg-muted flex flex-col-reverse gap-2 rounded-3xl p-6;
+}
+
+.case-block__metric-value {
+  @apply text-4xl font-semibold md:text-5xl;
+}
+
+.case-block__metric-label {
+  @apply text-muted-foreground text-sm;
+}

@@ -1,0 +1,87 @@
+/* Tarjeta grande (referencia: midu.design). La proporción depende del tamaño. */
+.showcase-card {
+  @apply focus-visible:ring-ring/50 relative block overflow-hidden rounded-3xl outline-none focus-visible:ring-[3px];
+}
+
+/* A todo el ancho (Home): en celular más alta que ancha; desde pantallas
+   medianas hacia arriba, alto fijo de 550 px (h-137.5 = 34.375 rem) */
+.showcase-card--full {
+  @apply aspect-4/5 sm:aspect-auto sm:h-137.5;
+}
+
+/* Llena la celda donde está (bloque de proyectos del Home): su tamaño lo da el
+   bloque, no la tarjeta */
+.showcase-card--fill {
+  @apply h-full min-h-0;
+}
+
+/* De dos en dos (Work): más ancha que alta */
+.showcase-card--half {
+  @apply aspect-4/3;
+}
+
+.showcase-card__media {
+  @apply absolute inset-0;
+}
+
+.showcase-card__placeholder {
+  @apply h-full items-start rounded-3xl p-4 transition-colors duration-300;
+}
+
+.showcase-card:is(:hover, :focus-visible) .showcase-card__placeholder {
+  @apply border-foreground;
+}
+
+.showcase-card__content {
+  @apply absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 md:p-10;
+}
+
+.showcase-card__text {
+  @apply flex min-w-0 flex-col gap-1;
+}
+
+/* El título y la acción ocupan el mismo espacio (una sola celda): al pasar el
+   mouse, el título sube y la acción entra desde abajo. */
+.showcase-card__title {
+  @apply grid overflow-hidden text-2xl leading-snug font-medium md:text-4xl;
+}
+
+.showcase-card__title-label,
+.showcase-card__title-action {
+  @apply col-start-1 row-start-1 transition-transform duration-300 ease-out;
+}
+
+.showcase-card__title-action {
+  @apply translate-y-full;
+}
+
+.showcase-card:is(:hover, :focus-visible) .showcase-card__title-label {
+  @apply -translate-y-full;
+}
+
+.showcase-card:is(:hover, :focus-visible) .showcase-card__title-action {
+  @apply translate-y-0;
+}
+
+.showcase-card__description {
+  @apply text-muted-foreground text-sm md:text-base;
+}
+
+/* Con mouse, el botón aparece al pasar por encima. En pantallas táctiles se ve
+   siempre, porque ahí no hay "pasar por encima". */
+.showcase-card__button {
+  @apply bg-background text-foreground flex size-11 shrink-0 items-center justify-center rounded-full shadow-xs transition duration-300 pointer-fine:scale-75 pointer-fine:opacity-0;
+}
+
+.showcase-card:is(:hover, :focus-visible) .showcase-card__button {
+  @apply scale-100 opacity-100;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-card__placeholder,
+  .showcase-card__title-label,
+  .showcase-card__title-action,
+  .showcase-card__button {
+    transition: none;
+  }
+}

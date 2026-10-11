@@ -1,0 +1,15 @@
+.placeholder {
+  @apply border-border bg-muted flex min-h-32 w-full items-center justify-center rounded-md border border-dashed p-4 text-center;
+}
+
+.placeholder--image {
+  @apply aspect-[4/3];
+}
+
+.placeholder--wide {
+  @apply aspect-video;
+}
+
+.placeholder__label {
+  @apply text-muted-foreground text-sm;
+}

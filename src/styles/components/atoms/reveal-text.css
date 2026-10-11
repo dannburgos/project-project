@@ -1,0 +1,13 @@
+/* Cada palabra sale de detrás de una línea invisible, una tras otra (o todas a
+   la vez, si la separación es 0) */
+.reveal-text__mask {
+  @apply inline-block overflow-clip pb-[0.08em] align-bottom;
+}
+
+.reveal-text__word {
+  @apply inline-block origin-bottom-left;
+  animation: word-up 850ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(
+    120ms + var(--word-index, 0) * var(--reveal-step, 120ms)
+  );
+}

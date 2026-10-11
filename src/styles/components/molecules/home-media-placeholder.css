@@ -1,0 +1,42 @@
+/* Imagen a pantalla completa. El módulo mide lo mismo que cualquier otro (la
+   barra de arriba más este espacio suman el alto visible de la ventana). El
+   marco de adentro crece con el scroll: --media-progress va de 0 (con márgenes
+   y esquinas redondeadas) a 1 (de borde a borde, sin esquinas). */
+.home-media {
+  @apply bg-background relative z-10 flex flex-col;
+  --media-inset: 5vw;
+  min-height: calc(100svh - var(--site-header-height, 5.5rem));
+  padding-inline: calc((1 - var(--media-progress, 0)) * var(--media-inset));
+  padding-block: calc((1 - var(--media-progress, 0)) * 1.5rem);
+}
+
+@media (min-width: 768px) {
+  .home-media {
+    --media-inset: 8vw;
+  }
+}
+
+.home-media__frame {
+  @apply bg-muted text-muted-foreground flex flex-1 flex-col overflow-clip;
+  border-radius: calc((1 - var(--media-progress, 0)) * 2rem);
+}
+
+.home-media__label {
+  @apply px-4 pt-6 text-sm tracking-wide uppercase md:px-8 lg:px-12;
+}
+
+.home-media__content {
+  @apply flex flex-1 flex-col items-center justify-center gap-3 px-4 pb-16 text-center;
+}
+
+.home-media__content svg {
+  @apply size-10;
+}
+
+.home-media__title {
+  @apply text-foreground text-2xl font-semibold md:text-3xl;
+}
+
+.home-media__note {
+  @apply max-w-prose text-sm md:text-base;
+}

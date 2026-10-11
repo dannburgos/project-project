@@ -1,0 +1,329 @@
+.journey {
+  @apply relative;
+}
+
+.journey__skip {
+  @apply sr-only focus:not-sr-only focus:mb-4 focus:inline-block focus:underline;
+}
+
+.journey__viewport {
+  @apply relative flex flex-col gap-4 px-4 pt-8 md:px-8;
+}
+
+.journey__backdrop,
+.journey__stage {
+  @apply hidden;
+}
+
+/* Entrada al abrir o recargar: toda la línea del encabezado sale al mismo
+   tiempo. Las palabras del título se revelan desde detrás de una línea (ver
+   reveal-text) y los dos botones llegan con un pequeño rebote, todo con el
+   mismo retraso inicial (120 ms). */
+.journey__header .journey-header__actions > * {
+  animation: pop-in 650ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  animation-delay: 120ms;
+}
+
+/* ---------- Móvil: línea a la izquierda, tarjetas a la derecha ---------- */
+.journey__mobile {
+  @apply relative flex flex-col gap-8;
+}
+
+/* La línea corre por la izquierda, por el centro de la columna de años */
+.journey__line {
+  @apply bg-border absolute top-2 bottom-0 left-[0.4375rem] w-px origin-top;
+  animation: line-draw-y 1100ms cubic-bezier(0.22, 1, 0.36, 1) 200ms backwards;
+}
+
+.journey__line-fill {
+  @apply bg-foreground h-full w-full origin-top transition-transform duration-150 ease-out;
+  transform: scaleY(var(--journey-progress, 0));
+}
+
+/* Cada año: el punto sobre la línea y su número a la derecha; debajo, todas
+   las tarjetas de ese año en una sola columna */
+.journey-year {
+  @apply relative grid grid-cols-[0.9375rem_1fr] items-center gap-x-4 gap-y-3 opacity-60 transition-opacity duration-300;
+  animation: rise-in 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(350ms + min(var(--row-index, 0), 5) * 90ms);
+}
+
+.journey-year--focused,
+.journey-year--open {
+  @apply opacity-100;
+}
+
+.journey-year__dot {
+  @apply border-foreground bg-background relative z-10 size-3.5 justify-self-center rounded-full border transition-colors duration-300;
+}
+
+.journey-year--reached .journey-year__dot {
+  @apply bg-foreground;
+}
+
+.journey-year--focused .journey-year__dot {
+  animation: dot-pulse 1.6s ease-out infinite;
+}
+
+.journey-year__label {
+  @apply text-sm font-medium transition-transform duration-300;
+}
+
+.journey-year--focused .journey-year__label {
+  @apply font-bold;
+}
+
+.journey-year__cards {
+  @apply col-start-2 flex flex-col gap-3;
+}
+
+/* ---------- Escritorio: línea con escala de tiempo real ---------- */
+@media (min-width: 1024px) {
+  .journey {
+    /* Ancho de las tarjetas del centro */
+    --card-width: 20rem;
+    height: calc(100svh - var(--header-offset) + var(--journey-shift, 0px));
+  }
+
+  .journey__viewport {
+    @apply sticky gap-2 overflow-clip px-0 pt-6;
+    top: var(--header-offset);
+    height: calc(100svh - var(--header-offset));
+  }
+
+  .journey__mobile {
+    @apply hidden;
+  }
+
+  .journey__header {
+    @apply relative z-10 px-12;
+  }
+
+  /* Año grande de fondo: un contador cuyos dígitos ruedan al cambiar de año.
+     Queda quieto en la mitad izquierda (el camino ya recorrido), sobre la
+     línea, y su tamaño se ajusta para no llegar nunca a las tarjetas del
+     centro. */
+  .journey__backdrop {
+    @apply text-foreground/6 pointer-events-none absolute top-1/2 left-6 block leading-none font-black tracking-[-0.06em] select-none;
+    /* Apoyado justo encima de la línea: debajo pueden abrirse dos tarjetas
+       académicas lado a lado; arriba solo hay una, siempre centrada. */
+    translate: 0 calc(-100% - 1rem);
+    /* Lo más grande posible: ocupa todo el ancho libre de la mitad izquierda
+       hasta 1.5rem antes de la tarjeta del centro. 2.48 es el ancho de los
+       cuatro dígitos en relación con su tamaño, con este grosor y espaciado. */
+    font-size: clamp(
+      5rem,
+      calc((50vw - var(--card-width) / 2 - 3rem) / 2.48),
+      22rem
+    );
+    animation: backdrop-in 1000ms cubic-bezier(0.22, 1, 0.36, 1) 300ms backwards;
+  }
+
+  .journey__stage {
+    @apply relative block min-h-0 flex-1;
+  }
+
+  /* La línea empieza y termina en el centro de la pantalla */
+  .journey-axis-track {
+    @apply absolute inset-y-0 left-0 w-max;
+    padding-inline: 50%;
+    transform: translateX(
+      calc(var(--journey-progress, 0) * var(--journey-shift, 0px) * -1)
+    );
+  }
+
+  .journey-axis {
+    @apply relative h-full;
+  }
+
+  /* La línea sale disparada desde el centro al cargar (--intro-line va de
+     0 a 1 durante la entrada) */
+  .journey-axis__line {
+    @apply bg-border absolute top-1/2 right-0 left-0 h-px origin-left;
+    transform: scaleX(var(--intro-line, 1));
+  }
+
+  .journey-axis__fill {
+    @apply bg-foreground relative h-full;
+    width: calc(var(--journey-progress, 0) * var(--journey-shift, 0px));
+  }
+
+  /* Chispa que viaja con el frente de la línea durante la entrada */
+  .journey-axis__spark {
+    @apply bg-foreground pointer-events-none absolute top-1/2 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full;
+    left: calc(var(--intro-line, 0) * 100%);
+    box-shadow:
+      0 0 0 0.35rem color-mix(in oklch, var(--foreground) 12%, transparent),
+      -2.5rem 0 1.5rem -0.75rem
+        color-mix(in oklch, var(--foreground) 35%, transparent);
+  }
+
+  /* Punta de la línea: un punto en el centro de la pantalla que late */
+  .journey-axis__head {
+    @apply bg-foreground pointer-events-none absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full;
+    left: calc(var(--journey-progress, 0) * var(--journey-shift, 0px));
+    animation: dot-pulse 1.8s ease-out infinite;
+  }
+
+  /* Años */
+  .journey-axis__tick {
+    @apply text-muted-foreground absolute top-1/2 flex origin-top flex-col items-center gap-1 text-[11px] transition-colors duration-300;
+    transform: translate(-50%, -0.25rem)
+      scale(calc(1 + var(--tick-nearness, 0) * 0.45));
+    visibility: hidden;
+  }
+
+  /* Al pasar la chispa, el año "salta": la marca crece y vuelve, y el
+     número sube con un pequeño rebote */
+  .journey-axis__tick--lit {
+    visibility: visible;
+  }
+
+  .journey-axis__tick--lit .journey-axis__tick-mark {
+    animation: tick-pop 650ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  }
+
+  .journey-axis__tick--lit .journey-axis__tick-label {
+    animation: tick-label-pop 600ms cubic-bezier(0.34, 1.56, 0.64, 1) 80ms
+      backwards;
+  }
+
+  .journey-axis__tick-mark {
+    @apply bg-foreground block h-2 w-px origin-top;
+    transform: scaleY(calc(1 + var(--tick-nearness, 0) * 1.1));
+  }
+
+  .journey-axis__tick--focused {
+    @apply text-foreground font-bold;
+  }
+
+  /* Cierre: queda a la derecha del último año, en la mitad libre de la
+     pantalla, y aparece al final del recorrido. */
+  .journey-axis__closing {
+    @apply absolute flex w-72 -translate-y-1/2 flex-col items-start gap-3;
+    top: 50%;
+    left: calc(100% + 12rem);
+    opacity: calc((var(--journey-progress, 0) - 0.9) * 10);
+  }
+
+  /* Tarjetas fijas en el centro: arriba lo profesional, abajo lo académico */
+  .journey__cards {
+    @apply pointer-events-none absolute inset-0 z-20;
+  }
+
+  /* Lugares de las tarjetas, uno al lado del otro y centrados */
+  .journey__cards-group {
+    @apply absolute left-1/2 flex -translate-x-1/2;
+  }
+
+  /* --drop-gap: distancia entre la línea y la tarjeta; es también la altura
+     del hilo con el que la tarjeta nace de la línea */
+  .journey__cards-group--professional {
+    @apply items-end;
+    --drop-gap: 1.5rem;
+    /* La tarjeta nace del punto de la línea que queda debajo de ella */
+    --drop-origin-y: calc(100% + var(--drop-gap));
+    bottom: calc(50% + var(--drop-gap));
+  }
+
+  .journey__cards-group--academic {
+    @apply items-start;
+    --drop-gap: 2.75rem;
+    /* ...y las académicas, del punto que queda encima */
+    --drop-origin-y: calc(0% - var(--drop-gap));
+    top: calc(50% + var(--drop-gap));
+  }
+
+  /* Cada lugar mide lo mismo que su tarjeta. Si hay dos tarjetas, la segunda
+     crece desde cero y la primera se corre con suavidad. */
+  .journey-slot {
+    @apply relative flex shrink-0 justify-center px-1.5;
+    width: calc(var(--card-width, 20rem) + 0.75rem);
+    transition: width 500ms cubic-bezier(0.65, 0, 0.35, 1);
+    /* Distancia (de izquierda a derecha de la tarjeta) hasta el punto de la
+       línea que queda en el centro de la pantalla: de ahí nace la tarjeta */
+    --drop-origin-x: calc(var(--card-width, 20rem) / 2);
+  }
+
+  /* Con dos tarjetas, el centro de la pantalla queda entre ellas */
+  .journey__cards-group:has(> .journey-slot + .journey-slot)
+    > .journey-slot:first-child {
+    --drop-origin-x: calc(
+      var(--card-width, 20rem) / 2 + (var(--card-width, 20rem) + 0.75rem) / 2
+    );
+  }
+
+  .journey__cards-group:has(> .journey-slot + .journey-slot)
+    > .journey-slot:last-child {
+    --drop-origin-x: calc(
+      var(--card-width, 20rem) / 2 - (var(--card-width, 20rem) + 0.75rem) / 2
+    );
+  }
+
+  .journey-slot[data-align='end'] {
+    @apply justify-end;
+  }
+
+  .journey-slot[data-align='start'] {
+    @apply justify-start;
+  }
+
+  /* Solo la segunda tarjeta crece en ancho; la primera ocupa su lugar de
+     inmediato y nace desde la línea, sin deslizarse desde un lado */
+  .journey-slot[data-align='start'][data-phase='entering'] {
+    animation: slot-grow 500ms cubic-bezier(0.65, 0, 0.35, 1) backwards;
+  }
+
+  .journey-slot[data-align='start'][data-phase='leaving'] {
+    width: 0;
+  }
+
+  .journey-slot[data-phase='leaving'] {
+    @apply pointer-events-none;
+  }
+
+  /* La tarjeta simplemente aparece y desaparece */
+  .journey-slot[data-phase='entering'] .journey-focus-card {
+    animation: fade-in 300ms ease-out backwards;
+  }
+
+  .journey-slot[data-phase='leaving'] .journey-focus-card {
+    animation: fade-out 200ms ease-in forwards;
+  }
+}
+
+/* Pantallas bajas: encabezado y espacios más ajustados */
+@media (min-width: 1024px) and (max-height: 760px) {
+  .journey__viewport {
+    @apply pt-4;
+  }
+
+  .journey__header .page__title {
+    @apply text-4xl;
+  }
+
+  .journey {
+    --card-width: 24rem;
+  }
+
+  .journey__cards-group--professional {
+    --drop-gap: 1.25rem;
+  }
+
+  .journey__cards-group--academic {
+    --drop-gap: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey,
+  .journey * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .journey-slot[data-phase='leaving'],
+  .journey-focus-card__content[data-state='leaving'] {
+    display: none;
+  }
+}

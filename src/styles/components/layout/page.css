@@ -1,0 +1,134 @@
+.page {
+  @apply mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 md:px-8 md:py-16;
+}
+
+.page__eyebrow {
+  @apply text-muted-foreground text-sm tracking-wide uppercase;
+}
+
+.page__title {
+  @apply text-3xl font-semibold md:text-5xl;
+}
+
+.page__lead {
+  @apply text-muted-foreground max-w-prose text-lg;
+}
+
+/* Home y Work usan todo el ancho y terminan con el cierre de contacto, que va
+   de borde a borde. El margen de la página lo pone la cortina (PageCurtain),
+   el mismo que Trayectoria a los lados. */
+.page:has(> .home-page, > .work-page, > .case-page) {
+  @apply max-w-none p-0;
+}
+
+/* Home */
+/* Módulo 4 del Home: bloque de proyectos y botón. Mide una pantalla; el bloque
+   ocupa todo el espacio que deja el botón. */
+.home-module {
+  @apply bg-background relative z-10 flex flex-col gap-4 px-4 py-6 md:gap-6 md:px-8 md:py-10 lg:px-12;
+  min-height: calc(100svh - var(--site-header-height, 5.5rem));
+}
+
+/* Tres tarjetas que forman un solo rectángulo (ley de cierre).
+   Celular: arriba una a todo el ancho y abajo dos más pequeñas, a 12 px.
+   Escritorio: una grande a la izquierda (las dos filas) y dos apiladas a la
+   derecha, a 24 px. */
+.home-projects {
+  @apply grid min-h-0 flex-1 grid-cols-2 gap-3 md:gap-6;
+  grid-template-rows: 3fr 2fr;
+}
+
+.home-projects__item {
+  @apply min-h-0 min-w-0;
+}
+
+.home-projects__item:first-child {
+  @apply col-span-2 md:col-span-1 md:row-span-2;
+}
+
+@media (min-width: 768px) {
+  .home-projects {
+    grid-template-rows: 1fr 1fr;
+  }
+}
+
+/* Las tarjetas pequeñas del celular llevan menos texto y un botón más chico */
+.home-projects__item:not(:first-child) .showcase-card__content {
+  @apply gap-2 p-3 md:gap-4 md:p-10;
+}
+
+.home-projects__item:not(:first-child) .showcase-card__title {
+  @apply text-lg md:text-4xl;
+}
+
+.home-projects__item:not(:first-child) .showcase-card__description {
+  @apply text-xs md:text-base;
+}
+
+/* En las tarjetas pequeñas del celular el nombre usa todo el ancho: sin botón
+   (la tarjeta entera es el enlace) */
+.home-projects__item:not(:first-child) .showcase-card__button {
+  @apply max-md:hidden;
+}
+
+.home-projects__cta {
+  @apply flex justify-center;
+}
+
+/* Work */
+.work-grid {
+  @apply grid gap-3 md:grid-cols-2 md:gap-5;
+}
+
+/* Case study: la sección final "¿Y ahora?" */
+.case-end {
+  @apply border-border mx-4 flex flex-col gap-4 border-t pt-8 pb-12 md:mx-8 md:pb-16 lg:mx-12;
+}
+
+.case-end__title {
+  @apply text-xl font-semibold;
+}
+
+.case-end__list {
+  @apply grid gap-3 sm:grid-cols-2;
+}
+
+.case-end__link {
+  @apply border-border hover:border-foreground block rounded-md border p-4 text-sm;
+}
+
+/* Journey: la página usa todo el ancho de la pantalla */
+.page:has(> .journey-page) {
+  @apply max-w-none p-0;
+}
+
+.journey-page {
+  /* Alto de la barra superior (fijo en escritorio) */
+  --header-offset: calc(5rem + 1px);
+  @apply flex flex-col gap-8 pb-16 lg:pb-0;
+}
+
+.journey-header {
+  @apply flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between;
+}
+
+.journey-header__actions {
+  @apply flex flex-wrap items-center gap-3;
+}
+
+.journey-end {
+  @apply border-border mx-4 border-t pt-8 md:mx-8 lg:mx-0 lg:-mt-8 lg:h-0 lg:border-0 lg:p-0;
+}
+
+.journey-end__content {
+  @apply flex flex-col items-start gap-4 lg:hidden;
+}
+
+/* Contact */
+.contact {
+  @apply flex min-h-[50vh] flex-col justify-center gap-6;
+}
+
+.contact__actions {
+  @apply flex flex-col gap-3 sm:flex-row;
+}

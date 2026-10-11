@@ -1,0 +1,11 @@
+/* Cortina: va por encima del cierre de contacto, con fondo propio y las
+   esquinas de abajo redondeadas, y sube con el scroll para descubrirlo. Lleva
+   el margen de la página porque el contacto va de borde a borde. */
+.page-curtain {
+  @apply bg-background relative z-10 flex flex-col gap-8 rounded-b-3xl px-4 pt-10 pb-12 md:px-8 md:pt-16 md:pb-16 lg:px-12;
+}
+
+/* Home: sin margen interior; cada módulo de pantalla completa pone el suyo */
+.page-curtain--flush {
+  @apply gap-0 p-0;
+}
