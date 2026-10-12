@@ -41,8 +41,6 @@ export const siteContent = {
     // Módulo 1: portada a pantalla completa (referencia: midu.design).
     cover: {
       word: 'texto aquí',
-      location: 'Bogotá, Colombia',
-      timeZone: 'America/Bogota',
       scrollHint: 'Desplázate para explorar'
     },
     // Módulo 2: frase grande y presentación. En "about", lo que lleva
@@ -84,13 +82,24 @@ export const siteContent = {
         number: 5,
         title: 'Cómo pienso',
         note: 'Aquí irá la brújula: Intuitiva · Adaptable · Conceptual.'
-      },
-      {
-        number: 6,
-        title: 'Trayectoria',
-        note: 'Aquí irá una muestra de la línea de tiempo.'
       }
     ],
+    // Módulo 6: invitación a Trayectoria (sin repetir la línea de tiempo).
+    // Los datos se cuentan a partir del contenido real de Trayectoria.
+    journeyTeaser: {
+      statement: [
+        { text: 'Mi recorrido se construyó entre la' },
+        { text: 'práctica', isKey: true },
+        { text: 'y el' },
+        { text: 'aprendizaje constante.', isKey: true }
+      ],
+      stats: {
+        years: 'Años diseñando',
+        companies: 'Empresas y equipos',
+        studies: 'Cursos y estudios'
+      },
+      action: { label: 'Ver mi trayectoria', href: '/journey' }
+    },
     moduleLabel: 'Módulo',
     accessMediaLabel: 'Imagen o visual de la sección',
     // Ya no se usa en el Home (ahora muestra el bloque de proyectos); queda
@@ -117,8 +126,7 @@ export const siteContent = {
     // LinkedIn y CV: pendientes del enlace y del archivo reales.
     linkedin: { label: 'LinkedIn', href: '#' },
     cv: { label: 'Descargar CV', href: '#' },
-    backToTop: 'Volver arriba',
-    location: 'Bogotá, Colombia'
+    backToTop: 'Volver arriba'
   },
   work: {
     title: 'Work',

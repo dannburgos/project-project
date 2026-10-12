@@ -1,7 +1,6 @@
 import { ArrowDown } from 'lucide-react';
 
 import { RevealText } from '@/components/atoms/reveal-text';
-import { LocalTime } from '@/components/atoms/local-time';
 import { siteContent } from '@/content/site';
 
 // Módulo 1 del Home: portada a pantalla completa. Se queda quieta mientras el
@@ -18,10 +17,6 @@ export function HomeCover() {
       <div className="home-cover__meta">
         <div className="home-cover__facts">
           <p>{home.role}</p>
-          <p className="home-cover__place">
-            <span>{home.cover.location}</span>
-            <LocalTime timeZone={home.cover.timeZone} />
-          </p>
         </div>
         <p className="home-cover__hint">
           {home.cover.scrollHint}

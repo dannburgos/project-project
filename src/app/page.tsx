@@ -3,6 +3,7 @@ import { HomeModulePlaceholder } from '@/components/molecules/home-module-placeh
 import { ClosingContact } from '@/components/organisms/closing-contact';
 import { HomeCover } from '@/components/organisms/home-cover';
 import { HomeIntro } from '@/components/organisms/home-intro';
+import { HomeJourneyTeaser } from '@/components/organisms/home-journey-teaser';
 import { HomeProjects } from '@/components/organisms/home-projects';
 import { PageCurtain } from '@/components/organisms/page-curtain';
 import { siteContent } from '@/content/site';
@@ -37,6 +38,7 @@ export default function HomePage() {
             note={module.note}
           />
         ))}
+        <HomeJourneyTeaser />
       </PageCurtain>
 
       <ClosingContact />

@@ -1,0 +1,50 @@
+/* Módulo 6: frase y tres datos sueltos que invitan a Trayectoria. Mide una
+   pantalla, como los demás módulos. */
+.home-teaser {
+  @apply bg-background relative z-10 flex items-center px-4 py-10 md:px-8 md:py-16 lg:px-12;
+  min-height: calc(100svh - var(--site-header-height, 5.5rem));
+}
+
+.home-teaser__inner {
+  @apply mx-auto flex w-full max-w-5xl flex-col gap-10 md:gap-16;
+}
+
+.home-teaser__statement {
+  @apply text-[2rem] leading-[1.05] font-medium tracking-tight sm:text-4xl md:text-6xl lg:text-7xl;
+}
+
+.home-teaser__stats {
+  @apply border-border grid grid-cols-3 gap-4 border-t pt-6 md:gap-8 md:pt-10;
+}
+
+.home-stat {
+  @apply flex flex-col gap-2 opacity-0;
+  transform: translateY(0.75rem);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-stat[data-visible='true'] {
+  @apply opacity-100;
+  transform: none;
+}
+
+.home-stat__value {
+  @apply text-5xl leading-none font-semibold tracking-tight tabular-nums md:text-8xl;
+}
+
+.home-stat__label {
+  @apply text-muted-foreground text-xs md:text-base;
+}
+
+.home-teaser__action {
+  @apply self-start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-stat {
+    @apply opacity-100 transition-none;
+    transform: none;
+  }
+}

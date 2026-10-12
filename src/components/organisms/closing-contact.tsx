@@ -61,7 +61,6 @@ export function ClosingContact() {
           {contact.backToTop}
           <ArrowUp aria-hidden="true" />
         </a>
-        <p>{contact.location}</p>
       </div>
     </section>
   );

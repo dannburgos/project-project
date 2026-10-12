@@ -22,10 +22,6 @@
   @apply flex flex-col gap-1 md:flex-row md:gap-8;
 }
 
-.home-cover__place {
-  @apply flex items-center gap-2;
-}
-
 .home-cover__hint {
   @apply hidden items-center gap-1.5 md:flex;
 }

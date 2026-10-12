@@ -31,7 +31,7 @@
     - Módulo 1, portada, con fondo oscuro (negro, textos blancos) para
       distinguirla del resto (referencia solo de comportamiento: midu.design): la
       frase "Diseño productos que parten de entender el problema." arriba a la
-      derecha; abajo, el rol, "Bogotá, Colombia" con la hora actual y la
+      derecha; abajo, el rol y la
       invitación "Desplázate para explorar"; y una palabra gigante de borde a
       borde que por ahora dice "texto aquí" (Dann pidió no ponerle nada). En
       celular, la palabra se parte en dos líneas para que sea más grande. Al
@@ -122,7 +122,8 @@
       gris; texto de ejemplo; 48 px en móvil → 96 px en escritorio, Dann lo
       pidió más pequeño), "Escríbeme:" con el correo del CV y un botón para
       copiarlo (avisa "Copiado"), botones de LinkedIn y "Descargar CV", y
-      abajo "Volver arriba" y "Bogotá, Colombia".
+      abajo "Volver arriba".
+    - Se quitó la ubicación y la hora de todo el sitio (portada y cierre).
     - Pendiente: enlace real de LinkedIn y archivo del CV.
 - Tarjetas grandes (referencia: midu.design), en Home y en Work:
   - La imagen ocupa toda la tarjeta; el nombre va encima, abajo a la
@@ -322,3 +323,8 @@
    - En celular: una sola columna; cada etapa muestra su título y resumen encima de sus bloques.
 4. "¿Y ahora?" (siguiente proyecto, Work, Trayectoria, Contact) y cierre de contacto.
 - Todo con textos de ejemplo ("Por definir"); no se inventa contenido del proyecto.
+
+## Home — módulo 6 (Trayectoria)
+- No repite la línea de tiempo (Dann no quiere duplicar información). Es una invitación: una frase grande y tres datos sueltos que se cuentan al entrar en pantalla, y el botón "Ver mi trayectoria" (a /journey).
+- Frase propuesta: "Mi recorrido se construyó entre la práctica y el aprendizaje constante." (texto por validar).
+- Datos calculados desde el contenido real de Trayectoria: años diseñando (desde 2018), empresas y equipos (6), cursos y estudios (7). Si cambia la línea de tiempo, cambian solos.

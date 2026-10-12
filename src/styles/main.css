@@ -4,7 +4,6 @@
 @import './components/atoms/copy-button.css';
 @import './components/atoms/reveal-text.css';
 @import './components/atoms/blur-reveal-text.css';
-@import './components/atoms/local-time.css';
 @import './components/molecules/showcase-card.css';
 @import './components/molecules/home-module-placeholder.css';
 @import './components/molecules/home-media-placeholder.css';
@@ -20,5 +19,6 @@
 @import './components/organisms/page-curtain.css';
 @import './components/organisms/home-cover.css';
 @import './components/organisms/home-intro.css';
+@import './components/organisms/home-journey-teaser.css';
 @import './components/organisms/journey-timeline.css';
 @import './components/layout/page.css';
