@@ -1,0 +1,45 @@
+/* Entrada del sitio (en prueba): una capa que tapa la página mientras corre.
+   Va por encima de la barra; el cursor propio queda por encima de todo. */
+.intro {
+  @apply fixed inset-0 z-70;
+}
+
+/* Fondo de la entrada: el mismo casi negro cálido del banner. Cuando el
+   símbolo sale hacia el logo se desvanece parejo y deja ver la portada. */
+.intro__backdrop {
+  @apply bg-brand-ink absolute inset-0;
+}
+
+/* 1 · Ensamble, versión pro: el símbolo empieza oculto hasta que corre la
+   entrada. Cada pieza va en tres capas superpuestas (horizontal, vertical y
+   giro, desenfoque) que ocupan el mismo cuadro del símbolo. */
+.intro-pro__symbol {
+  @apply absolute top-1/2 left-1/2 size-28 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 md:size-36;
+}
+
+.intro-pro__axis,
+.intro-pro__piece {
+  @apply absolute inset-0;
+}
+
+.intro-pro__piece {
+  will-change: transform, filter;
+}
+
+/* Cada pieza llega en un tono de la gama naranja (en la primera visita); al
+   encajar se vuelven blancas */
+.intro-pro__piece--amber {
+  @apply text-brand-amber;
+}
+
+.intro-pro__piece--orange {
+  @apply text-brand-orange;
+}
+
+.intro-pro__piece--flame {
+  @apply text-brand-flame;
+}
+
+.intro-pro__piece--ember {
+  @apply text-brand-ember;
+}

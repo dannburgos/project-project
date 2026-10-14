@@ -2,11 +2,13 @@
    del alto de la pantalla. Título centrado; ficha e introducción abajo. Cada
    parte entra con un pequeño desfase. */
 .case-hero {
-  @apply flex flex-col gap-10 bg-black px-4 pt-6 pb-10 text-white md:px-8 md:pb-14 lg:px-12;
+  @apply flex flex-col gap-10 bg-black px-4 pb-10 text-white md:px-8 md:pb-14 lg:px-12;
+  padding-top: calc(var(--site-header-clearance) + 0.5rem);
   min-height: calc(100svh - var(--site-header-height, 5.5rem));
 }
 
-.case-hero > * {
+.case-hero > :not(.case-hero__backdrop) {
+  @apply relative z-10;
   animation: fade-up 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
@@ -44,7 +46,7 @@
 
 /* Ficha del proyecto: una fila de datos con una línea encima */
 .case-hero__facts {
-  @apply grid grid-cols-2 gap-x-6 gap-y-5 border-t border-white/20 pt-6 md:grid-cols-5;
+  @apply grid grid-cols-2 gap-x-6 gap-y-5 border-t border-white/20 pt-6 md:grid-cols-4;
 }
 
 .case-hero__fact {
@@ -64,8 +66,171 @@
   @apply grid gap-4 text-base text-white/80 md:grid-cols-2 md:gap-12 md:text-lg;
 }
 
+/* ---------- Fondo con tono: degradado por manchas con profundidad ----------
+   Cinco manchas muy desenfocadas, de la más lejana (pequeña, más borrosa,
+   oscura) a la más cercana (grande, más nítida, viva). Al cargar, cada una
+   empieza más cerca y se aleja hasta su lugar a su propio ritmo: las cercanas
+   se mueven más que las lejanas, y eso da la sensación de 3D. Encima, un grano
+   fino y un oscurecido abajo para que el texto se lea. */
+.case-hero--green,
+.case-hero--purple {
+  @apply relative isolate overflow-clip;
+}
+
+.case-hero--green {
+  background-color: #020a05;
+  --blob-far: #0f5a2c;
+  --blob-mid: #16a34a;
+  --blob-near: #22c55e;
+  --blob-glow: #a3e635;
+}
+
+.case-hero--purple {
+  background-color: #07030f;
+  --blob-far: #3b1a8a;
+  --blob-mid: #7c3aed;
+  --blob-near: #a855f7;
+  --blob-glow: #e879f9;
+}
+
+.case-hero__backdrop {
+  @apply pointer-events-none absolute inset-0 z-0;
+  animation: backdrop-zoom-out 2600ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+/* Oscurecido abajo y en los bordes: el título y la ficha siguen en blanco */
+.case-hero__backdrop::after {
+  content: '';
+  @apply absolute inset-0;
+  background:
+    radial-gradient(
+      ellipse 70% 45% at 50% 38%,
+      rgb(0 0 0 / 0.15),
+      transparent 70%
+    ),
+    linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.2),
+      transparent 30%,
+      transparent 45%,
+      rgb(0 0 0 / 0.85) 100%
+    );
+}
+
+.case-hero__blob {
+  @apply absolute rounded-full;
+  animation: blob-zoom-out var(--blob-duration) cubic-bezier(0.16, 1, 0.3, 1)
+    var(--blob-delay) backwards;
+}
+
+/* 1. Lejana: arriba a la izquierda, oscura y muy borrosa */
+.case-hero__blob:nth-child(1) {
+  --blob-from: 1.25;
+  --blob-duration: 2200ms;
+  --blob-delay: 0ms;
+  background: var(--blob-far);
+  width: 55vw;
+  height: 55vw;
+  top: -20%;
+  left: -12%;
+  filter: blur(110px);
+}
+
+/* 2. Lejana: abajo a la derecha */
+.case-hero__blob:nth-child(2) {
+  --blob-from: 1.3;
+  --blob-duration: 2400ms;
+  --blob-delay: 80ms;
+  background: var(--blob-far);
+  width: 50vw;
+  height: 40vw;
+  right: -10%;
+  bottom: -15%;
+  filter: blur(100px);
+}
+
+/* 3. Media: centro derecha */
+.case-hero__blob:nth-child(3) {
+  --blob-from: 1.5;
+  --blob-duration: 2600ms;
+  --blob-delay: 120ms;
+  background: var(--blob-mid);
+  width: 38vw;
+  height: 34vw;
+  top: 8%;
+  right: 6%;
+  filter: blur(80px);
+}
+
+/* 4. Cercana: verde vivo, a la izquierda del centro */
+.case-hero__blob:nth-child(4) {
+  --blob-from: 1.8;
+  --blob-duration: 2900ms;
+  --blob-delay: 160ms;
+  background: var(--blob-near);
+  width: 30vw;
+  height: 26vw;
+  top: 22%;
+  left: 14%;
+  filter: blur(60px);
+}
+
+/* 5. La más cercana: un brillo lima pequeño que da el punto de luz */
+.case-hero__blob:nth-child(5) {
+  --blob-from: 2.2;
+  --blob-duration: 3200ms;
+  --blob-delay: 200ms;
+  background: var(--blob-glow);
+  width: 16vw;
+  height: 14vw;
+  top: 12%;
+  left: 46%;
+  filter: blur(50px);
+  opacity: 0.9;
+}
+
+/* Grano fino encima del color */
+.case-hero__grain {
+  @apply absolute inset-0 opacity-25 mix-blend-overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.case-hero--green .case-hero__meta,
+.case-hero--green .case-hero__fact-label,
+.case-hero--purple .case-hero__meta,
+.case-hero--purple .case-hero__fact-label {
+  @apply text-white/70;
+}
+
+.case-hero--green .case-hero__facts,
+.case-hero--purple .case-hero__facts {
+  @apply border-white/30;
+}
+
+@keyframes backdrop-zoom-out {
+  from {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes blob-zoom-out {
+  from {
+    transform: scale(var(--blob-from));
+  }
+  to {
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .case-hero > * {
+  .case-hero > *,
+  .case-hero__backdrop,
+  .case-hero__blob {
     animation: none;
   }
 }

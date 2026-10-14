@@ -9,7 +9,7 @@ export function HomeCover() {
   const { home } = siteContent;
 
   return (
-    <section className="home-cover">
+    <section className="home-cover" data-surface="dark">
       <h1 className="home-cover__tagline">
         <RevealText text={home.title} />
       </h1>

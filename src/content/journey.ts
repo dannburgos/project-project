@@ -24,7 +24,8 @@ export type JourneyStage = {
 export const journeyContent = {
   title: 'Trayectoria profesional',
   cvLabel: 'Descargar CV',
-  contactLabel: 'Contact',
+  // Ya no hay página de Contact: el botón abre el correo de Dann
+  contactLabel: 'Escríbeme',
   // Etiqueta que distingue cada tipo de etapa (en móvil, donde todas las
   // tarjetas van en la misma columna).
   typeLabels: {
@@ -37,7 +38,7 @@ export const journeyContent = {
   },
   skipLabel: 'Saltar la línea de tiempo',
   progressLabel: 'Progreso del recorrido',
-  // Cierre del recorrido: invita al siguiente paso (Work). Contact ya está
+  // Cierre del recorrido: invita al siguiente paso (Work). "Escríbeme" ya está
   // siempre arriba, junto a "Descargar CV".
   endLink: 'Ver mis proyectos',
   endHref: '/work',

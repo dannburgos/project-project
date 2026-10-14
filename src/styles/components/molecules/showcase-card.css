@@ -67,6 +67,18 @@
   @apply text-muted-foreground text-sm md:text-base;
 }
 
+/* Etiquetas con palabras clave del proyecto (referencia: midu.design): arriba a
+   la derecha, en cápsulas translúcidas. Sin desenfoque de fondo: hay dos por
+   tarjeta y, al hacer scroll, hacían más pesado pintar la página (y no se
+   notaba sobre los fondos lisos de ahora). */
+.showcase-card__tags {
+  @apply absolute top-4 right-4 flex flex-wrap justify-end gap-2 md:top-6 md:right-6;
+}
+
+.showcase-card__tag {
+  @apply bg-background/70 border-border text-foreground rounded-full border px-3 py-1.5 text-xs whitespace-nowrap md:text-sm;
+}
+
 /* Con mouse, el botón aparece al pasar por encima. En pantallas táctiles se ve
    siempre, porque ahí no hay "pasar por encima". */
 .showcase-card__button {

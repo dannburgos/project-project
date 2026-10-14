@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Símbolo de Daniela Burgos</title>
+  <desc id="desc">Monograma modular abstracto formado por un círculo, un cuadrado redondeado y dos formas D, con espacio entre ellas.</desc>
+  <g fill="#161616">
+    <circle cx="270" cy="270" r="190"/>
+    <path d="M532 80h190a190 190 0 0 1 0 380H532z"/>
+    <rect x="80" y="532" width="380" height="380" rx="84"/>
+    <path d="M532 532h190a190 190 0 0 1 0 380H532z"/>
+  </g>
+</svg>

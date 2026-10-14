@@ -1,5 +1,4 @@
 import { HomeMediaPlaceholder } from '@/components/molecules/home-media-placeholder';
-import { HomeModulePlaceholder } from '@/components/molecules/home-module-placeholder';
 import { ClosingContact } from '@/components/organisms/closing-contact';
 import { HomeCover } from '@/components/organisms/home-cover';
 import { HomeIntro } from '@/components/organisms/home-intro';
@@ -10,17 +9,20 @@ import { siteContent } from '@/content/site';
 
 // Home armado por módulos de pantalla completa que se irán llenando:
 // 1 Portada · 2 Presentación · 3 Proyectos · 4 Imagen a pantalla completa ·
-// 5 Cómo pienso · 6 Trayectoria · 7 Cierre de contacto.
+// 5 Trayectoria · 6 Cierre de contacto.
 export default function HomePage() {
   const { home } = siteContent;
 
   return (
     <div className="home-page">
       <PageCurtain variant="flush">
-        <HomeCover />
-        <HomeIntro />
-
-        <HomeProjects />
+        {/* La portada queda quieta solo en este tramo, mientras la presentación
+            y los proyectos suben y la tapan */}
+        <div className="home-cover-track">
+          <HomeCover />
+          <HomeIntro />
+          <HomeProjects />
+        </div>
 
         <HomeMediaPlaceholder
           label={home.moduleLabel}
@@ -29,15 +31,6 @@ export default function HomePage() {
           note={home.mediaModule.note}
         />
 
-        {home.placeholderModules.map(module => (
-          <HomeModulePlaceholder
-            key={module.number}
-            label={home.moduleLabel}
-            number={module.number}
-            title={module.title}
-            note={module.note}
-          />
-        ))}
         <HomeJourneyTeaser />
       </PageCurtain>
 

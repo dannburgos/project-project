@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { Placeholder } from '@/components/atoms/placeholder';
 import { cn } from '@/lib/utils';
 
+// Etiquetas como máximo por tarjeta, para que no compitan con el nombre
+const MAX_TAGS = 2;
+
 type ShowcaseCardProps = {
   href: string;
   title: string;
@@ -11,18 +14,22 @@ type ShowcaseCardProps = {
   actionLabel: string;
   mediaLabel: string;
   size?: 'full' | 'half' | 'fill';
+  // Palabras clave del proyecto, arriba a la derecha
+  tags?: readonly string[];
 };
 
 // Tarjeta grande (referencia: midu.design). La imagen ocupa toda la tarjeta y
-// el texto va encima, abajo a la izquierda. Al pasar el mouse o enfocarla, el
-// título se cambia por la acción y aparece el botón redondo.
+// el texto va encima, abajo a la izquierda; las etiquetas, arriba a la
+// derecha. Al pasar el mouse o enfocarla, el título se cambia por la acción y
+// aparece el botón redondo.
 export function ShowcaseCard({
   href,
   title,
   description,
   actionLabel,
   mediaLabel,
-  size = 'half'
+  size = 'half',
+  tags = []
 }: ShowcaseCardProps) {
   return (
     <Link
@@ -54,6 +61,16 @@ export function ShowcaseCard({
           <Plus />
         </span>
       </div>
+      {/* Van después del texto: un lector de pantalla lee primero el nombre */}
+      {tags.length > 0 && (
+        <ul className="showcase-card__tags">
+          {tags.slice(0, MAX_TAGS).map((tag, index) => (
+            <li key={`${index}-${tag}`} className="showcase-card__tag">
+              {tag}
+            </li>
+          ))}
+        </ul>
+      )}
     </Link>
   );
 }

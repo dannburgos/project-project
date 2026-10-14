@@ -1,3 +1,14 @@
+/* Tira que se desliza sola: recorre la mitad de su ancho (una copia de la
+   lista) y vuelve a empezar sin que se note */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;

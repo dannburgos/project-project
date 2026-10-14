@@ -1,0 +1,15 @@
+/* Contenedor de los dos módulos de skills. El de skills como persona queda
+   pegado aquí dentro, así no se asoma por encima de los módulos anteriores.
+   Es negro para que, bajo las esquinas redondeadas del módulo claro, se vea
+   el oscuro y no un borde blanco. */
+.about-skills-reveal {
+  @apply relative isolate bg-black;
+}
+
+/* Skills profesionales: va por encima, con las esquinas de abajo redondeadas,
+   y sube como una cortina. Mide al menos una pantalla: así, cuando empieza a
+   subir, el módulo de abajo ya está quieto en su lugar. La línea fina de
+   abajo marca su borde sobre el módulo oscuro. */
+.about-skills {
+  @apply border-border relative z-10 min-h-svh rounded-b-3xl border-b;
+}

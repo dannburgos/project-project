@@ -1,12 +1,40 @@
-/* Módulo 1: portada a pantalla completa, con fondo oscuro para distinguirla del
-   resto (como el cierre de contacto). Queda pegada bajo la barra mientras el
-   siguiente módulo sube por encima y la va tapando. */
+/* Módulo 1: portada a pantalla completa con el color de marca: un brillo
+   naranja sobre un casi negro cálido (decisión de Dann; valores
+   provisionales). Queda pegada bajo la barra mientras el siguiente módulo
+   sube por encima y la va tapando.
+   El brillo sube desde el borde de abajo, detrás de la palabra gigante, como
+   una luz que asoma: nunca forma un círculo cerrado en el centro (Dann lo
+   descartó). Se mide con el ancho de la pantalla, igual que la palabra, así
+   no alcanza los textos pequeños (rol y flecha), que van justo encima de ella
+   y se leen en blanco con buen contraste (calculado en celular, tableta y
+   escritorio). En escritorio la palabra va en una sola línea, más baja, y el
+   brillo es más plano. Arriba a la izquierda, un brillo ámbar suave. */
 .home-cover {
-  @apply sticky z-0 flex flex-col overflow-clip bg-black px-4 pt-8 text-white md:px-8 md:pt-10 lg:px-12;
+  @apply bg-brand-ink sticky z-0 flex flex-col overflow-clip px-4 text-white md:px-8 lg:px-12;
+  --home-cover-glow:
+    var(--color-brand-orange) 0%, var(--color-brand-flame) 28%,
+    var(--color-brand-ember) 52%, transparent 80%;
+  --home-cover-amber: radial-gradient(
+    55% 45% at 12% 18%,
+    rgb(255 176 103 / 0.28),
+    transparent 70%
+  );
+  background-image:
+    radial-gradient(110vw 80vw at 65% 100%, var(--home-cover-glow)),
+    var(--home-cover-amber);
+  padding-top: calc(var(--site-header-clearance) + 0.5rem);
   /* Permite medir la palabra gigante con el ancho de la portada (cqw) */
   container-type: inline-size;
   top: var(--site-header-height, 5.5rem);
   height: calc(100svh - var(--site-header-height, 5.5rem));
+}
+
+@media (min-width: 1024px) {
+  .home-cover {
+    background-image:
+      radial-gradient(85vw 34vw at 50% 100%, var(--home-cover-glow)),
+      var(--home-cover-amber);
+  }
 }
 
 /* Frase corta: en escritorio queda en la mitad derecha, arriba */
@@ -15,7 +43,7 @@
 }
 
 .home-cover__meta {
-  @apply mt-auto mb-4 flex items-end justify-between gap-4 text-sm text-white/60 md:mb-6;
+  @apply mt-auto mb-4 flex items-end justify-between gap-4 text-sm text-white/80 md:mb-6;
 }
 
 .home-cover__facts {

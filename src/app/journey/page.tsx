@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { RevealText } from '@/components/atoms/reveal-text';
 import { JourneyTimeline } from '@/components/organisms/journey-timeline';
 import { journeyContent } from '@/content/journey';
+import { siteContent } from '@/content/site';
 
 export default function JourneyPage() {
   return (
@@ -17,12 +18,12 @@ export default function JourneyPage() {
               <a href="#" className="button button--outline button--lg">
                 {journeyContent.cvLabel}
               </a>
-              <Link
-                href="/contact"
+              <a
+                href={`mailto:${siteContent.closingContact.email}`}
                 className="button button--default button--lg"
               >
                 {journeyContent.contactLabel}
-              </Link>
+              </a>
             </div>
           </header>
         }

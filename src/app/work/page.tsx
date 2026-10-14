@@ -9,7 +9,7 @@ export default function WorkPage() {
   return (
     <div className="work-page">
       <PageCurtain>
-        <h1 className="page__title">{work.title}</h1>
+        <h1 className="work-title">{work.title}</h1>
         <ul className="work-grid">
           {exampleProjects.map(project => (
             <li key={project.slug}>
@@ -19,6 +19,7 @@ export default function WorkPage() {
                 description={project.industry}
                 actionLabel={work.caseAction}
                 mediaLabel={work.imageLabel}
+                tags={project.tags}
               />
             </li>
           ))}

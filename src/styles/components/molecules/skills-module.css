@@ -1,0 +1,105 @@
+/* Módulo de skills (referencia: la web de Fixa): contenido centrado y
+   editorial. La misma diagramación en modo claro y oscuro. */
+.skills-module {
+  @apply flex flex-col justify-center px-4 py-20 md:px-8 md:py-32 lg:px-12;
+}
+
+/* Modo "claro": usa la paleta del tema. Con el sitio en oscuro es una
+   superficie gris oscura, un paso más clara que el fondo. */
+.skills-module--light {
+  @apply bg-card text-card-foreground;
+}
+
+/* Modo oscuro: negro con un degradado en grises (provisional, mientras se
+   define el sistema visual) */
+.skills-module--dark {
+  @apply bg-black text-white;
+  background-image:
+    radial-gradient(
+      ellipse 70% 60% at 22% 78%,
+      rgb(130 130 130 / 0.5),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 55% 45% at 85% 18%,
+      rgb(90 90 90 / 0.35),
+      transparent 70%
+    );
+}
+
+.skills-module__inner {
+  @apply mx-auto flex w-full max-w-6xl flex-col gap-12 md:gap-16;
+}
+
+/* Título en dos tonos: una línea gris y una frase grande */
+.skills-module__heading {
+  @apply flex flex-col gap-2;
+}
+
+.skills-module__lead {
+  @apply text-muted-foreground text-xl leading-tight font-medium md:text-3xl;
+}
+
+.skills-module--dark .skills-module__lead {
+  @apply text-white/60;
+}
+
+.skills-module__statement {
+  @apply text-5xl leading-none font-medium tracking-tight md:text-7xl;
+}
+
+/* Tres tarjetas parejas de vidrio: nombre y texto abajo */
+.skills-module__cards {
+  @apply grid gap-3 md:grid-cols-3;
+}
+
+/* Vidrio: un velo blanco muy suave (más claro arriba a la izquierda) que
+   difumina lo que hay detrás, con un brillo fino en el borde de arriba */
+.skills-module__card {
+  @apply relative flex min-h-40 flex-col justify-end gap-3 overflow-hidden rounded-2xl p-6 backdrop-blur-xl backdrop-saturate-150 md:min-h-44 md:p-8;
+  background-image: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 0.1),
+    rgb(255 255 255 / 0.03)
+  );
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.12),
+    0 8px 32px rgb(0 0 0 / 0.25);
+}
+
+/* Borde delicado que refuerza el vidrio: más luminoso en las esquinas de
+   arriba a la izquierda y abajo a la derecha, casi invisible en el medio */
+.skills-module__card::before {
+  @apply pointer-events-none absolute inset-0 rounded-[inherit] p-px;
+  content: '';
+  background: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 0.35),
+    rgb(255 255 255 / 0.08) 35%,
+    rgb(255 255 255 / 0.03) 65%,
+    rgb(255 255 255 / 0.18)
+  );
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+
+/* Si la persona pide menos transparencias, la tarjeta es sólida */
+@media (prefers-reduced-transparency: reduce) {
+  .skills-module__card {
+    @apply bg-card backdrop-blur-none backdrop-saturate-100;
+    background-image: none;
+  }
+}
+
+.skills-module__title {
+  @apply text-lg font-medium;
+}
+
+.skills-module__text {
+  @apply text-muted-foreground text-sm leading-relaxed md:text-base;
+}
+
+.skills-module--dark .skills-module__text {
+  @apply text-white/60;
+}

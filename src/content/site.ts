@@ -18,14 +18,14 @@ export const siteContent = {
       description: 'Proyectos y casos de estudio.'
     },
     {
+      label: 'About',
+      href: '/about',
+      description: 'Herramientas, resumen del CV y skills.'
+    },
+    {
       label: 'Trayectoria',
       href: '/journey',
       description: 'Experiencia, estudios y CV.'
-    },
-    {
-      label: 'Contact',
-      href: '/contact',
-      description: 'Escríbeme o conéctate.'
     }
   ],
   menu: {
@@ -75,16 +75,7 @@ export const siteContent = {
       title: 'Imagen a pantalla completa',
       note: 'Aquí irá una imagen, un video o una animación que ocupa toda la pantalla.'
     },
-    // Módulos 5 y 6: espacios vacíos que se irán llenando. El 7 es el cierre
-    // de contacto.
-    placeholderModules: [
-      {
-        number: 5,
-        title: 'Cómo pienso',
-        note: 'Aquí irá la brújula: Intuitiva · Adaptable · Conceptual.'
-      }
-    ],
-    // Módulo 6: invitación a Trayectoria (sin repetir la línea de tiempo).
+    // Módulo 5: invitación a Trayectoria (sin repetir la línea de tiempo).
     // Los datos se cuentan a partir del contenido real de Trayectoria.
     journeyTeaser: {
       statement: [
@@ -132,6 +123,8 @@ export const siteContent = {
     title: 'Work',
     exampleProjectName: 'Proyecto de ejemplo',
     exampleIndustry: 'Industria o contexto de ejemplo',
+    // Palabras clave de ejemplo para los proyectos que aún no tienen las suyas
+    exampleTags: ['Palabra clave 1', 'Palabra clave 2'],
     imageLabel: 'Imagen del proyecto',
     caseAction: 'Ver caso',
     projectCount: 6
@@ -141,14 +134,12 @@ export const siteContent = {
     indexTitle: 'En este caso',
     // 1. Banner: nombre, ficha del proyecto e introducción conceptual
     hero: {
-      year: 'Año por definir',
       factsLabel: 'Ficha del proyecto',
       facts: [
+        { label: 'Scope', value: 'Por definir' },
         { label: 'Rol', value: 'Por definir' },
-        { label: 'Duración', value: 'Por definir' },
-        { label: 'Equipo', value: 'Por definir' },
-        { label: 'Plataforma', value: 'Por definir' },
-        { label: 'Herramientas', value: 'Por definir' }
+        { label: 'Categoría', value: 'E-commerce · Fintech' },
+        { label: 'Año', value: 'Por definir' }
       ],
       intro: [
         'Texto de ejemplo. Introducción conceptual: de qué trata el proyecto, para quién es y en qué contexto nace.',
@@ -230,31 +221,143 @@ export const siteContent = {
         blocks: ['text']
       }
     ],
+    // Final del caso: tres proyectos que la persona aún no ha visto
+    imageLabelCard: 'Imagen del proyecto',
     endNavigation: {
-      title: '¿Y ahora?',
-      nextProject: 'Siguiente proyecto',
-      backToWork: 'Ver todos los proyectos',
-      journey: 'Trayectoria',
-      contact: 'Contact'
+      title: 'Sigue explorando',
+      backToWork: 'Ver todos los proyectos'
     }
   },
-  contact: {
-    title: 'Contact',
-    lead: 'Cierre del recorrido. Mensaje corto de ejemplo para invitar a conversar.',
-    actions: [
-      { label: 'Email (ejemplo)', href: '#' },
-      { label: 'LinkedIn (ejemplo)', href: '#' },
-      { label: 'CV (ejemplo)', href: '#' }
-    ]
+  about: {
+    title: 'About',
+    // Banner grande: su información la define Dann después
+    banner: {
+      photoLabel: 'Foto',
+      note: 'Aquí irá la información del banner.'
+    },
+    // Las herramientas se muestran solo con su logo; por ahora, cuadros con el
+    // nombre hasta que Dann suba los logos en alta.
+    tools: {
+      title: 'Herramientas que domino',
+      items: [
+        { name: 'Figma' },
+        { name: 'Miro / FigJam' },
+        { name: 'Google Suite' },
+        { name: 'Notion' },
+        { name: 'ChatGPT' },
+        { name: 'Claude' }
+      ]
+    },
+    // Resumen corto del CV de Dann: perfil, estudios y certificaciones. La
+    // experiencia vive en el CV y en Trayectoria.
+    cv: {
+      title: 'Resumen de CV',
+      // Síntesis (cerca de la mitad) del perfil del CV; ver copy/changelog.md
+      summary:
+        'UX/UI Designer enfocada en experiencias intuitivas y alineadas al negocio. Diseño flujos, arquitectura de información y prototipos con sistemas de diseño, y los valido para mejorar usabilidad y conversión.',
+      educationLabel: 'Educación y certificaciones'
+    },
+    // Dos módulos con la misma diagramación (referencia: la web de Fixa): los
+    // profesionales en modo claro, que sube como cortina, y debajo los
+    // personales en modo oscuro. Título en dos tonos: una línea gris y una
+    // frase grande (las frases "Lo que hago" y "Cómo lo hago" son texto de
+    // ejemplo).
+    skills: {
+      professionalTitle: 'Skills profesionales',
+      professionalStatement: 'Lo que hago',
+      // Los grupos y sus habilidades vienen del CV de Dann
+      professional: [
+        {
+          name: 'UX Strategy & Research',
+          items: [
+            'User research',
+            'User testing',
+            'Pruebas de concepto',
+            'Análisis heurístico',
+            'Entrevistas',
+            'Análisis cualitativo y cuantitativo',
+            'Síntesis de insights',
+            'Validación con stakeholders'
+          ]
+        },
+        {
+          name: 'UX Design',
+          items: [
+            'Arquitectura de información',
+            'Diseño de flujos',
+            'Wireframing',
+            'Prototipado de baja y alta fidelidad',
+            'Diseño de interfaces',
+            'Sistemas de diseño',
+            'Accesibilidad',
+            'Optimización de experiencia y conversión'
+          ]
+        },
+        {
+          name: 'Producto & Colaboración',
+          items: [
+            'Trabajo con equipos multidisciplinarios',
+            'Definición de requerimientos',
+            'Alineación con objetivos de negocio',
+            'Iteración continua',
+            'Validación previa a desarrollo'
+          ]
+        }
+      ],
+      personalTitle: 'Skills como persona',
+      personalStatement: 'Cómo lo hago',
+      // La brújula de Dann. Cada frase cuenta cómo se nota la cualidad al
+      // trabajar, sin repetir lo que ya dice el Home. Por validar (ver
+      // copy/changelog.md).
+      personal: [
+        {
+          word: 'Intuitiva',
+          text: 'Sigo mi intuición y después la pongo a prueba con usuarios'
+        },
+        {
+          word: 'Adaptable',
+          text: 'Aprendo las reglas de cada proyecto antes de proponer'
+        },
+        {
+          word: 'Conceptual',
+          text: 'Busco primero la idea; las pantallas llegan después'
+        }
+      ]
+    }
   }
 } as const;
+
+// Nombres reales de los proyectos ya definidos; el resto sigue como ejemplo.
+const projectNames: readonly string[] = ['Planti', 'Nodus'];
+
+// Tono del fondo del banner de cada caso (degradado con profundidad). Los
+// proyectos sin tono usan el banner negro.
+export type ProjectTone = 'green' | 'purple';
+const projectTones: readonly (ProjectTone | undefined)[] = ['green', 'purple'];
+
+// Datos reales de la ficha de cada proyecto; lo que no se indica queda como
+// ejemplo (ver caseStudy.hero.facts).
+const projectScopes: readonly (string | undefined)[] = [
+  'App móvil · Investigación UX · UI'
+];
+
+// Dos palabras clave por proyecto, para las etiquetas de su tarjeta. Las de
+// Planti salen de su ficha real; el resto usa las de ejemplo.
+const projectTags: readonly (readonly string[] | undefined)[] = [
+  ['App móvil', 'Investigación UX']
+];
 
 export const exampleProjects = Array.from(
   { length: siteContent.work.projectCount },
   (_, index) => ({
     slug: `project-${index + 1}`,
-    name: `${siteContent.work.exampleProjectName} ${index + 1}`,
-    industry: siteContent.work.exampleIndustry
+    name:
+      projectNames[index] ??
+      `${siteContent.work.exampleProjectName} ${index + 1}`,
+    industry: siteContent.work.exampleIndustry,
+    tone: projectTones[index],
+    scope: projectScopes[index],
+    tags: projectTags[index] ?? siteContent.work.exampleTags
   })
 );
 

@@ -1,0 +1,45 @@
+/* Cursor propio: punto de 12 px y círculo de 48 px. Son blancos con mezcla
+   "difference": se ven oscuros sobre fondos claros y claros sobre fondos
+   oscuros. Solo existe con mouse; en pantallas táctiles no se muestra. */
+.custom-cursor {
+  @apply pointer-events-none fixed inset-0 z-100 hidden opacity-0 transition-opacity duration-200;
+  mix-blend-mode: difference;
+}
+
+.custom-cursor[data-visible='true'] {
+  @apply opacity-100;
+}
+
+/* Cada pieza se ubica en la posición que le da el código (--cursor-x y
+   --cursor-y) y se centra sobre ella */
+.custom-cursor__dot,
+.custom-cursor__ring {
+  @apply absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full;
+  transform: translate3d(var(--cursor-x, -100px), var(--cursor-y, -100px), 0);
+}
+
+.custom-cursor__dot {
+  @apply size-3 bg-white;
+}
+
+.custom-cursor__ring {
+  @apply size-12 border border-white;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .custom-cursor {
+    @apply block;
+  }
+
+  /* La flecha del sistema se oculta solo cuando el cursor propio ya funciona */
+  html.has-custom-cursor,
+  html.has-custom-cursor * {
+    cursor: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor {
+    transition: none;
+  }
+}

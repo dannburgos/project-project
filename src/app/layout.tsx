@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
+import { CustomCursor } from '@/components/atoms/custom-cursor';
 import { SmoothScroll } from '@/components/atoms/smooth-scroll';
 import { SiteHeader } from '@/components/organisms/site-header';
 import { siteContent } from '@/content/site';
@@ -27,11 +28,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    // Todo el sitio en modo oscuro: activa la paleta oscura del tema
+    <html lang="es" className="dark">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SmoothScroll />
+        <CustomCursor />
         <SiteHeader />
         <main className="page">{children}</main>
       </body>

@@ -1,0 +1,56 @@
+/* Herramientas: una franja de logos en gris, sin cajas, que se desliza lento
+   de derecha a izquierda. La franja es un paso más clara que el fondo y sus
+   bordes se desvanecen para que los logos entren y salgan suave. */
+.about-tools {
+  @apply border-border overflow-hidden border-b py-12 md:py-20;
+}
+
+.about-tools__band {
+  @apply bg-card py-8 md:py-10;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 15%,
+    black 85%,
+    transparent
+  );
+}
+
+/* Lento: unos 20 px por segundo en escritorio (cada vuelta recorre media tira,
+   unos 3600 px) */
+.about-tools__track {
+  @apply flex w-max;
+  animation: marquee-x 180s linear infinite;
+}
+
+.about-tools__list {
+  @apply flex shrink-0 items-center gap-14 pr-14 md:gap-20 md:pr-20;
+}
+
+/* Logo: hoy el nombre escrito como marca, en gris, hasta que lleguen los
+   logos en alta */
+.about-tools__item {
+  @apply text-muted-foreground text-2xl font-semibold tracking-tight whitespace-nowrap md:text-3xl;
+}
+
+/* Con "reducir movimiento" la franja queda quieta y muestra cada herramienta
+   una sola vez, centradas */
+@media (prefers-reduced-motion: reduce) {
+  .about-tools__band {
+    mask-image: none;
+  }
+
+  .about-tools__track {
+    @apply w-full justify-center;
+    animation: none;
+  }
+
+  .about-tools__list {
+    @apply flex-wrap justify-center gap-y-6 px-4 pr-4;
+  }
+
+  .about-tools__list[aria-hidden='true'],
+  .about-tools__item[aria-hidden='true'] {
+    @apply hidden;
+  }
+}

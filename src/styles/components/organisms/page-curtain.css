@@ -1,8 +1,13 @@
 /* Cortina: va por encima del cierre de contacto, con fondo propio y las
    esquinas de abajo redondeadas, y sube con el scroll para descubrirlo. Lleva
    el margen de la página porque el contacto va de borde a borde. */
+/* "overflow-clip" recorta también al último módulo con las esquinas
+   redondeadas, aunque sea oscuro (no crea scroll propio: lo pegado sigue
+   funcionando). La línea fina del borde de abajo marca dónde termina la
+   cortina sobre el negro del cierre de contacto (en modo oscuro). */
 .page-curtain {
-  @apply bg-background relative z-10 flex flex-col gap-8 rounded-b-3xl px-4 pt-10 pb-12 md:px-8 md:pt-16 md:pb-16 lg:px-12;
+  @apply bg-background border-border relative z-10 flex flex-col gap-8 overflow-clip rounded-b-3xl border-b px-4 pb-12 md:px-8 md:pb-16 lg:px-12;
+  padding-top: calc(var(--site-header-clearance) + 1rem);
 }
 
 /* Home: sin margen interior; cada módulo de pantalla completa pone el suyo */

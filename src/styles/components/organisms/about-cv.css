@@ -1,0 +1,44 @@
+/* Resumen de CV: perfil, experiencia y estudios como filas con su periodo */
+.about-cv {
+  @apply flex flex-col gap-10 md:gap-14;
+}
+
+.about-cv__summary {
+  @apply max-w-3xl text-xl leading-snug md:text-3xl;
+}
+
+.about-cv__group {
+  @apply flex flex-col gap-3;
+}
+
+.about-cv__label {
+  @apply text-muted-foreground text-sm tracking-wide uppercase;
+}
+
+.about-cv__list {
+  @apply border-border flex flex-col border-t;
+}
+
+.about-cv__row {
+  @apply border-border flex flex-col gap-1 border-b py-4 md:flex-row md:items-baseline md:justify-between md:gap-8;
+}
+
+.about-cv__main {
+  @apply flex flex-col gap-0.5 md:flex-row md:items-baseline md:gap-4;
+}
+
+.about-cv__name {
+  @apply text-lg font-medium;
+}
+
+.about-cv__detail {
+  @apply text-muted-foreground text-sm md:text-base;
+}
+
+.about-cv__period {
+  @apply text-muted-foreground text-sm whitespace-nowrap;
+}
+
+.about-cv__download {
+  @apply self-start;
+}

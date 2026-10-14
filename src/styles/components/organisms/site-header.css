@@ -1,26 +1,62 @@
+/* Pastilla flotante y centrada: sin franja de fondo, el contenido pasa por
+   debajo. El contenedor no bloquea clics; solo la pastilla. */
 .site-header {
-  @apply border-border bg-background sticky top-0 z-50 border-b;
+  @apply pointer-events-none fixed inset-x-0 top-0 z-50 flex items-start justify-end px-4 pt-4 md:px-12;
 }
 
-.site-header__notice {
-  @apply bg-muted text-muted-foreground h-6 px-4 text-center text-xs leading-6;
-}
-
-.site-header__inner {
-  @apply mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-3 md:px-8 lg:h-14 lg:py-0;
-}
-
+/* Logo fuera de la pastilla, en el borde izquierdo de la pantalla. Es oscuro
+   sobre fondos claros y blanco sobre superficies oscuras (las que llevan
+   data-surface="dark"). */
 .site-header__logo {
-  @apply font-semibold;
+  @apply text-foreground fixed top-4 left-4 z-50 flex h-12 items-center gap-2.5 font-semibold transition-colors duration-300 md:left-12;
+}
+
+.site-header__logo[data-surface-dark='true'] {
+  @apply text-white;
+}
+
+.site-header__symbol {
+  @apply size-9 shrink-0;
+}
+
+/* El nombre en dos líneas, al lado del símbolo */
+.site-header__brand {
+  @apply flex flex-col text-sm leading-[1.05];
+}
+
+/* La pastilla del menú: centrada en escritorio; en celular, a la derecha */
+.site-header__bar {
+  @apply pointer-events-auto relative md:absolute md:left-1/2 md:-translate-x-1/2;
+}
+
+/* En celular solo lleva el botón del menú: un círculo exacto de 48 px con el
+   botón centrado */
+.site-header__inner {
+  @apply bg-background/85 border-border flex h-12 items-center justify-between gap-6 rounded-full border px-3 shadow-sm backdrop-blur-md max-md:w-12 max-md:justify-center max-md:px-0;
 }
 
 .site-header__nav {
-  @apply hidden items-center gap-4 text-sm md:flex md:gap-6;
+  @apply relative hidden items-center text-sm md:flex;
 }
 
-/* Botón del menú hamburguesa: solo en móvil */
+/* Píldora de exclusión: blanca y con mezcla "exclusion", así se ve oscura sobre
+   el fondo claro y el texto que cubre se invierte. Se desliza y se estira
+   hasta la opción activa. */
+.site-header__pill {
+  @apply pointer-events-none absolute top-0 left-0 z-10 h-full rounded-full bg-white;
+  mix-blend-mode: exclusion;
+}
+
+.site-header__pill[data-ready='true'] {
+  transition:
+    translate 520ms cubic-bezier(0.65, 0, 0.35, 1),
+    width 520ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Botón del menú hamburguesa: solo en móvil. Redondo, como la cápsula que lo
+   contiene, para que el fondo al pasar el mouse sea un círculo centrado. */
 .site-header__menu-button {
-  @apply hover:bg-muted focus-visible:ring-ring/50 -mr-2 inline-flex size-10 items-center justify-center rounded-md outline-none focus-visible:ring-[3px] md:hidden;
+  @apply hover:bg-muted focus-visible:ring-ring/50 inline-flex size-10 items-center justify-center rounded-full transition-colors outline-none focus-visible:ring-[3px] md:hidden;
 }
 
 /* Tres rayas que se transforman en una X: la de arriba y la de abajo se
@@ -58,30 +94,26 @@
   transform: rotate(-45deg);
 }
 
+/* 20 px a cada lado: 40 px entre una palabra y la siguiente */
 .site-header__link {
-  @apply text-muted-foreground hover:text-foreground border-b-2 border-transparent py-1;
+  @apply text-muted-foreground hover:text-foreground relative flex h-8 items-center rounded-full px-5 transition-colors;
 }
 
+/* La opción activa ya la marca la píldora */
 .site-header__link--active {
-  @apply border-foreground text-foreground;
-}
-
-/* En Trayectoria, Home y Work la página usa todo el ancho: la barra se alinea con ella */
-body:has(.journey-page, .home-page, .work-page, .case-page) .site-header__inner {
-  @apply max-w-none lg:px-12;
+  @apply text-foreground;
 }
 
 /* ---------- Menú móvil: panel debajo de la barra ---------- */
 /* La barra (logo y botón) queda siempre visible; el panel ocupa el resto de la
    pantalla. Su alto es el de la pantalla menos el de la barra. */
 .site-menu {
-  @apply bg-background absolute inset-x-0 top-full flex flex-col overflow-y-auto md:hidden;
-  height: calc(100dvh - 100%);
-  animation: fade-in 220ms ease-out;
+  @apply bg-background border-border absolute top-full right-0 mt-2 flex w-[calc(100vw-2rem)] max-w-sm flex-col rounded-3xl border p-2 shadow-lg md:hidden;
+  animation: fade-up 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .site-menu__nav {
-  @apply flex flex-1 flex-col justify-center px-4 pb-16;
+  @apply flex flex-col;
 }
 
 .site-menu__list {
@@ -89,17 +121,17 @@ body:has(.journey-page, .home-page, .work-page, .case-page) .site-header__inner 
 }
 
 .site-menu__item {
-  @apply border-border border-b first:border-t;
+  @apply border-border border-b last:border-b-0;
   animation: rise-in 450ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
   animation-delay: calc(80ms + var(--menu-index, 0) * 70ms);
 }
 
 .site-menu__link {
-  @apply focus-visible:ring-ring/50 grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 py-6 outline-none focus-visible:ring-[3px];
+  @apply focus-visible:ring-ring/50 grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 rounded-2xl px-4 py-4 outline-none focus-visible:ring-[3px];
 }
 
 .site-menu__label {
-  @apply text-3xl font-semibold;
+  @apply text-2xl font-semibold;
 }
 
 .site-menu__description {
@@ -125,6 +157,10 @@ body:has(.journey-page, .home-page, .work-page, .case-page) .site-header__inner 
   }
 
   .menu-icon__bar {
+    transition: none;
+  }
+
+  .site-header__pill[data-ready='true'] {
     transition: none;
   }
 }

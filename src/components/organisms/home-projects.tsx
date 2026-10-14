@@ -28,6 +28,7 @@ export function HomeProjects() {
               actionLabel={work.caseAction}
               mediaLabel={work.imageLabel}
               size="fill"
+              tags={project.tags}
             />
           </li>
         ))}

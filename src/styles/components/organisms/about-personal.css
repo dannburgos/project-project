@@ -1,0 +1,15 @@
+/* Skills como persona: va detrás de las skills profesionales. En escritorio
+   queda pegada al fondo de la ventana, ocupa una pantalla y aparece sin
+   moverse cuando el módulo claro sube.
+   En celular sus tres tarjetas no caben en una pantalla, y en pantallas bajas
+   tampoco: ahí se muestra en su lugar, sin cortina, para que nada quede
+   oculto. */
+@media (min-width: 768px) and (min-height: 700px) {
+  .about-personal {
+    position: sticky;
+    bottom: 0;
+    height: 100svh;
+    padding-top: calc(var(--site-header-clearance) + 1rem);
+    padding-bottom: 2.5rem;
+  }
+}

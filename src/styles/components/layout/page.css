@@ -1,5 +1,21 @@
+:root {
+  /* La barra flota sobre el contenido y no ocupa espacio: las pantallas
+     completas miden toda la ventana. Lo que queda arriba de la página deja
+     este espacio libre para la barra. */
+  --site-header-height: 0px;
+  --site-header-clearance: 5.5rem;
+}
+
+/* Reserva siempre el espacio de la barra de scroll: así la barra de
+   navegación, que va centrada, no se corre al pasar de una página con scroll
+   a una corta. */
+html {
+  scrollbar-gutter: stable;
+}
+
 .page {
-  @apply mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 md:px-8 md:py-16;
+  @apply mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-10 md:px-8 md:pb-16;
+  padding-top: calc(var(--site-header-clearance) + 1rem);
 }
 
 .page__eyebrow {
@@ -17,11 +33,20 @@
 /* Home y Work usan todo el ancho y terminan con el cierre de contacto, que va
    de borde a borde. El margen de la página lo pone la cortina (PageCurtain),
    el mismo que Trayectoria a los lados. */
-.page:has(> .home-page, > .work-page, > .case-page) {
+.page:has(> .home-page, > .work-page, > .case-page, > .about-page) {
   @apply max-w-none p-0;
 }
 
 /* Home */
+/* Tramo de la portada: la portada, la presentación y los proyectos. La portada
+   queda pegada arriba solo dentro de este tramo; cuando los proyectos la tapan
+   del todo, sube escondida detrás de ellos. Antes quedaba pegada detrás de todo
+   el Home y, en Chrome, se podía asomar al hacer scroll si una franja de la
+   página tardaba en pintarse. */
+.home-cover-track {
+  @apply flex flex-col;
+}
+
 /* Módulo 4 del Home: bloque de proyectos y botón. Mide una pantalla; el bloque
    ocupa todo el espacio que deja el botón. */
 .home-module {
@@ -66,8 +91,9 @@
 }
 
 /* En las tarjetas pequeñas del celular el nombre usa todo el ancho: sin botón
-   (la tarjeta entera es el enlace) */
-.home-projects__item:not(:first-child) .showcase-card__button {
+   (la tarjeta entera es el enlace) y sin etiquetas, que no caben */
+.home-projects__item:not(:first-child) .showcase-card__button,
+.home-projects__item:not(:first-child) .showcase-card__tags {
   @apply max-md:hidden;
 }
 
@@ -76,25 +102,36 @@
 }
 
 /* Work */
+.work-title {
+  @apply font-medium tracking-[-0.05em];
+  font-size: clamp(5rem, 22vw, 20rem);
+  line-height: 0.85;
+  margin-bottom: 0.5rem;
+}
+
 .work-grid {
   @apply grid gap-3 md:grid-cols-2 md:gap-5;
 }
 
-/* Case study: la sección final "¿Y ahora?" */
-.case-end {
-  @apply border-border mx-4 flex flex-col gap-4 border-t pt-8 pb-12 md:mx-8 md:pb-16 lg:mx-12;
+/* Case study: galería final de proyectos por ver */
+.case-more {
+  @apply border-border mx-4 flex flex-col gap-6 border-t pt-8 pb-12 md:mx-8 md:pb-16 lg:mx-12;
 }
 
-.case-end__title {
-  @apply text-xl font-semibold;
+.case-more__header {
+  @apply flex items-end justify-between gap-4;
 }
 
-.case-end__list {
-  @apply grid gap-3 sm:grid-cols-2;
+.case-more__title {
+  @apply text-2xl font-semibold md:text-4xl;
 }
 
-.case-end__link {
-  @apply border-border hover:border-foreground block rounded-md border p-4 text-sm;
+.case-more__all {
+  @apply text-muted-foreground hover:text-foreground text-sm underline underline-offset-4;
+}
+
+.case-more__grid {
+  @apply grid gap-3 md:grid-cols-3 md:gap-5;
 }
 
 /* Journey: la página usa todo el ancho de la pantalla */
@@ -104,7 +141,7 @@
 
 .journey-page {
   /* Alto de la barra superior (fijo en escritorio) */
-  --header-offset: calc(5rem + 1px);
+  --header-offset: 0px;
   @apply flex flex-col gap-8 pb-16 lg:pb-0;
 }
 
@@ -122,13 +159,4 @@
 
 .journey-end__content {
   @apply flex flex-col items-start gap-4 lg:hidden;
-}
-
-/* Contact */
-.contact {
-  @apply flex min-h-[50vh] flex-col justify-center gap-6;
-}
-
-.contact__actions {
-  @apply flex flex-col gap-3 sm:flex-row;
 }

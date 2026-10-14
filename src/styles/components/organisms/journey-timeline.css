@@ -7,7 +7,8 @@
 }
 
 .journey__viewport {
-  @apply relative flex flex-col gap-4 px-4 pt-8 md:px-8;
+  @apply relative flex flex-col gap-4 px-4 md:px-8;
+  padding-top: calc(var(--site-header-clearance) + 0.5rem);
 }
 
 .journey__backdrop,
@@ -86,7 +87,7 @@
   }
 
   .journey__viewport {
-    @apply sticky gap-2 overflow-clip px-0 pt-6;
+    @apply sticky gap-2 overflow-clip px-0;
     top: var(--header-offset);
     height: calc(100svh - var(--header-offset));
   }
@@ -294,10 +295,6 @@
 
 /* Pantallas bajas: encabezado y espacios más ajustados */
 @media (min-width: 1024px) and (max-height: 760px) {
-  .journey__viewport {
-    @apply pt-4;
-  }
-
   .journey__header .page__title {
     @apply text-4xl;
   }

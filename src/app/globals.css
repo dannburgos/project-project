@@ -46,6 +46,15 @@
 
   --color-black: #000000;
   --color-white: #ffffff;
+
+  /* Color de marca de Dann: naranja y su gama (valores provisionales, hasta
+     que Dann defina los finales). Del más claro al más oscuro. */
+  --color-brand-amber: #ffb067;
+  --color-brand-orange: #ff7a2f;
+  --color-brand-flame: #f2541b;
+  --color-brand-ember: #c2410c;
+  /* Casi negro cálido: base de los degradados naranjas */
+  --color-brand-ink: #160803;
 }
 
 :root {
@@ -83,12 +92,17 @@
   --sidebar-ring: oklch(0.709 0.01 56.259);
 }
 
+/* El sitio completo va en modo oscuro (decisión de Dann). El fondo general es
+   un poco más claro que el negro puro de la portada, los banners y el cierre
+   de contacto: así se distinguen las capas cuando una sube sobre la otra. Las
+   tarjetas van un paso más arriba. */
 .dark {
-  --background: oklch(0.147 0.004 49.25);
+  color-scheme: dark;
+  --background: oklch(0.185 0.004 49.25);
   --foreground: oklch(0.985 0.001 106.423);
-  --card: oklch(0.216 0.006 56.043);
+  --card: oklch(0.235 0.006 56.043);
   --card-foreground: oklch(0.985 0.001 106.423);
-  --popover: oklch(0.216 0.006 56.043);
+  --popover: oklch(0.235 0.006 56.043);
   --popover-foreground: oklch(0.985 0.001 106.423);
   --primary: oklch(0.923 0.003 48.717);
   --primary-foreground: oklch(0.216 0.006 56.043);
