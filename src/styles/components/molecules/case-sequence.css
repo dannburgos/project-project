@@ -1,0 +1,110 @@
+/* Recorrido de tarjetas que se encienden una a una (desde tableta). Mientras
+   el módulo tiene el scroll, la página no se mueve; --sequence-progress (0 a
+   1) dice cuánto se avanzó y data-state, en qué va (idle, active, done). Cada
+   tarjeta se enciende cuando el avance llega a su turno (--lit, de 0 a 1):
+   pasa de apagada a iluminada con el degradado del acento, y la línea de
+   arriba se llena al mismo ritmo. En celular, o con "reducir movimiento",
+   todo se ve encendido. */
+.case-sequence {
+  @apply flex flex-col;
+}
+
+.case-sequence__header {
+  @apply flex items-baseline justify-between gap-4;
+}
+
+/* Aviso discreto mientras el módulo tiene el scroll */
+.case-sequence__hint {
+  @apply text-muted-foreground mb-4 hidden items-center gap-1 text-xs opacity-0 transition-opacity duration-300 md:flex;
+}
+
+.case-sequence__hint svg {
+  @apply size-4;
+  animation: nudge-down 1.8s ease-in-out infinite;
+}
+
+.case-sequence[data-state='active'] .case-sequence__hint {
+  @apply opacity-100;
+}
+
+.case-sequence__track {
+  @apply bg-border mb-4 hidden h-px w-full overflow-hidden md:block;
+}
+
+.case-sequence__fill {
+  @apply block size-full origin-left;
+  background-color: var(--case-accent);
+  scale: var(--sequence-progress, 1) 1;
+  transition: scale 200ms ease-out;
+}
+
+.case-sequence__items {
+  @apply grid gap-3 md:grid-cols-3 md:gap-4;
+}
+
+.case-sequence__item {
+  @apply bg-card border-border flex flex-col gap-2 rounded-3xl border p-6;
+  --lit: 1;
+  opacity: calc(0.35 + 0.65 * var(--lit));
+  background-image: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--case-accent) calc(var(--lit) * 16%), transparent),
+    transparent 70%
+  );
+  border-color: color-mix(
+    in oklab,
+    var(--case-accent) calc(var(--lit) * 40%),
+    var(--color-border)
+  );
+}
+
+.case-sequence__eyebrow {
+  @apply font-mono text-xs;
+  color: var(--case-accent);
+}
+
+.case-sequence__title {
+  @apply text-2xl leading-snug font-semibold;
+}
+
+.case-sequence__text {
+  @apply text-muted-foreground leading-relaxed;
+}
+
+/* Cada tarjeta se enciende en su tramo del recorrido */
+@media (min-width: 768px) {
+  .case-sequence__item {
+    --lit: clamp(
+      0,
+      (
+          var(--sequence-progress, 0) * var(--sequence-count) -
+            var(--item-index)
+        ) *
+        3,
+      1
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-sequence__item {
+    --lit: 1;
+  }
+
+  .case-sequence__hint svg {
+    animation: none;
+  }
+
+  .case-sequence__fill {
+    transition: none;
+  }
+}
+
+/* Lo que sigue al recorrido en el mismo capítulo espera escondido y aparece
+   (sube y se aclara) cuando el recorrido se completa */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .case-reveal:has(.case-sequence:not([data-state='done'])) ~ .case-reveal {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+}

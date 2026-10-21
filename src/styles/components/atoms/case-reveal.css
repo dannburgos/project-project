@@ -1,0 +1,37 @@
+/* Bloques de un caso: entran al llegar a ellos con el scroll. El bloque sube
+   y se aclara; sus partes ("case-reveal__item") lo siguen en cadena. */
+.case-reveal {
+  opacity: 0;
+  transform: translateY(2rem);
+  transition:
+    opacity 700ms ease-out,
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.case-reveal--visible {
+  opacity: 1;
+  transform: none;
+}
+
+.case-reveal__item {
+  opacity: 0;
+  transform: translateY(1rem);
+  transition:
+    opacity 600ms ease-out,
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--item-index, 0) * 90ms + 150ms);
+}
+
+.case-reveal--visible .case-reveal__item {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-reveal,
+  .case-reveal__item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

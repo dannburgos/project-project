@@ -1,13 +1,28 @@
 import { BarChart3, ImageIcon, Quote } from 'lucide-react';
 
-import { siteContent, type CaseStudyBlock } from '@/content/site';
+import { CaseBenchmark } from '@/components/molecules/case-benchmark';
+import { CaseCards } from '@/components/molecules/case-cards';
+import { CaseCycle } from '@/components/molecules/case-cycle';
+import { CaseFlow } from '@/components/molecules/case-flow';
+import { CaseGap } from '@/components/molecules/case-gap';
+import { CaseInterview } from '@/components/molecules/case-interview';
+import { CaseList } from '@/components/molecules/case-list';
+import { CaseNavigationMap } from '@/components/molecules/case-navigation-map';
+import { CaseNote } from '@/components/molecules/case-note';
+import { CasePersona } from '@/components/molecules/case-persona';
+import { CasePrototype } from '@/components/molecules/case-prototype';
+import { CaseScope } from '@/components/molecules/case-scope';
+import { CaseSequence } from '@/components/molecules/case-sequence';
+import { CaseStatement } from '@/components/molecules/case-statement';
+import type {
+  CaseBlock as CaseBlockContent,
+  CaseBlockTone
+} from '@/content/case-study.types';
+import { cn } from '@/lib/utils';
 
 type CaseBlockProps = {
-  type: CaseStudyBlock;
+  block: CaseBlockContent;
 };
-
-const GALLERY_ITEMS = 3;
-const RESULT_ITEMS = 3;
 
 function MediaCard({
   label,
@@ -24,23 +39,100 @@ function MediaCard({
   );
 }
 
-// Bloque de contenido de una etapa: texto, imagen, cita, gráfica, antes y
-// después, galería o resultado. Por ahora con textos de ejemplo.
-export function CaseBlock({ type }: CaseBlockProps) {
-  const { stageText, blockLabels: labels } = siteContent.caseStudy;
+// Tarjeta que envuelve un bloque: plana o con un degradado sutil del color de
+// acento del proyecto
+const surfaceClass = (tone: CaseBlockTone) =>
+  cn('case-surface', tone === 'tint' && 'case-surface--tint');
 
-  switch (type) {
+// Bloque de contenido de un capítulo. Todo va en tarjetas: los bloques simples
+// en una tarjeta propia (cada párrafo de un texto, en la suya) y los compuestos
+// en varias. Los de imagen, gráfica, cita, antes y después, galería y resultado
+// son espacios de ejemplo para los proyectos que aún no tienen contenido.
+export function CaseBlock({ block }: CaseBlockProps) {
+  switch (block.type) {
     case 'text':
-      return <p className="case-block case-block--text">{stageText}</p>;
+      return (
+        <div className="case-text">
+          {block.paragraphs.map(paragraph => (
+            <p
+              key={paragraph}
+              className={cn(
+                surfaceClass(block.tone ?? 'flat'),
+                'case-text__paragraph'
+              )}
+            >
+              {paragraph}
+            </p>
+          ))}
+        </div>
+      );
+
+    case 'statement':
+      return (
+        <div className={surfaceClass(block.tone ?? 'tint')}>
+          <CaseStatement text={block.text} />
+        </div>
+      );
+
+    case 'cards':
+      return <CaseCards title={block.title} items={block.items} />;
+
+    case 'gap':
+      return <CaseGap {...block} />;
+
+    case 'sequence':
+      return <CaseSequence title={block.title} items={block.items} />;
+
+    case 'list':
+      return (
+        <div className={surfaceClass(block.tone ?? 'flat')}>
+          <CaseList title={block.title} items={block.items} />
+        </div>
+      );
+
+    case 'note':
+      return (
+        <div className={surfaceClass(block.tone ?? 'flat')}>
+          <CaseNote label={block.label} text={block.text} />
+        </div>
+      );
+
+    case 'persona':
+      return <CasePersona {...block} />;
+
+    case 'interview':
+      return (
+        <div className={surfaceClass(block.tone ?? 'flat')}>
+          <CaseInterview {...block} />
+        </div>
+      );
+
+    case 'benchmark':
+      return <CaseBenchmark {...block} />;
+
+    case 'cycle':
+      return <CaseCycle {...block} />;
+
+    case 'scope':
+      return <CaseScope {...block} />;
+
+    case 'navigation':
+      return <CaseNavigationMap {...block} />;
+
+    case 'flow':
+      return <CaseFlow {...block} />;
+
+    case 'prototype':
+      return <CasePrototype src={block.src} title={block.title} />;
 
     case 'image':
-      return <MediaCard label={labels.image} />;
+      return <MediaCard label={block.label} />;
 
     case 'chart':
       return (
         <figure className="case-block__media case-block__media--chart">
           <BarChart3 aria-hidden="true" />
-          <figcaption>{labels.chart}</figcaption>
+          <figcaption>{block.label}</figcaption>
         </figure>
       );
 
@@ -48,24 +140,24 @@ export function CaseBlock({ type }: CaseBlockProps) {
       return (
         <blockquote className="case-block case-block--quote">
           <Quote aria-hidden="true" />
-          <p>{labels.quote}</p>
-          <footer>{labels.quoteSource}</footer>
+          <p>{block.text}</p>
+          <footer>{block.source}</footer>
         </blockquote>
       );
 
     case 'beforeAfter':
       return (
         <div className="case-block case-block--pair">
-          <MediaCard label={labels.before} />
-          <MediaCard label={labels.after} />
+          <MediaCard label={block.before} />
+          <MediaCard label={block.after} />
         </div>
       );
 
     case 'gallery':
       return (
         <div className="case-block case-block--gallery">
-          {Array.from({ length: GALLERY_ITEMS }, (_, index) => (
-            <MediaCard key={index} label={labels.gallery} />
+          {block.labels.map((label, index) => (
+            <MediaCard key={`${label}-${index}`} label={label} />
           ))}
         </div>
       );
@@ -73,10 +165,13 @@ export function CaseBlock({ type }: CaseBlockProps) {
     case 'result':
       return (
         <dl className="case-block case-block--result">
-          {Array.from({ length: RESULT_ITEMS }, (_, index) => (
-            <div key={index} className="case-block__metric">
-              <dt className="case-block__metric-label">{labels.resultLabel}</dt>
-              <dd className="case-block__metric-value">{labels.resultValue}</dd>
+          {block.metrics.map((metric, index) => (
+            <div
+              key={`${metric.label}-${index}`}
+              className="case-block__metric"
+            >
+              <dt className="case-block__metric-label">{metric.label}</dt>
+              <dd className="case-block__metric-value">{metric.value}</dd>
             </div>
           ))}
         </dl>

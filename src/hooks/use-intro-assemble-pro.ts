@@ -5,10 +5,6 @@ import { useRef } from 'react';
 import { useIntroRun, type IntroRun } from '@/hooks/use-intro-run';
 import { createSpringEasing } from '@/utils/spring.util';
 
-// "full": primera visita, el símbolo se arma pieza por pieza.
-// "short": al volver, el símbolo aparece ya armado y va directo al logo.
-export type IntroAssembleMode = 'full' | 'short';
-
 // Las piezas entran en el orden en que se construye el monograma (círculo, D
 // de arriba, cuadrado, D de abajo) y cada vez más seguido: 120, 90 y 60 ms
 const PIECE_DELAYS_MS = [0, 120, 210, 270];
@@ -35,20 +31,13 @@ const PIECE_STIFFNESS_Y = 230;
 const PIECE_STIFFNESS_STEP = 16;
 // Amortiguación justo por encima de la crítica: frena sin rebotar
 const NO_BOUNCE_RATIO = 1.05;
-// Viaje al logo: sin rebote, frena suave (cerca de 0,6 s; al volver, 0,45 s)
+// Viaje al logo: sin rebote, frena suave (cerca de 0,6 s)
 const SPRING_FLIGHT = { stiffness: 210, damping: 29 };
-const SPRING_FLIGHT_SHORT = { stiffness: 420, damping: 41 };
-// Versión corta: el símbolo aparece con un pequeño salto y sale hacia el logo
-// antes de terminarlo (las dos fases se superponen)
-const SPRING_POP = { stiffness: 500, damping: 40 };
-const SHORT_POP_OVERLAP = 0.6;
 
 const IMPACT_MS = 280;
 const LOGO_BOUNCE_MS = 420;
 // La portada empieza a entrar poco después de que el símbolo sale hacia el logo
 const REVEAL_START_MS = 40;
-// En la versión corta la portada entra más rápido
-const SHORT_REVEAL_SCALE = 0.6;
 const EASE_OUT_EXPO = 'cubic-bezier(0.16, 1, 0.3, 1)';
 // El fondo oscuro se desvanece parejo, sin formas, mientras el símbolo viaja
 const BACKDROP_FADE_EASING = 'cubic-bezier(0.4, 0, 0.2, 1)';
@@ -80,7 +69,7 @@ type CoverReveal = {
 
 // Prepara la entrada de la portada. Las animaciones quedan en pausa en su
 // primer cuadro (todo oculto) hasta que les toca.
-function prepareCoverReveal(timeScale: number): CoverReveal {
+function prepareCoverReveal(): CoverReveal {
   const create = (
     element: Element | null,
     keyframes: Keyframe[],
@@ -89,8 +78,8 @@ function prepareCoverReveal(timeScale: number): CoverReveal {
   ) => {
     if (!element) return null;
     const animation = element.animate(keyframes, {
-      delay: delay * timeScale,
-      duration: duration * timeScale,
+      delay,
+      duration,
       easing: EASE_OUT_EXPO,
       fill: 'backwards'
     });
@@ -162,21 +151,17 @@ function prepareCoverReveal(timeScale: number): CoverReveal {
 }
 
 // Entrada "1 · Ensamble del símbolo", versión pro, con el naranja de marca:
-// 1. Espera las tipografías, para que nunca se vea una letra provisional.
-// 2. Primera visita: las 4 piezas entran desde las esquinas, cada una en un
-//    tono de la gama naranja, con resortes sin rebote, en curva y desenfocadas
-//    al ir rápido. Al volver: el símbolo aparece ya armado y blanco, con un
-//    pequeño salto.
+// 1. Vuelve arriba (al recargar, el navegador recuerda dónde iba el scroll) y
+//    espera las tipografías, para que nunca se vea una letra provisional.
+// 2. Las 4 piezas entran desde las esquinas, cada una en un tono de la gama
+//    naranja, con resortes sin rebote, en curva y desenfocadas al ir rápido.
 // 3. Impacto: el símbolo se aplasta y estira levemente al encajar, y las
 //    piezas se vuelven blancas.
 // 4. El símbolo viaja al logo real mientras el fondo oscuro se desvanece
 //    parejo y deja ver el banner naranja; la portada entra en cadena.
 // 5. El logo real toma el relevo con un pequeño rebote.
 // Saltar la acelera hasta el final (ver useIntroRun).
-export function useIntroAssemblePro(
-  mode: IntroAssembleMode,
-  onDone: () => void
-) {
+export function useIntroAssemblePro(onDone: () => void) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   const symbolRef = useRef<HTMLDivElement>(null);
@@ -190,7 +175,8 @@ export function useIntroAssemblePro(
     const symbol = symbolRef.current;
     if (!overlay || !backdrop || !symbol) return;
 
-    const isShort = mode === 'short';
+    // La entrada termina sobre la portada
+    window.scrollTo({ top: 0, behavior: 'instant' });
     const headerSymbol = document.querySelector('.site-header__symbol');
 
     // El logo real se esconde mientras el símbolo de la entrada viaja hacia él
@@ -203,53 +189,35 @@ export function useIntroAssemblePro(
         )
       : null;
 
-    const { cover, brand } = prepareCoverReveal(
-      isShort ? SHORT_REVEAL_SCALE : 1
-    );
+    const { cover, brand } = prepareCoverReveal();
     const reveal = cover.map(animation => track(animation));
     if (brand) track(brand);
 
     await document.fonts.ready;
     if (isStopped()) return;
 
-    if (isShort) {
-      const pop = createSpringEasing(SPRING_POP);
-      track(
-        symbol.animate(
-          [
-            { opacity: 0, scale: '0.8' },
-            { opacity: 1, scale: '1' }
-          ],
-          { duration: pop.duration, easing: pop.easing, fill: 'forwards' }
-        )
-      );
-      await wait(track, overlay, pop.duration * SHORT_POP_OVERLAP);
-    } else {
-      await assemblePieces();
-      if (isStopped()) return;
+    await assemblePieces();
+    if (isStopped()) return;
 
-      // Impacto: un aplastado mínimo que se siente como un "clic", mientras
-      // las piezas pasan de su tono al blanco del logo
-      whitenPieces();
-      await track(
-        symbol.animate(
-          [
-            { scale: '1 1' },
-            { scale: '1.08 0.92', offset: 0.35 },
-            { scale: '0.97 1.03', offset: 0.7 },
-            { scale: '1 1' }
-          ],
-          { duration: IMPACT_MS, easing: 'ease-out' }
-        )
-      ).finished;
-    }
+    // Impacto: un aplastado mínimo que se siente como un "clic", mientras las
+    // piezas pasan de su tono al blanco del logo
+    whitenPieces();
+    await track(
+      symbol.animate(
+        [
+          { scale: '1 1' },
+          { scale: '1.08 0.92', offset: 0.35 },
+          { scale: '0.97 1.03', offset: 0.7 },
+          { scale: '1 1' }
+        ],
+        { duration: IMPACT_MS, easing: 'ease-out' }
+      )
+    ).finished;
     if (isStopped()) return;
 
     // Viaje al logo: el fondo oscuro se desvanece al mismo ritmo y termina
     // justo cuando el símbolo llega; la portada entra en cadena mientras tanto
-    const flight = createSpringEasing(
-      isShort ? SPRING_FLIGHT_SHORT : SPRING_FLIGHT
-    );
+    const flight = createSpringEasing(SPRING_FLIGHT);
     track(
       backdrop.animate([{ opacity: 0 }], {
         duration: flight.duration,

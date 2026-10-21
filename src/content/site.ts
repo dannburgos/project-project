@@ -132,95 +132,35 @@ export const siteContent = {
   caseStudy: {
     backToWork: 'Volver a Work',
     indexTitle: 'En este caso',
-    // 1. Banner: nombre, ficha del proyecto e introducción conceptual
-    hero: {
-      factsLabel: 'Ficha del proyecto',
-      facts: [
-        { label: 'Scope', value: 'Por definir' },
-        { label: 'Rol', value: 'Por definir' },
-        { label: 'Categoría', value: 'E-commerce · Fintech' },
-        { label: 'Año', value: 'Por definir' }
-      ],
-      intro: [
-        'Texto de ejemplo. Introducción conceptual: de qué trata el proyecto, para quién es y en qué contexto nace.',
-        'Texto de ejemplo. Cuál fue el reto y desde qué enfoque se abordó, en pocas líneas.'
-      ]
-    },
-    // 2. Imagen principal que crece con el scroll
-    mediaLabel: 'Imagen principal del proyecto',
-    // 3. Etapas del caso: resumen a la izquierda y bloques a la derecha
-    stageText:
-      'Texto de ejemplo. La profundidad de cada etapa depende de su importancia en este caso.',
-    blockLabels: {
-      image: 'Imagen de apoyo',
-      chart: 'Gráfica de la investigación',
-      before: 'Antes',
-      after: 'Después',
-      gallery: 'Imagen de la galería',
-      quote: 'Cita de ejemplo de una persona usuaria o del equipo.',
-      quoteSource: 'Fuente por definir',
-      resultValue: '—',
-      resultLabel: 'Métrica por definir'
-    },
-    stages: [
-      {
-        id: 'context',
-        title: 'Contexto',
-        heading: 'Título de ejemplo de la etapa',
-        description: 'Texto de ejemplo. Resumen breve de esta etapa del caso.',
-        blocks: ['text', 'image']
+    factsLabel: 'Ficha del proyecto',
+    // Cada proyecto arma su ficha, su introducción y sus capítulos en
+    // src/content/cases/. Aquí, las etiquetas que comparten los bloques.
+    labels: {
+      persona: {
+        goal: 'Objetivo',
+        frustration: 'Frustración',
+        needs: 'Necesidades'
       },
-      {
-        id: 'problem',
-        title: 'Problema',
-        heading: 'Título de ejemplo de la etapa',
-        description: 'Texto de ejemplo. Resumen breve de esta etapa del caso.',
-        blocks: ['text', 'quote']
+      flow: {
+        goal: 'Objetivo',
+        steps: 'Recorrido',
+        screens: 'Pantallas'
       },
-      {
-        id: 'understanding',
-        title: 'Investigación',
-        heading: 'Título de ejemplo de la etapa',
-        description: 'Texto de ejemplo. Resumen breve de esta etapa del caso.',
-        blocks: ['text', 'chart', 'quote']
+      benchmark: {
+        apps: 'Aplicaciones analizadas'
       },
-      {
-        id: 'opportunity',
-        title: 'Oportunidad',
-        heading: 'Título de ejemplo de la etapa',
-        description: 'Texto de ejemplo. Resumen breve de esta etapa del caso.',
-        blocks: ['text', 'image']
+      cycle: {
+        restart: 'Y vuelve a empezar'
       },
-      {
-        id: 'concept',
-        title: 'Concepto',
-        heading: 'Título de ejemplo de la etapa',
-        description: 'Texto de ejemplo. Resumen breve de esta etapa del caso.',
-        blocks: ['image', 'text']
+      sequence: {
+        hint: 'Sigue bajando'
       },
-      {
-        id: 'solution',
-        title: 'Solución',
-        heading: 'Título de ejemplo de la etapa',
-        description: 'Texto de ejemplo. Resumen breve de esta etapa del caso.',
-        blocks: ['text', 'beforeAfter', 'gallery']
-      },
-      {
-        id: 'result',
-        title: 'Resultado',
-        heading: 'Título de ejemplo de la etapa',
-        description: 'Texto de ejemplo. Resumen breve de esta etapa del caso.',
-        blocks: ['result', 'text']
-      },
-      {
-        id: 'synthesis',
-        title: 'Síntesis',
-        heading: 'Título de ejemplo del cierre',
-        description:
-          'Texto de ejemplo. Qué se entendió, qué se decidió y por qué.',
-        blocks: ['text']
+      prototype: {
+        activate: 'Haz clic para probarlo',
+        open: 'Abrir en pantalla completa',
+        mobileHint: 'Pruébalo a pantalla completa'
       }
-    ],
+    },
     // Final del caso: tres proyectos que la persona aún no ha visto
     imageLabelCard: 'Imagen del proyecto',
     endNavigation: {
@@ -328,18 +268,20 @@ export const siteContent = {
 } as const;
 
 // Nombres reales de los proyectos ya definidos; el resto sigue como ejemplo.
+// Los reales tienen su propia dirección (/work/planti); los de ejemplo, una
+// numerada (/work/project-3).
 const projectNames: readonly string[] = ['Planti', 'Nodus'];
+const projectSlugs: readonly string[] = ['planti', 'nodus'];
+
+// Subtítulo de cada proyecto, bajo su nombre en el banner y en su tarjeta
+const projectIndustries: readonly string[] = [
+  'App móvil para el cuidado de plantas'
+];
 
 // Tono del fondo del banner de cada caso (degradado con profundidad). Los
 // proyectos sin tono usan el banner negro.
 export type ProjectTone = 'green' | 'purple';
 const projectTones: readonly (ProjectTone | undefined)[] = ['green', 'purple'];
-
-// Datos reales de la ficha de cada proyecto; lo que no se indica queda como
-// ejemplo (ver caseStudy.hero.facts).
-const projectScopes: readonly (string | undefined)[] = [
-  'App móvil · Investigación UX · UI'
-];
 
 // Dos palabras clave por proyecto, para las etiquetas de su tarjeta. Las de
 // Planti salen de su ficha real; el resto usa las de ejemplo.
@@ -350,18 +292,14 @@ const projectTags: readonly (readonly string[] | undefined)[] = [
 export const exampleProjects = Array.from(
   { length: siteContent.work.projectCount },
   (_, index) => ({
-    slug: `project-${index + 1}`,
+    slug: projectSlugs[index] ?? `project-${index + 1}`,
     name:
       projectNames[index] ??
       `${siteContent.work.exampleProjectName} ${index + 1}`,
-    industry: siteContent.work.exampleIndustry,
+    industry: projectIndustries[index] ?? siteContent.work.exampleIndustry,
     tone: projectTones[index],
-    scope: projectScopes[index],
     tags: projectTags[index] ?? siteContent.work.exampleTags
   })
 );
 
 export type ExampleProject = (typeof exampleProjects)[number];
-
-export type CaseStudyStage = (typeof siteContent.caseStudy.stages)[number];
-export type CaseStudyBlock = CaseStudyStage['blocks'][number];

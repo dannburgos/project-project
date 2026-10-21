@@ -1,6 +1,7 @@
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
+import type { CaseFact } from '@/content/case-study.types';
 import { siteContent, type ExampleProject } from '@/content/site';
 import { cn } from '@/lib/utils';
 
@@ -9,6 +10,9 @@ const BACKDROP_LAYERS = 5;
 
 type CaseHeroProps = {
   project: ExampleProject;
+  facts: readonly CaseFact[];
+  headline?: string;
+  intro: readonly string[];
 };
 
 // Banner del caso (referencia: midu.design/nova). Ocupa todo el ancho: nombre
@@ -16,8 +20,8 @@ type CaseHeroProps = {
 // conceptual en dos columnas. Si el proyecto tiene tono, el fondo es un
 // degradado por manchas de color a distintas profundidades que se aleja al
 // cargar (referencia: Fabrica de Templifica).
-export function CaseHero({ project }: CaseHeroProps) {
-  const { backToWork, hero } = siteContent.caseStudy;
+export function CaseHero({ project, facts, headline, intro }: CaseHeroProps) {
+  const { backToWork, factsLabel } = siteContent.caseStudy;
 
   return (
     <header
@@ -34,25 +38,18 @@ export function CaseHero({ project }: CaseHeroProps) {
         <p className="case-hero__meta">{project.industry}</p>
       </div>
 
-      <dl className="case-hero__facts" aria-label={hero.factsLabel}>
-        {hero.facts
-          .map(fact => ({
-            ...fact,
-            value:
-              fact.label === 'Scope' && project.scope
-                ? project.scope
-                : fact.value
-          }))
-          .map(fact => (
-            <div key={fact.label} className="case-hero__fact">
-              <dt className="case-hero__fact-label">{fact.label}</dt>
-              <dd className="case-hero__fact-value">{fact.value}</dd>
-            </div>
-          ))}
+      <dl className="case-hero__facts" aria-label={factsLabel}>
+        {facts.map(fact => (
+          <div key={fact.label} className="case-hero__fact">
+            <dt className="case-hero__fact-label">{fact.label}</dt>
+            <dd className="case-hero__fact-value">{fact.value}</dd>
+          </div>
+        ))}
       </dl>
 
       <div className="case-hero__intro">
-        {hero.intro.map(paragraph => (
+        {headline && <p className="case-hero__headline">{headline}</p>}
+        {intro.map(paragraph => (
           <p key={paragraph}>{paragraph}</p>
         ))}
       </div>

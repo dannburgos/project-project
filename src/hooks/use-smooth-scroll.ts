@@ -8,6 +8,11 @@ import { useEffect } from 'react';
 // (karolinahess.com).
 const SCROLL_LERP = 0.1;
 
+// Señales para que un módulo con scroll propio tome el control: mientras lo
+// tiene, el scroll suave de la página se pausa y la página no se mueve.
+export const SCROLL_LOCK_START_EVENT = 'portfolio:scroll-lock-start';
+export const SCROLL_LOCK_END_EVENT = 'portfolio:scroll-lock-end';
+
 // Suaviza el scroll de la página mientras está activo: la página sigue a la
 // rueda del mouse con un leve retraso y frena suave, sin saltos. En pantallas
 // táctiles queda el scroll del sistema, y se apaga si la persona tiene
@@ -21,6 +26,14 @@ export function useSmoothScroll(isEnabled = true) {
       // "Volver arriba" y otros enlaces internos también se desplazan suave.
       anchors: true
     });
-    return () => lenis.destroy();
+    const handleLockStart = () => lenis.stop();
+    const handleLockEnd = () => lenis.start();
+    window.addEventListener(SCROLL_LOCK_START_EVENT, handleLockStart);
+    window.addEventListener(SCROLL_LOCK_END_EVENT, handleLockEnd);
+    return () => {
+      window.removeEventListener(SCROLL_LOCK_START_EVENT, handleLockStart);
+      window.removeEventListener(SCROLL_LOCK_END_EVENT, handleLockEnd);
+      lenis.destroy();
+    };
   }, [isEnabled]);
 }

@@ -5,7 +5,7 @@ import { CustomCursor } from '@/components/atoms/custom-cursor';
 import { SmoothScroll } from '@/components/atoms/smooth-scroll';
 import { SiteHeader } from '@/components/organisms/site-header';
 import { siteContent } from '@/content/site';
-import './globals.css';
+import '../globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

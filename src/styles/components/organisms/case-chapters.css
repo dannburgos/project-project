@@ -6,31 +6,43 @@
 
 .case-chapters__nav {
   @apply sticky hidden self-start lg:block;
-  top: calc(var(--site-header-height, 5.5rem) + 1.5rem);
+  /* Debajo del logo y la barra, que flotan sobre la página */
+  top: calc(var(--site-header-clearance) + 0.5rem);
 }
 
 .case-chapters__list {
   @apply flex flex-col gap-2;
 }
 
-/* Etapa del índice: recogida muestra solo su nombre; activa se abre con su
-   título y resumen */
+/* Capítulo del menú (referencia: midu.design/kiwebank). Recogido: más angosto
+   (80 % de la columna), corrido un poco hacia adentro y solo con su nombre.
+   Activo: crece hacia los dos lados hasta ocupar toda la columna y se abre
+   hacia abajo con su título y resumen. El que se abre y el que se cierra se
+   animan a la vez, en ancho y alto: 0,45 s, arranca rápido y frena suave, sin
+   rebote (medido en la referencia). */
 .case-chapter {
-  @apply bg-muted text-muted-foreground hover:text-foreground focus-visible:ring-ring/50 flex flex-col rounded-2xl px-5 py-3 text-sm outline-none focus-visible:ring-[3px];
+  @apply bg-muted text-muted-foreground hover:text-foreground focus-visible:ring-ring/50 flex flex-col rounded-3xl px-5 py-4 text-sm outline-none focus-visible:ring-[3px];
+  --chapter-ease: cubic-bezier(0.5, 1, 0.89, 1);
+  width: 80%;
+  margin-left: 4.5%;
   transition:
+    width 450ms var(--chapter-ease),
+    margin-left 450ms var(--chapter-ease),
+    padding 450ms var(--chapter-ease),
     background-color 300ms ease,
-    color 300ms ease,
-    padding 400ms cubic-bezier(0.65, 0, 0.35, 1);
+    color 300ms ease;
 }
 
 .case-chapter--active {
-  @apply bg-foreground text-background hover:text-background py-5;
+  @apply bg-foreground text-background hover:text-background p-6;
+  width: 100%;
+  margin-left: 0;
 }
 
 .case-chapter__detail {
   @apply grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 450ms cubic-bezier(0.65, 0, 0.35, 1);
+  transition: grid-template-rows 450ms var(--chapter-ease);
 }
 
 .case-chapter--active .case-chapter__detail {
@@ -39,12 +51,12 @@
 
 .case-chapter__detail-inner {
   @apply flex min-h-0 flex-col gap-3 overflow-hidden opacity-0;
-  transition: opacity 250ms ease;
+  transition: opacity 200ms ease;
 }
 
 .case-chapter--active .case-chapter__detail-inner {
   @apply opacity-100;
-  transition-delay: 200ms;
+  transition: opacity 300ms ease 150ms;
 }
 
 .case-chapter__heading {

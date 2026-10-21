@@ -113,6 +113,31 @@ html {
   @apply grid gap-3 md:grid-cols-2 md:gap-5;
 }
 
+/* Case study: el tono del proyecto da el color de acento de sus capítulos
+   (números, notas, el ciclo…). Sin tono, el acento es el color del texto. */
+.case-page {
+  --case-accent: var(--color-foreground);
+  /* Degradado sutil de las tarjetas que lo llevan */
+  --case-tint-image: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--case-accent) 14%, transparent),
+    transparent 70%
+  );
+  --case-tint-border: color-mix(
+    in oklab,
+    var(--case-accent) 28%,
+    var(--color-border)
+  );
+}
+
+.case-page--green {
+  --case-accent: var(--color-green-400);
+}
+
+.case-page--purple {
+  --case-accent: var(--color-purple-400);
+}
+
 /* Case study: galería final de proyectos por ver */
 .case-more {
   @apply border-border mx-4 flex flex-col gap-6 border-t pt-8 pb-12 md:mx-8 md:pb-16 lg:mx-12;

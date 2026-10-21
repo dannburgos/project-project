@@ -1,0 +1,80 @@
+/* Flujo de usuario: tarjeta con su número, objetivo, recorrido en cápsulas
+   unidas por flechas y la lista de sus pantallas en texto */
+.case-flow {
+  @apply bg-card border-border flex flex-col gap-8 rounded-3xl border p-6 md:p-10;
+}
+
+.case-flow__header {
+  @apply flex items-start gap-4 md:gap-6;
+}
+
+.case-flow__number {
+  @apply font-mono text-3xl font-semibold md:text-4xl;
+  color: var(--case-accent);
+}
+
+.case-flow__heading {
+  @apply flex flex-col gap-2;
+}
+
+.case-flow__title {
+  @apply text-2xl font-semibold tracking-tight md:text-3xl;
+}
+
+.case-flow__goal {
+  @apply text-muted-foreground flex flex-col gap-1 md:text-lg;
+}
+
+.case-flow__label {
+  @apply text-muted-foreground text-xs font-medium tracking-widest uppercase;
+}
+
+.case-flow__section {
+  @apply flex flex-col gap-3;
+}
+
+.case-flow__steps {
+  @apply flex flex-wrap items-center gap-y-2;
+}
+
+.case-flow__step {
+  @apply flex items-center;
+}
+
+.case-flow__step:not(:last-child)::after {
+  @apply text-muted-foreground mx-2;
+  content: '→';
+}
+
+.case-flow__pill {
+  @apply bg-muted rounded-full px-3 py-1.5 text-sm;
+}
+
+.case-flow__screens {
+  @apply grid gap-x-6 gap-y-4 sm:grid-cols-2 xl:grid-cols-3;
+}
+
+.case-flow__screen {
+  @apply border-border flex flex-col gap-1 border-t pt-3;
+}
+
+.case-flow__screen-title {
+  @apply font-medium;
+}
+
+.case-flow__screen-description {
+  @apply text-muted-foreground text-sm leading-relaxed;
+}
+
+.case-flow__notes {
+  @apply text-muted-foreground border-border flex flex-col gap-1.5 border-t pt-6 text-sm;
+}
+
+.case-flow__notes li {
+  @apply relative pl-5;
+}
+
+.case-flow__notes li::before {
+  @apply absolute left-0;
+  content: '—';
+}

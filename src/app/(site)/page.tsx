@@ -5,11 +5,13 @@ import { HomeIntro } from '@/components/organisms/home-intro';
 import { HomeJourneyTeaser } from '@/components/organisms/home-journey-teaser';
 import { HomeProjects } from '@/components/organisms/home-projects';
 import { PageCurtain } from '@/components/organisms/page-curtain';
+import { SiteIntro } from '@/components/organisms/site-intro';
 import { siteContent } from '@/content/site';
 
 // Home armado por módulos de pantalla completa que se irán llenando:
 // 1 Portada · 2 Presentación · 3 Proyectos · 4 Imagen a pantalla completa ·
-// 5 Trayectoria · 6 Cierre de contacto.
+// 5 Trayectoria · 6 Cierre de contacto. Al entrar o recargar, corre la
+// entrada del sitio (SiteIntro) por encima.
 export default function HomePage() {
   const { home } = siteContent;
 
@@ -35,6 +37,8 @@ export default function HomePage() {
       </PageCurtain>
 
       <ClosingContact />
+
+      <SiteIntro />
     </div>
   );
 }

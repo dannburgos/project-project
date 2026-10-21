@@ -1,50 +1,51 @@
 'use client';
 
 import { CaseStage } from '@/components/molecules/case-stage';
-import { siteContent, type CaseStudyStage } from '@/content/site';
+import type { CaseChapter } from '@/content/case-study.types';
+import { siteContent } from '@/content/site';
 import { useActiveSection } from '@/hooks/use-active-section';
 import { cn } from '@/lib/utils';
 
 type CaseChaptersProps = {
-  stages: readonly CaseStudyStage[];
-  stageIds: readonly string[];
+  chapters: readonly CaseChapter[];
+  chapterIds: readonly string[];
 };
 
 // Cuerpo del caso en dos columnas (referencia: midu.design/nova). A la
-// izquierda, más angosta y fija, las etapas: la que se está leyendo se abre con
-// su título y resumen, y las demás quedan recogidas. A la derecha, los bloques
-// de cada etapa.
-export function CaseChapters({ stages, stageIds }: CaseChaptersProps) {
-  const activeId = useActiveSection(stageIds);
+// izquierda, más angosta y fija, los capítulos del proyecto (cada proyecto
+// tiene los suyos): el que se está leyendo se abre con su título y resumen, y
+// los demás quedan recogidos. A la derecha, los bloques de cada capítulo.
+export function CaseChapters({ chapters, chapterIds }: CaseChaptersProps) {
+  const activeId = useActiveSection(chapterIds);
   const { indexTitle } = siteContent.caseStudy;
 
   return (
     <div className="case-chapters">
       <nav aria-label={indexTitle} className="case-chapters__nav">
         <ol className="case-chapters__list">
-          {stages.map(stage => {
-            const isActive = stage.id === activeId;
+          {chapters.map(chapter => {
+            const isActive = chapter.id === activeId;
             return (
-              <li key={stage.id}>
+              <li key={chapter.id}>
                 <a
-                  href={`#${stage.id}`}
+                  href={`#${chapter.id}`}
                   aria-current={isActive ? 'location' : undefined}
                   className={cn(
                     'case-chapter',
                     isActive && 'case-chapter--active'
                   )}
                 >
-                  <span className="case-chapter__title">{stage.title}</span>
+                  <span className="case-chapter__title">{chapter.title}</span>
                   <span
                     className="case-chapter__detail"
                     aria-hidden={!isActive}
                   >
                     <span className="case-chapter__detail-inner">
                       <span className="case-chapter__heading">
-                        {stage.heading}
+                        {chapter.heading}
                       </span>
                       <span className="case-chapter__description">
-                        {stage.description}
+                        {chapter.summary}
                       </span>
                     </span>
                   </span>
@@ -56,8 +57,8 @@ export function CaseChapters({ stages, stageIds }: CaseChaptersProps) {
       </nav>
 
       <div className="case-chapters__content">
-        {stages.map(stage => (
-          <CaseStage key={stage.id} stage={stage} />
+        {chapters.map(chapter => (
+          <CaseStage key={chapter.id} chapter={chapter} />
         ))}
       </div>
     </div>

@@ -1,0 +1,141 @@
+/* La brecha: frase y contexto arriba; abajo, "lo que sabes" y "lo que haces"
+   separados por un vacío con una línea y un botón en el medio. Al entrar en
+   pantalla (.case-reveal--visible) las tarjetas suben en cadena y la línea se
+   dibuja una sola vez. Al abrir, el problema completo se despliega debajo.
+   En celular las dos tarjetas van una sobre otra y la brecha queda entre
+   ellas, en vertical. */
+.case-gap {
+  @apply flex flex-col gap-3 md:gap-4;
+}
+
+.case-gap__headline {
+  @apply max-w-3xl text-2xl leading-tight font-semibold tracking-tight text-balance md:text-3xl;
+}
+
+.case-gap__lead {
+  @apply text-muted-foreground mt-3 max-w-2xl text-base leading-relaxed md:text-lg;
+}
+
+.case-gap__bridge {
+  @apply grid gap-0;
+  grid-template-rows: auto 6rem auto;
+}
+
+@media (min-width: 768px) {
+  .case-gap__bridge {
+    grid-template-columns: minmax(0, 1fr) 10rem minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+}
+
+.case-gap__side {
+  @apply bg-card border-border flex flex-col gap-2 rounded-3xl border p-6 md:p-8;
+  transition:
+    opacity 600ms ease-out,
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 300ms ease;
+}
+
+.case-gap__label {
+  @apply text-muted-foreground text-xs font-medium tracking-widest uppercase;
+}
+
+.case-gap__title {
+  @apply text-xl leading-snug font-semibold md:text-2xl;
+}
+
+.case-gap__text {
+  @apply text-muted-foreground leading-relaxed;
+}
+
+.case-gap__middle {
+  @apply relative flex items-center justify-center;
+}
+
+/* Línea de la brecha: vertical en celular, horizontal desde tableta */
+.case-gap__line {
+  @apply absolute inset-y-0 left-1/2 w-px origin-top md:inset-x-0 md:inset-y-auto md:top-1/2 md:left-0 md:h-px md:w-auto md:origin-left;
+  background-color: var(--case-tint-border);
+  transition: scale 700ms cubic-bezier(0.65, 0, 0.35, 1) 450ms;
+}
+
+.case-gap__toggle {
+  @apply bg-background relative flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium outline-none focus-visible:ring-[3px];
+  border-color: var(--case-tint-border);
+  color: var(--case-accent);
+  transition:
+    opacity 400ms ease 900ms,
+    transform 300ms ease,
+    background-color 300ms ease;
+}
+
+.case-gap__toggle:hover {
+  @apply scale-105;
+}
+
+.case-gap__toggle:focus-visible {
+  @apply ring-ring/50;
+}
+
+.case-gap__toggle svg {
+  @apply size-4 transition-transform duration-300;
+}
+
+.case-gap--open .case-gap__toggle svg {
+  @apply rotate-45;
+}
+
+/* Al abrir, las dos tarjetas se marcan con el acento */
+.case-gap--open .case-gap__side {
+  border-color: var(--case-tint-border);
+}
+
+.case-gap__detail-inner {
+  animation: fade-up 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.case-gap__detail-text {
+  @apply mt-2 max-w-3xl text-base leading-relaxed md:text-lg;
+}
+
+/* Entrada, una sola vez al llegar: las tarjetas suben en cadena, la línea se
+   dibuja y el botón aparece en el medio */
+.case-reveal:not(.case-reveal--visible) .case-gap__side {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+
+.case-reveal--visible .case-gap__side--known {
+  transition-delay: 150ms;
+}
+
+.case-reveal--visible .case-gap__side--done {
+  transition-delay: 300ms;
+}
+
+.case-reveal:not(.case-reveal--visible) .case-gap__line {
+  scale: 1 0;
+}
+
+@media (min-width: 768px) {
+  .case-reveal:not(.case-reveal--visible) .case-gap__line {
+    scale: 0 1;
+  }
+}
+
+.case-reveal:not(.case-reveal--visible) .case-gap__toggle {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-gap__side,
+  .case-gap__line,
+  .case-gap__toggle,
+  .case-gap__toggle svg {
+    transition: none;
+  }
+
+  .case-gap__detail-inner {
+    animation: none;
+  }
+}

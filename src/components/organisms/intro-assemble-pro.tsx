@@ -4,19 +4,15 @@ import {
   BRAND_SYMBOL_PIECE_COUNT,
   BrandSymbolPiece
 } from '@/components/atoms/brand-symbol';
-import {
-  useIntroAssemblePro,
-  type IntroAssembleMode
-} from '@/hooks/use-intro-assemble-pro';
+import { useIntroAssemblePro } from '@/hooks/use-intro-assemble-pro';
 import { cn } from '@/lib/utils';
 
 type IntroAssembleProProps = {
-  mode: IntroAssembleMode;
   onDone: () => void;
 };
 
-// Tono de cada pieza en la primera visita, en el orden del monograma: del más
-// claro (círculo) al más oscuro (D de abajo)
+// Tono de cada pieza, en el orden del monograma: del más claro (círculo) al
+// más oscuro (D de abajo)
 const PIECE_TONE_CLASSES = [
   'intro-pro__piece--amber',
   'intro-pro__piece--orange',
@@ -27,10 +23,9 @@ const PIECE_TONE_CLASSES = [
 // Entrada "1 · Ensamble del símbolo", versión pro (ver useIntroAssemblePro).
 // Cada pieza va en tres capas: una se mueve en horizontal, otra en vertical y
 // gira, y la de adentro lleva el desenfoque y el color; así cada pieza dibuja
-// una curva. En la primera visita cada pieza llega en un tono de la gama; al
-// volver, el símbolo aparece ya blanco. Es decorativa: los lectores de
-// pantalla leen la página de debajo como siempre.
-export function IntroAssemblePro({ mode, onDone }: IntroAssembleProProps) {
+// una curva; cada pieza llega en un tono de la gama. Es decorativa: los
+// lectores de pantalla leen la página de debajo como siempre.
+export function IntroAssemblePro({ onDone }: IntroAssembleProProps) {
   const {
     overlayRef,
     backdropRef,
@@ -38,7 +33,7 @@ export function IntroAssemblePro({ mode, onDone }: IntroAssembleProProps) {
     setAxisXRef,
     setAxisYRef,
     setPieceRef
-  } = useIntroAssemblePro(mode, onDone);
+  } = useIntroAssemblePro(onDone);
 
   return (
     <div ref={overlayRef} className="intro" aria-hidden="true">
@@ -50,10 +45,7 @@ export function IntroAssemblePro({ mode, onDone }: IntroAssembleProProps) {
             <div ref={setAxisYRef(index)} className="intro-pro__axis">
               <div
                 ref={setPieceRef(index)}
-                className={cn(
-                  'intro-pro__piece',
-                  mode === 'full' && PIECE_TONE_CLASSES[index]
-                )}
+                className={cn('intro-pro__piece', PIECE_TONE_CLASSES[index])}
               >
                 <BrandSymbolPiece index={index} className="size-full" />
               </div>

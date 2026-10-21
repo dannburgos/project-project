@@ -3,7 +3,7 @@
    disponible para lectores de pantalla). */
 .case-stage {
   @apply flex flex-col gap-6;
-  scroll-margin-top: calc(var(--site-header-height, 5.5rem) + 1.5rem);
+  scroll-margin-top: calc(var(--site-header-clearance) + 0.5rem);
 }
 
 .case-stage__header {
@@ -11,7 +11,7 @@
 }
 
 .case-stage__label {
-  @apply text-muted-foreground lg:text-foreground text-sm tracking-wide uppercase lg:text-xl lg:font-medium lg:tracking-normal lg:normal-case;
+  @apply text-muted-foreground lg:text-foreground text-sm tracking-wide uppercase lg:text-2xl lg:font-medium lg:tracking-normal lg:normal-case;
 }
 
 .case-stage__heading {
@@ -22,6 +22,35 @@
   @apply text-muted-foreground lg:sr-only;
 }
 
+/* Grilla de seis columnas: cada bloque ocupa todo, la mitad, un tercio o dos
+   tercios. En celular, una sola columna. */
 .case-stage__blocks {
-  @apply flex flex-col gap-4 md:gap-6;
+  @apply grid grid-cols-1 gap-3 md:grid-cols-6 md:gap-4;
+}
+
+.case-stage__cell--full {
+  @apply md:col-span-6;
+}
+
+.case-stage__cell--half {
+  @apply md:col-span-3;
+}
+
+.case-stage__cell--third {
+  @apply md:col-span-2;
+}
+
+.case-stage__cell--two-thirds {
+  @apply md:col-span-4;
+}
+
+/* Un bloque nunca se sale de su columna, y las tarjetas que quedan lado a
+   lado miden lo mismo de alto */
+.case-stage__blocks > * {
+  @apply min-w-0;
+}
+
+.case-stage__blocks > * > .case-surface,
+.case-stage__blocks > * > .case-text {
+  @apply h-full;
 }

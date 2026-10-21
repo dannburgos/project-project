@@ -1,0 +1,75 @@
+/* Prototipo dentro de un celular (desde tableta). Mientras está quieto, una
+   capa encima invita a probarlo; al hacer clic, el prototipo recibe el mouse.
+   En celular no se muestra el celular: queda el botón para abrirlo a
+   pantalla completa. */
+.case-prototype {
+  @apply flex flex-col items-center gap-5;
+}
+
+/* El alto se ajusta a la ventana (debajo del logo y la barra), para que el
+   celular se vea completo; el ancho sale de la proporción de un celular */
+.case-prototype__device {
+  @apply relative hidden bg-neutral-950 p-3 shadow-2xl ring-1 ring-white/10 md:block;
+  height: min(50rem, calc(100svh - var(--site-header-clearance) - 4.5rem));
+  aspect-ratio: 9 / 19.5;
+  border-radius: 3rem;
+}
+
+.case-prototype__screen {
+  @apply pointer-events-none size-full bg-white;
+  border-radius: 2.25rem;
+}
+
+.case-prototype__screen--active {
+  @apply pointer-events-auto;
+}
+
+.case-prototype__activate {
+  @apply absolute inset-0 flex cursor-pointer items-end justify-center pb-12 outline-none;
+  border-radius: 3rem;
+}
+
+.case-prototype__activate-label {
+  @apply bg-foreground text-background flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium shadow-lg transition-transform duration-300;
+}
+
+.case-prototype__activate-label svg {
+  @apply size-4;
+}
+
+.case-prototype__activate:hover .case-prototype__activate-label,
+.case-prototype__activate:focus-visible .case-prototype__activate-label {
+  @apply scale-105;
+}
+
+.case-prototype__activate:focus-visible .case-prototype__activate-label {
+  @apply ring-ring/50 ring-[3px];
+}
+
+.case-prototype__open {
+  @apply border-border hover:bg-foreground hover:text-background focus-visible:ring-ring/50 flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm transition-colors outline-none focus-visible:ring-[3px];
+}
+
+.case-prototype__open svg {
+  @apply size-4;
+}
+
+.case-prototype__open-desktop {
+  @apply hidden md:inline;
+}
+
+.case-prototype__open-mobile {
+  @apply md:hidden;
+}
+
+/* Sobre el prototipo activo, el cursor del portafolio se esconde: adentro
+   manda el del prototipo */
+html:has(.case-prototype__screen--active:hover) .custom-cursor {
+  @apply opacity-0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-prototype__activate-label {
+    transition: none;
+  }
+}

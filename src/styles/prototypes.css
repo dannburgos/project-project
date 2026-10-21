@@ -1,0 +1,4 @@
+/* Estilos de los prototipos de los proyectos (ruta /prototypes). Van aparte de
+   los del portafolio: cada prototipo trae su propio sistema de diseño. */
+@import 'tailwindcss';
+@import './domains/planti/planti.css';

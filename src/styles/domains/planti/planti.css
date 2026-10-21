@@ -1,0 +1,21 @@
+/* Prototipo de Planti. Su sistema de diseño (colores, tipografía, espacios)
+   vive en esta carpeta y no se mezcla con el del portafolio. Los valores
+   definitivos llegan con el sistema de diseño de Dann; por ahora, lo mínimo
+   para arrancar. */
+.planti-app {
+  @apply mx-auto flex min-h-svh w-full max-w-md flex-col bg-white text-neutral-900;
+  font-family: var(--font-geist-sans), sans-serif;
+}
+
+/* Pantalla de arranque, mientras se diseñan las pantallas reales */
+.planti-starter {
+  @apply flex flex-1 flex-col items-center justify-center gap-2 p-8 text-center;
+}
+
+.planti-starter__name {
+  @apply text-3xl font-semibold tracking-tight;
+}
+
+.planti-starter__note {
+  @apply text-sm text-neutral-500;
+}

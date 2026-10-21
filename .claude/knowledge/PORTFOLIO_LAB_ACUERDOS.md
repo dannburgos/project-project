@@ -319,17 +319,22 @@
   - Contraste revisado con una auditoría automática en Home, Work, un caso,
     About, Trayectoria y Contact (escritorio y celular): todos los textos
     cumplen el mínimo de legibilidad (4,5:1 normal, 3:1 grande).
-- Entrada del sitio en la primera visita (en prueba). Se propusieron 20 ideas
+- Entrada del sitio, en el Home real. Se propusieron 20 ideas
   (referencias de Dann: benjamincreative.me, dondeeselafter.com, bbdo.com,
   lusion.co y atomic.black). Dann eligió 7 para ver en bocetos (1, 3, 5, 12,
   13, 18 y 19) y dejó dos finalistas (1 y 18). Elegida: **1 · Ensamble del
   símbolo**; la 18 (Del boceto a la interfaz) quedó descartada por ahora y se
   quitó del código.
   - Dann pidió llevarla a una versión "pro" y eligió el paquete recomendado.
-    Después dejó solo la versión pro (se quitó la anterior del código). Se ve
-    en `/preview/intro` (solo en desarrollo; el Home real no cambia): corre
-    sola al abrir la página y, para repetirla, se recarga. La barra de botones
-    de prueba se quitó (pedido de Dann: ya hay una sola opción).
+    Después dejó solo la versión pro (se quitó la anterior del código).
+  - Cuándo corre (decisión de Dann: "completa siempre"): la versión completa,
+    cada vez que alguien entra al Home o lo recarga. No se repite al moverse
+    entre páginas del sitio, ni si alguien entra por otra página (por ejemplo
+    Work) y llega al Home navegando. Al recargar con la página bajada, vuelve
+    arriba antes de empezar. La capa viene pintada desde el servidor, así el
+    Home no se asoma antes de que empiece; si algo fallara, se quita sola a los
+    10 s. La página de prueba `/preview/intro` y la versión corta "al volver"
+    se quitaron del código (ya no se usan).
   - Color de marca (dato de Dann): naranja y su gama, con degradados; ese
     estilo va en el banner principal del Home. Para la entrada, Dann eligió
     la propuesta **C · Cuatro tonos, un símbolo**, con la expansión de la B:
@@ -338,11 +343,11 @@
     cápsula negra). Después Dann descartó el círculo que se abría (se veía
     como un círculo con degradado en el centro) y la línea de progreso: ahora
     el fondo oscuro se desvanece parejo mientras el símbolo viaja al logo.
-  - Versión pro, primera visita: espera las tipografías; las 4 piezas entran
+  - Secuencia: espera las tipografías; las 4 piezas entran
     desde las esquinas en una curva suave, desenfocadas al ir rápido y en el
     orden del monograma, cada vez más seguido, cada una en su tono (ámbar,
-    naranja, llama y brasa). Sin zigzag (Dann lo descartó): cada pieza frena una sola vez y nunca se
-    pasa de su lugar ni vuelve atrás (verificado cuadro por cuadro). Al
+    naranja, llama y brasa). Sin zigzag (Dann lo descartó): cada pieza frena
+    una sola vez y nunca se pasa de su lugar ni vuelve atrás (verificado cuadro por cuadro). Al
     encajar, el símbolo se aplasta levemente ("clic") y las piezas pasan a
     blanco. Luego el símbolo viaja solo al logo real mientras el fondo oscuro
     se desvanece parejo, sin formas, y la portada entra en cadena (menú, frase
@@ -352,14 +357,8 @@
     Medido: las piezas encajan cerca de 1,1 s, la pantalla se libera cerca de
     2,1 s y la portada termina de entrar cerca de 2,8 s (varía un poco según
     cuánto tarden las tipografías).
-  - Versión pro al volver: el símbolo aparece ya armado y blanco con un
-    pequeño salto y va directo al logo mientras el fondo se desvanece; la
-    pantalla se libera cerca de 0,85 s (calculado, no medido: la página de
-    prueba ya solo muestra la primera visita).
   - Se salta con clic, tecla o scroll: en vez de cortarse, se acelera 4 veces
     hasta el final. No corre con "reducir movimiento".
-  - Pendiente: pasarla al Home real y decidir cuándo cuenta como "volver"
-    (por ejemplo, después de la primera visita en ese navegador).
 - Color de marca en el sitio (provisional, hasta que Dann pase los valores
   finales): ámbar `#ffb067`, naranja `#ff7a2f`, llama `#f2541b`, brasa
   `#c2410c` y un casi negro cálido `#160803` de base. Están como colores
@@ -499,3 +498,78 @@
     una pantalla) y en pantallas de menos de 700 px de alto, van uno debajo
     del otro, sin cortina. Bajo las esquinas redondeadas del claro se ve negro.
   - Pendiente: "Lo que hago" y "Cómo lo hago" son texto de ejemplo.
+
+## Casos de estudio por proyecto y caso de Planti (21 de octubre de 2026)
+
+- Cada proyecto tiene su propio contenido de caso y su propio menú lateral de
+  capítulos (entre 1 y 10). Los casos con contenido propio viven en
+  `src/content/cases/` (Planti: `planti.ts`); los demás usan el caso de
+  ejemplo (`example-case.ts`, con las 8 etapas orientativas).
+- Planti y Nodus tienen dirección propia: `/work/planti` y `/work/nodus`. Los
+  proyectos de ejemplo siguen numerados (`/work/project-3`…). La dirección
+  vieja `/work/project-1` ya no existe.
+- El plan completo del caso de Planti (estructura de 7 capítulos, dónde va
+  cada sección del documento maestro, interacción por capítulo, guía del
+  prototipo y pendientes) está en `.claude/knowledge/planti/PLANTI_CASO.md`.
+  La fuente es la copia del documento maestro de Dann en la misma carpeta.
+- Primer borrador de Planti armado con los textos reales: Problema, Usuario
+  (persona simulada Laura y preguntas y respuestas simuladas), Benchmark,
+  Concepto (con el ciclo en círculo), Definición (MVP, lo que queda fuera
+  tachado, mapa de navegación), Flujos (recorridos en pasos y espacios de
+  pantallas) y Prototipo. Cada bloque entra al llegar a él con el scroll; la
+  interacción propia de cada capítulo se diseña al iterarlo.
+- El color de acento de los capítulos sale del tono del proyecto (verde en
+  Planti, morado en Nodus).
+- Prototipos: viven dentro del proyecto, cada uno en su carpeta
+  (`src/domains/<proyecto>/` y `src/styles/domains/<proyecto>/`) y se ven solos
+  en `/prototypes/<proyecto>`, sin la barra, el cursor ni el scroll suave del
+  portafolio. Para eso las páginas del portafolio pasaron al grupo
+  `src/app/(site)/` y los prototipos al grupo `src/app/(prototypes)/` (las
+  direcciones del sitio no cambiaron). El capítulo "Prototipo" del caso lo
+  muestra dentro de un celular: queda quieto hasta hacer clic y se puede abrir
+  a pantalla completa; en celular se abre directo a pantalla completa.
+- Arreglo: el menú lateral de los casos quedaba debajo del logo al hacer
+  scroll; ahora queda debajo del logo y la barra.
+- Estructura de los casos (aprobada por Dann, referencia midu.design/kiwebank):
+  - Menú lateral: el capítulo recogido mide el 80 % de la columna y va corrido
+    un poco hacia adentro; el activo crece hacia los dos lados hasta ocupar
+    toda la columna y se abre con su título y resumen. El que se abre y el que
+    se cierra se animan a la vez, en ancho y alto, en 0,45 s, frenando suave y
+    sin rebote (medido en la referencia).
+  - Contenido de la derecha: todo va en tarjetas, nada de texto suelto. Cada
+    bloque ocupa todo el ancho, la mitad, un tercio o dos tercios (en celular,
+    siempre todo), y su tarjeta es plana o con un degradado sutil del color de
+    acento del proyecto. Cada párrafo de un texto va en su propia tarjeta. Qué
+    se queda del estilo del portafolio y qué toma de Planti se define con el
+    sistema de diseño.
+- Banner de los casos: la ficha ya no lleva el año (en ningún proyecto). La
+  introducción puede tener una frase protagonista grande a la izquierda y un
+  texto de apoyo a la derecha. El subtítulo bajo el nombre se lee más grande
+  y claro. Planti: subtítulo "App móvil para el cuidado de plantas"; ficha
+  Scope "Investigación · UX · UI", Rol "Product Designer · UX/UI", Categoría
+  "Estilo de vida", Tipo "Proyecto conceptual"; frase protagonista "Saber qué
+  necesita tu planta es fácil. Recordarlo, no."; un solo párrafo de apoyo.
+- Planti · capítulo Problema: el nombre de cada capítulo pasó a 24 px en
+  todos los casos (Dann pide tamaños siempre en múltiplos de 2). Las tres
+  fricciones son un recorrido (opción A, elegida por Dann): al llegar, la
+  sección se queda fija al centro de la pantalla y las tarjetas se encienden
+  una a una con el scroll (Entender, Decidir, Mantener) mientras una línea las
+  une. En celular y con "reducir movimiento" se ven apiladas y encendidas.
+- Regla de scroll por módulo (Dann, 21 de octubre): un módulo con
+  interacción propia toma el scroll cuando está completo en pantalla. La
+  página se congela (lo de arriba no se mueve y lo de abajo no sube); la
+  rueda, el trackpad, el dedo o las flechas avanzan la interacción; al subir
+  retrocede y en el inicio suelta hacia arriba; al completarse suelta hacia
+  abajo con el siguiente gesto (la inercia del mismo gesto no se salta lo que
+  viene). Lo que sigue en el capítulo espera escondido y aparece al
+  completarse. Mientras tanto, el scroll suave del sitio se pausa y un aviso
+  discreto ("Sigue bajando") lo indica. Un enlace interno (por ejemplo un
+  capítulo del menú) siempre suelta el módulo. Con "reducir movimiento" no
+  toma el scroll. Primer módulo con esta regla: las tres fricciones de
+  Planti. Las propuestas visuales de cada módulo se dibujan en el chat y solo
+  la elegida pasa al código.
+- Planti · Problema: el contexto y el problema pasaron de cinco tarjetas a "La
+  brecha" (opción 10B, elegida por Dann): frase y contexto arriba; "Lo que
+  sabes" y "Lo que haces" separados por un vacío con una línea que se dibuja al
+  llegar; el botón "La brecha" despliega el problema completo. No depende del
+  scroll. Detalle de las opciones vistas en PLANTI_CASO.md.

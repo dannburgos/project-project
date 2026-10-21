@@ -1,7 +1,24 @@
-/* Entrada del sitio (en prueba): una capa que tapa la página mientras corre.
-   Va por encima de la barra; el cursor propio queda por encima de todo. */
+/* Entrada del sitio, en el Home: una capa que tapa la página mientras corre.
+   Va por encima de la barra; el cursor propio queda por encima de todo.
+   Viene pintada desde el servidor, para que el Home no se asome antes de que
+   empiece. Por seguridad, si algo falla y la entrada no termina, la capa se
+   quita sola a los 10 s; la entrada normal dura cerca de 3 s. */
 .intro {
   @apply fixed inset-0 z-70;
+  animation: intro-failsafe 0s 10s forwards;
+}
+
+@keyframes intro-failsafe {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* Con "reducir movimiento" la entrada no corre: la capa no se muestra */
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    @apply hidden;
+  }
 }
 
 /* Fondo de la entrada: el mismo casi negro cálido del banner. Cuando el

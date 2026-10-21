@@ -1,0 +1,72 @@
+/* Alcance: los bloques que entran, en tarjetas; lo que queda fuera, en
+   cápsulas punteadas que se tachan y se apagan después de aparecer */
+.case-scope {
+  @apply flex flex-col gap-10;
+}
+
+.case-scope__groups {
+  @apply grid gap-3 md:grid-cols-3 md:gap-4;
+}
+
+.case-scope__group {
+  @apply bg-card border-border flex flex-col gap-3 rounded-3xl border p-6;
+}
+
+.case-scope__eyebrow {
+  @apply font-mono text-xs;
+  color: var(--case-accent);
+}
+
+.case-scope__title {
+  @apply text-xl leading-snug font-semibold;
+}
+
+.case-scope__items {
+  @apply text-muted-foreground flex flex-col gap-2 text-sm leading-relaxed;
+}
+
+.case-scope__items li {
+  @apply relative pl-4;
+}
+
+.case-scope__items li::before {
+  @apply absolute top-2 left-0 size-1.5 rounded-full;
+  content: '';
+  background-color: var(--case-accent);
+}
+
+.case-scope__out-list {
+  @apply flex flex-wrap gap-2;
+}
+
+.case-scope__out-item {
+  @apply border-border text-muted-foreground rounded-full border border-dashed px-4 py-2 text-sm;
+  transition: opacity 600ms ease;
+  transition-delay: calc(var(--item-index, 0) * 120ms + 700ms);
+}
+
+.case-scope__out-text {
+  @apply relative;
+}
+
+.case-scope__out-text::after {
+  @apply absolute inset-x-0 top-1/2 h-px origin-left scale-x-0 bg-current;
+  content: '';
+  transition: scale 600ms cubic-bezier(0.65, 0, 0.35, 1);
+  transition-delay: calc(var(--item-index, 0) * 120ms + 400ms);
+}
+
+.case-reveal--visible .case-scope__out-item {
+  @apply opacity-60;
+}
+
+.case-reveal--visible .case-scope__out-text::after {
+  @apply scale-x-100;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-scope__out-item,
+  .case-scope__out-text::after {
+    transition: none;
+  }
+}

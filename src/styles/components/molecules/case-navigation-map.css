@@ -1,0 +1,30 @@
+/* Mapa de navegación: cada pestaña del producto como una cápsula y, debajo,
+   lo que contiene, colgado de una línea como un árbol */
+.case-navigation__sections {
+  @apply grid gap-6 sm:grid-cols-2 md:gap-4 xl:grid-cols-4;
+}
+
+.case-navigation__section {
+  @apply bg-card border-border flex flex-col gap-3 rounded-3xl border p-5;
+}
+
+.case-navigation__tab {
+  @apply bg-foreground text-background rounded-full px-4 py-2 text-center text-sm font-semibold;
+}
+
+.case-navigation__description {
+  @apply text-muted-foreground text-sm leading-relaxed;
+}
+
+.case-navigation__children {
+  @apply border-border ml-4 flex flex-col gap-2 border-l pl-4;
+}
+
+.case-navigation__child {
+  @apply bg-muted relative rounded-xl px-3 py-2 text-sm;
+}
+
+.case-navigation__child::before {
+  @apply bg-border absolute top-1/2 -left-4 h-px w-4;
+  content: '';
+}
