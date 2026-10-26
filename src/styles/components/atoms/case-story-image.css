@@ -1,0 +1,43 @@
+/* Espacio marcado para una imagen que llega después: tono plano con una X
+   suave y una etiqueta que dice qué foto va ahí. "paper" es la versión para
+   el mundo verde; "leaf", la de los respiros (con franjas de hojas). */
+.story-image {
+  @apply relative flex items-end overflow-hidden p-4;
+  background: var(--story-tone);
+  color: var(--story-mute);
+}
+
+.story-image::before,
+.story-image::after {
+  @apply absolute inset-0;
+  content: '';
+  background: linear-gradient(
+    to top right,
+    transparent calc(50% - 0.5px),
+    rgba(35, 51, 14, 0.16) 50%,
+    transparent calc(50% + 0.5px)
+  );
+}
+
+.story-image::after {
+  @apply -scale-x-100;
+}
+
+.story-image--paper {
+  background: var(--story-cream);
+  color: #7c8667;
+}
+
+.story-image--leaf {
+  background: var(--story-leaf);
+  color: var(--story-cream);
+}
+
+.story-image--leaf::before,
+.story-image--leaf::after {
+  @apply hidden;
+}
+
+.story-image__label {
+  @apply relative z-10 text-xs tracking-widest uppercase;
+}

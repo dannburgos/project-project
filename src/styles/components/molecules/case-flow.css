@@ -18,11 +18,11 @@
 }
 
 .case-flow__title {
-  @apply text-2xl font-semibold tracking-tight md:text-3xl;
+  @apply text-2xl font-semibold tracking-tight;
 }
 
 .case-flow__goal {
-  @apply text-muted-foreground flex flex-col gap-1 md:text-lg;
+  @apply text-muted-foreground flex flex-col gap-1 text-base;
 }
 
 .case-flow__label {

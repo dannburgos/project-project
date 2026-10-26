@@ -1,0 +1,60 @@
+/* Contador discreto del recorrido. En computador va en la franja de
+   navegación, a la derecha y a la altura del menú; en celular queda abajo,
+   como una etiqueta. En el mundo verde cambia a tonos claros. */
+.case-story__counter {
+  @apply fixed top-8 right-12 z-40 text-right transition-opacity duration-500;
+}
+
+/* Fuera del recorrido (en lo que viene después) el contador se esconde */
+.case-story[data-counter-hidden] .case-story__counter {
+  @apply pointer-events-none opacity-0;
+}
+
+.case-story__counter-button {
+  @apply cursor-pointer text-xs tracking-[0.14em] uppercase transition-colors duration-500;
+  color: var(--story-ink);
+}
+
+.case-story__counter-button b {
+  @apply font-semibold;
+}
+
+.case-story[data-world='green'] .case-story__counter-button {
+  color: var(--story-light);
+}
+
+.case-story__jump {
+  @apply mt-3 w-[220px] border text-left;
+  background: var(--story-cream);
+  border-color: var(--story-ink);
+}
+
+.case-story__jump-item {
+  @apply block w-full cursor-pointer px-4 py-2.5 text-left text-sm;
+  color: var(--story-ink);
+}
+
+.case-story__jump-item:hover {
+  background: var(--story-tone);
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .case-story__counter {
+    @apply top-auto right-auto bottom-4 left-8 text-left;
+  }
+
+  .case-story__counter-button {
+    @apply border px-3 py-2;
+    background: var(--story-cream);
+    border-color: var(--story-ink);
+  }
+
+  .case-story[data-world='green'] .case-story__counter-button {
+    background: var(--story-ink);
+    border-color: var(--story-light);
+  }
+
+  .case-story__jump {
+    @apply absolute bottom-full left-0 mt-0 mb-2 w-[220px];
+  }
+}

@@ -573,3 +573,11 @@
   sabes" y "Lo que haces" separados por un vacío con una línea que se dibuja al
   llegar; el botón "La brecha" despliega el problema completo. No depende del
   scroll. Detalle de las opciones vistas en PLANTI_CASO.md.
+- Planti · Usuario: grilla resumida con avatar ilustrado (Laura y su frase,
+  tres rasgos, tres hallazgos de las respuestas simuladas). Todo visible desde
+  que se llega; la entrada corre una vez. Sin etiqueta "Persona simulada" ni
+  nota final (decisión de Dann). Se quitaron del código la tarjeta de persona
+  y el chat anteriores.
+- Casos: regla de jerarquía de tres niveles de texto (32 / 24 / 16 px; idea
+  principal a 24 px en celular). Planti pasó a 6 capítulos al fusionar
+  Concepto y Definición (detalle en PLANTI_CASO.md).

@@ -1,0 +1,9 @@
+/* 06 · Flujos: los tres momentos, al lado de sus pantallas */
+.story-flows__list {
+  @apply mt-auto;
+}
+
+.story-flows__row {
+  @apply py-5;
+  grid-template-columns: 64px 1fr;
+}

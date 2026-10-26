@@ -1,0 +1,61 @@
+/* 02 · Problema: la brecha, las fricciones y el reto */
+.story-gap {
+  @apply mt-14 grid items-center;
+  grid-template-columns: 1fr 120px 1fr;
+}
+
+.story-gap__side {
+  @apply flex flex-col gap-4 border p-7;
+  min-height: 180px;
+  border-color: var(--story-ink);
+}
+
+.story-gap__side--done {
+  background: var(--story-ink);
+  color: var(--story-cream);
+}
+
+.story-gap__side--done .story-label {
+  color: var(--story-light);
+}
+
+.story-gap__line {
+  @apply h-px origin-left;
+  background: var(--story-ink);
+}
+
+.story-frictions__label {
+  @apply mb-10;
+}
+
+.story-frictions__columns {
+  height: calc(100% - 56px);
+}
+
+.story-references {
+  @apply mt-12 grid gap-4;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  height: 32vh;
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .story-gap {
+    @apply grid-cols-1 gap-0;
+  }
+
+  .story-gap__line {
+    @apply mx-auto h-10 w-px;
+  }
+
+  .story-frictions__columns {
+    @apply h-auto;
+  }
+
+  .story-references {
+    @apply h-auto grid-cols-1;
+  }
+
+  .story-references > * {
+    aspect-ratio: 4 / 3;
+  }
+}

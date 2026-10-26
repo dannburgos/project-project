@@ -1,0 +1,64 @@
+/* 05 · Concepto: la idea troquelada junto al logo, y lo que hace Planti con
+   su navegación, todo centrado */
+.story-concept__logo {
+  @apply absolute top-1/2 right-30 z-10;
+  width: 260px;
+  height: 340px;
+  margin-top: -170px;
+  background: var(--story-light);
+  color: var(--story-ink);
+}
+
+.story-concept__idea {
+  @apply absolute top-1/2 left-24 z-0 -translate-y-1/2;
+  width: 60%;
+}
+
+.story-concept__subtitle {
+  @apply mt-6;
+}
+
+.story-capabilities {
+  @apply text-center;
+}
+
+.story-capabilities__title {
+  @apply mb-10;
+}
+
+.story-capabilities__pillar {
+  @apply items-center;
+}
+
+.story-capabilities__question {
+  @apply mt-2 mb-4;
+}
+
+.story-capabilities__navigation .story-label {
+  @apply mt-12;
+}
+
+.story-capabilities__tabs {
+  @apply mt-8 grid grid-cols-4 border-t;
+  border-color: var(--story-rule);
+}
+
+.story-capabilities__tabs > div {
+  @apply px-4 pt-4;
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .story-concept__logo {
+    @apply relative inset-auto mt-0 mb-10;
+    width: 200px;
+    height: 240px;
+  }
+
+  .story-concept__idea {
+    @apply relative inset-auto w-auto translate-y-0;
+  }
+
+  .story-capabilities__tabs {
+    @apply grid-cols-2 gap-x-4 gap-y-6;
+  }
+}

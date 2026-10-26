@@ -1,6 +1,5 @@
 'use client';
 
-import { ChevronsDown } from 'lucide-react';
 import type { CSSProperties } from 'react';
 
 import type { CaseCard } from '@/content/case-study.types';
@@ -30,7 +29,6 @@ export function CaseSequence({ title, items }: CaseSequenceProps) {
         <h3 className="case-block__title">{title}</h3>
         <p className="case-sequence__hint" aria-hidden="true">
           {hint}
-          <ChevronsDown />
         </p>
       </div>
       <div className="case-sequence__track" aria-hidden="true">

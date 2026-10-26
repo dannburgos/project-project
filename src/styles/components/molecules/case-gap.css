@@ -9,11 +9,17 @@
 }
 
 .case-gap__headline {
-  @apply max-w-3xl text-2xl leading-tight font-semibold tracking-tight text-balance md:text-3xl;
+  @apply text-2xl leading-tight font-semibold tracking-tight text-pretty;
+}
+
+@media (min-width: 768px) {
+  .case-gap__headline {
+    font-size: 2rem;
+  }
 }
 
 .case-gap__lead {
-  @apply text-muted-foreground mt-3 max-w-2xl text-base leading-relaxed md:text-lg;
+  @apply text-muted-foreground mt-3 max-w-2xl text-base leading-relaxed;
 }
 
 .case-gap__bridge {
@@ -41,7 +47,7 @@
 }
 
 .case-gap__title {
-  @apply text-xl leading-snug font-semibold md:text-2xl;
+  @apply text-2xl leading-snug font-semibold;
 }
 
 .case-gap__text {
@@ -95,7 +101,7 @@
 }
 
 .case-gap__detail-text {
-  @apply mt-2 max-w-3xl text-base leading-relaxed md:text-lg;
+  @apply mt-2 max-w-3xl text-base leading-relaxed;
 }
 
 /* Entrada, una sola vez al llegar: las tarjetas suben en cadena, la línea se
@@ -109,8 +115,32 @@
   transition-delay: 150ms;
 }
 
+/* Cuando la línea termina de dibujarse, "Lo que haces" se ilumina con el
+   acento (fondo y borde; el texto se queda como está): es el lado donde está
+   la brecha. El degradado va en una capa que
+   aparece de a poco (un degradado no cambia suave por sí solo). */
+.case-gap__side--done {
+  @apply relative isolate;
+}
+
+.case-gap__side--done::before {
+  @apply absolute inset-0 -z-10 rounded-3xl opacity-0;
+  content: '';
+  background-image: var(--case-tint-image);
+  transition: opacity 700ms ease;
+}
+
 .case-reveal--visible .case-gap__side--done {
-  transition-delay: 300ms;
+  border-color: var(--case-tint-border);
+  transition:
+    opacity 600ms ease-out 300ms,
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 300ms,
+    border-color 700ms ease 1150ms;
+}
+
+.case-reveal--visible .case-gap__side--done::before {
+  @apply opacity-100;
+  transition-delay: 1150ms;
 }
 
 .case-reveal:not(.case-reveal--visible) .case-gap__line {

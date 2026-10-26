@@ -15,6 +15,11 @@
   @apply text-white;
 }
 
+/* Sobre superficies claras (data-surface="light"), oscuro */
+.site-header__logo[data-surface-light='true'] {
+  @apply text-neutral-900;
+}
+
 .site-header__symbol {
   @apply size-9 shrink-0;
 }
@@ -163,4 +168,29 @@
   .site-header__pill[data-ready='true'] {
     transition: none;
   }
+}
+
+/* Sobre superficies claras (data-surface="light") la pastilla se vuelve clara
+   con texto oscuro; la píldora de exclusión sigue funcionando (se ve oscura y
+   su texto, claro) */
+.site-header__inner {
+  transition:
+    background-color 400ms ease,
+    border-color 400ms ease;
+}
+
+.site-header[data-surface-light='true'] .site-header__inner {
+  @apply border-black/10 bg-white/85;
+}
+
+.site-header[data-surface-light='true'] .site-header__link {
+  @apply text-neutral-500 hover:text-neutral-900;
+}
+
+.site-header[data-surface-light='true'] .site-header__link--active {
+  @apply text-neutral-900;
+}
+
+.site-header[data-surface-light='true'] .menu-icon__bar {
+  @apply bg-neutral-900;
 }

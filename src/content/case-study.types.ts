@@ -19,24 +19,29 @@ export type CaseListItem = {
   text?: string;
 };
 
-export type CaseInterviewItem = {
-  question: string;
-  answer: string;
+// Hallazgo: qué se encontró y de qué preguntas sale
+export type CaseFinding = {
+  title: string;
+  text: string;
+  source: string;
 };
 
+// Una app del benchmark y sus palabras clave
 export type CaseBenchmarkApp = {
   name: string;
-  features: readonly string[];
+  keywords: readonly string[];
 };
 
 export type CaseGapSide = {
   label: string;
   title: string;
-  text: string;
+  text?: string;
 };
 
 export type CaseScopeGroup = {
   eyebrow: string;
+  // Pilar al que pertenece el grupo (opcional), junto al número
+  label?: string;
   title: string;
   items: readonly string[];
 };
@@ -72,7 +77,8 @@ export type CaseBlockContent =
   // Párrafos de texto corrido
   | { type: 'text'; paragraphs: readonly string[] }
   // Frase grande que resume una idea; aparece palabra por palabra
-  | { type: 'statement'; text: string }
+  // (con un subtítulo opcional debajo)
+  | { type: 'statement'; text: string; subtitle?: string }
   // Tarjetas en grilla
   | { type: 'cards'; title?: string; items: readonly CaseCard[] }
   // La brecha: lo que se sabe frente a lo que se hace, con el problema
@@ -93,37 +99,23 @@ export type CaseBlockContent =
   | { type: 'list'; title: string; items: readonly CaseListItem[] }
   // Aclaración discreta (por ejemplo, una nota metodológica)
   | { type: 'note'; label: string; text: string }
-  // Persona simulada
+  // Perfil de usuario resumido en grilla: quién es, su frase, sus rasgos y
+  // los hallazgos que salen de sus respuestas
   | {
-      type: 'persona';
-      badge: string;
+      type: 'profile';
       name: string;
-      facts: readonly string[];
+      facts: string;
+      // Objetos que giran alrededor del avatar (por ejemplo, sus plantas) y
+      // cómo se nombran para lectores de pantalla
+      orbitCount: number;
+      orbitLabel: string;
       quote: string;
-      goal: string;
-      frustration: string;
-      needs: readonly string[];
-      photoLabel: string;
+      traits: readonly CaseFact[];
+      findingsTitle: string;
+      findings: readonly CaseFinding[];
     }
-  // Preguntas y respuestas (simuladas o reales)
-  | {
-      type: 'interview';
-      title: string;
-      note: string;
-      speaker: string;
-      items: readonly CaseInterviewItem[];
-    }
-  // Benchmark: apps analizadas, ejes de comparación y síntesis
-  | {
-      type: 'benchmark';
-      apps: readonly CaseBenchmarkApp[];
-      axesTitle: string;
-      axes: readonly string[];
-      synthesisTitle: string;
-      synthesis: readonly string[];
-    }
-  // Ciclo de pasos que vuelve a empezar
-  | { type: 'cycle'; title: string; steps: readonly string[]; note?: string }
+  // Benchmark: una fila de apps con sus palabras clave
+  | { type: 'benchmark'; apps: readonly CaseBenchmarkApp[] }
   // Alcance de una versión: lo que entra y lo que queda fuera
   | {
       type: 'scope';

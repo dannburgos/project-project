@@ -1,0 +1,358 @@
+/* Caso contado como recorrido. En computador, un escenario fijo de una
+   pantalla con un esqueleto de líneas (arriba, márgenes y el eje que se
+   desliza); las capas de contenido entran y salen encima. En celular (o con
+   "reducir movimiento"), todo en columna. Primero el mundo claro de la
+   investigación y, desde el concepto, el mundo de la marca. */
+
+/* Marca de Planti: crema clara y verdes (tonos por definir) */
+.case-story--planti {
+  --story-cream: #fbf9f3;
+  --story-ink: #23330e;
+  --story-ink-soft: #3d5718;
+  --story-mid: #678e35;
+  --story-light: #a2c96c;
+  --story-mute: #5f6b4c;
+  --story-tone: #efebdf;
+  --story-line: rgba(35, 51, 14, 0.28);
+  --story-world: linear-gradient(
+    135deg,
+    #1c290b 0%,
+    #23330e 34%,
+    #3d5718 74%,
+    #678e35 100%
+  );
+  --story-stripes: repeating-linear-gradient(
+    115deg,
+    #23330e 0 14px,
+    #3d5718 14px 30px,
+    #678e35 30px 40px,
+    #a2c96c 40px 44px
+  );
+  --story-leaf: repeating-linear-gradient(
+    115deg,
+    #3d5718 0 22px,
+    #678e35 22px 27px,
+    #23330e 27px 30px
+  );
+}
+
+.case-story {
+  --story-fg: var(--story-ink);
+  --story-muted: var(--story-mute);
+  --story-rule: var(--story-line);
+  @apply relative;
+  color: var(--story-fg);
+  background: var(--story-cream);
+}
+
+/* Mundo de la marca: tonos claros sobre el degradado verde */
+.case-story__green {
+  --story-fg: var(--story-cream);
+  --story-muted: #c3cfae;
+  --story-rule: rgba(162, 201, 108, 0.3);
+  @apply absolute inset-0;
+  color: var(--story-fg);
+  background: var(--story-world);
+}
+
+.case-story__stage {
+  @apply relative h-svh overflow-hidden;
+  background: var(--story-cream);
+}
+
+/* Esqueleto de líneas: quieto, para que se sienta un solo lugar */
+.case-story__line {
+  @apply absolute z-20;
+  background: var(--story-line);
+}
+
+.case-story__line--top {
+  @apply inset-x-0 top-24 h-px;
+}
+
+/* Las líneas de los lados nacen en la de arriba: la franja superior queda
+   libre para la navegación (logo, menú y contador) */
+.case-story__line--left {
+  @apply top-24 bottom-0 left-12 w-px;
+}
+
+.case-story__line--right {
+  @apply top-24 right-12 bottom-0 w-px;
+}
+
+/* El eje que se desliza, con su cuadrito */
+.case-story__axis {
+  @apply absolute top-24 bottom-0 left-0 z-30 w-px;
+  background: var(--story-ink);
+}
+
+.case-story__axis-mark {
+  @apply absolute -top-1.5 -left-1.5 size-3;
+  background: var(--story-light);
+}
+
+/* Cada capa ocupa todo el escenario */
+/* Arriba queda la franja de navegación (96 px); el contenido empieza
+   debajo de la línea */
+.story-view {
+  @apply absolute inset-0 px-24 pt-36 pb-16;
+}
+
+.story-view--cover {
+  background: var(--story-cream);
+}
+
+/* Vistas donde la frase es lo principal: centradas a la altura */
+.story-view--centered {
+  @apply flex flex-col justify-center;
+}
+
+/* Mitades del eje central */
+.story-axis-image {
+  @apply absolute top-24 bottom-0 left-12;
+  width: calc(50% - 48px);
+}
+
+.story-axis-image--right {
+  @apply right-12 left-1/2;
+  width: auto;
+}
+
+.story-axis-text {
+  @apply absolute top-36 bottom-16 flex flex-col gap-6;
+}
+
+.story-axis-text--right {
+  @apply right-24;
+  left: calc(50% + 48px);
+}
+
+.story-axis-text--left {
+  @apply left-24;
+  right: calc(50% + 48px);
+}
+
+/* Texto: tres niveles y una etiqueta */
+.story-label {
+  @apply text-xs tracking-[0.14em] uppercase;
+  color: var(--story-muted);
+}
+
+.story-title-xl {
+  @apply font-semibold;
+  font-size: 80px;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+.story-title-lg {
+  @apply font-semibold;
+  font-size: 48px;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+}
+
+.story-title-md {
+  @apply text-2xl leading-tight font-semibold tracking-tight;
+}
+
+.story-body {
+  @apply text-base leading-relaxed;
+  color: var(--story-muted);
+}
+
+.story-number {
+  @apply font-semibold;
+  font-size: 96px;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+}
+
+.story-brand {
+  @apply font-semibold;
+  font-size: 120px;
+  letter-spacing: -0.06em;
+  line-height: 0.82;
+}
+
+/* Franjas de hojas: solo en los títulos grandes */
+.story-stripes,
+.story-stripes .story-line__text {
+  background: var(--story-stripes);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Troquelado: placa sólida con las letras recortadas que dejan ver la imagen */
+.story-plate {
+  @apply px-10 pt-8 pb-9;
+  background: var(--story-cream);
+  color: var(--story-ink);
+}
+
+.story-plate .story-line__text {
+  background: var(--story-stripes);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Líneas de un título: cada una llega cubierta por su bloque */
+.story-line {
+  @apply relative block w-fit;
+}
+
+.story-line__text {
+  @apply block;
+}
+
+.story-line__block {
+  @apply absolute -inset-x-1 top-[2%] bottom-0 origin-right;
+  background: var(--story-ink);
+}
+
+[data-ax-lines] .story-line__block {
+  @apply hidden;
+}
+
+/* Columnas separadas por líneas finas */
+.story-columns {
+  @apply grid grid-cols-3;
+}
+
+.story-column {
+  @apply flex flex-col justify-between gap-6 border-l px-8;
+  border-color: var(--story-rule);
+}
+
+.story-column:first-child {
+  @apply border-l-0 pl-0;
+}
+
+.story-row {
+  @apply grid gap-4 border-t py-3.5;
+  grid-template-columns: 140px 1fr;
+  border-color: var(--story-rule);
+}
+
+.story-row__title {
+  @apply text-xl leading-snug font-semibold;
+}
+
+/* Listas con su marca: llena, vacía u oscura */
+.story-list li {
+  @apply relative border-t py-1.5 pl-5 text-base leading-snug;
+  border-color: var(--story-rule);
+}
+
+.story-list li::before {
+  @apply absolute top-3.5 left-0 size-2;
+  content: '';
+}
+
+.story-list--strengths li::before {
+  background: var(--story-light);
+}
+
+.story-list--gaps li::before {
+  border: 1px solid var(--story-ink);
+}
+
+.story-list--improvements li::before {
+  background: var(--story-fg);
+}
+
+.story-list--centered li {
+  @apply pl-0;
+}
+
+.story-list--centered li::before {
+  @apply static mr-2.5 inline-block align-[2px];
+}
+
+/* Celular (o "reducir movimiento"): todo en columna */
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .case-story__stage {
+    @apply h-auto overflow-visible;
+    overflow-x: clip;
+  }
+
+  .case-story__line--top,
+  .case-story__line--right,
+  .case-story__axis {
+    @apply hidden;
+  }
+
+  .case-story__line--left {
+    @apply fixed inset-y-0 left-3;
+  }
+
+  .case-story__green {
+    @apply relative inset-auto;
+  }
+
+  .story-view {
+    @apply relative inset-auto pt-14 pr-4 pb-10 pl-8;
+  }
+
+  .story-view--centered {
+    @apply block;
+  }
+
+  .story-axis-image,
+  .story-axis-image--right {
+    @apply relative inset-auto w-auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  .story-axis-text,
+  .story-axis-text--left,
+  .story-axis-text--right {
+    @apply relative inset-auto;
+  }
+
+  .story-axis-text--right {
+    @apply pt-10;
+  }
+
+  .story-axis-text--left {
+    @apply pb-10;
+  }
+
+  .story-title-xl {
+    font-size: 40px;
+  }
+
+  .story-title-lg {
+    font-size: 32px;
+  }
+
+  .story-number {
+    font-size: 64px;
+  }
+
+  .story-brand {
+    font-size: 80px;
+  }
+
+  .story-plate {
+    @apply px-5 pt-5 pb-6;
+  }
+
+  .story-columns {
+    @apply grid-cols-1 gap-8;
+  }
+
+  .story-column {
+    @apply border-t border-l-0 px-0 pt-8;
+  }
+
+  .story-column:first-child {
+    @apply border-t-0 pt-0;
+  }
+
+  .story-row {
+    @apply grid-cols-1 gap-1;
+  }
+}

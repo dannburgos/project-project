@@ -20,7 +20,12 @@ export function CaseScope({ groups, outTitle, out }: CaseScopeProps) {
             className="case-scope__group case-reveal__item"
             style={{ '--item-index': index } as CSSProperties}
           >
-            <span className="case-scope__eyebrow">{group.eyebrow}</span>
+            <p className="case-scope__eyebrow">
+              <span className="case-scope__number">{group.eyebrow}</span>
+              {group.label && (
+                <span className="case-scope__label">{group.label}</span>
+              )}
+            </p>
             <p className="case-scope__title">{group.title}</p>
             <ul className="case-scope__items">
               {group.items.map(item => (

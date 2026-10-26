@@ -1,0 +1,32 @@
+/* 01 · Introducción y respiro */
+.story-intro__headline {
+  @apply mt-6;
+}
+
+.story-intro__facts {
+  @apply mt-auto grid grid-cols-2 gap-x-6 gap-y-4 border-t pt-4;
+  border-color: var(--story-rule);
+}
+
+.story-intro__fact {
+  @apply mt-1 text-base;
+}
+
+.story-respite {
+  @apply p-0;
+}
+
+.story-respite__image {
+  @apply absolute inset-0;
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .story-respite {
+    @apply py-24;
+  }
+
+  .story-respite__image {
+    @apply relative inset-auto;
+    aspect-ratio: 4 / 5;
+  }
+}

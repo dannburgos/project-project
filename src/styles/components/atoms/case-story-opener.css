@@ -1,0 +1,32 @@
+/* Inicio de sección en celular: cuadrito, número con nombre y una línea. Con
+   aire arriba, para que cada sección arranque casi en su propia pantalla. En
+   computador no se ve: lo reemplaza el contador. */
+.story-opener {
+  @apply hidden;
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .story-opener {
+    @apply mb-10 flex items-center gap-3;
+    margin-top: 28vh;
+  }
+
+  .story-intro .story-opener {
+    @apply mt-10;
+  }
+
+  .story-opener__mark {
+    @apply size-3 shrink-0;
+    background: var(--story-light);
+  }
+
+  .story-opener__label {
+    @apply text-xs tracking-[0.14em] uppercase;
+    color: var(--story-muted);
+  }
+
+  .story-opener__rule {
+    @apply h-px flex-1 origin-left;
+    background: var(--story-fg);
+  }
+}

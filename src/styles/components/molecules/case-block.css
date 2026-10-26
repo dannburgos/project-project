@@ -26,12 +26,30 @@
 }
 
 .case-text__paragraph {
-  @apply text-muted-foreground text-base leading-relaxed md:text-lg;
+  @apply text-muted-foreground text-base leading-relaxed;
 }
 
-/* Frase grande que resume una idea */
+/* Jerarquía de los casos (regla acordada con Dann): tres niveles de texto.
+   1 · Idea principal: 24 px en celular y 32 px desde tableta (.case-statement
+       y las frases que hacen ese papel en otras piezas).
+   2 · Título de tarjeta: 24 px.
+   3 · Texto de apoyo: 16 px, en gris.
+   Las etiquetas en mayúsculas pequeñas solo nombran un grupo. */
+
+/* Frase grande que resume una idea (nivel 1): llena el ancho de su tarjeta,
+   sin dejar una palabra sola en la última línea */
 .case-statement {
-  @apply max-w-3xl text-2xl leading-tight font-semibold tracking-tight text-balance md:text-3xl;
+  @apply text-2xl leading-tight font-semibold tracking-tight text-pretty;
+}
+
+@media (min-width: 768px) {
+  .case-statement {
+    font-size: 2rem;
+  }
+}
+
+.case-statement__subtitle {
+  @apply text-muted-foreground mt-3 text-base leading-relaxed;
 }
 
 /* Aclaración discreta */
@@ -70,7 +88,7 @@
 }
 
 .case-cards__title {
-  @apply text-xl leading-snug font-semibold;
+  @apply text-2xl leading-snug font-semibold;
 }
 
 .case-cards__text {

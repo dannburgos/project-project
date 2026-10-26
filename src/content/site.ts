@@ -136,11 +136,6 @@ export const siteContent = {
     // Cada proyecto arma su ficha, su introducción y sus capítulos en
     // src/content/cases/. Aquí, las etiquetas que comparten los bloques.
     labels: {
-      persona: {
-        goal: 'Objetivo',
-        frustration: 'Frustración',
-        needs: 'Necesidades'
-      },
       flow: {
         goal: 'Objetivo',
         steps: 'Recorrido',
@@ -148,9 +143,6 @@ export const siteContent = {
       },
       benchmark: {
         apps: 'Aplicaciones analizadas'
-      },
-      cycle: {
-        restart: 'Y vuelve a empezar'
       },
       sequence: {
         hint: 'Sigue bajando'

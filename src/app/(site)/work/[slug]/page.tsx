@@ -4,10 +4,12 @@ import { CaseMedia } from '@/components/molecules/case-media';
 import { CaseChapters } from '@/components/organisms/case-chapters';
 import { CaseHero } from '@/components/organisms/case-hero';
 import { CaseMoreProjects } from '@/components/organisms/case-more-projects';
+import { CaseStory } from '@/components/organisms/case-story';
 import { ClosingContact } from '@/components/organisms/closing-contact';
 import { PageCurtain } from '@/components/organisms/page-curtain';
+import { getCaseStory } from '@/content/case-stories';
 import { getCaseStudy } from '@/content/case-studies';
-import { exampleProjects } from '@/content/site';
+import { exampleProjects, type ExampleProject } from '@/content/site';
 import { cn } from '@/lib/utils';
 
 type CaseStudyPageProps = {
@@ -22,6 +24,8 @@ export function generateStaticParams() {
 // 1 Banner con ficha e introducción · 2 Imagen que crece con el scroll ·
 // 3 Capítulos propios del proyecto en dos columnas · 4 Galería de proyectos
 // por ver · 5 Cierre de contacto. El tono del proyecto da el color de acento.
+// Los proyectos contados como recorrido (Planti) cambian 1 a 3 por su
+// escenario, con su propia marca.
 
 export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   const { slug } = await params;
@@ -29,8 +33,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   if (projectIndex === -1) notFound();
 
   const project = exampleProjects[projectIndex];
-  const caseStudy = getCaseStudy(project.slug);
-  const chapterIds = caseStudy.chapters.map(chapter => chapter.id);
+  const story = getCaseStory(project.slug);
 
   return (
     <div
@@ -41,14 +44,11 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
       )}
     >
       <PageCurtain variant="flush">
-        <CaseHero
-          project={project}
-          facts={caseStudy.facts}
-          headline={caseStudy.headline}
-          intro={caseStudy.intro}
-        />
-        <CaseMedia label={caseStudy.mediaLabel} />
-        <CaseChapters chapters={caseStudy.chapters} chapterIds={chapterIds} />
+        {story ? (
+          <CaseStory story={story} />
+        ) : (
+          <CaseChaptersStudy project={project} />
+        )}
 
         <CaseMoreProjects
           projects={exampleProjects}
@@ -58,5 +58,28 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
 
       <ClosingContact />
     </div>
+  );
+}
+
+type CaseChaptersStudyProps = {
+  project: ExampleProject;
+};
+
+// Caso por capítulos: banner, imagen que crece y capítulos en dos columnas
+function CaseChaptersStudy({ project }: CaseChaptersStudyProps) {
+  const caseStudy = getCaseStudy(project.slug);
+  const chapterIds = caseStudy.chapters.map(chapter => chapter.id);
+
+  return (
+    <>
+      <CaseHero
+        project={project}
+        facts={caseStudy.facts}
+        headline={caseStudy.headline}
+        intro={caseStudy.intro}
+      />
+      <CaseMedia label={caseStudy.mediaLabel} />
+      <CaseChapters chapters={caseStudy.chapters} chapterIds={chapterIds} />
+    </>
   );
 }

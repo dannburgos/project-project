@@ -1,0 +1,88 @@
+/* 03 · Usuario: la frase de Laura, quién es, sus rasgos y sus hallazgos */
+.story-user__quote {
+  @apply font-semibold;
+  font-size: 40px;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+}
+
+.story-user__who {
+  @apply flex items-center gap-6;
+}
+
+/* Laura y sus 4 plantas girando lento a su alrededor */
+.story-orbit {
+  @apply relative size-24 shrink-0 rounded-full border border-dashed;
+  border-color: var(--story-ink);
+}
+
+.story-orbit__avatar {
+  @apply absolute inset-6 rounded-full;
+  background: var(--story-ink);
+}
+
+.story-orbit__track {
+  @apply absolute inset-0;
+  animation: story-orbit 24s linear infinite;
+}
+
+.story-orbit__track[data-position='east'] {
+  animation-delay: -6s;
+}
+
+.story-orbit__track[data-position='south'] {
+  animation-delay: -12s;
+}
+
+.story-orbit__track[data-position='west'] {
+  animation-delay: -18s;
+}
+
+.story-orbit__plant {
+  @apply absolute -top-1.5 left-1/2 -ml-1.5 size-3;
+  background: var(--story-light);
+}
+
+@keyframes story-orbit {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.story-user__swap {
+  @apply relative mt-auto;
+  min-height: 300px;
+}
+
+.story-user__list {
+  @apply absolute inset-0 flex flex-col justify-end;
+}
+
+.story-user__findings-label {
+  @apply mb-2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-orbit__track {
+    animation: none;
+  }
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .story-user__quote {
+    font-size: 32px;
+  }
+
+  .story-user__swap {
+    @apply mt-6;
+    min-height: 0;
+  }
+
+  .story-user__list {
+    @apply relative inset-auto;
+  }
+
+  .story-user__list + .story-user__list {
+    @apply mt-14;
+  }
+}

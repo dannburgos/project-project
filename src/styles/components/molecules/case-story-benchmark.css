@@ -1,0 +1,55 @@
+/* 04 · Benchmark: las tres apps en una vista y los hallazgos en grande */
+.story-benchmark__title {
+  @apply mb-10;
+}
+
+.story-benchmark__app {
+  @apply justify-start gap-0;
+}
+
+.story-benchmark__head {
+  @apply mb-2 flex items-center gap-4;
+}
+
+.story-benchmark__icon {
+  @apply size-14 shrink-0 p-0;
+}
+
+.story-benchmark__icon .story-image__label {
+  @apply sr-only;
+}
+
+/* Títulos de categoría bien notorios, con su marca */
+.story-marker-title {
+  @apply mt-5 mb-1.5 flex items-center gap-2.5 text-base font-semibold tracking-wide;
+  color: var(--story-ink);
+}
+
+.story-marker-title::before {
+  @apply size-3 shrink-0;
+  content: '';
+}
+
+.story-marker-title--strengths::before {
+  background: var(--story-light);
+}
+
+.story-marker-title--gaps::before {
+  border: 1.5px solid var(--story-ink);
+}
+
+.story-marker-title--improvements::before {
+  background: var(--story-ink);
+}
+
+.story-findings {
+  @apply mt-10 mb-14;
+}
+
+.story-findings__item {
+  @apply justify-start;
+}
+
+.story-findings__item .story-number {
+  @apply w-fit;
+}

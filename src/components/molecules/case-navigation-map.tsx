@@ -27,13 +27,15 @@ export function CaseNavigationMap({ title, sections }: CaseNavigationMapProps) {
             <p className="case-navigation__description">
               {section.description}
             </p>
-            <ul className="case-navigation__children">
-              {section.children.map(child => (
-                <li key={child} className="case-navigation__child">
-                  {child}
-                </li>
-              ))}
-            </ul>
+            {section.children.length > 0 && (
+              <ul className="case-navigation__children">
+                {section.children.map(child => (
+                  <li key={child} className="case-navigation__child">
+                    {child}
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))}
       </ol>

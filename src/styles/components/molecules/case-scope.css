@@ -12,17 +12,26 @@
   @apply bg-card border-border flex flex-col gap-3 rounded-3xl border p-6;
 }
 
+/* Número y pilar del grupo */
 .case-scope__eyebrow {
-  @apply font-mono text-xs;
+  @apply flex items-baseline gap-2;
+}
+
+.case-scope__number {
+  @apply text-5xl leading-none font-semibold tracking-tight tabular-nums;
   color: var(--case-accent);
 }
 
+.case-scope__label {
+  @apply text-muted-foreground text-xs font-medium tracking-widest uppercase;
+}
+
 .case-scope__title {
-  @apply text-xl leading-snug font-semibold;
+  @apply text-2xl leading-snug font-semibold;
 }
 
 .case-scope__items {
-  @apply text-muted-foreground flex flex-col gap-2 text-sm leading-relaxed;
+  @apply text-muted-foreground border-border flex flex-col gap-2 border-t pt-4 text-base leading-relaxed;
 }
 
 .case-scope__items li {

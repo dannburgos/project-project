@@ -18,11 +18,6 @@
   @apply text-muted-foreground mb-4 hidden items-center gap-1 text-xs opacity-0 transition-opacity duration-300 md:flex;
 }
 
-.case-sequence__hint svg {
-  @apply size-4;
-  animation: nudge-down 1.8s ease-in-out infinite;
-}
-
 .case-sequence[data-state='active'] .case-sequence__hint {
   @apply opacity-100;
 }
@@ -58,8 +53,9 @@
   );
 }
 
+/* Número grande: es lo primero que se lee de cada tarjeta */
 .case-sequence__eyebrow {
-  @apply font-mono text-xs;
+  @apply mb-2 text-5xl leading-none font-semibold tracking-tight tabular-nums;
   color: var(--case-accent);
 }
 
@@ -89,10 +85,6 @@
 @media (prefers-reduced-motion: reduce) {
   .case-sequence__item {
     --lit: 1;
-  }
-
-  .case-sequence__hint svg {
-    animation: none;
   }
 
   .case-sequence__fill {

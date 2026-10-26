@@ -1,0 +1,52 @@
+/* 07 · Prototipo: el fondo vacío donde suben las pantallas, y el celular con
+   el prototipo interactivo, grande */
+.story-rain {
+  @apply overflow-hidden p-0;
+}
+
+.story-rain__stack {
+  @apply absolute inset-0;
+}
+
+.story-rain__card {
+  @apply absolute top-0 left-0;
+}
+
+.story-rain__card--main {
+  @apply rounded-3xl;
+}
+
+.story-prototype {
+  @apply flex flex-col items-center justify-center gap-5 pt-28 pb-6;
+}
+
+.story-prototype__phone {
+  @apply overflow-hidden border-2;
+  height: min(78vh, calc(100vh - 200px));
+  aspect-ratio: 1 / 2;
+  border-color: var(--story-cream);
+  border-radius: 52px;
+}
+
+.story-prototype__screen {
+  @apply size-full border-0;
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .story-rain {
+    height: 100svh;
+  }
+
+  .story-rain > .story-opener {
+    @apply absolute top-14 right-4 left-8 z-20 m-0;
+  }
+
+  .story-prototype {
+    @apply pt-6;
+    min-height: 100svh;
+  }
+
+  .story-prototype__phone {
+    height: 360px;
+  }
+}

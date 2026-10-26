@@ -78,28 +78,28 @@ diseña al iterarlo:
 Se revisan al iterar el capítulo al que pertenecen. Los que bloquean varios
 capítulos (marcados con ●) se resuelven aparte, cuanto antes.
 
-| Estado            | Pendiente                                                           | Dónde va                        | Quién                         |
-| ----------------- | ------------------------------------------------------------------- | ------------------------------- | ----------------------------- |
-| Hecho             | Categoría: Estilo de vida                                           | Ficha del banner                | Dann                          |
-| Descartado        | Año: no se usa en la ficha de ningún proyecto                       | —                               | Dann                          |
-| ● Pendiente       | Sistema de diseño de Planti                                         | `src/styles/domains/planti/`    | Dann                          |
-| ● Pendiente       | Prototipo interactivo (vibe coding)                                 | `src/domains/planti/` · Cap. 7  | Dann                          |
-| Hecho en borrador | Contenido propio y menú propio por proyecto                         | Página del caso                 | Claude                        |
-| Hecho en borrador | Textos de los 7 capítulos desde el documento maestro                | Todo el caso                    | Claude escribe, Dann revisa   |
-| Hecho en borrador | Tarjeta de la persona (Laura)                                       | Cap. 2                          | Claude                        |
-| Pendiente         | Foto o ilustración de Laura (o ninguna)                             | Cap. 2                          | Dann decide                   |
-| Hecho en borrador | Preguntas y respuestas simuladas                                    | Cap. 2                          | Claude                        |
-| Pendiente         | Tabla del benchmark (4 apps × 8 ejes): confirmar qué marca cada app | Cap. 3                          | Claude propone, Dann confirma |
-| Hecho en borrador | Fricciones, pilares y decisiones en tarjetas                        | Cap. 1, 4 y 5                   | Claude                        |
-| Hecho en borrador | Ciclo del concepto                                                  | Cap. 4                          | Claude                        |
-| Hecho en borrador | MVP: lo que entra y lo que queda fuera                              | Cap. 5                          | Claude                        |
-| Hecho en borrador | Mapa de navegación                                                  | Cap. 5                          | Claude                        |
-| Hecho en borrador | Recorrido de cada flujo en pasos                                    | Cap. 6                          | Claude                        |
-| Pendiente         | Flujos dinámicos y visualmente atractivos, sin capturas de pantalla | Cap. 6                          | Al iterar el capítulo         |
-| Hecho en borrador | Espacio del prototipo y su celular en el caso                       | Cap. 7                          | Claude                        |
-| Pendiente         | Imagen principal del caso                                           | Debajo del banner               | Sale del prototipo            |
-| Pendiente         | Imagen de la tarjeta de Planti                                      | Work, Home y "Sigue explorando" | Sale del prototipo            |
-| Pendiente         | Interacción propia de cada capítulo                                 | Cap. 1 a 7                      | Al iterar cada capítulo       |
+| Estado            | Pendiente                                                                 | Dónde va                        | Quién                       |
+| ----------------- | ------------------------------------------------------------------------- | ------------------------------- | --------------------------- |
+| Hecho             | Categoría: Estilo de vida                                                 | Ficha del banner                | Dann                        |
+| Descartado        | Año: no se usa en la ficha de ningún proyecto                             | —                               | Dann                        |
+| ● Pendiente       | Sistema de diseño de Planti                                               | `src/styles/domains/planti/`    | Dann                        |
+| ● Pendiente       | Prototipo interactivo (vibe coding)                                       | `src/domains/planti/` · Cap. 7  | Dann                        |
+| Hecho en borrador | Contenido propio y menú propio por proyecto                               | Página del caso                 | Claude                      |
+| Hecho en borrador | Textos de los 7 capítulos desde el documento maestro                      | Todo el caso                    | Claude escribe, Dann revisa |
+| Hecho en borrador | Tarjeta de la persona (Laura)                                             | Cap. 2                          | Claude                      |
+| Pendiente         | Foto o ilustración de Laura (o ninguna)                                   | Cap. 2                          | Dann decide                 |
+| Hecho en borrador | Preguntas y respuestas simuladas                                          | Cap. 2                          | Claude                      |
+| Descartado        | Tabla del benchmark (4 apps × 8 ejes): Dann prefirió una versión sencilla | Cap. 3                          | —                           |
+| Hecho en borrador | Fricciones, pilares y decisiones en tarjetas                              | Cap. 1, 4 y 5                   | Claude                      |
+| Hecho en borrador | Ciclo del concepto                                                        | Cap. 4                          | Claude                      |
+| Hecho en borrador | MVP: lo que entra y lo que queda fuera                                    | Cap. 5                          | Claude                      |
+| Hecho en borrador | Mapa de navegación                                                        | Cap. 5                          | Claude                      |
+| Hecho en borrador | Recorrido de cada flujo en pasos                                          | Cap. 6                          | Claude                      |
+| Pendiente         | Flujos dinámicos y visualmente atractivos, sin capturas de pantalla       | Cap. 6                          | Al iterar el capítulo       |
+| Hecho en borrador | Espacio del prototipo y su celular en el caso                             | Cap. 7                          | Claude                      |
+| Pendiente         | Imagen principal del caso                                                 | Debajo del banner               | Sale del prototipo          |
+| Pendiente         | Imagen de la tarjeta de Planti                                            | Work, Home y "Sigue explorando" | Sale del prototipo          |
+| Pendiente         | Interacción propia de cada capítulo                                       | Cap. 1 a 7                      | Al iterar cada capítulo     |
 
 ## Decisiones de diagramación
 
@@ -114,3 +114,74 @@ capítulos (marcados con ●) se resuelven aparte, cuanto antes.
   corre una vez. Textos condensados del documento maestro, aprobados por
   Dann; la frase de arriba es la de apertura ("Cuidar una planta parece
   sencillo…") para no repetir la frase de cierre.
+- **Usuario**: Dann descartó las seis primeras propuestas (ficha + chat,
+  contacto de chat, tarjeta que se voltea, mapa de empatía, sus plantas, cita
+  protagonista) y pidió algo resumido, con avatar y sin depender del scroll.
+  De tres nuevas (grilla bento, perfil + hallazgos, preguntas a un clic)
+  eligió **A · Grilla resumida**: Laura y su frase arriba, tres rasgos en el
+  medio y tres hallazgos (sintetizados de las 6 respuestas simuladas) abajo;
+  al pasar el mouse por un hallazgo se ve de qué preguntas sale. Sin la
+  etiqueta "Persona simulada" ni la nota final (decisión de Dann); queda la
+  marca "Hallazgos de 6 respuestas simuladas" en el título de los hallazgos.
+- **Usuario · casilla de Laura**: de tres opciones (datos con íconos, ficha
+  con cifras, plantas en órbita) Dann eligió **L3 · plantas en órbita**: el
+  avatar al centro y sus 4 plantas girando lento alrededor; debajo, "Laura" y
+  "28 años · Diseñadora gráfica · Apartamento". Hallazgos más bajos (la fuente
+  se despliega al pasar el mouse) y "Necesita" en una línea menos.
+- **Problema · nota metodológica**: Dann la quitó; la frase de cierre ocupa
+  todo el ancho. "Lo que haces" de la brecha se ilumina en verde cuando la
+  línea termina de dibujarse. Se quitó el ícono animado del aviso de las
+  fricciones.
+- **Benchmark**: tras varias rondas (matriz, mapa, Venn, camino, constelación,
+  etc.), Dann pidió algo sencillo: una fila de tarjetas, una por app, con lo
+  que hace en una palabra y 3 palabras clave (PictureThis · Identifica;
+  Planta · Organiza; Greg · Personaliza; LeafSnap · Explora), y al final
+  Planti destacado ("Lo convierte en cuidado diario" · Contexto, Acción,
+  Rutina). Debajo, una frase: "Cada app resuelve una parte. Planti busca unir
+  el contexto de cada planta con lo que hay que hacer cada día." Se quitaron
+  los 8 ejes, la síntesis y la nota de alcance.
+- **Benchmark (versión final)**: Dann pidió sacar a Planti del benchmark
+  (Planti nace de esta investigación, no se compara aquí), no inventar nada,
+  todo visible a la vez sin interacción y sin textos largos. Quedan 4 tarjetas
+  con el nombre de cada app y sus 3 palabras clave (las funciones que el
+  documento maestro les atribuye) y la frase "Cada app resuelve una parte.".
+  Se quitaron las palabras resumen ("Identifica", "Organiza"…) y la tarjeta de
+  Planti. No se usan porcentajes: el proyecto no tiene datos cuantitativos.
+- **Jerarquía de texto (regla para todo el caso, aprobada por Dann)**: tres
+  niveles. 1 · Idea principal: 32 px (24 px en celular). 2 · Título de
+  tarjeta: 24 px. 3 · Texto de apoyo: 16 px en gris. Las etiquetas en
+  mayúsculas solo nombran un grupo.
+- **Concepto + Definición fusionados** (aprobado por Dann): el caso queda en 6
+  capítulos (Problema, Usuario, Benchmark, Concepto, Flujos, Prototipo).
+  Concepto = idea principal ("Primero Planti aprende sobre tu planta. Después
+  te ayuda a cuidarla.") con la oportunidad como subtítulo; tres tarjetas, una
+  por pilar (Contexto, Acción, Rutina), cada una con su pregunta y lo que entra
+  al MVP; "Fuera del MVP" tachado; y la navegación de la app en cuatro
+  pestañas con una línea cada una. Se quitaron el ciclo, los párrafos, las
+  frases repetidas, las decisiones clave y las vistas complementarias.
+
+## Recorrido (aprobado por Dann el 2026-10-25)
+
+La interna de Planti dejó los capítulos y ahora se cuenta como **recorrido**,
+a partir del boceto `public/sketches/planti-scroll.html` (no se sube).
+
+- **Código**: contenido en `src/content/cases/planti-story.ts` (tipo
+  `CaseStory`), escenas en `src/components/molecules/case-story-*.tsx`,
+  organismo `case-story.tsx`, movimiento en `src/hooks/use-case-story.ts` y
+  `src/lib/case-story/` (GSAP + ScrollTrigger). `planti.ts` (capítulos) ya
+  no se usa; se conserva por el detalle de los flujos (pantallas y pasos).
+- **Computador**: un escenario fijo con esqueleto de líneas y un eje que se
+  desliza; un gesto de scroll = un paso (14 pasos), con la curva de impulso
+  y frenado. Lo anterior sale antes de que entre lo nuevo. Rodado horizontal
+  solo en 3 cambios (brecha → fricciones, usuario → benchmark, idea →
+  ¿Qué hace Planti?). De los flujos a la lluvia, el scroll mueve todo de
+  forma continua.
+- **Celular**: todo en columna, con aire entre secciones, entradas calmadas;
+  la lluvia y el celular del prototipo se fijan y los mueve el scroll.
+- **Marca**: mundo crema claro para la investigación y mundo verde con
+  degradado desde el concepto. Franjas de hojas solo en títulos grandes y
+  respiros; el título del concepto va troquelado en una placa crema.
+- **Benchmark**: PlantIn, PictureThis y Plant Parent (hace bien, le falta,
+  puede mejorar) y una vista de hallazgos con el cierre "Planti guía,
+  acompaña y educa, sin abrumar."
+- **Regla**: en ningún lado se dice que la investigación es simulada.

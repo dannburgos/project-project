@@ -28,9 +28,12 @@ export function SiteHeader() {
   const [openFor, setOpenFor] = useState<string | null>(null);
   const isMenuOpen = openFor === pathname;
 
-  // El logo queda blanco sobre superficies oscuras y oscuro sobre las claras
+  // El logo y la pastilla se adaptan al fondo que tienen debajo: blancos
+  // sobre superficies oscuras y oscuros sobre las claras
   const logoRef = useRef<HTMLAnchorElement>(null);
-  const isOverDark = useSurfaceUnder(logoRef, pathname);
+  const logoSurface = useSurfaceUnder(logoRef, pathname);
+  const barRef = useRef<HTMLDivElement>(null);
+  const barSurface = useSurfaceUnder(barRef, pathname);
 
   // Píldora de "exclusión" (referencia: rauno.me/craft/exclusion-tabs): una
   // píldora blanca con mezcla "exclusion" se desliza hasta la opción activa,
@@ -90,7 +93,8 @@ export function SiteHeader() {
         ref={logoRef}
         href="/"
         className="site-header__logo"
-        data-surface-dark={isOverDark}
+        data-surface-dark={logoSurface === 'dark'}
+        data-surface-light={logoSurface === 'light'}
         aria-label={siteContent.brand}
       >
         <BrandSymbol className="site-header__symbol" />
@@ -100,9 +104,12 @@ export function SiteHeader() {
           ))}
         </span>
       </Link>
-      <header className="site-header">
+      <header
+        className="site-header"
+        data-surface-light={barSurface === 'light'}
+      >
         <div className="site-header__bar">
-          <div className="site-header__inner">
+          <div ref={barRef} className="site-header__inner">
             <nav
               ref={navRef}
               aria-label="Principal"

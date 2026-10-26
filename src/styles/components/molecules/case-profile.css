@@ -1,0 +1,194 @@
+/* Perfil de usuario en grilla: la persona (casilla angosta) y su frase
+   (casilla ancha, con el degradado del acento) arriba; tres rasgos en el
+   medio; tres hallazgos abajo. En celular todo se apila. Las casillas entran
+   en cascada con "case-reveal__item" al llegar al bloque. */
+.case-profile {
+  @apply flex flex-col gap-3 md:gap-4;
+}
+
+.case-profile__top {
+  @apply grid gap-3 md:gap-4;
+}
+
+@media (min-width: 768px) {
+  .case-profile__top {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.9fr);
+  }
+}
+
+.case-profile__person {
+  @apply bg-card border-border flex flex-col items-center justify-center gap-4 rounded-3xl border p-6 text-center;
+}
+
+/* Laura y sus plantas en órbita: un anillo punteado y las plantas girando
+   lento a su alrededor (cada una gira al revés para quedar derecha). Con
+   "reducir movimiento" quedan quietas. */
+.case-profile__orbit {
+  @apply relative size-40;
+  --orbit-radius: 5rem;
+}
+
+.case-profile__ring {
+  @apply absolute inset-0 rounded-full border border-dashed;
+  border-color: var(--case-tint-border);
+}
+
+.case-profile__satellites {
+  @apply absolute inset-0;
+  animation: case-orbit 24s linear infinite;
+}
+
+.case-profile__satellite {
+  @apply absolute top-1/2 left-1/2;
+  --orbit-angle: calc(var(--orbit-index) * (360deg / var(--orbit-count)));
+  transform: rotate(var(--orbit-angle))
+    translateY(calc(var(--orbit-radius) * -1))
+    rotate(calc(var(--orbit-angle) * -1));
+}
+
+.case-profile__satellite-icon {
+  @apply bg-background flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-lg border;
+  border-color: var(--case-tint-border);
+  color: var(--case-accent);
+  animation: case-orbit 24s linear infinite reverse;
+}
+
+.case-profile__satellite-icon svg {
+  @apply size-4;
+}
+
+.case-profile__avatar {
+  @apply absolute top-1/2 left-1/2 flex size-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border;
+  color: var(--case-accent);
+  background-image: var(--case-tint-image);
+  border-color: var(--case-tint-border);
+}
+
+.case-profile__avatar svg {
+  @apply size-14;
+}
+
+@keyframes case-orbit {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.case-profile__name {
+  @apply text-2xl font-semibold tracking-tight;
+}
+
+.case-profile__facts {
+  @apply text-muted-foreground mt-1 text-sm;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-profile__satellites,
+  .case-profile__satellite-icon {
+    animation: none;
+  }
+}
+
+.case-profile__quote {
+  @apply bg-card flex items-center rounded-3xl border p-6 text-2xl leading-tight font-semibold tracking-tight text-pretty md:p-10;
+  background-image: var(--case-tint-image);
+  border-color: var(--case-tint-border);
+}
+
+@media (min-width: 768px) {
+  .case-profile__quote {
+    font-size: 2rem;
+  }
+}
+
+.case-profile__quote p::before {
+  content: '“';
+}
+
+.case-profile__quote p::after {
+  content: '”';
+}
+
+.case-profile__traits {
+  @apply grid gap-3 md:grid-cols-3 md:gap-4;
+}
+
+.case-profile__trait {
+  @apply bg-card border-border flex flex-col gap-2 rounded-3xl border p-6;
+}
+
+.case-profile__label {
+  @apply text-muted-foreground text-xs font-medium tracking-widest uppercase;
+}
+
+.case-profile__value {
+  @apply text-2xl leading-snug font-semibold;
+}
+
+.case-profile__findings-block {
+  @apply mt-4 flex flex-col gap-3 md:gap-4;
+}
+
+.case-profile__findings-title {
+  @apply text-muted-foreground text-xs font-medium tracking-widest uppercase;
+}
+
+.case-profile__findings {
+  @apply grid gap-3 md:grid-cols-3 md:gap-4;
+}
+
+.case-profile__finding {
+  @apply bg-card border-border flex flex-col gap-2 self-start rounded-3xl border p-6 outline-none;
+}
+
+.case-profile__number {
+  @apply font-mono text-xs;
+  color: var(--case-accent);
+}
+
+.case-profile__finding-title {
+  @apply text-2xl leading-snug font-semibold;
+}
+
+.case-profile__finding-text {
+  @apply text-muted-foreground leading-relaxed;
+}
+
+/* De qué preguntas sale el hallazgo: en celular se ve siempre; con mouse no
+   ocupa espacio y se despliega al pasar por la casilla o al enfocarla, así la
+   casilla es baja */
+.case-profile__source {
+  @apply text-muted-foreground border-border border-t pt-3 text-xs leading-relaxed;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .case-profile__source {
+    @apply mt-0 overflow-hidden border-t-0 pt-0 opacity-0;
+    max-height: 0;
+    transition:
+      max-height 300ms ease,
+      opacity 250ms ease,
+      padding 300ms ease;
+  }
+
+  .case-profile__finding:hover .case-profile__source,
+  .case-profile__finding:focus-visible .case-profile__source {
+    @apply border-t pt-3 opacity-100;
+    max-height: 4rem;
+  }
+}
+
+.case-profile__finding:focus-visible {
+  @apply ring-ring/50 ring-[3px];
+}
+
+.case-profile__finding:hover,
+.case-profile__finding:focus-visible {
+  border-color: var(--case-tint-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-profile__source {
+    transition: none;
+  }
+}

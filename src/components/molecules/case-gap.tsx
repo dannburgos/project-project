@@ -38,7 +38,7 @@ export function CaseGap({
     <div className={cn('case-gap__side', className)}>
       <p className="case-gap__label">{content.label}</p>
       <p className="case-gap__title">{content.title}</p>
-      <p className="case-gap__text">{content.text}</p>
+      {content.text && <p className="case-gap__text">{content.text}</p>}
     </div>
   );
 

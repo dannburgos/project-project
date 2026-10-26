@@ -1,59 +1,28 @@
-/* Benchmark: tarjetas de las apps con lo que ofrece cada una, los ejes de
-   comparación numerados y la síntesis */
+/* Benchmark: una fila de cuatro tarjetas (de a dos en tableta, una debajo de
+   otra en celular). Cada una con el nombre de la app y sus palabras clave,
+   todo a la vista. */
 .case-benchmark {
-  @apply flex flex-col gap-10;
+  @apply grid gap-3 sm:grid-cols-2 md:gap-4 xl:grid-cols-4;
 }
 
-.case-benchmark__apps {
-  @apply grid gap-3 sm:grid-cols-2 md:gap-4;
-}
-
-.case-benchmark__app {
-  @apply bg-card border-border flex flex-col gap-3 rounded-3xl border p-6;
-}
-
-.case-benchmark__monogram {
-  @apply bg-muted flex size-10 items-center justify-center rounded-xl text-lg font-semibold;
+.case-benchmark__card {
+  @apply bg-card border-border flex flex-col gap-5 rounded-3xl border p-6;
 }
 
 .case-benchmark__name {
-  @apply text-xl font-semibold;
+  @apply text-2xl font-semibold tracking-tight;
 }
 
-.case-benchmark__features {
-  @apply flex flex-wrap gap-2;
+.case-benchmark__keywords {
+  @apply flex flex-col gap-2;
 }
 
-.case-benchmark__feature {
-  @apply border-border text-muted-foreground rounded-full border px-3 py-1 text-xs md:text-sm;
+.case-benchmark__keyword {
+  @apply border-border text-muted-foreground flex items-center gap-2 border-t pt-2 text-base;
 }
 
-.case-benchmark__axes {
-  @apply grid gap-2 sm:grid-cols-2;
-  counter-reset: axis;
-}
-
-.case-benchmark__axis {
-  @apply bg-card border-border flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm;
-  counter-increment: axis;
-}
-
-.case-benchmark__axis::before {
-  @apply font-mono text-xs;
-  content: counter(axis, decimal-leading-zero);
-  color: var(--case-accent);
-}
-
-.case-benchmark__synthesis {
-  @apply text-muted-foreground flex max-w-prose flex-col gap-3 leading-relaxed md:text-lg;
-}
-
-.case-benchmark__synthesis li {
-  @apply relative pl-6;
-}
-
-.case-benchmark__synthesis li::before {
-  @apply absolute top-3 left-0 h-px w-3;
+.case-benchmark__keyword::before {
+  @apply size-1.5 shrink-0 rounded-full;
   content: '';
   background-color: var(--case-accent);
 }

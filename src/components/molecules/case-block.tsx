@@ -2,14 +2,12 @@ import { BarChart3, ImageIcon, Quote } from 'lucide-react';
 
 import { CaseBenchmark } from '@/components/molecules/case-benchmark';
 import { CaseCards } from '@/components/molecules/case-cards';
-import { CaseCycle } from '@/components/molecules/case-cycle';
 import { CaseFlow } from '@/components/molecules/case-flow';
 import { CaseGap } from '@/components/molecules/case-gap';
-import { CaseInterview } from '@/components/molecules/case-interview';
 import { CaseList } from '@/components/molecules/case-list';
 import { CaseNavigationMap } from '@/components/molecules/case-navigation-map';
 import { CaseNote } from '@/components/molecules/case-note';
-import { CasePersona } from '@/components/molecules/case-persona';
+import { CaseProfile } from '@/components/molecules/case-profile';
 import { CasePrototype } from '@/components/molecules/case-prototype';
 import { CaseScope } from '@/components/molecules/case-scope';
 import { CaseSequence } from '@/components/molecules/case-sequence';
@@ -71,6 +69,9 @@ export function CaseBlock({ block }: CaseBlockProps) {
       return (
         <div className={surfaceClass(block.tone ?? 'tint')}>
           <CaseStatement text={block.text} />
+          {block.subtitle && (
+            <p className="case-statement__subtitle">{block.subtitle}</p>
+          )}
         </div>
       );
 
@@ -97,21 +98,11 @@ export function CaseBlock({ block }: CaseBlockProps) {
         </div>
       );
 
-    case 'persona':
-      return <CasePersona {...block} />;
-
-    case 'interview':
-      return (
-        <div className={surfaceClass(block.tone ?? 'flat')}>
-          <CaseInterview {...block} />
-        </div>
-      );
+    case 'profile':
+      return <CaseProfile {...block} />;
 
     case 'benchmark':
       return <CaseBenchmark {...block} />;
-
-    case 'cycle':
-      return <CaseCycle {...block} />;
 
     case 'scope':
       return <CaseScope {...block} />;
