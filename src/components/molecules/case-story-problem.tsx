@@ -8,7 +8,8 @@ type CaseStoryProblemProps = {
 };
 
 // 02 · Problema en tres vistas: la frase con la brecha (centradas), las tres
-// fricciones que llegan rodando y el reto con los referentes
+// fricciones que llegan rodando (con el chat de Laura al lado) y el reto con
+// los referentes
 export function CaseStoryProblem({
   problem,
   sectionName
@@ -48,20 +49,68 @@ export function CaseStoryProblem({
         <p className="story-label story-frictions__label" data-fade>
           {problem.frictionsLabel}
         </p>
-        <div className="story-columns story-frictions__columns">
-          {problem.frictions.map(friction => (
-            <div
-              key={friction.number}
-              className="story-column"
-              data-part="column"
-            >
-              <p className="story-number">{friction.number}</p>
-              <div>
-                <p className="story-title-lg">{friction.title}</p>
-                <p className="story-body">{friction.question}</p>
+        <div className="story-frictions__track">
+          {/* El camino: una línea que pasa por las tres fricciones y sigue */}
+          <span className="story-frictions__path" data-part="path" />
+          <div className="story-columns story-frictions__columns">
+            {problem.frictions.map(friction => (
+              <div
+                key={friction.number}
+                className="story-column story-frictions__step"
+                data-part="column"
+              >
+                <i className="story-frictions__node" data-part="node" />
+                <p className="story-number" data-part="step-part">
+                  {friction.number}
+                </p>
+                <div className="story-frictions__body">
+                  <p className="story-title-lg" data-part="step-part">
+                    {friction.title}
+                  </p>
+                  <p
+                    className="story-frictions__question"
+                    data-part="step-part"
+                  >
+                    {friction.question}
+                  </p>
+                  <p className="story-body" data-part="step-part">
+                    {friction.text}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Laura escribe: cuando el camino pasa por cada fricción, aparece
+              "escribiendo…" y luego llega su mensaje */}
+          <aside className="story-chat" aria-label={problem.voiceName}>
+            <p className="story-chat__head">
+              <span className="story-chat__avatar" aria-hidden="true" />
+              {problem.voiceName}
+            </p>
+            <ul className="story-chat__list">
+              {problem.frictions.map(friction => (
+                <li
+                  key={friction.number}
+                  className="story-chat__item"
+                  data-part="chat-item"
+                >
+                  <span
+                    className="story-chat__typing"
+                    data-part="typing"
+                    aria-hidden="true"
+                  >
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                  <p className="story-chat__bubble" data-part="bubble">
+                    {friction.voice}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </aside>
         </div>
       </div>
 

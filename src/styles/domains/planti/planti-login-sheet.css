@@ -1,0 +1,62 @@
+@keyframes planti-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.planti-splash__scrim {
+  @apply absolute inset-0;
+  background: rgb(10 14 6 / 0.5);
+  animation: planti-fade-in 0.4s both;
+}
+
+.planti-login-sheet {
+  @apply absolute inset-x-0 -bottom-8 z-10 flex flex-col px-6 pt-8 pb-16;
+  border-radius: 28px 28px 0 0;
+  background: var(--planti-white);
+  color: var(--planti-ink);
+  animation: planti-sheet-in 0.85s linear both;
+}
+
+.planti-login-sheet__title {
+  @apply mb-6 text-center font-medium;
+  font-size: 24px;
+  line-height: 32px;
+  color: var(--planti-charcoal);
+}
+
+.planti-login-sheet__fields {
+  @apply flex flex-col gap-3;
+}
+
+.planti-login-sheet__options {
+  @apply mt-4 flex flex-col gap-3;
+}
+
+.planti-login-sheet__forgot {
+  @apply text-base leading-6;
+}
+
+.planti-login-sheet .planti-button {
+  @apply mt-5 h-10 text-base font-medium;
+  border-radius: 14px;
+  background: var(--planti-grass);
+}
+
+@keyframes planti-sheet-in {
+  0% {
+    transform: translateY(100%);
+    animation-timing-function: cubic-bezier(0.22, 0.8, 0.3, 1);
+  }
+  62% {
+    transform: translateY(-3%);
+    animation-timing-function: ease-in-out;
+  }
+  82% {
+    transform: translateY(1.2%);
+    animation-timing-function: ease-in-out;
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

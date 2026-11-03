@@ -1,0 +1,93 @@
+/* Carta de un proyecto en el carrusel de Work. Mientras no haya imagen, el
+   espacio lleva el color de la marca del proyecto. El marco (referencia:
+   productionportugal.com/locations) aparece a medida que la carta llega al
+   centro (--nearness, de 0 a 1, lo pone el carrusel). */
+.work-card {
+  @apply relative block outline-none;
+}
+
+.work-card:focus-visible .work-card__image {
+  @apply ring-2 ring-white;
+}
+
+.work-card__image {
+  @apply relative flex aspect-4/5 items-end overflow-hidden p-4;
+}
+
+.work-card--green .work-card__image {
+  background: linear-gradient(160deg, #a2c96c 0%, #678e35 45%, #3d5718 100%);
+}
+
+.work-card--purple .work-card__image {
+  background: linear-gradient(160deg, #b39ce6 0%, #6b52a8 45%, #3c2a6b 100%);
+}
+
+.work-card--neutral .work-card__image {
+  background: linear-gradient(160deg, #6b7280 0%, #3f4652 45%, #23272f 100%);
+}
+
+/* Etiqueta sobre la imagen: aparece a medida que la carta llega al centro
+   (misma señal que el marco, --nearness) */
+.work-card__tag {
+  @apply absolute top-3 left-3 z-10 border border-white/70 bg-black/35 px-3 py-1 text-xs tracking-wide text-white backdrop-blur-sm;
+  opacity: clamp(0, calc((var(--nearness, 0) - 0.5) * 2), 1);
+}
+
+.work-card__photo {
+  @apply absolute inset-0 size-full object-cover;
+}
+
+.work-card__label {
+  @apply text-xs tracking-widest text-white/75 uppercase;
+}
+
+/* Marco del protagonista: una línea fina pegada al borde de la carta y un
+   cuadrito blanco en cada esquina */
+.work-card__frame {
+  @apply pointer-events-none absolute inset-0 z-10 border border-white/85;
+  opacity: var(--nearness, 0);
+}
+
+.work-card__corner {
+  @apply absolute size-2.5 bg-white;
+}
+
+.work-card__corner--top-left {
+  @apply -top-[5px] -left-[5px];
+}
+
+.work-card__corner--top-right {
+  @apply -top-[5px] -right-[5px];
+}
+
+.work-card__corner--bottom-left {
+  @apply -bottom-[5px] -left-[5px];
+}
+
+.work-card__corner--bottom-right {
+  @apply -right-[5px] -bottom-[5px];
+}
+
+/* Nombre y frase debajo: solo con "reducir movimiento" (si no, los muestra
+   el carrusel alrededor del protagonista) */
+.work-card__caption {
+  @apply hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-card__caption {
+    @apply mt-4 flex flex-col gap-1 text-white;
+  }
+
+  .work-card__name {
+    @apply text-xl font-medium;
+  }
+
+  .work-card__industry {
+    @apply text-sm text-white/70;
+  }
+
+  .work-card__summary {
+    @apply text-base text-white/85;
+  }
+}

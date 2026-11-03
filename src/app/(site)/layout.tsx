@@ -1,5 +1,9 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import {
+  Geist,
+  Geist_Mono,
+  Playfair_Display as PlayfairDisplay
+} from 'next/font/google';
 
 import { CustomCursor } from '@/components/atoms/custom-cursor';
 import { SmoothScroll } from '@/components/atoms/smooth-scroll';
@@ -9,6 +13,12 @@ import '../globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
+  subsets: ['latin']
+});
+
+// Tipografía con serifa para el título de About ("About Me")
+const playfair = PlayfairDisplay({
+  variable: '--font-serif',
   subsets: ['latin']
 });
 
@@ -31,7 +41,7 @@ export default function RootLayout({
     // Todo el sitio en modo oscuro: activa la paleta oscura del tema
     <html lang="es" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
       >
         <SmoothScroll />
         <CustomCursor />

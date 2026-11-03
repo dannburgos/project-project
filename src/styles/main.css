@@ -9,6 +9,7 @@
 @import './components/atoms/case-story-image.css';
 @import './components/atoms/case-story-opener.css';
 @import './components/molecules/showcase-card.css';
+@import './components/molecules/work-carousel-card.css';
 @import './components/molecules/home-media-placeholder.css';
 @import './components/molecules/case-stage.css';
 @import './components/molecules/about-section.css';
@@ -42,6 +43,7 @@
 @import './components/organisms/about-personal.css';
 @import './components/organisms/case-chapters.css';
 @import './components/organisms/case-story.css';
+@import './components/organisms/work-carousel.css';
 @import './components/organisms/closing-contact.css';
 @import './components/organisms/page-curtain.css';
 @import './components/organisms/intro.css';

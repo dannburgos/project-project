@@ -1,0 +1,48 @@
+/* Portada (frame de Figma, medido sobre su captura de 722 px = 375 px): foto de
+   hojas a pantalla completa (por ahora, color y una hoja), el nombre en el
+   centro y los dos botones abajo. Texto blanco sobre la foto. */
+.planti-splash {
+  @apply relative flex flex-1 flex-col justify-between px-6 pt-64 pb-20;
+  background: var(--planti-forest);
+  color: var(--planti-white);
+}
+
+.planti-splash__photo {
+  @apply absolute inset-0 size-full object-cover;
+}
+
+.planti-splash__brand {
+  @apply relative mx-3 flex flex-col items-center text-center text-balance;
+}
+
+.planti-splash__eyebrow {
+  @apply font-medium;
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.planti-splash__name {
+  @apply mb-1 font-extrabold;
+  font-size: 76px;
+  line-height: 80px;
+}
+
+.planti-splash__tagline {
+  @apply flex w-full items-center justify-between border-t pt-4 text-base leading-6;
+  border-color: var(--planti-white);
+}
+
+.planti-splash__actions {
+  @apply relative flex flex-col gap-2.5;
+}
+
+.planti-splash__actions .planti-button {
+  @apply h-10 text-base font-medium;
+  border-radius: 14px;
+  background: var(--planti-grass);
+}
+
+.planti-splash__actions .planti-button--light {
+  background: var(--planti-white);
+  color: var(--planti-stone);
+}

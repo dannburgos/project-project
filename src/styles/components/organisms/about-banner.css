@@ -1,37 +1,160 @@
-/* Banner grande de About: oscuro, de borde a borde y del alto de la ventana.
-   El título enorme queda abajo a la izquierda; la nota, arriba a la derecha. */
-.about-banner {
-  @apply flex flex-col justify-between gap-10 bg-black px-4 pb-8 text-white md:px-8 md:pb-12 lg:px-12;
-  padding-top: calc(var(--site-header-clearance) + 0.5rem);
-  min-height: 100svh;
+/* Banner de About: el título "About Me" son ventanas recortadas en una capa
+   oscura. Con el scroll, la pantalla se acerca a la "o" y por el interior de
+   las letras aparece "Quién soy". En computador el escenario se fija; en
+   celular y con "reducir movimiento" no hay zoom. */
+.about-intro {
+  @apply relative bg-black text-white;
+  --intro-cream: #f3efe6;
+  --intro-ink: #1c1a16;
 }
 
-.about-banner > * {
-  animation: fade-up 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+.about-intro__stage {
+  @apply relative h-svh overflow-hidden;
+  background: var(--intro-cream);
 }
 
-.about-banner__top {
-  @apply flex items-start justify-between gap-6;
+/* Lo que se ve por dentro de las letras: una sección clara */
+.about-intro__reveal {
+  @apply absolute inset-0 flex flex-col justify-center gap-6 px-4 pt-32 pb-12 md:px-12 lg:px-24;
+  color: var(--intro-ink);
+  background: var(--intro-cream);
 }
 
-/* Espacio para la foto: un cuadro con su etiqueta */
-.about-banner__photo {
-  @apply flex size-24 shrink-0 items-center justify-center rounded-2xl border border-dashed border-white/30 bg-white/10 text-sm text-white/60 md:size-40;
+.about-intro__label {
+  @apply text-xs tracking-[0.14em] uppercase;
+  color: rgb(28 26 22 / 0.55);
 }
 
-.about-banner__note {
-  @apply max-w-md text-right text-sm text-white/60 md:text-base;
+.about-intro__statement {
+  @apply max-w-4xl font-medium tracking-tight;
+  font-family: var(--font-serif), serif;
+  font-size: clamp(2rem, 4.6vw, 4.5rem);
+  line-height: 1.05;
 }
 
-.about-banner__title {
-  @apply order-last font-medium tracking-[-0.05em];
-  font-size: clamp(5rem, 24vw, 22rem);
-  line-height: 0.85;
-  animation-delay: 120ms;
+.about-intro__text {
+  @apply max-w-2xl text-lg leading-relaxed;
+  color: rgb(28 26 22 / 0.75);
 }
 
+.about-intro__groups ul {
+  @apply mt-3 flex flex-wrap gap-2;
+}
+
+.about-intro__groups li {
+  @apply border px-4 py-1.5 text-sm;
+  border-color: rgb(28 26 22 / 0.3);
+}
+
+/* El título y lo que lo rodea. El lienzo mantiene una proporción fija: las
+   notas y el zoom se ubican en porcentajes de él */
+.about-intro__art {
+  @apply absolute left-1/2 z-10;
+  top: calc(50% + 40px);
+  translate: -50% -50%;
+  aspect-ratio: 1000 / 560;
+  width: min(100vw, calc((100svh - 96px) * 1000 / 560));
+}
+
+.about-intro__svg {
+  @apply absolute inset-0 size-full overflow-visible;
+}
+
+.about-intro__cover {
+  fill: #0b0b0b;
+}
+
+/* Líneas finas: se dibujan con el trazo (pathLength = 1) */
+.about-intro__guides line {
+  stroke: rgb(255 255 255 / 0.18);
+  stroke-width: 1;
+  stroke-dasharray: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.about-intro__guides line[data-leader] {
+  stroke: rgb(255 255 255 / 0.55);
+}
+
+/* Notas: una por letra, centradas bajo (o sobre) su línea */
+.about-intro__notes {
+  @apply absolute inset-0;
+}
+
+.about-intro__note {
+  @apply absolute text-xs leading-snug text-white/85;
+  width: 17%;
+  translate: -50% 0;
+}
+
+.about-intro__note[data-side='top'] {
+  translate: -50% -100%;
+}
+
+.about-intro__note-letter {
+  @apply mr-1.5 inline-block;
+  font-family: var(--font-serif), serif;
+  font-size: 1.25em;
+  font-style: italic;
+  color: #fff;
+}
+
+.about-intro__list {
+  @apply hidden;
+}
+
+.about-intro__hint {
+  @apply absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-xs tracking-[0.14em] whitespace-nowrap text-white/60 uppercase;
+}
+
+/* Solo computador o solo celular */
+.about-intro[data-layout='mobile'] .about-intro__layout--desktop,
+.about-intro[data-layout='desktop'] .about-intro__layout--mobile,
+.about-intro:not([data-layout]) .about-intro__layout--mobile {
+  display: none;
+}
+
+/* Celular: el título en dos líneas y las notas en una lista corta debajo */
+.about-intro[data-layout='mobile'] .about-intro__art {
+  top: 96px;
+  translate: -50% 0;
+  aspect-ratio: 600 / 640;
+  width: min(100vw, calc((100svh - 330px) * 600 / 640));
+}
+
+.about-intro[data-layout='mobile'] .about-intro__notes {
+  @apply hidden;
+}
+
+.about-intro[data-layout='mobile'] .about-intro__list {
+  @apply absolute inset-x-6 bottom-20 z-10 flex flex-col gap-1.5 text-sm leading-snug text-white/85;
+}
+
+/* Reducir movimiento: sin zoom; todo visible y apilado */
 @media (prefers-reduced-motion: reduce) {
-  .about-banner > * {
-    animation: none;
+  .about-intro__stage {
+    @apply h-auto;
+  }
+
+  .about-intro__art {
+    @apply relative top-auto left-auto mx-auto mt-28 translate-x-0 translate-y-0;
+    translate: none;
+    background: var(--intro-cream);
+  }
+
+  .about-intro__svg {
+    @apply overflow-hidden;
+  }
+
+  .about-intro__reveal {
+    @apply relative inset-auto py-20;
+  }
+
+  .about-intro__hint {
+    @apply hidden;
+  }
+
+  .about-intro[data-layout='mobile'] .about-intro__list {
+    @apply relative inset-auto mt-6 mb-10;
   }
 }

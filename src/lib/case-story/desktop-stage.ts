@@ -10,6 +10,7 @@ import {
   CLIP_HIDDEN_LEFT,
   CLIP_HIDDEN_RIGHT,
   CLIP_SHOWN,
+  LINE_BLOCK,
   STORY_CURVE,
   STORY_JUMP_EVENT,
   addBlockReveal,
@@ -35,8 +36,6 @@ const FLOWS_STEP = 11;
 const RAIN_STEP = 12;
 
 const PARK = 48;
-// Franja de navegación de arriba: la línea del esqueleto va debajo de ella
-const BAND = 96;
 const GESTURE_GAP_MS = 220;
 const RAIN_DISTANCE_PX = 2600;
 const LINE_ON_GREEN = 'rgba(162, 201, 108, 0.3)';
@@ -110,31 +109,6 @@ export function setupDesktopStage(root: HTMLElement) {
       );
     }
   };
-  // Bisagra: el eje se va al borde y la imagen se abre a todo el ancho
-  const hinge = (name: string, from: string) => {
-    tl.set(
-      view(name),
-      {
-        autoAlpha: 1,
-        clipPath: `inset(${BAND}px ${width / 2}px 0px ${PARK}px)`
-      },
-      '+=0.01'
-    );
-    tl.to(view(name), { clipPath: 'inset(0px 0px 0px 0px)', duration: 1.7 });
-    tl.fromTo(
-      `${view(name)} [data-respite-image]`,
-      { scale: 1.1 },
-      { scale: 1, duration: 2, ease: 'expo.out' },
-      '<'
-    );
-    moveAxis(parkRight, '<', 1.7);
-    tl.to(
-      `${view(from)} [data-axis-text]`,
-      { x: width * 0.4, autoAlpha: 0, duration: 1.4 },
-      '<'
-    );
-    hide(view(from));
-  };
   // Barrido: la línea cruza la pantalla y descubre la capa nueva
   const sweep = (name: string, previous: string) => {
     const isFromRight = axisX > width / 2;
@@ -151,12 +125,25 @@ export function setupDesktopStage(root: HTMLElement) {
     hide(view(previous));
   };
   // Rodado horizontal: el módulo rueda a la izquierda y el siguiente llega
-  // rodando desde la derecha, con sus piezas en capas
+  // rodando desde la derecha, con sus piezas en capas. Si el eje está entre
+  // los márgenes (dividiendo el módulo), se va pegado a él a la misma
+  // velocidad: así nunca cruza por encima del texto. Ya fuera de pantalla,
+  // reaparece con un fundido en su nuevo lugar.
   const roll = (out: string, next: string, parts: string, axisTo?: number) => {
+    const isAxisInside = axisX > PARK + 1 && axisX < parkRight - 1;
+    tl.addLabel(`${out}-roll`);
     tl.to(view(out), { x: -width, duration: 1.8 });
     show(view(next), '<');
     tl.fromTo(view(next), { x: width }, { x: 0, duration: 1.8 }, '<');
-    const pieces = all(`${view(next)} ${parts}`);
+    // Cada parte se busca solo dentro del módulo que llega
+    const pieces = parts
+      ? all(
+          parts
+            .split(',')
+            .map(part => `${view(next)} ${part.trim()}`)
+            .join(', ')
+        )
+      : [];
     if (pieces.length) {
       tl.fromTo(
         pieces,
@@ -165,7 +152,15 @@ export function setupDesktopStage(root: HTMLElement) {
         '<0.05'
       );
     }
-    if (axisTo !== undefined) moveAxis(axisTo, '<', 1.8);
+    if (isAxisInside) {
+      const target = axisTo ?? PARK;
+      tl.to('[data-axis]', { x: axisX - width, duration: 1.8 }, `${out}-roll`);
+      tl.set('[data-axis]', { autoAlpha: 0, x: target }, `${out}-roll+=1.8`);
+      tl.to('[data-axis]', { autoAlpha: 1, duration: 0.5 }, '>');
+      axisX = target;
+    } else if (axisTo !== undefined) {
+      moveAxis(axisTo, `${out}-roll`, 1.8);
+    }
     hide(view(out));
   };
 
@@ -177,10 +172,17 @@ export function setupDesktopStage(root: HTMLElement) {
   // 0 · Introducción, la más pausada
   axisIn('intro', { slow: 1.3 });
   mark();
-  // 1 · Respiro
-  hinge('respite', 'intro');
+  // 1 · Respiro: la introducción rueda a la izquierda y el respiro llega
+  // rodando desde la derecha (la imagen no se agranda)
+  roll('intro', 'respite', '[data-respite-image]', PARK);
   mark();
-  // 2 · Problema: la frase llega cubierta y se destapa; luego la brecha
+  // 2 · Problema: la línea aparece en el borde derecho y cruza la pantalla
+  // descubriendo la frase, que llega cubierta y se destapa; luego la brecha
+  tl.set('[data-axis]', { autoAlpha: 0, x: parkRight }, '+=0.01').to(
+    '[data-axis]',
+    { autoAlpha: 1, duration: 0.3 }
+  );
+  axisX = parkRight;
   sweep('problem', 'respite');
   addBlockReveal(tl, one(`${view('problem')} [data-reveal]`), '-=0.2');
   tl.fromTo(
@@ -196,7 +198,46 @@ export function setupDesktopStage(root: HTMLElement) {
   );
   mark();
   // 3 · Rueda hacia las tres fricciones
-  roll('problem', 'frictions', '[data-part="column"]');
+  // El módulo llega rodando; luego una línea recorre las tres fricciones como
+  // un camino y sigue hasta el borde. Al pasar por cada parada, su cuadrito
+  // aparece con un impulso y su contenido sube, una fricción tras otra.
+  roll('problem', 'frictions', '');
+  tl.addLabel('frictions-path', '-=0.5');
+  tl.fromTo(
+    `${view('frictions')} [data-part="path"]`,
+    { scaleX: 0 },
+    { scaleX: 1, duration: 2.6, ease: 'power2.inOut' },
+    'frictions-path'
+  );
+  all(`${view('frictions')} [data-part="column"]`).forEach((column, index) => {
+    const at = `frictions-path+=${0.25 + index * 0.6}`;
+    tl.fromTo(
+      column.querySelector('[data-part="node"]'),
+      { scale: 0 },
+      { scale: 1, duration: 0.7, ease: 'back.out(3)' },
+      at
+    ).fromTo(
+      queryAll(column, '[data-part="step-part"]'),
+      { y: 60, autoAlpha: 0 },
+      { y: 0, autoAlpha: 1, duration: 1.2, stagger: 0.08 },
+      at
+    );
+  });
+  // Laura escribe: en cada parada aparece "escribiendo…" y luego su mensaje
+  all(`${view('frictions')} [data-part="chat-item"]`).forEach((item, index) => {
+    const at = `frictions-path+=${0.45 + index * 0.6}`;
+    const typing = item.querySelector('[data-part="typing"]');
+    const bubble = item.querySelector('[data-part="bubble"]');
+    tl.fromTo(typing, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, at)
+      .to(typing, { autoAlpha: 0, duration: 0.15 }, `${at}+=0.7`)
+      .fromTo(
+        bubble,
+        { autoAlpha: 0, y: 12, scale: 0.96, transformOrigin: 'left top' },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+        `${at}+=0.8`
+      );
+  });
+
   mark();
   // 4 · El reto con los referentes
   leave(view('frictions'));
@@ -408,6 +449,7 @@ export function setupDesktopStage(root: HTMLElement) {
     window.scrollTo(0, trigger.start + stepLength * step);
   };
 
+  const titleBlocks = all(LINE_BLOCK);
   const notifySurface = () =>
     window.dispatchEvent(new Event(SURFACE_CHANGE_EVENT));
 
@@ -434,17 +476,28 @@ export function setupDesktopStage(root: HTMLElement) {
       from < 0
         ? tl.labels[labels[step]]
         : Math.abs(tl.labels[labels[step]] - tl.time());
+    // Al volver se rebobina el movimiento (lo que entró por la derecha sale
+    // por la derecha), más rápido y sin bloques: los títulos nunca se
+    // vuelven a tapar; el bloque solo aparece al avanzar
+    const isGoingBack = from > step;
+    const keepTitlesUncovered = () => {
+      if (isGoingBack) gsap.set(titleBlocks, { scaleX: 0 });
+    };
     let frame = 0;
     playing = tl.tweenTo(labels[step], {
-      duration: gsap.utils.clamp(1.4, 3.2, distance * 0.9),
+      duration: isGoingBack
+        ? gsap.utils.clamp(0.9, 1.4, distance * 0.5)
+        : gsap.utils.clamp(1.4, 3.2, distance * 0.9),
       ease: 'none',
       // El logo y el menú del sitio revisan el fondo mientras cambian las
       // capas (la página no se mueve)
       onUpdate: () => {
+        keepTitlesUncovered();
         frame += 1;
         if (frame % 8 === 0) notifySurface();
       },
       onComplete: () => {
+        keepTitlesUncovered();
         isBusy = false;
         notifySurface();
       }

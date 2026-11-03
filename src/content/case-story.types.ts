@@ -19,6 +19,10 @@ export type CaseStoryFriction = {
   number: string;
   title: string;
   question: string;
+  // Qué la provoca, en una línea
+  text: string;
+  // Cómo la vive el perfil, con su propia voz (llega como un mensaje)
+  voice: string;
 };
 
 export type CaseStoryApp = {
@@ -26,7 +30,6 @@ export type CaseStoryApp = {
   focus: string;
   strengths: readonly string[];
   gaps: readonly string[];
-  improvements: readonly string[];
 };
 
 export type CaseStoryPillar = {
@@ -56,7 +59,6 @@ export type CaseStory = {
     headline: string;
     text: string;
     facts: readonly CaseFact[];
-    imageLabel: string;
   };
   respiteLabel: string;
   problem: {
@@ -65,6 +67,8 @@ export type CaseStory = {
     done: CaseStoryLabeledText;
     frictionsLabel: string;
     frictions: readonly CaseStoryFriction[];
+    // Nombre de quien escribe en el chat de las fricciones
+    voiceName: string;
     challenge: string;
     references: readonly string[];
   };
@@ -81,7 +85,6 @@ export type CaseStory = {
     title: string;
     strengthsLabel: string;
     gapsLabel: string;
-    improvementsLabel: string;
     apps: readonly CaseStoryApp[];
     findingsLabel: string;
     findings: readonly string[];

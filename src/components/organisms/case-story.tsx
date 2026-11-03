@@ -10,10 +10,12 @@ import { CaseStoryPrototype } from '@/components/molecules/case-story-prototype'
 import { CaseStoryRespite } from '@/components/molecules/case-story-respite';
 import { CaseStoryUser } from '@/components/molecules/case-story-user';
 import type { CaseStory as CaseStoryContent } from '@/content/case-story.types';
+import type { ProjectCover } from '@/content/site';
 import { useCaseStory } from '@/hooks/use-case-story';
 
 type CaseStoryProps = {
   story: CaseStoryContent;
+  cover: ProjectCover;
 };
 
 // Caso contado como recorrido (Planti): un escenario fijo con un esqueleto de
@@ -22,7 +24,7 @@ type CaseStoryProps = {
 // una franja libre para la navegación del sitio (logo, menú y contador), que
 // se adapta al fondo de cada mundo. El movimiento lo arma useCaseStory; aquí
 // solo va el contenido.
-export function CaseStory({ story }: CaseStoryProps) {
+export function CaseStory({ story, cover }: CaseStoryProps) {
   const ref = useCaseStory<HTMLDivElement>();
   const { sections } = story;
 
@@ -51,7 +53,11 @@ export function CaseStory({ story }: CaseStoryProps) {
           data-skeleton-line
         />
 
-        <CaseStoryIntro intro={story.intro} sectionName={sections[0]} />
+        <CaseStoryIntro
+          intro={story.intro}
+          cover={cover}
+          sectionName={sections[0]}
+        />
         <CaseStoryRespite label={story.respiteLabel} section={0} />
         <CaseStoryProblem problem={story.problem} sectionName={sections[1]} />
         <CaseStoryUser user={story.user} sectionName={sections[2]} />

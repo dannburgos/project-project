@@ -1,0 +1,318 @@
+/* Piezas compartidas por las pantallas de un flujo: cabecera con volver,
+   pie con el botón, panel de la planta, opciones, campos y resumen de planta */
+.planti-screen-header {
+  @apply mb-4 flex items-center gap-3;
+}
+
+.planti-screen-header__title {
+  @apply text-2xl leading-8 font-bold;
+  color: var(--planti-forest);
+}
+
+.planti-screen__footer {
+  @apply absolute inset-x-5 bottom-27 flex flex-col gap-3;
+}
+
+/* Panel de la planta: recortada sobre fondo crema */
+.planti-plant-hero {
+  @apply relative flex items-center justify-center overflow-hidden rounded-2xl border;
+  background: var(--planti-white);
+  color: var(--planti-grass);
+  border-color: var(--planti-card-border);
+  box-shadow: var(--planti-shadow);
+}
+
+.planti-plant-hero--large {
+  @apply h-58;
+}
+
+.planti-plant-hero--large > svg {
+  @apply size-28;
+}
+
+/* Rótulo con el nombre de la planta, sobre su foto */
+.planti-plant-hero__caption {
+  @apply absolute bottom-3 left-3 rounded-full border px-3 py-1.5 text-sm font-medium;
+  background: rgb(255 255 255 / 0.92);
+  border-color: var(--planti-card-border);
+  color: var(--planti-ink);
+}
+
+.planti-plant-hero--tall {
+  @apply h-64;
+}
+
+.planti-plant-hero > svg {
+  @apply size-16;
+}
+
+.planti-plant-hero--tall > svg {
+  @apply size-32;
+}
+
+/* Opciones y campos */
+.planti-field {
+  @apply mt-5;
+}
+
+.planti-field__label {
+  @apply mb-3 text-sm font-semibold;
+}
+
+.planti-chip-list {
+  @apply flex flex-wrap gap-2;
+}
+
+.planti-choice-chip {
+  @apply inline-flex h-11 items-center rounded-full border px-5 text-sm font-medium;
+  background: var(--planti-white);
+  color: var(--planti-stone);
+  border-color: var(--planti-card-border);
+}
+
+.planti-choice-chip--selected {
+  background: var(--planti-leaf);
+  color: var(--planti-white);
+  border-color: var(--planti-leaf);
+}
+
+/* Una planta en pequeño */
+.planti-plant-summary {
+  @apply flex items-center gap-3 rounded-2xl border p-3;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  box-shadow: var(--planti-shadow);
+}
+
+.planti-plant-summary__photo {
+  @apply flex size-14 shrink-0 items-center justify-center rounded-xl border;
+  background: var(--planti-white);
+  color: var(--planti-grass);
+  border-color: var(--planti-card-border);
+}
+
+.planti-plant-summary__photo svg {
+  @apply size-7;
+}
+
+.planti-plant-summary__name {
+  @apply text-base leading-6 font-semibold;
+}
+
+.planti-plant-summary__detail {
+  @apply text-sm leading-5;
+  color: var(--planti-stone);
+}
+
+/* Contenido que se desliza bajo la cabecera, sin barra visible; el espacio de
+   abajo deja pasar el botón fijo */
+.planti-screen__scroll {
+  @apply -mx-5 flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pt-5 pb-44;
+  scrollbar-width: none;
+  mask-image: linear-gradient(to bottom, transparent, black 16px);
+}
+
+/* Lo que se desliza conserva su tamaño: no se aplasta para caber */
+.planti-screen__scroll > * {
+  @apply shrink-0;
+}
+
+.planti-screen__scroll::-webkit-scrollbar {
+  @apply hidden;
+}
+
+/* Cursor al escribir un nombre */
+.planti-field__caret {
+  @apply ml-0.5 inline-block h-5 w-0.5 rounded-full align-middle;
+  background: var(--planti-leaf);
+  animation: planti-caret 1s steps(1) infinite;
+}
+
+/* Lo que se elige se nota: cambia de color con suavidad y hace un pequeño
+   rebote */
+.planti-choice-chip,
+.planti-look-tile {
+  transition:
+    background-color 0.35s,
+    border-color 0.35s,
+    color 0.35s;
+}
+
+.planti-look-tile__label {
+  transition: background-color 0.35s;
+}
+
+.planti-choice-chip--selected,
+.planti-look-tile--selected {
+  animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes planti-select {
+  40% {
+    transform: scale(1.04);
+  }
+}
+
+.planti-personalize__fields {
+  @apply mt-5 flex flex-col gap-3;
+}
+
+.planti-input {
+  @apply flex h-12 items-center gap-3 rounded-2xl border px-4 text-base;
+  background: var(--planti-white);
+  border-color: var(--planti-input-border);
+  color: var(--planti-ink);
+}
+
+.planti-input > svg {
+  @apply size-6 shrink-0;
+  color: var(--planti-placeholder);
+  stroke-width: 1.5;
+}
+
+.planti-input__text {
+  @apply flex flex-1 items-center;
+}
+
+.planti-input--empty .planti-input__text {
+  color: var(--planti-placeholder);
+}
+
+.planti-input--tapped {
+  animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.planti-checkbox {
+  @apply flex items-center gap-3 text-base leading-6;
+}
+
+.planti-checkbox__box {
+  @apply flex size-5 shrink-0 items-center justify-center rounded-md border-2;
+  border-color: var(--planti-placeholder);
+  color: var(--planti-grass);
+  transition: border-color 0.3s;
+}
+
+.planti-checkbox__box svg {
+  @apply size-4;
+}
+
+.planti-checkbox__box svg path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+}
+
+.planti-checkbox--checked .planti-checkbox__box {
+  border-color: var(--planti-grass);
+}
+
+.planti-checkbox--checked .planti-checkbox__box svg path {
+  animation: planti-draw 0.4s cubic-bezier(0.65, 0, 0.35, 1) 0.15s forwards;
+}
+
+.planti-button,
+.planti-choice-chip,
+.planti-look-tile,
+.planti-match-tile,
+.planti-swatch__color,
+.planti-checkbox__box,
+.planti-input {
+  @apply relative overflow-hidden;
+}
+
+.planti-button {
+  --tap-dot: rgb(255 255 255 / 0.35);
+  --tap-ring: rgb(255 255 255 / 0.85);
+  --tap-wave: rgb(255 255 255 / 0.3);
+}
+
+.planti-button--light,
+.planti-button--secondary {
+  --tap-dot: rgb(61 87 24 / 0.25);
+  --tap-ring: rgb(61 87 24 / 0.55);
+  --tap-wave: rgb(61 87 24 / 0.16);
+}
+
+.planti-choice-chip--selected,
+.planti-swatch__color {
+  --tap-dot: rgb(255 255 255 / 0.4);
+  --tap-ring: rgb(255 255 255 / 0.9);
+  --tap-wave: rgb(255 255 255 / 0.3);
+}
+
+:is(
+  .planti-button--pressed,
+  .planti-button--loading,
+  .planti-choice-chip--selected,
+  .planti-look-tile--selected,
+  .planti-match-tile--active,
+  .planti-input--tapped,
+  .planti-checkbox--checked .planti-checkbox__box,
+  .planti-swatch--selected .planti-swatch__color
+)::before {
+  @apply pointer-events-none absolute z-10 size-8 rounded-full border-2 opacity-0 content-[''];
+  left: var(--tap-x, 50%);
+  top: var(--tap-y, 52%);
+  margin: -16px 0 0 -16px;
+  background: var(--tap-dot, rgb(61 87 24 / 0.22));
+  border-color: var(--tap-ring, rgb(61 87 24 / 0.55));
+  animation: planti-tap-dot 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+:is(
+  .planti-button--pressed,
+  .planti-button--loading,
+  .planti-choice-chip--selected,
+  .planti-look-tile--selected,
+  .planti-match-tile--active,
+  .planti-input--tapped,
+  .planti-checkbox--checked .planti-checkbox__box,
+  .planti-swatch--selected .planti-swatch__color
+)::after {
+  @apply pointer-events-none absolute z-10 size-4 scale-0 rounded-full content-[''];
+  left: var(--tap-x, 50%);
+  top: var(--tap-y, 52%);
+  margin: -8px 0 0 -8px;
+  background: var(--tap-wave, rgb(61 87 24 / 0.16));
+  animation: planti-tap-wave 0.75s ease-out 0.12s forwards;
+}
+
+.planti-onboarding__next--pressed::before {
+  @apply pointer-events-none absolute size-8 rounded-full border-2 opacity-0 content-[''];
+  left: 50%;
+  top: 52%;
+  margin: -16px 0 0 -16px;
+  background: rgb(255 255 255 / 0.35);
+  border-color: rgb(255 255 255 / 0.85);
+  animation: planti-tap-dot 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes planti-tap-dot {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes planti-tap-wave {
+  from {
+    opacity: 1;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(24);
+  }
+}

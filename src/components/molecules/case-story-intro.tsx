@@ -1,25 +1,33 @@
 import { CaseStoryImage } from '@/components/atoms/case-story-image';
 import { CaseStoryOpener } from '@/components/atoms/case-story-opener';
 import type { CaseStory } from '@/content/case-story.types';
+import type { ProjectCover } from '@/content/site';
 
 type CaseStoryIntroProps = {
   intro: CaseStory['intro'];
+  // La portada del proyecto: la misma imagen de su carta en Work
+  cover: ProjectCover;
   sectionName: string;
 };
 
 // 01 · Introducción con eje central: la imagen crece desde el eje hacia la
 // izquierda y el nombre, el titular y la ficha se destapan hacia la derecha
-export function CaseStoryIntro({ intro, sectionName }: CaseStoryIntroProps) {
+export function CaseStoryIntro({
+  intro,
+  cover,
+  sectionName
+}: CaseStoryIntroProps) {
   return (
     <div className="story-view story-intro" data-view="intro" data-section="0">
       <CaseStoryOpener number="01" name={sectionName} />
       <CaseStoryImage
-        label={intro.imageLabel}
+        label={cover.label}
+        src={cover.src}
         className="story-axis-image"
         data-axis-image
       />
       <div className="story-axis-text story-axis-text--right" data-axis-text>
-        <h1 className="story-brand story-stripes" data-ax>
+        <h1 className="story-brand" data-ax>
           {intro.name}
         </h1>
         <p className="story-title-md" data-ax>

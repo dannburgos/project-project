@@ -1,0 +1,558 @@
+/* Pantallas del flujo 1: buscar, detalle, necesidades y planta registrada */
+
+/* Buscar planta */
+.planti-search-field {
+  @apply flex h-11.5 items-center gap-3 rounded-full px-4 text-base;
+  background: var(--planti-fog);
+}
+
+.planti-search-field svg {
+  @apply size-5 shrink-0;
+  color: #9e9e9e;
+}
+
+.planti-search-field__placeholder {
+  color: #9e9e9e;
+}
+
+.planti-search-field__caret {
+  @apply h-5 w-0.5 rounded-full;
+  background: var(--planti-leaf);
+  animation: planti-caret 1s steps(1) infinite;
+}
+
+@keyframes planti-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.planti-search-count {
+  @apply mt-6 mb-3 text-sm;
+  color: var(--planti-stone);
+}
+
+.planti-search-results {
+  @apply flex flex-col gap-3;
+}
+
+.planti-result {
+  @apply flex items-center gap-3 rounded-2xl border p-3;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  box-shadow: var(--planti-shadow);
+}
+
+.planti-result--active {
+  border-color: var(--planti-grass);
+  box-shadow: var(--planti-shadow);
+}
+
+.planti-result__photo {
+  @apply flex size-14 shrink-0 items-center justify-center rounded-xl border;
+  background: var(--planti-white);
+  color: var(--planti-grass);
+  border-color: var(--planti-card-border);
+}
+
+.planti-result__photo svg {
+  @apply size-7;
+}
+
+.planti-result__text {
+  @apply flex-1;
+}
+
+.planti-result__name {
+  @apply text-base leading-6 font-semibold;
+}
+
+.planti-result__scientific {
+  @apply text-sm leading-5 italic;
+  color: var(--planti-stone);
+}
+
+.planti-result > svg {
+  @apply size-5 shrink-0;
+  color: var(--planti-mist);
+}
+
+/* Detalle de la planta elegida */
+.planti-plant-detail__name {
+  @apply mt-5 text-2xl leading-8 font-bold;
+  color: var(--planti-forest);
+}
+
+.planti-plant-detail__scientific {
+  @apply text-sm leading-5 italic;
+  color: var(--planti-stone);
+}
+
+.planti-plant-detail__traits {
+  @apply mt-3 flex gap-2;
+}
+
+.planti-plant-detail__trait {
+  @apply rounded-lg px-2.5 py-1 text-sm font-medium;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-plant-detail__description {
+  @apply mt-4 text-sm leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-plant-detail__section {
+  @apply mt-6 mb-3 text-base leading-6 font-semibold;
+}
+
+.planti-plant-detail__note {
+  @apply mt-4 text-sm leading-5;
+  color: var(--planti-stone);
+}
+
+/* Planta registrada */
+.planti-registered {
+  @apply items-center pt-32 text-center text-balance;
+}
+
+.planti-registered__check {
+  @apply mb-6 flex size-20 items-center justify-center rounded-full;
+  background: var(--planti-leaf);
+  color: var(--planti-white);
+}
+
+.planti-registered__check svg {
+  @apply size-10;
+}
+
+.planti-registered__title {
+  @apply mb-2 text-2xl leading-8 font-bold;
+  color: var(--planti-forest);
+}
+
+.planti-registered__text {
+  @apply mb-8 text-sm leading-5;
+  color: var(--planti-stone);
+}
+
+.planti-registered .planti-plant-summary {
+  @apply w-full text-left;
+}
+
+/* Buscar por cómo se ve: pregunta, formas, tamaño y color, y las coincidencias */
+.planti-search-question {
+  @apply mb-3 text-2xl leading-8 font-bold;
+  color: var(--planti-forest);
+}
+
+.planti-search-field + .planti-search-question {
+  @apply mt-6;
+}
+
+.planti-look-grid {
+  @apply grid grid-cols-2 gap-3;
+}
+
+.planti-option-group {
+  @apply mt-2;
+}
+
+.planti-option-group + .planti-option-group {
+  @apply mt-6;
+}
+
+.planti-summary-chips {
+  @apply mb-4 flex flex-wrap gap-2;
+}
+
+.planti-summary-chips__item {
+  @apply rounded-lg px-2.5 py-1 text-sm font-medium;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-match-grid {
+  @apply grid grid-cols-2 gap-3;
+}
+
+.planti-match-tile {
+  @apply flex h-52 flex-col overflow-hidden rounded-2xl border;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  box-shadow: var(--planti-shadow);
+}
+
+.planti-match-tile__photo {
+  @apply flex h-32 items-center justify-center border-b;
+  background: var(--planti-white);
+  color: var(--planti-grass);
+  border-color: var(--planti-card-border);
+}
+
+.planti-match-tile__photo svg {
+  @apply size-12;
+}
+
+.planti-match-tile__info {
+  @apply px-3 pt-3;
+}
+
+.planti-match-tile__name {
+  @apply text-sm leading-5 font-semibold;
+}
+
+.planti-match-tile__look {
+  @apply text-sm leading-5;
+  color: var(--planti-stone);
+}
+
+.planti-match-tile--active {
+  border-color: var(--planti-grass);
+}
+
+.planti-match-tile--none {
+  @apply items-center justify-center gap-1 border-dashed px-3 text-center text-balance;
+  border-color: var(--planti-mist);
+  box-shadow: none;
+}
+
+.planti-match-tile--none svg {
+  @apply mb-1 size-6;
+  color: var(--planti-mist);
+}
+
+.planti-match-tile--none .planti-match-tile__look {
+  @apply font-medium;
+  color: var(--planti-grass);
+}
+
+/* Entradas del recorrido: las tarjetas de la galería suben una tras otra, las
+   etiquetas y filas de Necesidades aparecen juntas y el check se dibuja */
+.planti-match-grid > * {
+  animation: planti-rise 0.4s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.planti-match-grid > :nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.planti-match-grid > :nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.planti-match-grid > :nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.planti-registered__check svg path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: planti-draw 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.25s forwards;
+}
+
+@keyframes planti-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes planti-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.planti-needs__top {
+  @apply relative z-0 flex h-80;
+}
+
+.planti-needs__intro {
+  @apply flex w-3/5 flex-col;
+}
+
+.planti-needs__name {
+  @apply mb-1 font-bold;
+  font-size: 28px;
+  line-height: 32px;
+}
+
+.planti-needs__tagline {
+  @apply mb-4 text-sm leading-5;
+  color: var(--planti-stone);
+}
+
+.planti-needs__facts {
+  @apply flex flex-col gap-2;
+}
+
+.planti-needs__fact {
+  @apply flex items-center gap-3 text-sm leading-5;
+  animation: planti-rise 0.4s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.planti-needs__fact:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.planti-needs__fact:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.planti-needs__fact:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.planti-needs__fact-icon {
+  @apply flex size-9 shrink-0 items-center justify-center rounded-full border;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  color: var(--planti-grass);
+}
+
+.planti-needs__fact-icon svg {
+  @apply size-5;
+}
+
+/* La foto, grande y sin tarjeta; la hoja de abajo tapa su base */
+.planti-needs__plant {
+  @apply absolute top-0 -right-2 flex h-full w-44 items-end justify-center;
+  color: var(--planti-grass);
+  animation: planti-fade-in 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.1s both;
+}
+
+.planti-needs__plant svg {
+  @apply size-36;
+}
+
+.planti-needs__sheet {
+  @apply relative z-10 -mx-5 -mt-8 rounded-t-3xl border-t px-5 pt-6;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  box-shadow: 0 -6px 18px rgb(35 51 14 / 0.08);
+  animation: planti-rise 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.3s both;
+}
+
+.planti-needs__title {
+  @apply mb-3 text-2xl leading-8 font-bold;
+  color: var(--planti-forest);
+}
+
+/* ¿Cómo es tu planta?: cuatro tarjetas grandes, con la imagen arriba y el
+   nombre abajo; la elegida lleva borde verde oscuro y su nombre sobre verde
+   claro */
+.planti-look-tile {
+  @apply flex h-48 flex-col overflow-hidden rounded-2xl border;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  box-shadow: var(--planti-shadow);
+}
+
+.planti-look-tile__icon {
+  @apply flex flex-1 items-center justify-center border-b;
+  border-color: var(--planti-card-border);
+  color: var(--planti-grass);
+}
+
+.planti-look-tile__icon svg {
+  @apply size-12;
+}
+
+.planti-look-tile__label {
+  @apply flex h-16 items-start px-3 py-3 text-sm leading-5 font-semibold;
+}
+
+.planti-look-tile--selected {
+  border-color: var(--planti-leaf);
+}
+
+.planti-look-tile--selected .planti-look-tile__label {
+  background: var(--planti-dew);
+}
+
+/* Cuéntanos más: el tamaño, con la planta que crece y un deslizador */
+.planti-size__stage {
+  @apply flex h-40 items-center justify-center rounded-2xl border;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  box-shadow: var(--planti-shadow);
+  color: var(--planti-grass);
+}
+
+.planti-size__stage svg {
+  @apply size-20;
+  transform: scale(0.55);
+  opacity: 0.6;
+  transition:
+    transform 0.6s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0.6s;
+}
+
+.planti-size--small .planti-size__stage svg {
+  transform: scale(0.55);
+  opacity: 1;
+}
+
+.planti-size--medium .planti-size__stage svg {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.planti-size--big .planti-size__stage svg {
+  transform: scale(1.4);
+  opacity: 1;
+}
+
+.planti-size__track {
+  @apply relative mx-3 mt-6 h-1.5 rounded-full;
+  background: var(--planti-dew);
+}
+
+.planti-size__fill {
+  @apply absolute top-0 left-0 h-full w-0 rounded-full;
+  background: var(--planti-grass);
+  transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.planti-size__thumb {
+  @apply absolute top-1/2 left-0 size-7 -translate-x-1/2 -translate-y-1/2 rounded-full border-2;
+  background: var(--planti-white);
+  border-color: var(--planti-mist);
+  box-shadow: var(--planti-shadow);
+  transition:
+    left 0.6s cubic-bezier(0.65, 0, 0.35, 1),
+    border-color 0.6s;
+}
+
+.planti-size--small .planti-size__thumb,
+.planti-size--medium .planti-size__thumb,
+.planti-size--big .planti-size__thumb {
+  border-color: var(--planti-leaf);
+}
+
+.planti-size--medium .planti-size__fill {
+  @apply w-1/2;
+  animation: planti-size-fill 1.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.planti-size--medium .planti-size__thumb {
+  @apply left-1/2;
+  animation: planti-size-thumb 1.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.planti-size--medium .planti-size__stage svg {
+  animation: planti-size-leaf 1.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.planti-size--medium .planti-size__hint {
+  animation: planti-fade-in 0.3s ease-out 1.4s both;
+}
+
+@keyframes planti-size-thumb {
+  from {
+    left: 0;
+  }
+  55%,
+  62% {
+    left: 100%;
+  }
+  to {
+    left: 50%;
+  }
+}
+
+@keyframes planti-size-fill {
+  from {
+    width: 0;
+  }
+  55%,
+  62% {
+    width: 100%;
+  }
+  to {
+    width: 50%;
+  }
+}
+
+@keyframes planti-size-leaf {
+  from {
+    transform: scale(0.55);
+  }
+  55%,
+  62% {
+    transform: scale(1.4);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.planti-size--big .planti-size__fill {
+  @apply w-full;
+}
+
+.planti-size--big .planti-size__thumb {
+  @apply left-full;
+}
+
+.planti-size__stops {
+  @apply mt-3 flex justify-between text-sm leading-5;
+  color: var(--planti-stone);
+}
+
+.planti-size__stop--active {
+  @apply font-semibold;
+  color: var(--planti-ink);
+}
+
+.planti-size__hint {
+  @apply mt-2 text-sm leading-5;
+  color: var(--planti-stone);
+}
+
+/* Cuéntanos más: el color de las hojas, en muestras redondas */
+.planti-swatch-list {
+  @apply flex justify-between gap-2;
+}
+
+.planti-swatch {
+  @apply flex flex-1 flex-col items-center gap-2 text-center text-sm leading-5;
+}
+
+.planti-swatch__color {
+  @apply size-14 rounded-full border-4;
+  border-color: var(--planti-white);
+  box-shadow: 0 0 0 1px var(--planti-card-border);
+  transition: box-shadow 0.35s;
+}
+
+.planti-swatch__color--plain {
+  background: var(--planti-grass);
+}
+
+.planti-swatch__color--patterned {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--planti-grass) 0 5px,
+    var(--planti-sprout) 5px 10px
+  );
+}
+
+.planti-swatch__color--other {
+  background: linear-gradient(
+    135deg,
+    var(--planti-terracotta-ink) 50%,
+    #7b5ea7 50%
+  );
+}
+
+.planti-swatch--selected {
+  @apply font-semibold;
+}
+
+.planti-swatch--selected .planti-swatch__color {
+  box-shadow: 0 0 0 3px var(--planti-leaf);
+  animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}

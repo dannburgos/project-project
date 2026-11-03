@@ -2,3 +2,16 @@
    los del portafolio: cada prototipo trae su propio sistema de diseño. */
 @import 'tailwindcss';
 @import './domains/planti/planti.css';
+@import './domains/planti/planti-stage.css';
+@import './domains/planti/planti-button.css';
+@import './domains/planti/planti-splash-screen.css';
+@import './domains/planti/planti-login-sheet.css';
+@import './domains/planti/planti-onboarding-screen.css';
+@import './domains/planti/planti-card.css';
+@import './domains/planti/planti-screen-parts.css';
+@import './domains/planti/planti-plant-screens.css';
+@import './domains/planti/planti-empty-panel.css';
+@import './domains/planti/planti-home-screen.css';
+@import './domains/planti/planti-home-banner.css';
+@import './domains/planti/planti-week-agenda.css';
+@import './domains/planti/planti-plants-grid.css';

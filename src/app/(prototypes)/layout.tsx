@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist } from 'next/font/google';
+import { Geist, Poppins } from 'next/font/google';
 
 import { cn } from '@/lib/utils';
 import '@/styles/prototypes.css';
@@ -7,6 +7,13 @@ import '@/styles/prototypes.css';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin']
+});
+
+// Tipografía de Planti (UI Kit)
+const poppins = Poppins({
+  variable: '--font-poppins',
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800']
 });
 
 export const metadata: Metadata = {
@@ -23,7 +30,9 @@ export default function PrototypesLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={cn(geistSans.variable, 'antialiased')}>{children}</body>
+      <body className={cn(geistSans.variable, poppins.variable, 'antialiased')}>
+        {children}
+      </body>
     </html>
   );
 }

@@ -28,8 +28,106 @@
   @apply mb-10;
 }
 
-.story-frictions__columns {
+.story-frictions__track {
+  @apply relative grid gap-12;
+  grid-template-columns: minmax(0, 1fr) 300px;
   height: calc(100% - 56px);
+}
+
+.story-frictions__columns {
+  @apply h-full;
+}
+
+/* El camino: pasa por encima de los tres números y sigue hasta el borde */
+.story-frictions__path {
+  @apply absolute top-0 left-0 h-px origin-left;
+  right: -96px;
+  background: var(--story-ink);
+}
+
+.story-frictions__step {
+  @apply relative justify-start gap-0 pt-8;
+}
+
+/* Cada fricción es una parada del camino */
+.story-frictions__node {
+  @apply absolute -top-1.5 left-0 size-3;
+  background: var(--story-light);
+}
+
+.story-frictions__step:not(:first-child) .story-frictions__node {
+  @apply left-8;
+}
+
+/* Todas las fricciones reservan el mismo alto abajo: así sus títulos quedan
+   a la misma altura aunque las preguntas tengan largos distintos */
+.story-frictions__body {
+  @apply mt-auto flex min-h-56 flex-col justify-start gap-3;
+}
+
+.story-frictions__question {
+  @apply text-xl leading-snug font-semibold;
+}
+
+/* Chat de Laura: sus mensajes llegan uno a uno, como en una app de
+   mensajes, mientras el camino pasa por cada fricción */
+.story-chat {
+  @apply flex flex-col gap-4 self-end pt-8;
+}
+
+.story-chat__head {
+  @apply flex items-center gap-2.5 border-b pb-3 text-sm font-semibold;
+  border-color: var(--story-rule);
+}
+
+.story-chat__avatar {
+  @apply size-6 rounded-full;
+  background: var(--story-ink);
+}
+
+.story-chat__list {
+  @apply flex flex-col gap-3;
+}
+
+.story-chat__item {
+  @apply relative min-h-11;
+}
+
+.story-chat__bubble {
+  @apply w-fit max-w-full rounded-2xl rounded-tl-sm px-4 py-2.5 text-base leading-snug;
+  background: var(--story-tone);
+  color: var(--story-ink);
+}
+
+/* "Escribiendo…": tres puntos que saltan */
+.story-chat__typing {
+  @apply absolute top-0 left-0 flex h-10 items-center gap-1 rounded-2xl rounded-tl-sm px-4 opacity-0;
+  background: var(--story-tone);
+}
+
+.story-chat__typing i {
+  @apply size-1.5 rounded-full;
+  background: var(--story-mute);
+  animation: story-typing 1s ease-in-out infinite;
+}
+
+.story-chat__typing i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.story-chat__typing i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes story-typing {
+  0%,
+  60%,
+  100% {
+    translate: 0 0;
+  }
+  30% {
+    translate: 0 -4px;
+  }
 }
 
 .story-references {
@@ -47,8 +145,29 @@
     @apply mx-auto h-10 w-px;
   }
 
+  .story-frictions__track,
   .story-frictions__columns {
     @apply h-auto;
+  }
+
+  .story-frictions__track {
+    @apply grid-cols-1;
+  }
+
+  .story-chat {
+    @apply self-auto pt-4;
+  }
+
+  .story-frictions__path {
+    @apply hidden;
+  }
+
+  .story-frictions__step {
+    @apply pt-8;
+  }
+
+  .story-frictions__body {
+    @apply mt-6;
   }
 
   .story-references {

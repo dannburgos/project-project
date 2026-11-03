@@ -1,0 +1,40 @@
+/* Tu semana: siete días con su cuidado y, debajo, lo que viene */
+.planti-week-agenda {
+  @apply flex flex-col gap-4;
+}
+
+.planti-week-agenda__days {
+  @apply flex gap-1;
+}
+
+.planti-week-agenda__day {
+  @apply flex flex-1 flex-col items-center gap-1 rounded-xl py-3;
+}
+
+.planti-week-agenda__day--today {
+  background: var(--planti-dew);
+}
+
+.planti-week-agenda__label {
+  @apply text-sm;
+  color: var(--planti-stone);
+}
+
+.planti-week-agenda__number {
+  @apply text-base font-semibold;
+}
+
+.planti-week-agenda__care {
+  @apply flex size-5 items-center justify-center;
+  color: var(--planti-grass);
+}
+
+.planti-week-agenda__care svg {
+  @apply size-5;
+}
+
+.planti-week-agenda__title {
+  @apply border-t pt-4 text-sm font-medium;
+  border-color: var(--planti-line);
+  color: var(--planti-stone);
+}

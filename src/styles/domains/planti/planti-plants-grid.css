@@ -1,0 +1,49 @@
+/* Mis plantas: dos columnas, con tarjetas más altas que anchas. La foto de
+   cada planta va recortada sobre el panel crema. */
+.planti-plants-grid {
+  @apply grid grid-cols-2 gap-3;
+}
+
+.planti-plant-tile {
+  @apply relative flex h-60 flex-col overflow-hidden rounded-2xl border;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  box-shadow: var(--planti-shadow);
+}
+
+.planti-plant-tile__photo {
+  @apply flex h-40 items-center justify-center border-b;
+  background: var(--planti-white);
+  color: var(--planti-grass);
+  border-color: var(--planti-card-border);
+}
+
+.planti-plant-tile__photo svg {
+  @apply size-14;
+}
+
+.planti-plant-tile__status {
+  @apply absolute top-3 left-3;
+}
+
+.planti-plant-tile__info {
+  @apply flex flex-1 flex-col justify-start px-3 pt-3;
+}
+
+.planti-plant-tile__name {
+  @apply text-sm leading-5 font-semibold;
+}
+
+.planti-plant-tile__place {
+  @apply text-sm leading-5;
+  color: var(--planti-stone);
+}
+
+.planti-plant-tile--add .planti-plant-tile__photo {
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-plant-tile--add .planti-plant-tile__photo svg {
+  @apply size-10;
+}

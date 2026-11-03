@@ -1,0 +1,75 @@
+/* Banner de tres destacados: se mueve solo y deja asomar el siguiente. El
+   espacio de la derecha es para la foto de cada uno. */
+.planti-banner {
+  @apply relative -mx-5 -my-8 flex gap-3 overflow-x-auto px-5 py-8;
+  scrollbar-width: none;
+}
+
+.planti-banner::-webkit-scrollbar {
+  @apply hidden;
+}
+
+.planti-banner__slide {
+  @apply flex h-44 shrink-0 overflow-hidden rounded-2xl border;
+  flex-basis: calc(100% - 32px);
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  box-shadow: var(--planti-shadow);
+}
+
+.planti-banner__text {
+  @apply flex flex-1 flex-col items-start justify-center gap-1 p-4;
+}
+
+.planti-banner__tag {
+  @apply mb-1 rounded-lg px-2.5 py-0.5 text-sm font-medium;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-banner__tag--alert {
+  background: var(--planti-terracotta-tint);
+  color: var(--planti-terracotta-ink);
+}
+
+.planti-banner__title {
+  @apply text-base leading-6 font-semibold;
+}
+
+.planti-banner__body {
+  @apply text-sm leading-5;
+  color: var(--planti-stone);
+}
+
+.planti-banner__action {
+  @apply mt-2 h-10 w-auto px-4 text-sm;
+}
+
+.planti-banner__action svg {
+  @apply size-4;
+}
+
+.planti-banner__photo {
+  @apply flex w-20 shrink-0 items-center justify-center;
+  background: var(--planti-dew);
+  color: var(--planti-grass);
+}
+
+.planti-banner__photo svg {
+  @apply size-12;
+}
+
+.planti-banner__dots {
+  @apply mt-3 flex justify-center gap-1;
+}
+
+.planti-banner__dot {
+  @apply size-1.5 rounded-full;
+  background: color-mix(in srgb, var(--planti-mist) 50%, transparent);
+  transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.planti-banner__dot--active {
+  @apply w-4;
+  background: var(--planti-leaf);
+}

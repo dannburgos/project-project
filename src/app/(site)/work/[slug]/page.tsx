@@ -45,7 +45,7 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
     >
       <PageCurtain variant="flush">
         {story ? (
-          <CaseStory story={story} />
+          <CaseStory story={story} cover={project.cover} />
         ) : (
           <CaseChaptersStudy project={project} />
         )}

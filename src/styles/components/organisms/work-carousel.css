@@ -1,0 +1,176 @@
+/* Work como carrusel. La sección se fija en pantalla y el scroll mueve los
+   proyectos de lado; el del centro es el protagonista. Arriba queda la franja
+   de navegación del sitio (96 px). El fondo se difumina hacia el color del
+   proyecto activo: cada proyecto tiene su capa y se mezclan al avanzar. */
+.work-carousel__stage {
+  @apply relative h-svh overflow-hidden bg-neutral-950 text-white;
+}
+
+/* Fondo de cada proyecto: un degradado de su marca (aún no hay imágenes),
+   con un velo abajo para que el texto se lea */
+.work-carousel__backdrop {
+  @apply pointer-events-none absolute inset-0 opacity-0;
+}
+
+.work-carousel__backdrop:first-child {
+  @apply opacity-100;
+}
+
+.work-carousel__backdrop::after {
+  @apply absolute inset-0;
+  content: '';
+  background: linear-gradient(to bottom, transparent 40%, rgb(0 0 0 / 0.45));
+}
+
+.work-carousel__backdrop--green,
+.work-carousel__portal[data-tone='green'] {
+  background: linear-gradient(
+    135deg,
+    #10180a 0%,
+    #23330e 40%,
+    #3d5718 75%,
+    #678e35 100%
+  );
+}
+
+.work-carousel__backdrop--purple,
+.work-carousel__portal[data-tone='purple'] {
+  background: linear-gradient(
+    135deg,
+    #120d1f 0%,
+    #241a40 40%,
+    #3c2a6b 75%,
+    #6b52a8 100%
+  );
+}
+
+.work-carousel__backdrop--neutral,
+.work-carousel__portal[data-tone='neutral'] {
+  background: linear-gradient(135deg, #0f1115 0%, #1d2129 55%, #2f3540 100%);
+}
+
+.work-carousel__backdrop--neutral[data-variant='1'] {
+  background: linear-gradient(135deg, #141210 0%, #26211c 55%, #3d352c 100%);
+}
+
+.work-carousel__backdrop--neutral[data-variant='2'] {
+  background: linear-gradient(135deg, #0e1414 0%, #1b2a2b 55%, #2c4243 100%);
+}
+
+/* "Work" grande abajo, como una marca de agua detrás de los proyectos */
+.work-carousel__title {
+  @apply pointer-events-none absolute bottom-6 left-12 z-0 font-medium tracking-[-0.05em] text-white/12;
+  font-size: clamp(80px, 12vw, 184px);
+  line-height: 0.85;
+}
+
+.work-carousel__counter {
+  @apply absolute top-8 right-12 z-20 text-xs tracking-[0.14em] text-white/80 uppercase;
+}
+
+.work-carousel__counter b {
+  @apply font-semibold text-white;
+}
+
+/* Las cartas se ubican desde el centro; el scroll las corre de lado */
+.work-carousel__track {
+  @apply absolute inset-0 z-10;
+}
+
+/* Con movimiento, las cartas esperan ocultas hasta que el carrusel las ubica
+   (evita verlas amontonadas un instante al cargar) */
+@media (prefers-reduced-motion: no-preference) {
+  .work-carousel__track {
+    @apply invisible;
+  }
+}
+
+.work-carousel__item {
+  @apply absolute top-[44%] left-1/2 -translate-y-1/2;
+  width: var(--card-width, 340px);
+  margin-left: calc(var(--card-width, 340px) / -2);
+}
+
+/* Lo que rodea al protagonista: nombre a la izquierda del marco, categoría a
+   la derecha y la frase con sus palabras clave debajo */
+.work-carousel__info {
+  @apply transition-opacity duration-700;
+}
+
+/* Mientras el carrusel llega girando, los textos esperan; aparecen cuando
+   frena en el primer proyecto */
+.work-carousel[data-intro] .work-carousel__info {
+  @apply opacity-0;
+}
+
+.work-carousel__info > * {
+  @apply absolute z-20;
+  animation: fade-up 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.work-carousel__details {
+  @apply left-1/2 flex w-[min(560px,90vw)] -translate-x-1/2 flex-col items-center gap-4 text-center;
+  top: calc(44% + var(--card-width, 340px) * 0.625 + 32px);
+  animation-delay: 160ms;
+}
+
+.work-carousel__name {
+  @apply text-3xl leading-snug font-medium tracking-tight;
+}
+
+.work-carousel__action {
+  @apply bg-white px-4 py-1.5 text-sm font-medium text-neutral-900 transition-colors hover:bg-white/85;
+}
+
+/* Capa que se abre desde el marco del protagonista hasta llenar la pantalla
+   al entrar a un caso */
+.work-carousel__portal {
+  @apply pointer-events-none invisible fixed inset-0 z-[60];
+}
+
+@media (max-width: 899px) {
+  .work-carousel__title {
+    @apply left-4;
+  }
+
+  .work-carousel__counter {
+    @apply top-auto right-4 bottom-6;
+  }
+
+  .work-carousel__item {
+    @apply top-[48%];
+  }
+
+  .work-carousel__details {
+    top: calc(48% + var(--card-width, 240px) * 0.625 + 24px);
+  }
+
+  .work-carousel__name {
+    @apply text-2xl;
+  }
+}
+
+/* Reducir movimiento: sin sección fija; las cartas en una fila que se
+   desliza a mano, cada una con su nombre y su frase */
+@media (prefers-reduced-motion: reduce) {
+  .work-carousel__stage {
+    @apply h-auto pt-36 pb-16;
+  }
+
+  .work-carousel__track {
+    @apply relative inset-auto flex snap-x gap-6 overflow-x-auto px-12;
+  }
+
+  .work-carousel__item {
+    @apply static w-80 shrink-0 translate-y-0 snap-center;
+    margin-left: 0;
+  }
+
+  .work-carousel__info {
+    @apply hidden;
+  }
+
+  .work-carousel__title {
+    @apply top-24 bottom-auto;
+  }
+}

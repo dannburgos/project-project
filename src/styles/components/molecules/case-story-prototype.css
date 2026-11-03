@@ -20,12 +20,10 @@
   @apply flex flex-col items-center justify-center gap-5 pt-28 pb-6;
 }
 
+/* El marco del celular ya viene dentro del prototipo */
 .story-prototype__phone {
-  @apply overflow-hidden border-2;
   height: min(78vh, calc(100vh - 200px));
-  aspect-ratio: 1 / 2;
-  border-color: var(--story-cream);
-  border-radius: 52px;
+  aspect-ratio: 447 / 822;
 }
 
 .story-prototype__screen {

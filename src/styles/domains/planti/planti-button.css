@@ -1,0 +1,66 @@
+.planti-button {
+  @apply inline-flex h-12 w-full items-center justify-center gap-2 rounded-full text-sm font-semibold;
+  background: var(--planti-leaf);
+  color: var(--planti-white);
+}
+
+.planti-button--secondary {
+  @apply border;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  color: var(--planti-leaf);
+}
+
+.planti-button--light {
+  background: var(--planti-white);
+  color: var(--planti-ink);
+}
+
+.planti-status-pill {
+  @apply inline-flex w-fit items-center rounded-lg px-2.5 py-0.5 text-sm font-medium;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-status-pill--pending {
+  background: var(--planti-terracotta-tint);
+  color: var(--planti-terracotta-ink);
+}
+
+/* Botón fuera del celular, para iniciar o repetir el recorrido */
+.planti-sequence-button {
+  @apply w-auto px-6;
+}
+
+.planti-sequence-button svg {
+  @apply size-4;
+}
+
+/* El botón se pulsa; si además queda cargando, muestra el círculo que gira */
+.planti-button--pressed,
+.planti-button--loading {
+  animation: planti-button-press 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.planti-button__spinner {
+  @apply size-5;
+  animation: planti-spin 1s linear infinite;
+}
+
+@keyframes planti-button-press {
+  50% {
+    transform: scale(0.94);
+  }
+}
+
+@keyframes planti-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planti-button__spinner {
+    animation: none;
+  }
+}

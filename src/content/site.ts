@@ -127,6 +127,10 @@ export const siteContent = {
     exampleTags: ['Palabra clave 1', 'Palabra clave 2'],
     imageLabel: 'Imagen del proyecto',
     caseAction: 'Ver caso',
+    // Frase que resume el proyecto en el carrusel de Work, para los que aún
+    // no tienen la suya
+    exampleSummary: 'Frase de ejemplo que resume el proyecto',
+    carouselLabel: 'Proyectos',
     projectCount: 6
   },
   caseStudy: {
@@ -162,10 +166,66 @@ export const siteContent = {
   },
   about: {
     title: 'About',
-    // Banner grande: su información la define Dann después
-    banner: {
-      photoLabel: 'Foto',
-      note: 'Aquí irá la información del banner.'
+    // Banner de About: el título "About Me" en grande; de cada letra sale una
+    // nota sobre cómo trabaja (referencia: una tipografía anotada). Al hacer
+    // scroll, la pantalla atraviesa las letras y llega a "Quién soy". Las notas
+    // y el texto de "Quién soy" son de relleno, tomados de su CV y de sus
+    // skills, por validar con Dann.
+    intro: {
+      title: 'About Me',
+      // Una nota por letra, en el orden del título (A, b, o, u, t, M, e).
+      // "short" es la versión corta que se usa en celular.
+      notes: [
+        {
+          letter: 'A',
+          short: 'Conecto personas y negocio',
+          text: 'Conecto lo que necesitan las personas con los objetivos del negocio.'
+        },
+        {
+          letter: 'b',
+          short: 'Primero pregunto',
+          text: 'Antes de abrir Figma, pregunto: quién lo va a usar.'
+        },
+        {
+          letter: 'o',
+          short: 'Primero la idea',
+          text: 'Busco primero la idea; las pantallas llegan después.'
+        },
+        {
+          letter: 'u',
+          short: 'Valido con usuarios',
+          text: 'Pongo a prueba mi intuición con usuarios.'
+        },
+        {
+          letter: 't',
+          short: 'Flujos y prototipos',
+          text: 'Diseño flujos, arquitectura de información y prototipos.'
+        },
+        {
+          letter: 'M',
+          short: 'Me adapto a cada proyecto',
+          text: 'Aprendo las reglas de cada proyecto antes de proponer.'
+        },
+        {
+          letter: 'e',
+          short: 'Experiencias que se construyen',
+          text: 'Experiencias claras, que se pueden construir y cumplen su propósito.'
+        }
+      ],
+      // Primera sección tras el zoom
+      who: {
+        label: 'Quién soy',
+        statement:
+          'UX/UI Designer enfocada en experiencias intuitivas y alineadas al negocio.',
+        text: 'Diseño flujos, arquitectura de información y prototipos con sistemas de diseño, y los valido para mejorar usabilidad y conversión.',
+        groupsLabel: 'Lo que hago',
+        groups: [
+          'UX Strategy & Research',
+          'UX Design',
+          'Producto & Colaboración'
+        ]
+      },
+      scrollHint: 'Desplázate para entrar'
     },
     // Las herramientas se muestran solo con su logo; por ahora, cuadros con el
     // nombre hasta que Dann suba los logos en alta.
@@ -275,6 +335,22 @@ const projectIndustries: readonly string[] = [
 export type ProjectTone = 'green' | 'purple';
 const projectTones: readonly (ProjectTone | undefined)[] = ['green', 'purple'];
 
+// Portada de cada proyecto: la misma imagen en su carta del carrusel de Work
+// y como primera imagen al entrar a su caso (así la entrada se siente
+// continua). Mientras no exista, se muestra su etiqueta.
+export type ProjectCover = {
+  label: string;
+  src?: string;
+};
+const projectCovers: readonly ProjectCover[] = [
+  { label: 'Imagen principal · mockup de una persona usando Planti' }
+];
+
+// Frase que resume cada proyecto (su idea central), en el carrusel de Work
+const projectSummaries: readonly string[] = [
+  'Saber qué necesita tu planta es fácil. Recordarlo, no.'
+];
+
 // Dos palabras clave por proyecto, para las etiquetas de su tarjeta. Las de
 // Planti salen de su ficha real; el resto usa las de ejemplo.
 const projectTags: readonly (readonly string[] | undefined)[] = [
@@ -290,7 +366,9 @@ export const exampleProjects = Array.from(
       `${siteContent.work.exampleProjectName} ${index + 1}`,
     industry: projectIndustries[index] ?? siteContent.work.exampleIndustry,
     tone: projectTones[index],
-    tags: projectTags[index] ?? siteContent.work.exampleTags
+    tags: projectTags[index] ?? siteContent.work.exampleTags,
+    summary: projectSummaries[index] ?? siteContent.work.exampleSummary,
+    cover: projectCovers[index] ?? { label: siteContent.work.imageLabel }
   })
 );
 

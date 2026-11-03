@@ -101,18 +101,6 @@ html {
   @apply flex justify-center;
 }
 
-/* Work */
-.work-title {
-  @apply font-medium tracking-[-0.05em];
-  font-size: clamp(5rem, 22vw, 20rem);
-  line-height: 0.85;
-  margin-bottom: 0.5rem;
-}
-
-.work-grid {
-  @apply grid gap-3 md:grid-cols-2 md:gap-5;
-}
-
 /* Case study: el tono del proyecto da el color de acento de sus capítulos
    (números, notas, el ciclo…). Sin tono, el acento es el color del texto. */
 .case-page {

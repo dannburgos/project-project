@@ -1,0 +1,299 @@
+/* Escenario: ocupa todo el espacio y centra el celular, que se escala
+   (--planti-scale, la pone el escenario) sin deformarse. */
+.planti-stage {
+  @apply fixed inset-0 flex flex-col overflow-hidden;
+}
+
+/* El área donde se mide y se centra el celular */
+.planti-stage__viewport {
+  @apply relative min-h-0 flex-1;
+}
+
+.planti-stage__viewport .planti-device {
+  @apply absolute top-1/2 left-1/2 opacity-0;
+  transform: translate(-50%, -50%) scale(var(--planti-scale, 1));
+}
+
+.planti-stage__viewport[data-ready='true'] .planti-device {
+  @apply opacity-100;
+}
+
+/* Debajo del celular: iniciar o repetir el recorrido */
+.planti-stage__controls {
+  @apply flex h-20 shrink-0 items-center justify-center gap-4;
+}
+
+/* En pausa, todo se queda quieto donde estaba */
+.planti-stage--paused *,
+.planti-stage--paused *::before,
+.planti-stage--paused *::after {
+  animation-play-state: paused !important;
+}
+
+/* Cada pantalla entra con un fundido suave; las de un flujo, además, deslizan
+   desde la derecha */
+.planti-app > :first-child {
+  animation: planti-screen-in 0.5s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.planti-app > .planti-screen:not(.planti-home-screen) {
+  animation-name: planti-screen-in-right;
+}
+
+@keyframes planti-screen-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes planti-screen-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+}
+
+.planti-timeline-slider {
+  @apply h-1.5 w-44 cursor-pointer;
+  accent-color: var(--planti-leaf);
+}
+
+/* Base de toda pantalla: espacio arriba para la cabecera y a los lados */
+.planti-screen {
+  @apply relative flex min-h-0 flex-1 flex-col px-5 pt-16;
+}
+
+/* Sobre una pantalla con foto oscura, la barra de estado va en blanco */
+.planti-app:has([data-tone='dark']) .planti-device__status {
+  color: var(--planti-white);
+}
+
+.planti-app:has([data-tone='dark']) .planti-device__home {
+  background: var(--planti-white);
+}
+
+/* Marco del celular: bisel oscuro con una sombra corta para despegarlo del
+   fondo */
+.planti-device {
+  @apply relative;
+  padding: var(--planti-bezel);
+  border-radius: var(--planti-device-radius);
+  background: var(--planti-bezel-color);
+  box-shadow:
+    inset 0 0 0 2px #2c2c28,
+    0 12px 24px rgb(34 38 26 / 0.18);
+}
+
+.planti-device__island {
+  @apply absolute top-6 left-1/2 h-8 w-28 -translate-x-1/2 rounded-full;
+  background: var(--planti-bezel-color);
+}
+
+.planti-device__status {
+  @apply absolute inset-x-0 top-0 flex h-14 items-center justify-between px-8 pt-2;
+  color: var(--planti-ink);
+}
+
+.planti-device__time {
+  @apply text-sm font-semibold;
+}
+
+.planti-device__icons {
+  @apply flex items-center gap-1;
+}
+
+.planti-device__icons svg {
+  @apply size-4;
+}
+
+.planti-device__home {
+  @apply absolute bottom-2 left-1/2 h-1 w-32 -translate-x-1/2 rounded-full;
+  background: var(--planti-ink);
+}
+
+/* Tablero de revisión: las pantallas del recorrido una al lado de la otra,
+   con el celular reducido (--board-scale) */
+.planti-board {
+  @apply min-h-svh px-8 py-10;
+  --board-scale: 0.62;
+  color: var(--planti-ink);
+  font-family: var(--font-poppins), sans-serif;
+}
+
+.planti-board__title {
+  @apply mb-2 text-2xl font-bold;
+}
+
+.planti-board__hint {
+  @apply mb-8 text-sm;
+  color: var(--planti-stone);
+}
+
+.planti-board__groups {
+  @apply flex items-start gap-16 overflow-x-auto pb-8;
+}
+
+.planti-board__group {
+  @apply shrink-0;
+}
+
+.planti-board__group-title {
+  @apply mb-4 text-lg font-semibold;
+}
+
+.planti-board__frames {
+  @apply flex gap-8;
+}
+
+.planti-board__frame {
+  @apply flex shrink-0 flex-col gap-1;
+  width: calc(
+    (var(--planti-screen-width) + 2 * var(--planti-bezel)) * var(--board-scale)
+  );
+}
+
+.planti-board__screen {
+  @apply relative mb-3;
+  height: calc(
+    (var(--planti-screen-height) + 2 * var(--planti-bezel)) * var(--board-scale)
+  );
+}
+
+.planti-board__screen .planti-device {
+  @apply absolute top-0 left-0;
+  transform: scale(var(--board-scale));
+  transform-origin: top left;
+}
+
+.planti-board__step {
+  @apply text-sm font-semibold;
+}
+
+.planti-board__note {
+  @apply text-sm;
+  color: var(--planti-stone);
+}
+
+/* Escenario junto a otra cosa: ocupa solo su espacio */
+.planti-stage--embedded {
+  position: relative;
+  inset: auto;
+  height: 100%;
+}
+
+/* Pantalla de revisión: el recorrido a la izquierda y, a la derecha, cada paso
+   con sus tiempos */
+.planti-review {
+  @apply block lg:grid lg:h-svh lg:grid-cols-[minmax(0,480px)_1fr] lg:overflow-hidden;
+  color: var(--planti-ink);
+  font-family: var(--font-poppins), sans-serif;
+}
+
+/* En ventana angosta el celular queda fijo arriba y la lista pasa por debajo
+   al hacer scroll; en ventana ancha van lado a lado */
+.planti-review__player {
+  @apply sticky top-0 z-10 h-[60svh] min-h-0 bg-white lg:relative lg:h-svh;
+}
+
+.planti-timeline-panel {
+  @apply flex min-h-0 flex-col px-5 py-8 lg:overflow-hidden lg:px-8;
+}
+
+.planti-timeline-panel__title {
+  @apply mb-2 text-2xl font-bold;
+}
+
+.planti-timeline-panel__hint {
+  @apply mb-3 max-w-2xl text-sm leading-5;
+  color: var(--planti-stone);
+}
+
+.planti-timeline-panel__total {
+  @apply mb-4 text-base;
+}
+
+.planti-timeline-panel__steps {
+  @apply flex flex-col gap-3 pb-8 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pr-2;
+}
+
+.planti-timeline-step {
+  @apply flex flex-col gap-2 rounded-2xl border p-4;
+  border-color: var(--planti-card-border);
+  background: var(--planti-white);
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+
+/* Al llevar el paso activo a la vista, que no quede bajo el celular fijo */
+.planti-timeline-step {
+  scroll-margin-top: 62svh;
+}
+
+@media (min-width: 1024px) {
+  .planti-timeline-step {
+    scroll-margin-top: 0;
+  }
+}
+
+.planti-timeline-step--active {
+  border-color: var(--planti-grass);
+  box-shadow: var(--planti-shadow);
+}
+
+.planti-timeline-step--done {
+  background: var(--planti-dew);
+}
+
+.planti-timeline-step__head {
+  @apply flex flex-wrap items-center gap-3;
+}
+
+.planti-timeline-step__number {
+  @apply flex size-7 shrink-0 items-center justify-center rounded-full text-sm font-semibold;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-timeline-step--active .planti-timeline-step__number {
+  background: var(--planti-leaf);
+  color: var(--planti-white);
+}
+
+.planti-timeline-step__title {
+  @apply flex-1 text-base font-semibold;
+}
+
+.planti-timeline-step__time {
+  @apply text-sm;
+  color: var(--planti-stone);
+}
+
+.planti-timeline-step__progress {
+  @apply w-full;
+}
+
+.planti-timeline-step__events {
+  @apply flex flex-col gap-1;
+}
+
+.planti-timeline-step__event {
+  @apply flex gap-3 text-sm leading-5;
+  color: var(--planti-mist);
+}
+
+.planti-timeline-step__event span {
+  @apply w-14 shrink-0 font-medium;
+}
+
+.planti-timeline-step__event--done {
+  color: var(--planti-ink);
+}
+
+.planti-timeline-step__go {
+  @apply text-left;
+}
+
+.planti-timeline-step__go:hover {
+  text-decoration: underline;
+}

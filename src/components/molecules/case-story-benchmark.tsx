@@ -8,34 +8,31 @@ type CaseStoryBenchmarkProps = {
   sectionName: string;
 };
 
-type Category = 'strengths' | 'gaps' | 'improvements';
+type Category = 'strengths' | 'gaps';
 
-const CATEGORIES: readonly Category[] = ['strengths', 'gaps', 'improvements'];
+const CATEGORIES: readonly Category[] = ['strengths', 'gaps'];
 
-// Cada categoría con su marca: llena (hace bien), vacía (le falta) y oscura
-// (puede mejorar)
+// Cada categoría con su marca: llena (lo que resuelve) y vacía (lo que deja
+// sin resolver)
 const TITLE_CLASS: Record<Category, string> = {
   strengths: 'story-marker-title--strengths',
-  gaps: 'story-marker-title--gaps',
-  improvements: 'story-marker-title--improvements'
+  gaps: 'story-marker-title--gaps'
 };
 const LIST_CLASS: Record<Category, string> = {
   strengths: 'story-list--strengths',
-  gaps: 'story-list--gaps',
-  improvements: 'story-list--improvements'
+  gaps: 'story-list--gaps'
 };
 
-// 04 · Benchmark en dos vistas: las tres apps con lo que hacen bien, lo que
-// les falta y lo que pueden mejorar; luego, los hallazgos en grande y la
-// frase que da paso a Planti
+// 04 · Benchmark en dos vistas: las tres apps con lo que resuelven y lo que
+// dejan sin resolver; luego, los hallazgos en grande (lo que podrían mejorar)
+// y la frase que da paso a Planti
 export function CaseStoryBenchmark({
   benchmark,
   sectionName
 }: CaseStoryBenchmarkProps) {
   const labels: Record<Category, string> = {
     strengths: benchmark.strengthsLabel,
-    gaps: benchmark.gapsLabel,
-    improvements: benchmark.improvementsLabel
+    gaps: benchmark.gapsLabel
   };
 
   return (
