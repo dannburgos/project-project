@@ -1,6 +1,5 @@
 import { SkipBack, SkipForward } from 'lucide-react';
 
-import { CHAPTER_ONE_DURATION_MS } from '../../chapter-one-timeline';
 import type { PlantiTimelineStatus } from '../../hooks/use-planti-timeline';
 import { plantiMessages } from '../../messages';
 import { PlantiSequenceButton } from '../atoms/planti-sequence-button';
@@ -8,6 +7,8 @@ import { PlantiSequenceButton } from '../atoms/planti-sequence-button';
 type PlantiTimelineControlsProps = {
   status: PlantiTimelineStatus;
   elapsedMs: number;
+  // Cuánto dura el capítulo que se está viendo (fin de la barra)
+  durationMs: number;
   onStart: () => void;
   onPause: () => void;
   onResume: () => void;
@@ -15,6 +16,8 @@ type PlantiTimelineControlsProps = {
   onScrub: (ms: number) => void;
   onPreviousStep: () => void;
   onNextStep: () => void;
+  // Dentro del caso: un solo botón de reproducir y pausar, sin saltos ni barra
+  isMinimal?: boolean;
 };
 
 // Controles del recorrido, debajo del celular: iniciar, pausar y seguir,
@@ -23,16 +26,46 @@ type PlantiTimelineControlsProps = {
 export function PlantiTimelineControls({
   status,
   elapsedMs,
+  durationMs,
   onStart,
   onPause,
   onResume,
   onReset,
   onScrub,
   onPreviousStep,
-  onNextStep
+  onNextStep,
+  isMinimal = false
 }: PlantiTimelineControlsProps) {
   const { sequence } = plantiMessages;
   const isRunning = status !== 'idle';
+
+  // Dentro del caso: un solo botón redondo que alterna entre reproducir y
+  // pausar; al terminar, vuelve a reproducir desde el principio
+  if (isMinimal) {
+    const isPlaying = status === 'playing';
+    const kind = isPlaying ? 'pause' : status === 'paused' ? 'resume' : 'start';
+    const label = isPlaying
+      ? sequence.pause
+      : status === 'paused'
+        ? sequence.resume
+        : status === 'done'
+          ? sequence.replay
+          : sequence.start;
+    const handleClick = isPlaying
+      ? onPause
+      : status === 'paused'
+        ? onResume
+        : onStart;
+
+    return (
+      <PlantiSequenceButton
+        kind={kind}
+        label={label}
+        onClick={handleClick}
+        isIconOnly
+      />
+    );
+  }
 
   return (
     <>
@@ -88,7 +121,7 @@ export function PlantiTimelineControls({
             type="range"
             className="planti-timeline-slider"
             min={0}
-            max={CHAPTER_ONE_DURATION_MS}
+            max={durationMs}
             step={50}
             value={elapsedMs}
             aria-label={sequence.progress}

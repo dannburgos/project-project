@@ -1,11 +1,15 @@
 import { Pause, Play, RotateCcw } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
+
 import { PlantiButton } from './planti-button';
 
 type PlantiSequenceButtonProps = {
   kind: 'start' | 'pause' | 'resume' | 'replay';
   label: string;
   onClick: () => void;
+  // Solo el ícono, redondo; el texto queda para los lectores de pantalla
+  isIconOnly?: boolean;
 };
 
 const ICONS = {
@@ -19,14 +23,22 @@ const ICONS = {
 export function PlantiSequenceButton({
   kind,
   label,
-  onClick
+  onClick,
+  isIconOnly = false
 }: PlantiSequenceButtonProps) {
   const Icon = ICONS[kind];
 
   return (
-    <PlantiButton className="planti-sequence-button" onClick={onClick}>
+    <PlantiButton
+      className={cn(
+        'planti-sequence-button',
+        isIconOnly && 'planti-sequence-button--icon'
+      )}
+      onClick={onClick}
+      aria-label={isIconOnly ? label : undefined}
+    >
       <Icon aria-hidden="true" />
-      {label}
+      {!isIconOnly && label}
     </PlantiButton>
   );
 }

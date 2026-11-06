@@ -17,7 +17,7 @@
 }
 
 .planti-section-head__aside {
-  @apply text-sm font-medium;
+  @apply text-base font-medium;
   color: var(--planti-grass);
 }
 
@@ -54,12 +54,12 @@
 }
 
 .planti-care-primary__meta {
-  @apply text-sm leading-5;
+  @apply text-base leading-6;
   color: var(--planti-stone);
 }
 
 .planti-care-primary__how {
-  @apply flex items-center gap-3 rounded-xl border px-3 py-2.5 text-sm leading-5;
+  @apply flex items-center gap-3 rounded-xl border px-3 py-2.5 text-base leading-6;
   background: var(--planti-white);
   border-color: var(--planti-card-border);
 }
@@ -116,11 +116,11 @@
 }
 
 .planti-task__name {
-  @apply text-sm leading-5 font-semibold;
+  @apply text-base leading-6 font-semibold;
 }
 
 .planti-task__time {
-  @apply text-sm leading-5;
+  @apply text-base leading-6;
   color: var(--planti-stone);
 }
 

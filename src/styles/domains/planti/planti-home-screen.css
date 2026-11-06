@@ -49,7 +49,7 @@
 }
 
 .planti-home-screen__note {
-  @apply text-sm leading-6;
+  @apply text-base leading-6;
   color: #444444;
 }
 
@@ -73,12 +73,12 @@
 /* Desvanecido detrás de la barra, para que el contenido no se corte en seco */
 .planti-home-screen::after {
   @apply pointer-events-none absolute inset-x-0 bottom-0 h-32 content-[''];
-  background: linear-gradient(to top, var(--planti-white) 45%, transparent);
+  background: linear-gradient(to top, var(--planti-canvas) 45%, transparent);
 }
 
 /* Barra anclada abajo, con las esquinas de arriba redondeadas */
 .planti-nav {
-  @apply absolute inset-x-0 bottom-0 z-10 rounded-t-3xl px-4 pt-3 pb-8;
+  @apply absolute inset-x-0 bottom-0 z-10 rounded-t-3xl px-4 pt-2.5 pb-5;
   background: var(--planti-white);
   box-shadow: 0 -6px 18px rgb(35 51 14 / 0.08);
 }

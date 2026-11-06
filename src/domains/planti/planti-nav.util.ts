@@ -10,7 +10,10 @@ export function getPlantiNavKey(
       return null;
     case 'home-empty':
     case 'home-tasks':
+    case 'home-routine':
       return 'home';
+    case 'routine':
+      return 'routine';
     default:
       return 'plants';
   }

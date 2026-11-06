@@ -31,11 +31,11 @@
 }
 
 .planti-plant-tile__name {
-  @apply text-sm leading-5 font-semibold;
+  @apply text-base leading-6 font-semibold;
 }
 
 .planti-plant-tile__place {
-  @apply text-sm leading-5;
+  @apply text-base leading-6;
   color: var(--planti-stone);
 }
 

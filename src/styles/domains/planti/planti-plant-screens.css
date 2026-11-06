@@ -28,7 +28,7 @@
 }
 
 .planti-search-count {
-  @apply mt-6 mb-3 text-sm;
+  @apply mt-6 mb-3 text-base;
   color: var(--planti-stone);
 }
 
@@ -68,7 +68,7 @@
 }
 
 .planti-result__scientific {
-  @apply text-sm leading-5 italic;
+  @apply text-base leading-6 italic;
   color: var(--planti-stone);
 }
 
@@ -79,12 +79,12 @@
 
 /* Detalle de la planta elegida */
 .planti-plant-detail__name {
-  @apply mt-5 text-2xl leading-8 font-bold;
+  @apply mt-5 text-[22px] leading-7 font-bold;
   color: var(--planti-forest);
 }
 
 .planti-plant-detail__scientific {
-  @apply text-sm leading-5 italic;
+  @apply text-base leading-6 italic;
   color: var(--planti-stone);
 }
 
@@ -93,28 +93,21 @@
 }
 
 .planti-plant-detail__trait {
-  @apply rounded-lg px-2.5 py-1 text-sm font-medium;
+  @apply rounded-lg px-2.5 py-1 text-base font-medium;
   background: var(--planti-dew);
   color: var(--planti-leaf);
 }
 
 .planti-plant-detail__description {
-  @apply mt-4 text-sm leading-6;
-  color: var(--planti-stone);
-}
-
-.planti-plant-detail__section {
-  @apply mt-6 mb-3 text-base leading-6 font-semibold;
-}
-
-.planti-plant-detail__note {
-  @apply mt-4 text-sm leading-5;
+  @apply mt-4 text-base leading-6;
   color: var(--planti-stone);
 }
 
 /* Planta registrada */
+/* El check, el título y el texto van centrados en el espacio libre entre la
+   barra de estado y la barra de navegación */
 .planti-registered {
-  @apply items-center pt-32 text-center text-balance;
+  @apply items-center justify-center pt-16 pb-20 text-center text-balance;
 }
 
 .planti-registered__check {
@@ -133,60 +126,52 @@
 }
 
 .planti-registered__text {
-  @apply mb-8 text-sm leading-5;
+  @apply text-base leading-6;
   color: var(--planti-stone);
-}
-
-.planti-registered .planti-plant-summary {
-  @apply w-full text-left;
 }
 
 /* Buscar por cómo se ve: pregunta, formas, tamaño y color, y las coincidencias */
 .planti-search-question {
-  @apply mb-3 text-2xl leading-8 font-bold;
+  @apply mb-3 text-[22px] leading-7 font-semibold;
   color: var(--planti-forest);
+}
+
+/* La primera pregunta de cada pantalla queda a 20 px de la cabecera (16 de la
+   cabecera más estos 4) */
+.planti-screen-header + .planti-search-question,
+.planti-screen-header + .planti-option-group {
+  @apply mt-1;
 }
 
 .planti-search-field + .planti-search-question {
   @apply mt-6;
 }
 
+/* Las cartas se reparten el alto que queda sobre la barra de navegación */
 .planti-look-grid {
-  @apply grid grid-cols-2 gap-3;
-}
-
-.planti-option-group {
-  @apply mt-2;
+  @apply mb-24.5 grid min-h-0 flex-1 grid-cols-2 grid-rows-2 gap-3;
 }
 
 .planti-option-group + .planti-option-group {
-  @apply mt-6;
+  @apply mt-8;
 }
 
-.planti-summary-chips {
-  @apply mb-4 flex flex-wrap gap-2;
-}
-
-.planti-summary-chips__item {
-  @apply rounded-lg px-2.5 py-1 text-sm font-medium;
-  background: var(--planti-dew);
-  color: var(--planti-leaf);
-}
-
+/* ¿Es alguna de estas?: mismas medidas que las cartas de "¿Cómo lucen las
+   hojas?". Las cartas se reparten el alto que queda sobre la barra */
 .planti-match-grid {
-  @apply grid grid-cols-2 gap-3;
+  @apply mb-24.5 grid min-h-0 flex-1 grid-cols-2 grid-rows-2 gap-3;
 }
 
 .planti-match-tile {
-  @apply flex h-52 flex-col overflow-hidden rounded-2xl border;
+  @apply flex min-h-0 flex-col overflow-hidden rounded-2xl border-[1.5px];
   background: var(--planti-white);
-  border-color: var(--planti-card-border);
+  border-color: transparent;
   box-shadow: var(--planti-shadow);
 }
 
 .planti-match-tile__photo {
-  @apply flex h-32 items-center justify-center border-b;
-  background: var(--planti-white);
+  @apply flex min-h-0 flex-1 items-center justify-center border-b;
+  background: var(--planti-cream);
   color: var(--planti-grass);
   border-color: var(--planti-card-border);
 }
@@ -196,20 +181,22 @@
 }
 
 .planti-match-tile__info {
-  @apply px-3 pt-3;
+  @apply flex h-16 items-start px-3 py-3;
 }
 
 .planti-match-tile__name {
-  @apply text-sm leading-5 font-semibold;
+  @apply text-base leading-6 font-semibold;
 }
 
 .planti-match-tile__look {
-  @apply text-sm leading-5;
+  @apply text-base leading-6;
   color: var(--planti-stone);
 }
 
+/* La que coincide: contorno verde de la marca y sombra gris más notoria */
 .planti-match-tile--active {
   border-color: var(--planti-grass);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
 }
 
 .planti-match-tile--none {
@@ -280,7 +267,7 @@
 }
 
 .planti-needs__tagline {
-  @apply mb-4 text-sm leading-5;
+  @apply mb-4 text-base leading-6;
   color: var(--planti-stone);
 }
 
@@ -289,7 +276,7 @@
 }
 
 .planti-needs__fact {
-  @apply flex items-center gap-3 text-sm leading-5;
+  @apply flex items-center gap-3 text-base leading-6;
   animation: planti-rise 0.4s cubic-bezier(0.65, 0, 0.35, 1) both;
 }
 
@@ -341,18 +328,18 @@
 }
 
 /* ¿Cómo es tu planta?: cuatro tarjetas grandes, con la imagen arriba y el
-   nombre abajo; la elegida lleva borde verde oscuro y su nombre sobre verde
-   claro */
+   nombre abajo; solo la elegida lleva borde verde */
 .planti-look-tile {
-  @apply flex h-48 flex-col overflow-hidden rounded-2xl border;
+  @apply flex min-h-0 flex-col overflow-hidden rounded-2xl border-[1.5px];
   background: var(--planti-white);
-  border-color: var(--planti-card-border);
+  border-color: transparent;
   box-shadow: var(--planti-shadow);
 }
 
 .planti-look-tile__icon {
-  @apply flex flex-1 items-center justify-center border-b;
+  @apply flex min-h-0 flex-1 items-center justify-center overflow-hidden border-b;
   border-color: var(--planti-card-border);
+  background: var(--planti-cream);
   color: var(--planti-grass);
 }
 
@@ -360,54 +347,45 @@
   @apply size-12;
 }
 
+.planti-look-tile__icon img {
+  @apply size-full object-cover object-bottom;
+}
+
 .planti-look-tile__label {
-  @apply flex h-16 items-start px-3 py-3 text-sm leading-5 font-semibold;
+  @apply flex h-16 items-start px-3 py-3 text-base leading-6 font-semibold;
 }
 
+/* Elegida: contorno verde de la marca y una sombra gris más notoria. Todas
+   llevan el borde (transparente si no están elegidas) para que no se muevan */
 .planti-look-tile--selected {
-  border-color: var(--planti-leaf);
-}
-
-.planti-look-tile--selected .planti-look-tile__label {
-  background: var(--planti-dew);
+  border-color: var(--planti-grass);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
 }
 
 /* Cuéntanos más: el tamaño, con la planta que crece y un deslizador */
 .planti-size__stage {
-  @apply flex h-40 items-center justify-center rounded-2xl border;
+  @apply relative h-40 overflow-hidden rounded-2xl border;
   background: var(--planti-white);
   border-color: var(--planti-card-border);
   box-shadow: var(--planti-shadow);
-  color: var(--planti-grass);
 }
 
-.planti-size__stage svg {
-  @apply size-20;
-  transform: scale(0.55);
-  opacity: 0.6;
-  transition:
-    transform 0.6s cubic-bezier(0.65, 0, 0.35, 1),
-    opacity 0.6s;
+/* Tres fotos de la misma escena, una encima de otra: solo se ve la del tamaño
+   elegido. La pequeña siempre queda al fondo. */
+.planti-size__photo {
+  @apply absolute inset-0 size-full object-cover opacity-0;
 }
 
-.planti-size--small .planti-size__stage svg {
-  transform: scale(0.55);
-  opacity: 1;
-}
-
-.planti-size--medium .planti-size__stage svg {
-  transform: scale(1);
-  opacity: 1;
-}
-
-.planti-size--big .planti-size__stage svg {
-  transform: scale(1.4);
-  opacity: 1;
+.planti-size__photo--small,
+.planti-size--medium .planti-size__photo--medium,
+.planti-size--big .planti-size__photo--medium,
+.planti-size--big .planti-size__photo--big {
+  @apply opacity-100;
 }
 
 .planti-size__track {
   @apply relative mx-3 mt-6 h-1.5 rounded-full;
-  background: var(--planti-dew);
+  background: var(--planti-input-border);
 }
 
 .planti-size__fill {
@@ -417,7 +395,7 @@
 }
 
 .planti-size__thumb {
-  @apply absolute top-1/2 left-0 size-7 -translate-x-1/2 -translate-y-1/2 rounded-full border-2;
+  @apply absolute top-1/2 left-0 size-6 -translate-x-1/2 -translate-y-1/2 rounded-full border-2;
   background: var(--planti-white);
   border-color: var(--planti-mist);
   box-shadow: var(--planti-shadow);
@@ -432,34 +410,32 @@
   border-color: var(--planti-leaf);
 }
 
-.planti-size--medium .planti-size__fill {
-  @apply w-1/2;
+.planti-size--big .planti-size__fill {
+  @apply w-full;
   animation: planti-size-fill 1.6s cubic-bezier(0.65, 0, 0.35, 1) both;
 }
 
-.planti-size--medium .planti-size__thumb {
-  @apply left-1/2;
+.planti-size--big .planti-size__thumb {
+  @apply left-full;
   animation: planti-size-thumb 1.6s cubic-bezier(0.65, 0, 0.35, 1) both;
 }
 
-.planti-size--medium .planti-size__stage svg {
-  animation: planti-size-leaf 1.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+/* Mientras la barra avanza, la planta crece: pasa por la mediana y llega a la
+   grande */
+.planti-size--big .planti-size__photo--medium {
+  animation: planti-size-photo-medium 1.6s linear both;
 }
 
-.planti-size--medium .planti-size__hint {
-  animation: planti-fade-in 0.3s ease-out 1.4s both;
+.planti-size--big .planti-size__photo--big {
+  animation: planti-size-photo-big 1.6s linear both;
 }
 
 @keyframes planti-size-thumb {
   from {
     left: 0;
   }
-  55%,
-  62% {
-    left: 100%;
-  }
   to {
-    left: 50%;
+    left: 100%;
   }
 }
 
@@ -467,38 +443,44 @@
   from {
     width: 0;
   }
-  55%,
-  62% {
-    width: 100%;
-  }
   to {
-    width: 50%;
+    width: 100%;
   }
 }
 
-@keyframes planti-size-leaf {
-  from {
-    transform: scale(0.55);
+/* Cada foto nueva entra un poco acercada y se asienta en su lugar (fundido con
+   zoom). Arranca cuando la bolita llega a su parada: la mediana al 40 % del
+   tiempo y la grande al 60 %, igual que el semibold de las paradas */
+@keyframes planti-size-photo-medium {
+  0%,
+  40% {
+    opacity: 0;
+    transform: scale(1.12);
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  55%,
-  62% {
-    transform: scale(1.4);
-  }
-  to {
+  66%,
+  100% {
+    opacity: 1;
     transform: scale(1);
   }
 }
 
-.planti-size--big .planti-size__fill {
-  @apply w-full;
-}
-
-.planti-size--big .planti-size__thumb {
-  @apply left-full;
+@keyframes planti-size-photo-big {
+  0%,
+  60% {
+    opacity: 0;
+    transform: scale(1.12);
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  86%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .planti-size__stops {
-  @apply mt-3 flex justify-between text-sm leading-5;
+  @apply mt-3 flex justify-between text-base leading-6;
   color: var(--planti-stone);
 }
 
@@ -507,9 +489,63 @@
   color: var(--planti-ink);
 }
 
-.planti-size__hint {
-  @apply mt-2 text-sm leading-5;
-  color: var(--planti-stone);
+/* Mientras la bolita avanza, se marca en semibold la parada por la que va
+   pasando. Los cortes siguen su avance real: deja Pequeña al 40 % del tiempo
+   y llega a Grande al 60 % */
+.planti-size--big .planti-size__stop--small {
+  animation: planti-size-stop-small 1.6s linear both;
+}
+
+.planti-size--big .planti-size__stop--medium {
+  animation: planti-size-stop-medium 1.6s linear both;
+}
+
+.planti-size--big .planti-size__stop--big {
+  animation: planti-size-stop-big 1.6s linear both;
+}
+
+@keyframes planti-size-stop-small {
+  0%,
+  39.9% {
+    font-weight: 600;
+    color: var(--planti-ink);
+  }
+  40%,
+  100% {
+    font-weight: 400;
+    color: var(--planti-stone);
+  }
+}
+
+@keyframes planti-size-stop-medium {
+  0%,
+  39.9% {
+    font-weight: 400;
+    color: var(--planti-stone);
+  }
+  40%,
+  59.9% {
+    font-weight: 600;
+    color: var(--planti-ink);
+  }
+  60%,
+  100% {
+    font-weight: 400;
+    color: var(--planti-stone);
+  }
+}
+
+@keyframes planti-size-stop-big {
+  0%,
+  59.9% {
+    font-weight: 400;
+    color: var(--planti-stone);
+  }
+  60%,
+  100% {
+    font-weight: 600;
+    color: var(--planti-ink);
+  }
 }
 
 /* Cuéntanos más: el color de las hojas, en muestras redondas */
@@ -518,41 +554,437 @@
 }
 
 .planti-swatch {
-  @apply flex flex-1 flex-col items-center gap-2 text-center text-sm leading-5;
+  @apply flex flex-1 flex-col items-center gap-2 text-center text-base leading-5;
 }
 
+/* Cada muestra es una foto de hojas de cerca, con un aro blanco que la separa
+   de la línea de afuera */
 .planti-swatch__color {
-  @apply size-14 rounded-full border-4;
+  @apply size-18 rounded-full border-4 bg-cover bg-center;
   border-color: var(--planti-white);
   box-shadow: 0 0 0 1px var(--planti-card-border);
   transition: box-shadow 0.35s;
 }
 
 .planti-swatch__color--plain {
-  background: var(--planti-grass);
+  background-image: url('/planti/swatch-plain.webp');
 }
 
 .planti-swatch__color--patterned {
-  background: repeating-linear-gradient(
-    45deg,
-    var(--planti-grass) 0 5px,
-    var(--planti-sprout) 5px 10px
-  );
+  background-image: url('/planti/swatch-patterned.webp');
 }
 
 .planti-swatch__color--other {
-  background: linear-gradient(
-    135deg,
-    var(--planti-terracotta-ink) 50%,
-    #7b5ea7 50%
-  );
+  background-image: url('/planti/swatch-other.webp');
+}
+
+/* El nombre va en dos líneas, una palabra por línea */
+.planti-swatch__label {
+  @apply w-min;
 }
 
 .planti-swatch--selected {
   @apply font-semibold;
 }
 
+/* Elegida: igual que la carta elegida, contorno verde de la marca y sombra
+   gris */
 .planti-swatch--selected .planti-swatch__color {
-  box-shadow: 0 0 0 3px var(--planti-leaf);
+  box-shadow:
+    0 0 0 1.5px var(--planti-grass),
+    0 8px 24px rgb(0 0 0 / 0.2);
   animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Buscando coincidencias: una planta brota (tallo, cuatro hojas y chispas),
+   tres frases se turnan y una barra se llena. Todo dura 2,4 s y queda en su
+   estado final. */
+.planti-loading {
+  @apply items-center justify-center gap-6 pb-24;
+}
+
+.planti-loading__sprout {
+  @apply relative h-44 w-44;
+}
+
+.planti-loading__soil {
+  @apply absolute bottom-2 left-1/2 h-2.5 w-24 -translate-x-1/2 rounded-full;
+  background: var(--planti-photo-warm);
+  animation: planti-loading-soil 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.planti-loading__stem {
+  @apply absolute bottom-3 left-1/2 h-28 w-1 -translate-x-1/2 rounded-full;
+  background: var(--planti-grass);
+  transform-origin: bottom;
+  animation: planti-loading-stem 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s both;
+}
+
+/* Cada hoja nace del tallo: las de la izquierda van en espejo */
+.planti-loading__leaf {
+  @apply absolute left-1/2;
+  --flip: 1;
+  color: var(--planti-grass);
+  transform-origin: 0 100%;
+  animation: planti-loading-leaf 0.5s ease-out both;
+}
+
+.planti-loading__leaf--first {
+  @apply bottom-10 size-7;
+  animation-delay: 0.4s;
+}
+
+.planti-loading__leaf--second {
+  @apply bottom-16 size-8;
+  --flip: -1;
+  animation-delay: 0.8s;
+}
+
+.planti-loading__leaf--third {
+  @apply bottom-22 size-9;
+  animation-delay: 1.2s;
+}
+
+.planti-loading__leaf--fourth {
+  @apply bottom-28 size-10;
+  --flip: -1;
+  animation-delay: 1.6s;
+}
+
+/* Al final, seis chispas salen desde la punta en todas direcciones */
+.planti-loading__spark {
+  @apply absolute bottom-32 left-1/2 -ml-0.75 size-1.5 rounded-full opacity-0;
+  background: var(--planti-sprout);
+  animation: planti-loading-spark 0.9s ease-out 1.7s both;
+}
+
+.planti-loading__spark:nth-child(7) {
+  --x: 56px;
+  --y: -20px;
+}
+
+.planti-loading__spark:nth-child(8) {
+  --x: 36px;
+  --y: -52px;
+}
+
+.planti-loading__spark:nth-child(9) {
+  --x: 0px;
+  --y: -64px;
+  animation-delay: 1.74s;
+}
+
+.planti-loading__spark:nth-child(10) {
+  --x: -36px;
+  --y: -52px;
+  animation-delay: 1.78s;
+}
+
+.planti-loading__spark:nth-child(11) {
+  --x: -56px;
+  --y: -20px;
+  animation-delay: 1.82s;
+}
+
+.planti-loading__spark:nth-child(12) {
+  --x: 20px;
+  --y: -36px;
+  animation-delay: 1.86s;
+}
+
+/* Las tres frases ocupan el mismo lugar y se turnan cada 0,8 s; la última se
+   queda */
+.planti-loading__messages {
+  @apply relative h-6 w-full;
+}
+
+.planti-loading__message {
+  @apply absolute inset-x-0 text-center text-base leading-6 font-semibold opacity-0;
+  color: var(--planti-forest);
+  animation: planti-loading-message 2.4s ease-out both;
+}
+
+.planti-loading__message:nth-child(2) {
+  animation-delay: 0.8s;
+}
+
+.planti-loading__message:last-child {
+  animation: planti-loading-message-last 0.8s ease-out 1.6s both;
+}
+
+.planti-loading__bar {
+  @apply relative h-1 w-48 overflow-hidden rounded-full;
+  background: var(--planti-input-border);
+}
+
+.planti-loading__fill {
+  @apply absolute inset-y-0 left-0 rounded-full;
+  background: var(--planti-grass);
+  animation: planti-loading-fill 2.4s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes planti-loading-soil {
+  from {
+    opacity: 0;
+    width: 0;
+  }
+}
+
+@keyframes planti-loading-stem {
+  from {
+    transform: translateX(-50%) scaleY(0);
+  }
+  to {
+    transform: translateX(-50%) scaleY(1);
+  }
+}
+
+@keyframes planti-loading-leaf {
+  from {
+    opacity: 0;
+    transform: scaleX(var(--flip)) scale(0) rotate(-40deg);
+  }
+  70% {
+    opacity: 1;
+    transform: scaleX(var(--flip)) scale(1.15) rotate(0deg);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(var(--flip)) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes planti-loading-spark {
+  from {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  40% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translate(var(--x), var(--y));
+  }
+}
+
+@keyframes planti-loading-message {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  8%,
+  28% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  36%,
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes planti-loading-message-last {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes planti-loading-fill {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Capítulo 2 · Crear una rutina. Las tarjetas siguen el mismo lenguaje de
+   selección de Buscar: blancas con sombra suave y, al elegirlas, contorno
+   verde de la marca y sombra gris */
+.planti-routine__hint {
+  @apply -mt-1 mb-4 text-base leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-care-list,
+.planti-frequency-list {
+  @apply flex flex-col gap-3;
+}
+
+.planti-care-option,
+.planti-frequency {
+  @apply relative flex items-center gap-3 overflow-hidden rounded-2xl border-[1.5px] p-4;
+  background: var(--planti-white);
+  border-color: transparent;
+  box-shadow: var(--planti-shadow);
+  transition:
+    border-color 0.35s,
+    box-shadow 0.35s;
+}
+
+.planti-care-option--checked {
+  border-color: var(--planti-grass);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+  animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.planti-care-option__icon,
+.planti-frequency__icon {
+  @apply flex size-12 shrink-0 items-center justify-center rounded-xl;
+  background: var(--planti-dew);
+  color: var(--planti-grass);
+}
+
+.planti-care-option__icon svg,
+.planti-frequency__icon svg {
+  @apply size-6;
+}
+
+.planti-care-option__text,
+.planti-frequency__text {
+  @apply flex min-w-0 flex-1 flex-col;
+}
+
+.planti-care-option__name,
+.planti-frequency__name {
+  @apply text-lg leading-6 font-semibold;
+  color: var(--planti-ink);
+}
+
+.planti-care-option__detail,
+.planti-frequency__next {
+  @apply text-base leading-6;
+  color: var(--planti-stone);
+}
+
+/* El cuadro se llena de verde y el check aparece con un pequeño rebote */
+.planti-care-option__box {
+  @apply flex size-6 shrink-0 items-center justify-center rounded-md border-2;
+  border-color: var(--planti-placeholder);
+  color: var(--planti-white);
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+
+.planti-care-option__box svg {
+  @apply size-4 scale-50 opacity-0;
+  stroke-width: 3;
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.2s;
+}
+
+.planti-care-option--checked .planti-care-option__box {
+  background: var(--planti-grass);
+  border-color: var(--planti-grass);
+}
+
+.planti-care-option--checked .planti-care-option__box svg {
+  @apply scale-100 opacity-100;
+}
+
+/* Frecuencias: el valor sube al cambiar */
+.planti-frequency__value {
+  @apply text-base leading-6 font-medium;
+  color: var(--planti-leaf);
+  animation: planti-frequency-value 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes planti-frequency-value {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.planti-frequency__stepper {
+  @apply flex shrink-0 items-center gap-2;
+}
+
+.planti-frequency__step {
+  @apply relative flex size-9 items-center justify-center overflow-hidden rounded-full border;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  color: var(--planti-leaf);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.planti-frequency__step svg {
+  @apply size-4;
+}
+
+.planti-frequency__step--tapped {
+  background: var(--planti-grass);
+  border-color: var(--planti-grass);
+  color: var(--planti-white);
+  animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Revisar: la planta arriba y la lista de cuidados con un lápiz para editar */
+.planti-routine-review__plant {
+  @apply mb-4 flex items-center gap-3;
+}
+
+.planti-routine-review__photo {
+  @apply flex size-14 shrink-0 items-center justify-center rounded-2xl;
+  background: var(--planti-cream);
+  color: var(--planti-grass);
+}
+
+.planti-routine-review__photo svg {
+  @apply size-7;
+}
+
+.planti-routine-review__name {
+  @apply text-lg leading-6 font-semibold;
+  color: var(--planti-ink);
+}
+
+.planti-routine-review__detail {
+  @apply text-base leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-routine-review__list {
+  border-color: transparent;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.08);
+}
+
+.planti-routine-review__list .planti-task__name {
+  @apply text-lg leading-6;
+}
+
+.planti-routine-review__edit {
+  @apply flex size-9 shrink-0 items-center justify-center rounded-full;
+  background: var(--planti-fog);
+  color: var(--planti-leaf);
+}
+
+.planti-routine-review__edit svg {
+  @apply size-4;
+}
+
+/* Rutina creada: lleva botón abajo, así que el centro deja su espacio */
+.planti-routine-created {
+  @apply pb-52;
+}
+
+/* Pestaña Rutina: título arriba, sin volver, y el contenido que se desliza */
+.planti-routine__title {
+  @apply mb-1 text-[22px] leading-10 font-bold;
+  color: var(--planti-forest);
+}
+
+.planti-routine__content {
+  @apply gap-6;
 }

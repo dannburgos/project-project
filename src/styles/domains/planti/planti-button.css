@@ -1,5 +1,5 @@
 .planti-button {
-  @apply inline-flex h-12 w-full items-center justify-center gap-2 rounded-full text-sm font-semibold;
+  @apply inline-flex h-12 w-full items-center justify-center gap-2 rounded-full text-base font-semibold;
   background: var(--planti-leaf);
   color: var(--planti-white);
 }
@@ -17,7 +17,7 @@
 }
 
 .planti-status-pill {
-  @apply inline-flex w-fit items-center rounded-lg px-2.5 py-0.5 text-sm font-medium;
+  @apply inline-flex w-fit items-center rounded-lg px-2.5 py-0.5 text-base font-medium;
   background: var(--planti-dew);
   color: var(--planti-leaf);
 }
@@ -34,6 +34,15 @@
 
 .planti-sequence-button svg {
   @apply size-4;
+}
+
+/* Solo el ícono: un círculo con reproducir o pausar */
+.planti-sequence-button--icon {
+  @apply size-12 px-0;
+}
+
+.planti-sequence-button--icon svg {
+  @apply size-5 fill-current;
 }
 
 /* El botón se pulsa; si además queda cargando, muestra el círculo que gira */

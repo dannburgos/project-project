@@ -16,7 +16,7 @@
 }
 
 .planti-week-agenda__label {
-  @apply text-sm;
+  @apply text-base;
   color: var(--planti-stone);
 }
 
@@ -34,7 +34,7 @@
 }
 
 .planti-week-agenda__title {
-  @apply border-t pt-4 text-sm font-medium;
+  @apply border-t pt-4 text-base font-medium;
   border-color: var(--planti-line);
   color: var(--planti-stone);
 }

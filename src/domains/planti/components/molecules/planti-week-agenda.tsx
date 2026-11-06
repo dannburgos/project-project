@@ -12,25 +12,46 @@ const CARE_ICONS = {
   fertilize: Sprout
 } as const;
 
+type PlantiCareKey = keyof typeof CARE_ICONS;
+
+export type PlantiWeekContent = {
+  title: string;
+  count: string;
+  days: readonly {
+    key: string;
+    label: string;
+    number: string;
+    isToday?: boolean;
+    care?: PlantiCareKey;
+  }[];
+  comingTitle: string;
+  coming: readonly { key: PlantiCareKey; name: string; time: string }[];
+};
+
+type PlantiWeekAgendaProps = {
+  // Qué semana se muestra; por defecto, la de Inicio con tareas (capítulo 3)
+  week?: PlantiWeekContent;
+};
+
 // Tu semana en una sola tarjeta: arriba los siete días (el de hoy resaltado
 // y un ícono en los que tienen un cuidado) y debajo lo que viene, con su día
-export function PlantiWeekAgenda() {
-  const { week } = plantiMessages.home.withTasks;
-
+export function PlantiWeekAgenda({
+  week = plantiMessages.home.withTasks.week
+}: PlantiWeekAgendaProps) {
   return (
     <section>
       <PlantiSectionHead title={week.title} aside={week.count} />
       <div className="planti-card planti-week-agenda">
         <ol className="planti-week-agenda__days">
           {week.days.map(day => {
-            const CareIcon = 'care' in day ? CARE_ICONS[day.care] : null;
+            const CareIcon = day.care ? CARE_ICONS[day.care] : null;
 
             return (
               <li
                 key={day.key}
                 className={cn(
                   'planti-week-agenda__day',
-                  'isToday' in day && 'planti-week-agenda__day--today'
+                  day.isToday && 'planti-week-agenda__day--today'
                 )}
               >
                 <span className="planti-week-agenda__label">{day.label}</span>
@@ -46,7 +67,7 @@ export function PlantiWeekAgenda() {
         <div className="planti-task-list">
           {week.coming.map(item => (
             <PlantiTaskRow
-              key={item.key}
+              key={`${item.key}-${item.time}`}
               icon={CARE_ICONS[item.key]}
               name={item.name}
               detail={item.time}

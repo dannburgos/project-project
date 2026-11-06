@@ -1,12 +1,10 @@
 'use client';
 
+import { CHAPTER_ONE } from '../../chapter-one-timeline';
 import {
-  CHAPTER_ONE_DURATION_MS,
-  CHAPTER_ONE_IDLE_SCENE,
-  getChapterOneScene,
   getNextStepStart,
   getPreviousStepStart
-} from '../../chapter-one-timeline';
+} from '../../planti-timeline.util';
 import { usePlantiTimeline } from '../../hooks/use-planti-timeline';
 import { PlantiPlayer } from './planti-player';
 import { PlantiTimelinePanel } from './planti-timeline-panel';
@@ -14,11 +12,11 @@ import { PlantiTimelinePanel } from './planti-timeline-panel';
 // Pantalla de revisión: el recorrido corriendo a la izquierda y, a la derecha,
 // cada paso con cuándo empieza y cuánto dura, resaltando el que se está viendo
 export function PlantiTimelineReview() {
-  const timeline = usePlantiTimeline(CHAPTER_ONE_DURATION_MS);
+  const timeline = usePlantiTimeline(CHAPTER_ONE.durationMs);
   const scene =
     timeline.status === 'idle'
-      ? CHAPTER_ONE_IDLE_SCENE
-      : getChapterOneScene(timeline.elapsedMs);
+      ? CHAPTER_ONE.idleScene
+      : CHAPTER_ONE.getScene(timeline.elapsedMs);
 
   return (
     <main className="planti-review">
@@ -27,6 +25,7 @@ export function PlantiTimelineReview() {
           scene={scene}
           status={timeline.status}
           elapsedMs={timeline.elapsedMs}
+          durationMs={CHAPTER_ONE.durationMs}
           isSettling={timeline.isSettling}
           hasControls
           isEmbedded
@@ -36,10 +35,14 @@ export function PlantiTimelineReview() {
           onReset={timeline.handleReset}
           onScrub={timeline.handleScrub}
           onPreviousStep={() =>
-            timeline.handleJump(getPreviousStepStart(timeline.elapsedMs))
+            timeline.handleJump(
+              getPreviousStepStart(CHAPTER_ONE, timeline.elapsedMs)
+            )
           }
           onNextStep={() =>
-            timeline.handleJump(getNextStepStart(timeline.elapsedMs))
+            timeline.handleJump(
+              getNextStepStart(CHAPTER_ONE, timeline.elapsedMs)
+            )
           }
         />
       </div>

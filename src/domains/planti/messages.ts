@@ -54,7 +54,6 @@ export const plantiMessages = {
     scientific: 'Ficus lyrata',
     tagline: 'Elegante y resistente',
     nickname: 'Ficus de la sala',
-    place: 'Sala',
     description:
       'Planta de hojas grandes y brillantes, ideal para espacios con buena luz. Aporta un look tropical.',
     traits: ['Interior', 'Cuidado moderado']
@@ -86,28 +85,22 @@ export const plantiMessages = {
     ],
     // Búsqueda por cómo se ve: forma, tamaño y color, en palabras de todos los días
     look: {
-      question: '¿Cómo es tu planta?',
+      question: '¿Cómo lucen las hojas de tu planta?',
       options: [
         { key: 'large', label: 'Hojas grandes', isSelected: true },
-        { key: 'slim', label: 'Hojas largas y finas' },
-        { key: 'hanging', label: 'Cuelga o trepa' },
-        { key: 'flowers', label: 'Tiene flores' }
+        { key: 'slim', label: 'Hojas largas' },
+        { key: 'hanging', label: 'Hojas que cuelgan' },
+        { key: 'flowers', label: 'Hojas y flores' }
       ]
     },
     more: {
       title: 'Cuéntanos más',
       sizeLabel: '¿Qué tan grande es?',
       sizes: [
-        { key: 'small', label: 'Pequeña', hint: 'cabe sobre una mesa' },
-        {
-          key: 'medium',
-          label: 'Mediana',
-          hint: 'llega a la rodilla',
-          isSelected: true
-        },
-        { key: 'big', label: 'Grande', hint: 'llega a la cintura o más' }
+        { key: 'small', label: 'Pequeña' },
+        { key: 'medium', label: 'Mediana' },
+        { key: 'big', label: 'Grande', isSelected: true }
       ],
-      sizeHintNone: 'Desliza para elegir un tamaño',
       colorLabel: '¿Cómo son sus hojas?',
       colors: [
         { key: 'plain', label: 'Verde parejo', isSelected: true },
@@ -116,58 +109,64 @@ export const plantiMessages = {
       ],
       action: 'Mira las coincidencias'
     },
+    // Mientras se buscan las coincidencias: tres frases que se turnan
+    loading: {
+      messages: [
+        'Mirando sus hojas…',
+        'Comparando tamaños…',
+        'Buscando coincidencias…'
+      ]
+    },
     gallery: {
       question: '¿Es alguna de estas?',
-      summary: ['Hojas grandes', 'Mediana', 'Verde parejo'],
       items: [
-        {
-          key: 'pandurata',
-          name: 'Ficus Pandurata',
-          look: 'Hojas grandes en forma de violín',
-          isActive: true
-        },
-        {
-          key: 'elastica',
-          name: 'Ficus Elástica',
-          look: 'Hojas anchas y brillantes'
-        },
-        {
-          key: 'benjamina',
-          name: 'Ficus Benjamina',
-          look: 'Hojas medianas y ramas que caen'
-        }
+        { key: 'pandurata', name: 'Ficus Pandurata', isActive: true },
+        { key: 'elastica', name: 'Ficus Elástica' },
+        { key: 'benjamina', name: 'Ficus Benjamina' }
       ],
       none: { title: '¿No está la tuya?', action: 'Escribe su nombre' }
     }
   },
   detail: {
-    action: 'Elige esta planta',
-    // Lo general de la planta: todavía no la eligió, solo está mirándola
-    recommendationsTitle: 'Recomendaciones generales',
-    recommendations: [
-      {
-        key: 'light',
-        name: 'Luz',
-        text: 'Le va bien la luz brillante, sin sol directo'
-      },
-      {
-        key: 'water',
-        name: 'Riego',
-        text: 'Agradece riegos moderados, sin encharcar'
-      },
-      {
-        key: 'humidity',
-        name: 'Humedad',
-        text: 'Prefiere un ambiente con algo de humedad'
-      }
-    ],
-    note: 'Esto es lo general. Cuando la elijas, lo ajustamos a tu planta.'
+    action: 'Elige esta planta'
   },
   board: {
     title: 'Recorrido del capítulo 1',
+    titleTwo: 'Recorrido del capítulo 2',
     hint: 'Cada pantalla tal como se ve en el prototipo, en orden. Desliza hacia el lado para ver todas.',
     entry: 'Entrada',
     chapter: 'Capítulo 1 · Primera vez',
+    chapterTwo: 'Capítulo 2 · Crear una rutina',
+    framesTwo: {
+      home: {
+        title: 'Inicio, antes de la rutina',
+        note: 'El Ficus ya está; se pulsa "Crea su rutina"'
+      },
+      start: {
+        title: 'Iniciar rutina',
+        note: 'La planta y sus necesidades; se pulsa "Crea tu rutina"'
+      },
+      cares: {
+        title: 'Rutina · Cuidados',
+        note: 'Se marcan regar, abonar y revisar hojas'
+      },
+      frequency: {
+        title: 'Rutina · Frecuencias',
+        note: 'El riego sube de 1 a 2 veces por semana'
+      },
+      review: {
+        title: 'Rutina · Revisar',
+        note: 'El resumen, con la opción de editar cada cuidado'
+      },
+      created: {
+        title: 'Rutina creada',
+        note: 'Se dibuja el check y se pulsa "Mira tus tareas"'
+      },
+      tab: {
+        title: 'Pestaña Rutina',
+        note: 'La semana ya programada con los cuidados'
+      }
+    },
     frames: {
       splash: { title: 'Portada', note: 'Espera a que inicies el recorrido' },
       login: {
@@ -190,6 +189,10 @@ export const plantiMessages = {
         title: 'Buscar · Cuéntanos más',
         note: 'Se eligen el tamaño y el color'
       },
+      searchLoading: {
+        title: 'Buscar · Buscando',
+        note: 'Brota una planta mientras se buscan las coincidencias'
+      },
       searchGallery: {
         title: 'Buscar · ¿Es alguna?',
         note: 'La Ficus Pandurata se resalta y se elige'
@@ -202,13 +205,9 @@ export const plantiMessages = {
         title: 'Personalizar',
         note: 'Se escribe el nombre y se eligen dónde vive y la luz'
       },
-      needs: {
-        title: 'Necesidades de cuidado',
-        note: 'Aparecen los datos y las recomendaciones; se guarda'
-      },
       registered: {
         title: 'Planta registrada',
-        note: 'Se confirma y se pulsa "Crea tu rutina"'
+        note: 'Se dibuja el check y la planta queda guardada'
       }
     }
   },
@@ -256,11 +255,135 @@ export const plantiMessages = {
     ],
     action: 'Guarda tu planta'
   },
+  // Capítulo 2 · Crear una rutina: de las necesidades de la planta a cuidados
+  // con fecha. Contenido de diseño, no consejo botánico validado.
+  routine: {
+    // Inicio antes de la rutina: el mismo Inicio completo, con solo el Ficus
+    // y sin tareas todavía; el primer destacado invita a crearla
+    home: {
+      banner: {
+        label: 'Destacados',
+        slides: [
+          {
+            key: 'routine',
+            tag: 'Tu planta',
+            title: 'Tu Ficus no tiene rutina',
+            text: 'Así no se te pasa nada',
+            action: 'Crea su rutina'
+          },
+          {
+            key: 'add',
+            tag: 'Tu jardín',
+            title: '¿Otra planta en casa?',
+            text: 'Búscala en el catálogo',
+            action: 'Busca una planta'
+          }
+        ]
+      },
+      plants: {
+        title: 'Mis plantas',
+        action: 'Ver todas',
+        items: [
+          {
+            key: 'ficus',
+            name: 'Ficus de la sala',
+            place: 'Sala',
+            status: 'Sin rutina',
+            tone: 'pending'
+          }
+        ],
+        add: 'Nueva planta'
+      }
+    },
+    startAction: 'Crea tu rutina',
+    title: 'Crea tu rutina',
+    caresQuestion: '¿Qué cuidados quieres programar?',
+    caresHint: 'Te recomendamos estos para tu Ficus.',
+    cares: [
+      {
+        key: 'water',
+        name: 'Regar',
+        text: 'Cuando la tierra se sienta seca'
+      },
+      {
+        key: 'fertilize',
+        name: 'Abonar',
+        text: 'Le da fuerza para crecer'
+      },
+      {
+        key: 'leaves',
+        name: 'Revisar hojas',
+        text: 'Detecta manchas y plagas a tiempo'
+      }
+    ],
+    caresAction: 'Elige la frecuencia',
+    frequencyTitle: 'Elige la frecuencia',
+    frequencyQuestion: '¿Cada cuánto?',
+    // El riego se ajusta con − y +; los otros dos van con su valor
+    waterUnit: (times: number) =>
+      times === 1 ? '1 vez por semana' : `${times} veces por semana`,
+    frequencies: [
+      { key: 'water', next: 'Próximo: hoy' },
+      {
+        key: 'fertilize',
+        value: '1 vez al mes',
+        next: 'Próximo: lun 21 abr'
+      },
+      { key: 'leaves', value: 'Cada 15 días', next: 'Próximo: jue 1 may' }
+    ],
+    decrease: 'Menos',
+    increase: 'Más',
+    frequencyAction: 'Revisa tu rutina',
+    reviewTitle: 'Revisa tu rutina',
+    reviewPlant: 'Ficus de la sala',
+    reviewPlantDetail: '3 cuidados programados',
+    reviewItems: [
+      { key: 'water', detail: '2 veces por semana · hoy' },
+      { key: 'fertilize', detail: '1 vez al mes · lun 21 abr' },
+      { key: 'leaves', detail: 'Cada 15 días · jue 1 may' }
+    ],
+    edit: 'Editar',
+    reviewAction: 'Confirma tu rutina',
+    createdTitle: 'Tu rutina está lista',
+    createdText: 'Te avisaremos cuando le toque cada cuidado.',
+    createdAction: 'Mira tus tareas',
+    tabTitle: 'Tu rutina',
+    // La semana del 14 al 20 de abril, recién programada: hoy (miércoles 16)
+    // y el sábado toca regar; lo demás viene después
+    week: {
+      title: 'Esta semana',
+      count: '2 cuidados',
+      days: [
+        { key: 'mon', label: 'L', number: '14' },
+        { key: 'tue', label: 'M', number: '15' },
+        {
+          key: 'wed',
+          label: 'M',
+          number: '16',
+          isToday: true,
+          care: 'water'
+        },
+        { key: 'thu', label: 'J', number: '17' },
+        { key: 'fri', label: 'V', number: '18' },
+        { key: 'sat', label: 'S', number: '19', care: 'water' },
+        { key: 'sun', label: 'D', number: '20' }
+      ],
+      comingTitle: 'Lo que viene',
+      coming: [
+        { key: 'water', name: 'Riega tu Ficus', time: 'Hoy · Sala' },
+        { key: 'water', name: 'Riega tu Ficus', time: 'Sábado 19 · Sala' },
+        { key: 'fertilize', name: 'Abona tu Ficus', time: 'Lunes 21 · Sala' },
+        {
+          key: 'review',
+          name: 'Revisa las hojas de tu Ficus',
+          time: 'Jueves 1 de mayo · Sala'
+        }
+      ]
+    }
+  },
   registered: {
     title: 'Tu Ficus ya está en tu jardín',
-    text: 'Programa sus cuidados y no se te pasará ninguno.',
-    primary: 'Crea tu rutina',
-    secondary: 'Ahora no'
+    text: 'Programa sus cuidados y no se te pasará ninguno.'
   },
   timeline: {
     title: 'Recorrido y tiempos',
@@ -275,13 +398,21 @@ export const plantiMessages = {
       'home-empty': 'Inicio, primera vez',
       'search-look': 'Buscar · ¿Cómo es?',
       'search-more': 'Buscar · Cuéntanos más',
+      'search-loading': 'Buscar · Buscando coincidencias',
       'search-gallery': 'Buscar · ¿Es alguna de estas?',
       'plant-detail': 'Detalle de la planta',
       personalize: 'Personalizar',
-      needs: 'Necesidades de cuidado',
-      registered: 'Planta registrada'
+      registered: 'Planta registrada',
+      'home-routine': 'Inicio, antes de la rutina',
+      'routine-start': 'Iniciar rutina',
+      'routine-cares': 'Rutina · Cuidados',
+      'routine-frequency': 'Rutina · Frecuencias',
+      'routine-review': 'Rutina · Revisar',
+      'routine-created': 'Rutina creada',
+      routine: 'Pestaña Rutina'
     },
     events: {
+      cover: 'La carátula da paso a la portada',
       pressSignIn: 'Se pulsa Iniciar sesión',
       sheetUp: 'Sube el panel de sesión',
       typeUser: 'Se escribe el usuario',
@@ -294,23 +425,40 @@ export const plantiMessages = {
       look: 'Aparecen las cuatro formas',
       chooseLook: 'Se elige "Hojas grandes"',
       more: 'Aparecen tamaño y color',
-      chooseSize: 'La barra va de pequeña a grande y se queda en "Mediana"',
+      chooseSize: 'La barra va de pequeña a grande y se queda en "Grande"',
       chooseColor: 'Se elige "Verde parejo"',
       pressMore: 'Se pulsa "Mira las coincidencias"',
+      searching: 'Brota la planta mientras se buscan las coincidencias',
       gallery: 'Suben las tarjetas una tras otra',
       highlight: 'Se resalta la Ficus Pandurata',
       detail: 'Aparece la planta, con lo general',
-      scrollDetail: 'Se baja para ver recomendaciones y cuidados',
+      scrollDetail: 'Se baja para ver la descripción',
       pressDetail: 'Se pulsa "Elige esta planta"',
       personalize: 'Aparecen los campos',
       typeName: 'Se escribe "Ficus de la sala"',
-      fillPlace: 'Se elige "Sala"',
+      openPlace: 'Se abre la lista de "¿Dónde vive?"',
+      pickPlace: 'Se toca "Sala" en la lista',
+      fillPlace: 'Se cierra la lista con "Sala"',
       fillLight: 'Se elige "Indirecta"',
       pressPersonalize: 'Se pulsa "Confirma tus datos"',
-      needs: 'Aparecen los datos y las recomendaciones',
-      pressNeeds: 'Se pulsa "Guarda tu planta"',
       registered: 'Se dibuja el check',
-      pressRegistered: 'Se pulsa "Crea tu rutina"'
+      homeRoutine: 'Aparece Inicio con el Ficus, todavía sin rutina',
+      pressHomeRoutine: 'Se pulsa "Crea su rutina" en el banner',
+      routineStart: 'Aparecen la planta y sus necesidades',
+      pressRoutineStart: 'Se pulsa "Crea tu rutina"',
+      cares: 'Aparecen los cuidados recomendados',
+      checkWater: 'Se marca "Regar"',
+      checkFertilize: 'Se marca "Abonar"',
+      checkLeaves: 'Se marca "Revisar hojas"',
+      pressCares: 'Se pulsa "Elige la frecuencia"',
+      frequency: 'Aparece cada cuidado con su frecuencia',
+      raiseWater: 'El riego sube a 2 veces por semana',
+      pressFrequency: 'Se pulsa "Revisa tu rutina"',
+      review: 'Aparece el resumen de la rutina',
+      pressReview: 'Se pulsa "Confirma tu rutina"',
+      routineCreated: 'Se dibuja el check',
+      pressRoutineCreated: 'Se pulsa "Mira tus tareas"',
+      routineTab: 'Aparece la semana en la pestaña Rutina'
     }
   },
   home: {

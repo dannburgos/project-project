@@ -20,6 +20,6 @@
 }
 
 .planti-empty-panel__body {
-  @apply mb-6 text-sm leading-6;
+  @apply mb-6 text-base leading-6;
   color: var(--planti-stone);
 }

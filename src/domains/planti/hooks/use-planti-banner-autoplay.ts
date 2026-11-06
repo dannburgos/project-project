@@ -13,14 +13,16 @@ const SLIDE_EASE = 'power3.inOut';
 // El banner avanza solo, porque en el prototipo nadie lo toca: así se ven los
 // tres destacados. Con "reducir movimiento" se queda quieto en el primero.
 export function usePlantiBannerAutoplay<T extends HTMLElement>(
-  slideCount: number
+  slideCount: number,
+  // Apagado, el banner se queda en el primer destacado (para poder pulsarlo)
+  isEnabled = true
 ) {
   const ref = useRef<T>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const track = ref.current;
-    if (!track) return;
+    if (!track || !isEnabled) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const slides = Array.from(track.children) as HTMLElement[];
@@ -45,7 +47,7 @@ export function usePlantiBannerAutoplay<T extends HTMLElement>(
       window.clearTimeout(timeoutId);
       gsap.killTweensOf(track);
     };
-  }, [slideCount]);
+  }, [slideCount, isEnabled]);
 
   return { ref, activeIndex };
 }

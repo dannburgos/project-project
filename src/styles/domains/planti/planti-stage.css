@@ -111,6 +111,20 @@
   background: var(--planti-ink);
 }
 
+/* Tablero con el prototipo en vivo a la izquierda y las pantallas a la
+   derecha; en ventana angosta el prototipo queda arriba */
+.planti-board-layout {
+  @apply block md:grid md:h-svh md:grid-cols-[minmax(0,360px)_1fr] md:overflow-hidden;
+}
+
+.planti-board-layout__live {
+  @apply h-[70svh] min-h-0 border-b border-black/10 bg-white md:h-svh md:border-r md:border-b-0;
+}
+
+.planti-board-layout .planti-board {
+  @apply min-h-0 min-w-0 md:overflow-y-auto;
+}
+
 /* Tablero de revisión: las pantallas del recorrido una al lado de la otra,
    con el celular reducido (--board-scale) */
 .planti-board {

@@ -1,5 +1,6 @@
 import type { PlantiTimelineStatus } from '../../hooks/use-planti-timeline';
 import type { PlantiScene } from '../../types/planti-scene.types';
+import { plantiMessages } from '../../messages';
 import { PlantiTimelineControls } from '../molecules/planti-timeline-controls';
 import { PlantiHomeScreen } from './planti-home-screen';
 import { PlantiNeedsScreen } from './planti-needs-screen';
@@ -7,7 +8,13 @@ import { PlantiOnboardingScreen } from './planti-onboarding-screen';
 import { PlantiPersonalizeScreen } from './planti-personalize-screen';
 import { PlantiPlantDetailScreen } from './planti-plant-detail-screen';
 import { PlantiRegisteredScreen } from './planti-registered-screen';
+import { PlantiRoutineCaresScreen } from './planti-routine-cares-screen';
+import { PlantiRoutineCreatedScreen } from './planti-routine-created-screen';
+import { PlantiRoutineFrequencyScreen } from './planti-routine-frequency-screen';
+import { PlantiRoutineReviewScreen } from './planti-routine-review-screen';
+import { PlantiRoutineScreen } from './planti-routine-screen';
 import { PlantiSearchGalleryScreen } from './planti-search-gallery-screen';
+import { PlantiSearchLoadingScreen } from './planti-search-loading-screen';
 import { PlantiSearchLookScreen } from './planti-search-look-screen';
 import { PlantiSearchMoreScreen } from './planti-search-more-screen';
 import { PlantiSearchScreen } from './planti-search-screen';
@@ -19,12 +26,15 @@ type PlantiPlayerProps = {
   scene: PlantiScene;
   status: PlantiTimelineStatus;
   elapsedMs: number;
+  durationMs: number;
   // Acaba de adelantarse o retrocederse: las animaciones corren un momento
   isSettling: boolean;
   // Muestra los controles del recorrido (en las pantallas sueltas no)
   hasControls: boolean;
   // El escenario ocupa solo su espacio, no toda la ventana
   isEmbedded?: boolean;
+  // Controles reducidos: un solo botón de reproducir y pausar (dentro del caso)
+  hasMinimalControls?: boolean;
   onStart: () => void;
   onPause: () => void;
   onResume: () => void;
@@ -66,6 +76,8 @@ function renderScene(scene: PlantiScene) {
           isPressed={scene.isPressed}
         />
       );
+    case 'search-loading':
+      return <PlantiSearchLoadingScreen />;
     case 'search-gallery':
       return <PlantiSearchGalleryScreen isHighlighted={scene.isHighlighted} />;
     case 'search-typing':
@@ -85,15 +97,50 @@ function renderScene(scene: PlantiScene) {
           nameChars={scene.nameChars}
           hasPlace={scene.hasPlace}
           hasLight={scene.hasLight}
+          isPlaceOpen={scene.isPlaceOpen}
           isPressed={scene.isPressed}
         />
       );
     case 'needs':
       return <PlantiNeedsScreen isPressed={scene.isPressed} />;
     case 'registered':
-      return <PlantiRegisteredScreen isPressed={scene.isPressed} />;
+      return <PlantiRegisteredScreen />;
     case 'home-tasks':
       return <PlantiHomeScreen variant="with-tasks" />;
+    case 'home-routine':
+      return (
+        <PlantiHomeScreen
+          variant="before-routine"
+          isActionPressed={scene.isPressed}
+        />
+      );
+    case 'routine-start':
+      return (
+        <PlantiNeedsScreen
+          isPressed={scene.isPressed}
+          actionLabel={plantiMessages.routine.startAction}
+        />
+      );
+    case 'routine-cares':
+      return (
+        <PlantiRoutineCaresScreen
+          checkedCares={scene.checkedCares}
+          isPressed={scene.isPressed}
+        />
+      );
+    case 'routine-frequency':
+      return (
+        <PlantiRoutineFrequencyScreen
+          waterTimes={scene.waterTimes}
+          isPressed={scene.isPressed}
+        />
+      );
+    case 'routine-review':
+      return <PlantiRoutineReviewScreen isPressed={scene.isPressed} />;
+    case 'routine-created':
+      return <PlantiRoutineCreatedScreen isPressed={scene.isPressed} />;
+    case 'routine':
+      return <PlantiRoutineScreen />;
   }
 }
 
@@ -103,9 +150,11 @@ export function PlantiPlayer({
   scene,
   status,
   elapsedMs,
+  durationMs,
   isSettling,
   hasControls,
   isEmbedded = false,
+  hasMinimalControls = false,
   onStart,
   onPause,
   onResume,
@@ -124,6 +173,7 @@ export function PlantiPlayer({
           <PlantiTimelineControls
             status={status}
             elapsedMs={elapsedMs}
+            durationMs={durationMs}
             onStart={onStart}
             onPause={onPause}
             onResume={onResume}
@@ -131,6 +181,7 @@ export function PlantiPlayer({
             onScrub={onScrub}
             onPreviousStep={onPreviousStep}
             onNextStep={onNextStep}
+            isMinimal={hasMinimalControls}
           />
         )
       }

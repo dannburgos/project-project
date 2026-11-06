@@ -10,8 +10,11 @@ import { PlantiWeekAgenda } from '../molecules/planti-week-agenda';
 type PlantiHomeScreenProps = {
   // "empty": la primera vez, sin plantas (abre el capítulo 1).
   // "with-tasks": con los cuidados del día (abre el capítulo 3).
-  variant: 'empty' | 'with-tasks';
-  // En el estado vacío, el botón Añade tu planta se está pulsando
+  // "before-routine": con el Ficus ya registrado pero sin rutina todavía
+  // (abre el capítulo 2).
+  variant: 'empty' | 'with-tasks' | 'before-routine';
+  // El botón principal se está pulsando: Añade tu planta (vacío) o Crea su
+  // rutina (antes de la rutina)
   isActionPressed?: boolean;
 };
 
@@ -36,6 +39,15 @@ export function PlantiHomeScreen({
         </div>
         {variant === 'empty' ? (
           <PlantiEmptyPanel isActionPressed={isActionPressed} />
+        ) : variant === 'before-routine' ? (
+          <>
+            <PlantiHomeBanner
+              banner={plantiMessages.routine.home.banner}
+              isAutoplay={false}
+              isFirstPressed={isActionPressed}
+            />
+            <PlantiPlantsGrid plants={plantiMessages.routine.home.plants} />
+          </>
         ) : (
           <>
             <PlantiHomeBanner />

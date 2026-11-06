@@ -20,7 +20,7 @@
 }
 
 .planti-onboarding__text {
-  @apply mb-8 text-sm leading-5;
+  @apply mb-8 text-base leading-6;
   color: rgb(255 255 255 / 0.9);
 }
 

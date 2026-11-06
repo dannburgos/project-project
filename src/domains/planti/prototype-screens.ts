@@ -5,6 +5,7 @@ export const PLANTI_PROTOTYPE_SCREENS = [
   'home-empty',
   'search-look',
   'search-more',
+  'search-loading',
   'search-gallery',
   'search-typing',
   'search',
@@ -12,7 +13,14 @@ export const PLANTI_PROTOTYPE_SCREENS = [
   'personalize',
   'needs',
   'registered',
-  'home-tasks'
+  'home-tasks',
+  'home-routine',
+  'routine-start',
+  'routine-cares',
+  'routine-frequency',
+  'routine-review',
+  'routine-created',
+  'routine'
 ] as const;
 
 export type PlantiPrototypeScreen = (typeof PLANTI_PROTOTYPE_SCREENS)[number];

@@ -23,6 +23,8 @@ const ROW_ICONS = {
 type PlantiNeedsScreenProps = {
   // El botón se está pulsando (en el recorrido)
   isPressed?: boolean;
+  // Texto del botón: al iniciar la rutina (capítulo 2) dice "Crea tu rutina"
+  actionLabel?: string;
 };
 
 // Necesidades de cuidado. Arriba, sin tarjeta: el nombre de la planta, sus
@@ -31,7 +33,8 @@ type PlantiNeedsScreenProps = {
 // la planta se vuelve acciones. El contenido se desliza, para poder sumarle
 // más información.
 export function PlantiNeedsScreen({
-  isPressed = false
+  isPressed = false,
+  actionLabel
 }: PlantiNeedsScreenProps) {
   const { plant, needs } = plantiMessages;
 
@@ -81,7 +84,7 @@ export function PlantiNeedsScreen({
       </div>
       <div className="planti-screen__footer">
         <PlantiButton className={cn(isPressed && 'planti-button--pressed')}>
-          {needs.action}
+          {actionLabel ?? needs.action}
         </PlantiButton>
       </div>
     </div>

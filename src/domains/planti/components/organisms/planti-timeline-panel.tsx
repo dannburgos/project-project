@@ -1,9 +1,7 @@
 'use client';
 
-import {
-  getChapterOneSteps,
-  CHAPTER_ONE_DURATION_MS
-} from '../../chapter-one-timeline';
+import { CHAPTER_ONE } from '../../chapter-one-timeline';
+import { getChapterSteps } from '../../planti-timeline.util';
 import { usePlantiActiveStepScroll } from '../../hooks/use-planti-active-step-scroll';
 import type { PlantiTimelineStatus } from '../../hooks/use-planti-timeline';
 import { plantiMessages } from '../../messages';
@@ -16,7 +14,7 @@ type PlantiTimelinePanelProps = {
   onGoToStep: (ms: number) => void;
 };
 
-const STEPS = getChapterOneSteps();
+const STEPS = getChapterSteps(CHAPTER_ONE);
 
 function formatSeconds(ms: number) {
   return `${(ms / 1000).toFixed(1).replace('.', ',')} s`;
@@ -46,7 +44,7 @@ export function PlantiTimelinePanel({
       <p className="planti-timeline-panel__hint">{timeline.hint}</p>
       <p className="planti-timeline-panel__total">
         {timeline.total}:{' '}
-        <strong>{formatSeconds(CHAPTER_ONE_DURATION_MS)}</strong>
+        <strong>{formatSeconds(CHAPTER_ONE.durationMs)}</strong>
       </p>
       <ol
         ref={ref}

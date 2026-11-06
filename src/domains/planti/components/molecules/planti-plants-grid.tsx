@@ -4,12 +4,30 @@ import { plantiMessages } from '../../messages';
 import { PlantiSectionHead } from '../atoms/planti-section-head';
 import { PlantiStatusPill } from '../atoms/planti-status-pill';
 
+export type PlantiPlantsContent = {
+  title: string;
+  action: string;
+  items: readonly {
+    key: string;
+    name: string;
+    place: string;
+    status: string;
+    tone: 'positive' | 'pending';
+  }[];
+  add: string;
+};
+
+type PlantiPlantsGridProps = {
+  // Qué plantas se muestran; por defecto, las tres de Inicio con tareas
+  plants?: PlantiPlantsContent;
+};
+
 // Las plantas de la persona en dos columnas, con tarjetas más altas que
 // anchas. El espacio de cada foto es para la planta recortada; mientras no
 // esté, lleva una hoja. La última tarjeta invita a añadir otra.
-export function PlantiPlantsGrid() {
-  const { plants } = plantiMessages.home.withTasks;
-
+export function PlantiPlantsGrid({
+  plants = plantiMessages.home.withTasks.plants
+}: PlantiPlantsGridProps) {
   return (
     <section>
       <PlantiSectionHead title={plants.title} aside={plants.action} />

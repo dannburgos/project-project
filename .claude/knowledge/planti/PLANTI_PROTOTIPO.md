@@ -33,7 +33,7 @@ Persona del prototipo: Laura.
 
 - App clara y limpia: fondo blanco y **todas las tarjetas blancas**, con borde verde suave (`--planti-card-border`) y sombra marcada (`--planti-shadow`). **No hay tarjetas crema.** La sombra es suave (dos capas leves). El botón de volver no lleva sombra. El verde, solo como acento y para acciones.
 - Esquinas suaves (16 en tarjetas, 12 en botones y barra) y bordes finos y sutiles.
-- Tipografía: ningún texto baja de 14 px, salvo las etiquetas de la barra de navegación inferior (12 px).
+- Tipografía: en las pantallas de los flujos 1, 2 y 3 ningún texto baja de 16 px, salvo las etiquetas de la barra de navegación inferior (12 px) y la hora de la barra de estado del celular.
 - Una sola sombra, muy suave. Barra de navegación flotante.
 - Plantas recortadas con sombra suave; etiquetas de luz, riego y temperatura apuntando a la planta.
 - Sin lector con cámara (fuera del MVP); sus referentes solo se usan para la presentación de la planta.
@@ -57,6 +57,20 @@ Persona del prototipo: Laura.
 4. Revisar rutina: resumen, con opción de volver y editar.
 5. Rutina creada: confirmación y acceso a tareas; termina en la pestaña Rutina.
 
+### Flujo 2 construido (~19 s)
+
+Tablero: `/prototypes/planti/board?flow=2` (prototipo en vivo a la izquierda y las 7 pantallas en fila). En el caso, el botón 02 ya está activo y carga `/prototypes/planti?flow=2`. Línea de tiempo en `src/domains/planti/chapter-two-timeline.ts`; los capítulos se registran en `planti-chapters.ts`.
+
+| Segundo | Qué se ve |
+|---|---|
+| 0 · 1,8 | Inicio antes de la rutina (el Inicio completo, con solo el Ficus "Sin rutina"; el banner queda quieto en "Tu Ficus no tiene rutina") · se pulsa "Crea su rutina" |
+| 2,5 · 4,3 | Iniciar rutina (la pantalla de Necesidades, con el botón "Crea tu rutina") · se pulsa |
+| 5,0 · 5,8 · 6,4 · 7,0 · 7,8 | ¿Qué cuidados quieres programar? · se marcan Regar, Abonar y Revisar hojas (el cuadro se llena y la tarjeta toma contorno verde) · se pulsa "Elige la frecuencia" |
+| 8,5 · 9,5 · 10,7 | ¿Cada cuánto? · el riego sube de 1 a 2 veces por semana con el botón + · se pulsa "Revisa tu rutina" |
+| 11,4 · 13,4 | Revisa tu rutina (planta arriba, cada cuidado con frecuencia, fecha y lápiz para editar) · se pulsa "Confirma tu rutina" |
+| 14,1 · 15,9 | Tu rutina está lista (se dibuja el check) · se pulsa "Mira tus tareas" |
+| 16,6 | Pestaña Rutina: la semana del 14 al 20 de abril con los cuidados del Ficus (la barra marca Rutina) |
+
 ## Flujo 3 · Completar un cuidado (~9 s)
 
 1. Inicio con tareas: pendientes y próximas; puede abrir con una notificación.
@@ -69,7 +83,11 @@ Ficus Pandurata · interior, 19–35 °C, cuidado moderado · cuidados: regar, a
 revisar hojas · frecuencias: regar 2 veces por semana, abonar una vez al mes,
 revisar hojas cada 15 días.
 
-## Línea de tiempo del capítulo 1 (construida, ~28,4 s)
+## Línea de tiempo del capítulo 1 (construida, ~30,1 s)
+
+Necesidades de cuidado ya no hace parte de este recorrido: de Personalizar se pasa directo a Planta registrada (la pantalla sigue existiendo para otro flujo).
+
+Antes de iniciar, el celular muestra una **carátula**: solo las hojas y la palabra Planti. Al pulsar Iniciar recorrido aparece la portada entera (0,8 s, con fundido) y de ahí sigue la entrada; todo lo demás se corrió 0,8 s.
 
 Un solo reloj recorre la lista de momentos de `src/domains/planti/chapter-one-timeline.ts`; para ajustar un tiempo se cambia el número de ese momento. Lo que cambia de forma continua (usuario y contraseña, la línea del botón de la intro y las letras del nombre) sale del mismo tiempo, así se puede adelantar y retroceder.
 
@@ -79,9 +97,9 @@ Un solo reloj recorre la lista de momentos de `src/domains/planti/chapter-one-ti
 | 3,5 | Intro: la línea rodea el botón (2 s) y el botón se pulsa a los 5,5 |
 | 6,0 · 7,5 | Inicio primera vez (con pausa) · se pulsa Añade tu planta |
 | 8,2 · 9,0 | Buscar ¿Cómo es? · se elige Hojas grandes |
-| 9,7 · 10,1 · 10,8 · 11,5 | Cuéntanos más · se elige Mediana · se elige Verde parejo · se pulsa el botón |
+| 9,7 · 10,1 · 10,8 · 11,5 | Cuéntanos más · se elige Grande · se elige Verde parejo · se pulsa el botón |
 | 12,2 · 13,3 | ¿Es alguna de estas? (2,3 s) · se resalta la Ficus |
-| 14,5 · 15,3 · 17,5 | Detalle solo con lo general · baja despacio (1,8 s) a las recomendaciones · se pulsa Elige esta planta |
+| 14,5 · 15,3 · 17,5 | Detalle (foto, nombres, etiquetas y descripción; sin recomendaciones) · baja despacio (1,8 s) a la descripción · se pulsa Elige esta planta |
 | 18,2 · 18,6 · 20,1 · 20,7 · 21,3 | Personalizar (planta grande arriba y nombre abajo) · se escribe el nombre · se elige Sala · se elige Indirecta · se pulsa el botón |
 | 22,0 · 23,7 | Necesidades (planta fuera de la tarjeta, datos al lado y recomendaciones en una hoja) · se pulsa Guarda tu planta |
 | 24,4 · 26,2 | Planta registrada · se pulsa Crea tu rutina |
@@ -89,7 +107,7 @@ Un solo reloj recorre la lista de momentos de `src/domains/planti/chapter-one-ti
 
 - Controles debajo del celular: Iniciar recorrido, Pausar, Seguir, Repetir, **paso anterior, paso siguiente y una barra para llevar el recorrido a cualquier momento**. En pausa también se detienen las animaciones de CSS; al adelantar o retroceder en pausa, las de la pantalla nueva corren un momento.
 - En `/prototypes/planti/timeline`, tocar el nombre de un paso lleva el recorrido a ese paso.
-- "Crea tu rutina" (final del capítulo 1) es el puente al flujo 2, "Crear una rutina".
+- Planta registrada cierra el capítulo 1 solo con el check, el título y el texto (sin botones "Crea tu rutina" ni "Ahora no").
 - El Detalle y Necesidades tienen contenido que se desliza; en Necesidades se le sumará más información.
 - Las pantallas de un flujo entran deslizando desde la derecha; la entrada y Inicio, con fundido.
 - Revisión con tiempos: `/prototypes/planti/timeline` muestra el recorrido corriendo y, al lado, cada paso con cuándo empieza y cuánto dura (se resalta el activo).
@@ -107,7 +125,7 @@ Un solo reloj recorre la lista de momentos de `src/domains/planti/chapter-one-ti
 - Título "Iniciar sesión" centrado, 24 px medio. Campos con ícono a la izquierda (usuario y candado, línea fina), borde gris claro, esquinas de 16 y solo el texto de ayuda dentro ("Usuario", "Contraseña"); 12 px entre campos.
 - Casilla "Recuérdame" (se marca en el recorrido) y "¿Olvidaste tu contraseña?" debajo. Botón verde "Comencemos" de 40 px con esquina de 14.
 - El panel blanco sube con un rebote suave (se pasa un poco y se asienta).
-- Los campos de Personalizar (nombre, con lápiz; ubicación, con pin y flecha) usan el mismo estilo de campo; la luz sigue en opciones.
+- Los campos de Personalizar (nombre, con lápiz; ubicación, con pin y flecha) usan el mismo estilo de campo. "¿Dónde vive?" es un desplegable: en el recorrido se abre la lista (Sala, Dormitorio, Balcón), se toca Sala (queda marcada con un check) y se cierra. La luz va en tres tarjetas pequeñas con ícono (sol, sol bajo y luna); la elegida lleva contorno verde y sombra gris, igual que las cartas de Buscar, para no confundirse con un botón. El recorrido dura ~30,1 s.
 - Efecto de toque: todo lo que se pulsa o elige muestra un punto (dónde tocó), una onda que sale de ese punto y un pequeño rebote.
 
 ## Secuencia de entrada (construida)
@@ -122,9 +140,10 @@ Un solo reloj recorre la lista de momentos de `src/domains/planti/chapter-one-ti
 ## Buscar planta pensado para quien no sabe de plantas (aprobado)
 
 - Laura no sabe cómo se llama ni cómo se clasifica su planta: reconoce **cómo se ve**. Por eso se quitaron las "sugerencias" y los filtros técnicos (interior, exterior).
-- Paso 1 `search-look`: "¿Cómo es tu planta?" con cuatro **tarjetas grandes** (imagen arriba y nombre abajo): Hojas grandes, Hojas largas y finas, Cuelga o trepa, Tiene flores. La elegida lleva borde verde oscuro y su nombre sobre verde claro. El campo de nombre queda arriba para quien sí sabe cómo se llama.
-- Paso 2 `search-more`: "Cuéntanos más": el **tamaño** con una tarjeta donde la planta crece o se encoge y un **deslizador** de tres paradas (Pequeña: cabe sobre una mesa · Mediana: llega a la rodilla · Grande: llega a la cintura o más), y el **color de las hojas** en muestras redondas (Verde parejo, Con manchas, Otros colores). En el recorrido la bolita se desliza sola hasta Mediana y luego se elige Verde parejo. Botón "Mira las coincidencias".
-- Paso 3 `search-gallery`: "¿Es alguna de estas?": plantas con foto y una frase de cómo son, con la Ficus Pandurata resaltada y una tarjeta de salida "¿No está la tuya? Escribe su nombre".
+- Paso 1 `search-look`: "¿Cómo lucen las hojas de tu planta?" con cuatro **tarjetas grandes** (imagen arriba y nombre abajo): Hojas grandes, Hojas largas, Hojas que cuelgan, Hojas y flores. La elegida lleva borde verde oscuro y su nombre sobre verde claro.
+- Paso 2 `search-more`: "Cuéntanos más": el **tamaño** con una tarjeta donde la planta crece o se encoge y un **deslizador** de tres paradas (Pequeña · Mediana · Grande), y el **color de las hojas** en muestras redondas (Verde parejo, Con manchas, Otros colores). La barra parte siempre en Pequeña; en el recorrido la bolita se desliza sola hasta Grande y luego se elige Verde parejo. Botón "Mira las coincidencias".
+- Carga `search-loading` (2,4 s, entre el paso 2 y el 3): brota una planta (tallo, cuatro hojas que se abren y chispas al final), se turnan "Mirando sus hojas…", "Comparando tamaños…" y "Buscando coincidencias…", y una barra se llena. Todo lo que viene después se corrió 2,4 s.
+- Paso 3 `search-gallery`: "¿Es alguna de estas?": plantas con foto y nombre, con la Ficus Pandurata resaltada y una tarjeta de salida "¿No está la tuya? Escribe su nombre".
 - La búsqueda por nombre (`search-typing`, `search`) queda como camino alterno que el recorrido no muestra.
 - Capítulo 1 completo: unos 28 segundos (6 de entrada y 22 de flujo). Tablero: `/prototypes/planti/board`.
 - Todas las frases ("cabe sobre una mesa", "hojas grandes en forma de violín") son contenido de diseño, no datos botánicos.

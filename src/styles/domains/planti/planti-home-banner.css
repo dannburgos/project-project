@@ -22,7 +22,7 @@
 }
 
 .planti-banner__tag {
-  @apply mb-1 rounded-lg px-2.5 py-0.5 text-sm font-medium;
+  @apply mb-1 rounded-lg px-2.5 py-0.5 text-base font-medium;
   background: var(--planti-dew);
   color: var(--planti-leaf);
 }
@@ -37,12 +37,13 @@
 }
 
 .planti-banner__body {
-  @apply text-sm leading-5;
+  @apply text-base leading-6;
   color: var(--planti-stone);
 }
 
+/* El botón no se encoge si el texto de arriba es largo */
 .planti-banner__action {
-  @apply mt-2 h-10 w-auto px-4 text-sm;
+  @apply mt-2 h-10 w-auto shrink-0 px-4 text-base;
 }
 
 .planti-banner__action svg {

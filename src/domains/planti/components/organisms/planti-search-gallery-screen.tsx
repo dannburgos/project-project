@@ -10,7 +10,7 @@ type PlantiSearchGalleryScreenProps = {
 };
 
 // Buscar, paso 3: "¿Es alguna de estas?". Las plantas que coinciden, con foto
-// y una frase de cómo son; la última tarjeta es la salida si ninguna se parece.
+// y nombre; la última tarjeta es la salida si ninguna se parece.
 export function PlantiSearchGalleryScreen({
   isHighlighted = true
 }: PlantiSearchGalleryScreenProps) {
@@ -20,19 +20,11 @@ export function PlantiSearchGalleryScreen({
     <div className="planti-screen">
       <PlantiScreenHeader title={title} />
       <h2 className="planti-search-question">{gallery.question}</h2>
-      <ul className="planti-summary-chips">
-        {gallery.summary.map(item => (
-          <li key={item} className="planti-summary-chips__item">
-            {item}
-          </li>
-        ))}
-      </ul>
       <div className="planti-match-grid">
         {gallery.items.map(item => (
           <PlantiMatchTile
             key={item.key}
             name={item.name}
-            look={item.look}
             isActive={isHighlighted && 'isActive' in item}
           />
         ))}

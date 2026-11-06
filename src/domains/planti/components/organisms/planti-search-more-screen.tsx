@@ -17,14 +17,15 @@ type PlantiSearchMoreScreenProps = {
 // deslizador (comparado con el cuerpo), y el color de las hojas, en muestras
 // redondas; todo en palabras que cualquiera entiende.
 export function PlantiSearchMoreScreen({
-  hasSize = true,
+  hasSize = false,
   hasColor = true,
   isPressed = false
 }: PlantiSearchMoreScreenProps) {
   const { more } = plantiMessages.search;
+  // La barra siempre parte de la primera parada; al elegir, llega a la elegida
   const chosenSize = hasSize
     ? more.sizes.find(size => 'isSelected' in size)
-    : undefined;
+    : more.sizes[0];
 
   return (
     <div className="planti-screen">
@@ -34,11 +35,6 @@ export function PlantiSearchMoreScreen({
         <PlantiSizeSlider
           sizes={more.sizes}
           selectedKey={chosenSize?.key ?? null}
-          hint={
-            chosenSize
-              ? `${chosenSize.label}: ${chosenSize.hint}`
-              : more.sizeHintNone
-          }
         />
       </section>
       <section className="planti-option-group">

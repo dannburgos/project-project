@@ -1,8 +1,14 @@
 import type { PlantiPrototypeScreen } from '../prototype-screens';
 
-// Cómo va el inicio de sesión sobre la portada: el panel sube, se escriben
-// usuario y contraseña y el botón se pulsa y queda cargando
-export type PlantiLoginPhase = 'idle' | 'pressed' | 'sheet' | 'signing-in';
+// Cómo va la portada: antes de iniciar el recorrido es una carátula (solo las
+// hojas y el nombre); luego aparece entera, el botón se pulsa, sube el panel,
+// se escriben usuario y contraseña y queda cargando
+export type PlantiLoginPhase =
+  | 'cover'
+  | 'idle'
+  | 'pressed'
+  | 'sheet'
+  | 'signing-in';
 
 // Lo que se ve en un momento del recorrido: qué pantalla y en qué punto de su
 // animación está. Lo que no se indica se ve en su estado final.
@@ -32,4 +38,10 @@ export type PlantiScene = {
   nameChars?: number;
   hasPlace?: boolean;
   hasLight?: boolean;
+  // Personalizar: la lista de "¿Dónde vive?" está abierta
+  isPlaceOpen?: boolean;
+  // Rutina · cuidados: cuántos ya se marcaron (por defecto, todos)
+  checkedCares?: number;
+  // Rutina · frecuencias: cuántas veces por semana se riega
+  waterTimes?: number;
 };

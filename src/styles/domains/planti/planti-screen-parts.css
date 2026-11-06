@@ -1,16 +1,17 @@
 /* Piezas compartidas por las pantallas de un flujo: cabecera con volver,
    pie con el botón, panel de la planta, opciones, campos y resumen de planta */
 .planti-screen-header {
-  @apply mb-4 flex items-center gap-3;
+  @apply relative mb-4 flex items-center gap-3;
 }
 
+/* El título va centrado en la pantalla, sin depender del botón de volver */
 .planti-screen-header__title {
-  @apply text-2xl leading-8 font-bold;
+  @apply pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-[22px] leading-8 font-bold;
   color: var(--planti-forest);
 }
 
 .planti-screen__footer {
-  @apply absolute inset-x-5 bottom-27 flex flex-col gap-3;
+  @apply absolute inset-x-5 bottom-24.5 flex flex-col gap-3;
 }
 
 /* Panel de la planta: recortada sobre fondo crema */
@@ -23,7 +24,7 @@
 }
 
 .planti-plant-hero--large {
-  @apply h-58;
+  @apply h-50;
 }
 
 .planti-plant-hero--large > svg {
@@ -32,7 +33,7 @@
 
 /* Rótulo con el nombre de la planta, sobre su foto */
 .planti-plant-hero__caption {
-  @apply absolute bottom-3 left-3 rounded-full border px-3 py-1.5 text-sm font-medium;
+  @apply absolute bottom-3 left-3 rounded-full border px-3 py-1.5 text-base font-medium;
   background: rgb(255 255 255 / 0.92);
   border-color: var(--planti-card-border);
   color: var(--planti-ink);
@@ -56,52 +57,32 @@
 }
 
 .planti-field__label {
-  @apply mb-3 text-sm font-semibold;
+  @apply mb-3 text-lg leading-6 font-semibold;
 }
 
-.planti-chip-list {
-  @apply flex flex-wrap gap-2;
+/* Cuánta luz recibe: tres tarjetas pequeñas con ícono. La elegida, con el
+   mismo contorno verde y sombra gris que las cartas de Buscar */
+.planti-icon-choice-list {
+  @apply grid grid-cols-3 gap-3;
 }
 
-.planti-choice-chip {
-  @apply inline-flex h-11 items-center rounded-full border px-5 text-sm font-medium;
+.planti-icon-choice {
+  @apply relative flex h-19 flex-col items-center justify-center gap-1 overflow-hidden rounded-2xl border-[1.5px] text-base leading-6 font-medium;
   background: var(--planti-white);
-  color: var(--planti-stone);
-  border-color: var(--planti-card-border);
-}
-
-.planti-choice-chip--selected {
-  background: var(--planti-leaf);
-  color: var(--planti-white);
-  border-color: var(--planti-leaf);
-}
-
-/* Una planta en pequeño */
-.planti-plant-summary {
-  @apply flex items-center gap-3 rounded-2xl border p-3;
-  background: var(--planti-white);
-  border-color: var(--planti-card-border);
+  border-color: transparent;
   box-shadow: var(--planti-shadow);
+  color: var(--planti-ink);
 }
 
-.planti-plant-summary__photo {
-  @apply flex size-14 shrink-0 items-center justify-center rounded-xl border;
-  background: var(--planti-white);
+.planti-icon-choice svg {
+  @apply size-6;
   color: var(--planti-grass);
-  border-color: var(--planti-card-border);
 }
 
-.planti-plant-summary__photo svg {
-  @apply size-7;
-}
-
-.planti-plant-summary__name {
-  @apply text-base leading-6 font-semibold;
-}
-
-.planti-plant-summary__detail {
-  @apply text-sm leading-5;
-  color: var(--planti-stone);
+.planti-icon-choice--selected {
+  @apply font-semibold;
+  border-color: var(--planti-grass);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
 }
 
 /* Contenido que se desliza bajo la cabecera, sin barra visible; el espacio de
@@ -110,6 +91,13 @@
   @apply -mx-5 flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pt-5 pb-44;
   scrollbar-width: none;
   mask-image: linear-gradient(to bottom, transparent, black 16px);
+}
+
+/* Bajo la cabecera, el contenido que se desliza empieza a 20 px, igual que la
+   primera pregunta de Buscar. El aire va en el relleno de arriba, donde el
+   desvanecido no tapa nada */
+.planti-screen-header + .planti-screen__scroll {
+  @apply -mt-4;
 }
 
 /* Lo que se desliza conserva su tamaño: no se aplasta para caber */
@@ -130,7 +118,7 @@
 
 /* Lo que se elige se nota: cambia de color con suavidad y hace un pequeño
    rebote */
-.planti-choice-chip,
+.planti-icon-choice,
 .planti-look-tile {
   transition:
     background-color 0.35s,
@@ -142,7 +130,7 @@
   transition: background-color 0.35s;
 }
 
-.planti-choice-chip--selected,
+.planti-icon-choice--selected,
 .planti-look-tile--selected {
   animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -178,6 +166,53 @@
   color: var(--planti-placeholder);
 }
 
+/* Desplegable: la lista se abre debajo del campo, por encima de lo que sigue */
+.planti-select {
+  @apply relative z-20;
+}
+
+.planti-select--open .planti-input {
+  border-color: var(--planti-grass);
+}
+
+.planti-select--open .planti-input > svg:last-child {
+  @apply rotate-180;
+}
+
+.planti-input > svg:last-child {
+  transition: transform 0.25s ease-out;
+}
+
+.planti-select__menu {
+  @apply absolute inset-x-0 top-full mt-2 overflow-hidden rounded-2xl py-1;
+  background: var(--planti-white);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.16);
+  transform-origin: top;
+  animation: planti-select-open 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.planti-select__option {
+  @apply flex h-11 items-center justify-between px-4 text-base;
+  color: var(--planti-ink);
+}
+
+.planti-select__option--picked {
+  @apply font-semibold;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-select__option svg {
+  @apply size-5;
+}
+
+@keyframes planti-select-open {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scaleY(0.96);
+  }
+}
+
 .planti-input--tapped {
   animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -211,7 +246,7 @@
 }
 
 .planti-button,
-.planti-choice-chip,
+.planti-icon-choice,
 .planti-look-tile,
 .planti-match-tile,
 .planti-swatch__color,
@@ -233,7 +268,6 @@
   --tap-wave: rgb(61 87 24 / 0.16);
 }
 
-.planti-choice-chip--selected,
 .planti-swatch__color {
   --tap-dot: rgb(255 255 255 / 0.4);
   --tap-ring: rgb(255 255 255 / 0.9);
@@ -243,7 +277,9 @@
 :is(
   .planti-button--pressed,
   .planti-button--loading,
-  .planti-choice-chip--selected,
+  .planti-icon-choice--selected,
+  .planti-care-option--checked,
+  .planti-frequency__step--tapped,
   .planti-look-tile--selected,
   .planti-match-tile--active,
   .planti-input--tapped,
@@ -262,7 +298,9 @@
 :is(
   .planti-button--pressed,
   .planti-button--loading,
-  .planti-choice-chip--selected,
+  .planti-icon-choice--selected,
+  .planti-care-option--checked,
+  .planti-frequency__step--tapped,
   .planti-look-tile--selected,
   .planti-match-tile--active,
   .planti-input--tapped,
