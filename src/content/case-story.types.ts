@@ -9,6 +9,17 @@ export type CaseStoryLabeledText = {
   text: string;
 };
 
+export type CaseStoryTextPart = {
+  text: string;
+  isStrong?: boolean;
+};
+
+export type CaseStoryPrototypeFlow = {
+  number: string;
+  title: string;
+  isReady: boolean;
+};
+
 export type CaseStoryNumberedText = {
   number: string;
   title: string;
@@ -108,5 +119,16 @@ export type CaseStory = {
     title: string;
     src: string;
     screens: readonly CaseStoryScreen[];
+    // Columna de texto junto al celular
+    eyebrow: string;
+    heading: string;
+    headingAccent: string;
+    // Párrafo con algunas frases resaltadas
+    description: readonly CaseStoryTextPart[];
+    liveHint: string;
+    flowsLabel: string;
+    soonLabel: string;
+    // Un botón por flujo; solo los que ya tienen recorrido se pueden elegir
+    flows: readonly CaseStoryPrototypeFlow[];
   };
 };

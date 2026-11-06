@@ -37,7 +37,16 @@ const RAIN_STEP = 12;
 
 const PARK = 48;
 const GESTURE_GAP_MS = 220;
-const RAIN_DISTANCE_PX = 2600;
+// La lluvia avanza por gestos: el primero la deja a la mitad (las pantallas
+// a medio subir) y el segundo la termina y lleva al prototipo
+const RAIN_HALF = 0.5;
+const RAIN_GESTURE_S = 1.3;
+// En el segundo gesto, el prototipo empieza a entrar cuando las últimas
+// pantallas todavía están saliendo
+const PROTOTYPE_OVERLAP_S = 0;
+// El último tramo de la lluvia va más pausado, para que las pantallas sigan a
+// la vista mientras entra el prototipo
+const RAIN_EXIT_S = 1.8;
 const LINE_ON_GREEN = 'rgba(162, 201, 108, 0.3)';
 const AXIS_ON_GREEN = '#a2c96c';
 
@@ -351,9 +360,9 @@ export function setupDesktopStage(root: HTMLElement) {
     { scale: 1, autoAlpha: 1, duration: 1.8 },
     '<'
   ).fromTo(
-    `${view('prototype')} [data-part="label"]`,
+    `${view('prototype')} [data-part="copy"] > *`,
     { autoAlpha: 0, y: 20 },
-    { autoAlpha: 1, y: 0, duration: 1.2 },
+    { autoAlpha: 1, y: 0, duration: 1.2, stagger: 0.15 },
     '<0.4'
   );
   mark();
@@ -402,6 +411,22 @@ export function setupDesktopStage(root: HTMLElement) {
       rain.progress(rainProgress);
     }
   };
+  // Un gesto en la lluvia: la lleva con impulso hasta la mitad o hasta un
+  // extremo; mientras se mueve, el resto del gesto no cuenta
+  const glideRain = (progress: number, onComplete?: () => void) => {
+    rainProgress = progress;
+    isBusy = true;
+    gsap.to(rain, {
+      progress,
+      duration: RAIN_GESTURE_S,
+      ease: 'power3.out',
+      overwrite: true,
+      onComplete: () => {
+        isBusy = false;
+        onComplete?.();
+      }
+    });
+  };
 
   // ---- Un gesto = un paso ----
   const stepCount = labels.length;
@@ -411,6 +436,7 @@ export function setupDesktopStage(root: HTMLElement) {
   let isLocked = false;
   let lastEventTime = 0;
   let playing: gsap.core.Tween | null = null;
+  let prototypeEntry: gsap.core.Tween | null = null;
 
   const lock = () => {
     if (isLocked) return;
@@ -469,7 +495,8 @@ export function setupDesktopStage(root: HTMLElement) {
       isBusy = false;
       return;
     }
-    if (step > RAIN_STEP) setRain(1, false);
+    // Si la lluvia todavía está terminando de subir, se deja que termine
+    if (step > RAIN_STEP && !gsap.isTweening(rain)) setRain(1, false);
     if (step < RAIN_STEP) setRain(0, false);
     isBusy = true;
     const distance =
@@ -505,25 +532,50 @@ export function setupDesktopStage(root: HTMLElement) {
   };
 
   // direction: 1 baja, -1 sube. Devuelve true si el escenario usa el gesto.
-  const consume = (direction: 1 | -1, amount: number) => {
+  const consume = (direction: 1 | -1) => {
     if (!isLocked) return false;
     const now = performance.now();
     const isNewGesture = now - lastEventTime > GESTURE_GAP_MS;
     lastEventTime = now;
     if (isBusy) return true;
-    // Desde los flujos, el primer gesto ya empieza a subir las pantallas
-    if (current === FLOWS_STEP && direction > 0 && isNewGesture)
+    if (!isNewGesture) return true;
+    // Desde los flujos, el primer gesto sube las pantallas hasta la mitad
+    if (current === FLOWS_STEP && direction > 0) {
       goTo(RAIN_STEP);
-    // En la lluvia, el scroll mueve las capas de forma continua
-    if (
-      current === RAIN_STEP &&
-      ((direction > 0 && rainProgress < 1) ||
-        (direction < 0 && rainProgress > 0))
-    ) {
-      setRain(rainProgress + (direction * amount) / RAIN_DISTANCE_PX);
+      glideRain(RAIN_HALF);
       return true;
     }
-    if (!isNewGesture) return true;
+    // Desde el prototipo, al subir se vuelve directo a la mitad de la lluvia
+    if (current === RAIN_STEP + 1 && direction < 0) {
+      goTo(RAIN_STEP);
+      glideRain(RAIN_HALF);
+      return true;
+    }
+    // En la lluvia, cada gesto es medio tramo: de la mitad sigue al
+    // prototipo (o vuelve a los flujos al subir)
+    if (current === RAIN_STEP) {
+      const isPastHalf = rainProgress > RAIN_HALF + 0.01;
+      const isBeforeHalf = rainProgress < RAIN_HALF - 0.01;
+      if (direction > 0 && isBeforeHalf) glideRain(RAIN_HALF);
+      else if (direction > 0) {
+        // Las pantallas terminan de subir y, casi enseguida, entran el
+        // celular y el texto del prototipo, sin un tramo vacío en medio
+        rainProgress = 1;
+        isBusy = true;
+        gsap.to(rain, {
+          progress: 1,
+          duration: RAIN_EXIT_S,
+          ease: 'power1.inOut',
+          overwrite: true
+        });
+        prototypeEntry?.kill();
+        prototypeEntry = gsap.delayedCall(PROTOTYPE_OVERLAP_S, () =>
+          goTo(RAIN_STEP + 1)
+        );
+      } else if (isPastHalf) glideRain(RAIN_HALF);
+      else glideRain(0, () => goTo(FLOWS_STEP));
+      return true;
+    }
     const next = current + direction;
     if (next < 0) return true;
     if (next > stepCount - 1) {
@@ -538,7 +590,7 @@ export function setupDesktopStage(root: HTMLElement) {
   const handleWheel = (event: WheelEvent) => {
     const delta = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
     if (!delta) return;
-    if (consume(delta > 0 ? 1 : -1, Math.abs(delta))) {
+    if (consume(delta > 0 ? 1 : -1)) {
       event.preventDefault();
       event.stopImmediatePropagation();
     }
@@ -552,7 +604,7 @@ export function setupDesktopStage(root: HTMLElement) {
     if (y === undefined || lastTouchY === null) return;
     const delta = lastTouchY - y;
     lastTouchY = y;
-    if (delta && consume(delta > 0 ? 1 : -1, Math.abs(delta) * 3)) {
+    if (delta && consume(delta > 0 ? 1 : -1)) {
       event.preventDefault();
     }
   };
@@ -570,12 +622,49 @@ export function setupDesktopStage(root: HTMLElement) {
         : 0;
     if (!direction) return;
     lastEventTime = 0;
-    if (consume(direction, 700)) event.preventDefault();
+    if (consume(direction)) event.preventDefault();
+  };
+  // Salto desde el contador: va directo a la sección elegida, sin recorrer las
+  // de en medio. El escenario se apaga un instante, se pone en ese paso y
+  // vuelve a aparecer
+  const jumpTo = (step: number) => {
+    if (step === current && !isBusy) return;
+    playing?.kill();
+    prototypeEntry?.kill();
+    gsap.killTweensOf(rain);
+    isBusy = true;
+    gsap.to(stage, {
+      autoAlpha: 0,
+      duration: 0.18,
+      ease: 'power1.out',
+      overwrite: true,
+      onComplete: () => {
+        current = step;
+        announceSection(root, STEP_SECTION[step]);
+        setWorld(step);
+        syncScroll(step);
+        setRain(step > RAIN_STEP ? 1 : 0, false);
+        tl.seek(labels[step]);
+        gsap.set(titleBlocks, { scaleX: 0 });
+        notifySurface();
+        gsap.to(stage, {
+          autoAlpha: 1,
+          duration: 0.32,
+          ease: 'power1.out',
+          onComplete: () => {
+            isBusy = false;
+          }
+        });
+      }
+    });
   };
   const handleJump = (event: Event) => {
     const section = (event as CustomEvent<number>).detail;
+    const step = SECTION_STEP[section] ?? 0;
     lock();
-    goTo(SECTION_STEP[section] ?? 0);
+    // "Prototipo" arranca en la lluvia, que aún deja ver los flujos: el salto
+    // va directo al prototipo interactivo
+    jumpTo(step === RAIN_STEP ? RAIN_STEP + 1 : step);
   };
 
   window.addEventListener('wheel', handleWheel, {
@@ -599,7 +688,10 @@ export function setupDesktopStage(root: HTMLElement) {
 
   return () => {
     playing?.kill();
+    prototypeEntry?.kill();
     gsap.killTweensOf(rain);
+    gsap.killTweensOf(stage);
+    gsap.set(stage, { clearProps: 'opacity,visibility' });
     window.clearTimeout(surfaceTimeout);
     window.removeEventListener('wheel', handleWheel, { capture: true });
     window.removeEventListener('touchstart', handleTouchStart);

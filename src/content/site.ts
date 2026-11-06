@@ -151,6 +151,8 @@ export const siteContent = {
       sequence: {
         hint: 'Sigue bajando'
       },
+      // Cuadrados de la línea de arriba para saltar entre secciones
+      storyNavigation: 'Secciones del caso',
       prototype: {
         activate: 'Haz clic para probarlo',
         open: 'Abrir en pantalla completa',

@@ -229,6 +229,23 @@ export const plantiStory: CaseStory = {
   prototype: {
     title: 'Prototipo interactivo',
     src: '/prototypes/planti',
+    eyebrow: 'Prototipo interactivo · 2026',
+    heading: 'Cuida tus plantas, ',
+    headingAccent: 'sin adivinar.',
+    description: [
+      { text: 'Planti reúne lo que necesita cada planta en un solo lugar. ' },
+      { text: 'Le cuentas cómo es,', isStrong: true },
+      { text: ' te ayuda a encontrarla y ' },
+      { text: 'convierte sus necesidades en cuidados.', isStrong: true }
+    ],
+    liveHint: 'El celular de la derecha recorre cada flujo, dale play',
+    flowsLabel: 'Elige un flujo',
+    soonLabel: 'Próximamente',
+    flows: [
+      { number: '01', title: 'Incorporar una planta', isReady: true },
+      { number: '02', title: 'Crear una rutina de cuidado', isReady: true },
+      { number: '03', title: 'Completar un cuidado', isReady: false }
+    ],
     screens: [
       { label: 'Pantalla principal · Inicio', isMain: true },
       { label: 'Pantalla principal · Mis plantas', isMain: true },

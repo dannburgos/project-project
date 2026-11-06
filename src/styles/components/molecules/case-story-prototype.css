@@ -16,18 +16,150 @@
   @apply rounded-3xl;
 }
 
-.story-prototype {
-  @apply flex flex-col items-center justify-center gap-5 pt-28 pb-6;
+/* Prototipo: a la izquierda qué es y los flujos, a la derecha el celular */
+/* Con .story-view delante, para ganarle al relleno base de las vistas */
+.story-view.story-prototype {
+  @apply grid grid-cols-[minmax(0,1fr)_auto] items-center gap-16 pt-24 pb-2;
 }
 
-/* El marco del celular ya viene dentro del prototipo */
+.story-prototype__copy {
+  @apply flex max-w-xl flex-col items-start;
+}
+
+.story-prototype__eyebrow {
+  @apply mb-8 flex items-center gap-4 text-xs tracking-[0.18em] uppercase;
+  color: var(--story-light);
+}
+
+.story-prototype__eyebrow::before {
+  @apply h-px w-10 content-[''];
+  background: currentColor;
+}
+
+.story-prototype__heading {
+  @apply font-semibold;
+  font-size: 64px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--story-fg);
+}
+
+.story-prototype__accent {
+  @apply font-semibold italic;
+  color: var(--story-light);
+}
+
+.story-prototype__description {
+  @apply mt-8 text-xl leading-relaxed;
+  color: var(--story-muted);
+}
+
+.story-prototype__description strong {
+  @apply font-semibold;
+  color: var(--story-fg);
+}
+
+.story-prototype__live {
+  @apply mt-10 flex items-center gap-3 text-lg font-medium;
+  color: var(--story-fg);
+}
+
+.story-prototype__live svg {
+  @apply size-5;
+  color: var(--story-light);
+}
+
+/* Punto que late: el celular está vivo */
+.story-prototype__dot {
+  @apply relative size-2.5 rounded-full;
+  background: var(--story-light);
+  box-shadow: 0 0 0 6px rgb(162 201 108 / 0.18);
+  animation: story-prototype-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes story-prototype-pulse {
+  50% {
+    box-shadow: 0 0 0 10px rgb(162 201 108 / 0);
+  }
+}
+
+.story-prototype__flows {
+  @apply mt-8 w-full;
+}
+
+.story-prototype__flows-label {
+  @apply mb-3 text-xs tracking-[0.14em] uppercase;
+  color: var(--story-muted);
+}
+
+.story-prototype__flow-list {
+  @apply flex flex-col gap-2;
+}
+
+/* Un botón por flujo: el elegido se rellena; los que aún no existen se ven
+   apagados */
+.story-prototype__flow {
+  @apply flex w-full items-center gap-3 rounded-full border py-2 pr-5 pl-2 text-left text-base transition-colors;
+  border-color: var(--story-rule);
+  color: var(--story-fg);
+}
+
+.story-prototype__flow:not(:disabled):hover {
+  border-color: var(--story-light);
+}
+
+.story-prototype__flow--selected {
+  background: rgb(162 201 108 / 0.14);
+  border-color: var(--story-light);
+}
+
+.story-prototype__flow:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+.story-prototype__flow-icon {
+  @apply flex size-9 shrink-0 items-center justify-center rounded-full;
+  background: var(--story-light);
+  color: var(--story-ink);
+}
+
+.story-prototype__flow:disabled .story-prototype__flow-icon {
+  background: var(--story-rule);
+  color: var(--story-fg);
+}
+
+.story-prototype__flow-icon svg {
+  @apply size-4 fill-current;
+}
+
+.story-prototype__flow-number {
+  @apply text-sm tabular-nums;
+  color: var(--story-muted);
+}
+
+.story-prototype__flow-title {
+  @apply flex-1 font-medium;
+}
+
+.story-prototype__flow-soon {
+  @apply text-xs tracking-[0.12em] uppercase;
+  color: var(--story-muted);
+}
+
+/* El marco del celular ya viene dentro del prototipo. Lo más alto que cabe
+   bajo la franja de navegación, y 130 px hacia la izquierda */
 .story-prototype__phone {
-  height: min(78vh, calc(100vh - 200px));
+  height: calc(100vh - 104px);
   aspect-ratio: 447 / 822;
+  margin-right: 130px;
 }
 
+/* El prototipo usa esquema claro; si el marco hereda el oscuro del caso, el
+   navegador le pinta un fondo blanco. Con el mismo esquema, el celular flota
+   sobre el verde */
 .story-prototype__screen {
   @apply size-full border-0;
+  color-scheme: light;
 }
 
 @media (max-width: 899px), (prefers-reduced-motion: reduce) {
@@ -39,12 +171,21 @@
     @apply absolute top-14 right-4 left-8 z-20 m-0;
   }
 
-  .story-prototype {
-    @apply pt-6;
+  .story-view.story-prototype {
+    @apply flex flex-col items-center gap-10 pt-6;
     min-height: 100svh;
+  }
+
+  .story-prototype__heading {
+    font-size: 40px;
+  }
+
+  .story-prototype__description {
+    @apply text-base;
   }
 
   .story-prototype__phone {
     height: 360px;
+    margin-right: 0;
   }
 }
