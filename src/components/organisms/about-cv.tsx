@@ -18,7 +18,7 @@ export function AboutCv() {
       <div className="about-cv">
         <p className="about-cv__summary">{cv.summary}</p>
 
-        <div className="about-cv__group">
+        <div className="about-cv__group" data-glass="static">
           <h3 className="about-cv__label">{cv.educationLabel}</h3>
           <ul className="about-cv__list">
             {education.map(stage => (

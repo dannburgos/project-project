@@ -126,6 +126,14 @@ html {
   --case-accent: var(--color-purple-400);
 }
 
+.case-page--blue {
+  --case-accent: #ff5a00;
+}
+
+.case-page--indigo {
+  --case-accent: #4849e8;
+}
+
 /* Case study: galería final de proyectos por ver */
 .case-more {
   @apply border-border mx-4 flex flex-col gap-6 border-t pt-8 pb-12 md:mx-8 md:pb-16 lg:mx-12;

@@ -3,8 +3,9 @@ import { PageCurtain } from '@/components/organisms/page-curtain';
 import { WorkCarousel } from '@/components/organisms/work-carousel';
 import { exampleProjects } from '@/content/site';
 
-// Work: un carrusel de proyectos que se mueve con el scroll y, al terminar,
-// la página sigue hacia el cierre de contacto
+// Work: arranca en gris y, con el scroll o las flechas, cada proyecto crece
+// desde su tarjeta hasta volverse el fondo. Al terminar, la página sigue
+// hacia el cierre de contacto
 export default function WorkPage() {
   return (
     <div className="work-page">

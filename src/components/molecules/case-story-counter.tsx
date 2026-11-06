@@ -6,16 +6,22 @@ import { cn } from '@/lib/utils';
 
 type CaseStoryCounterProps = {
   sections: readonly string[];
+  // Número de la primera sección: 1 en Planti; 0 en Sonopizza, donde la
+  // portada es la 00 y cada módulo lleva su número del caso (01 · El reto)
+  firstNumber?: number;
 };
-
-const formatNumber = (index: number) => String(index + 1).padStart(2, '0');
 
 // Navegación del recorrido. En computador: siete cuadrados sobre la línea de
 // arriba (la actual rellena, las vistas tenues y la línea pintada hasta la
 // actual); al pasar el cursor dicen su nombre y al tocarlos saltan. Al final
 // de la fila, el nombre de la sección actual. En celular: el contador de
 // abajo, que al tocarlo deja saltar a cualquiera.
-export function CaseStoryCounter({ sections }: CaseStoryCounterProps) {
+export function CaseStoryCounter({
+  sections,
+  firstNumber = 1
+}: CaseStoryCounterProps) {
+  const formatNumber = (index: number) =>
+    String(index + firstNumber).padStart(2, '0');
   const { ref, section, isOpen, handleToggle, handleJump } =
     useCaseStoryCounter();
 

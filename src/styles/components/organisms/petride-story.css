@@ -1,0 +1,1562 @@
+/* Caso de PetRide (referencias: fineacts.co, carnilove, neutomni y gpg).
+   Scroll libre sobre fondo noche, con la marca en acentos y de forma
+   moderada. Night y Deep son tonos nuevos derivados del índigo para el
+   contraste; índigo, lima, periwinkle y cloud son la paleta de la marca.
+   Títulos en Outfit 800; textos de 16 px en adelante. */
+.pet-story {
+  --pet-night: #0b0c24;
+  --pet-deep: #17184a;
+  --pet-indigo: #4849e8;
+  --pet-lime: #ddf344;
+  --pet-peri: #abc4ff;
+  --pet-cloud: #f5f9ff;
+  --pet-mute: rgb(245 249 255 / 0.74);
+  --pet-line: rgb(171 196 255 / 0.24);
+  --pet-screen: #cfd2dc;
+  --pet-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --pet-glide: cubic-bezier(0.22, 1, 0.36, 1);
+  --pet-progress: 0;
+  @apply relative;
+  overflow-x: clip;
+  font-family: var(--font-pet), sans-serif;
+  background: var(--pet-night);
+  color: var(--pet-cloud);
+}
+
+.pet-story :focus-visible {
+  outline: 2px solid var(--pet-lime);
+  outline-offset: 4px;
+}
+
+/* Capítulos: el espacio de la izquierda es para el submenú */
+.pet-chapter {
+  @apply relative flex flex-col gap-32 px-6 py-24 md:gap-48 md:py-40 md:pr-16 md:pl-32;
+}
+
+.pet-chapter:first-of-type {
+  @apply pt-0;
+}
+
+.pet-label {
+  @apply text-base font-medium tracking-wide uppercase;
+  color: var(--pet-lime);
+}
+
+.pet-note {
+  @apply text-base;
+  color: var(--pet-mute);
+}
+
+/* Títulos que suben letra por letra: cada palabra es una máscara */
+.pet-letters__word {
+  @apply inline-block whitespace-nowrap;
+  overflow: clip;
+  padding-block: 0.08em;
+  margin-block: -0.08em;
+  margin-inline-end: 0.24em;
+}
+
+.pet-letters__word:last-child {
+  margin-inline-end: 0;
+}
+
+.pet-letter {
+  @apply inline-block;
+  transform-origin: 50% 100%;
+}
+
+.pet-word {
+  @apply inline;
+}
+
+/* ───────── Submenú lateral: la flor ─────────
+   Cerrada es la flor de la marca con una semilla por capítulo (la actual en
+   lima), un anillo que se llena con el avance y un giro por capítulo. Al
+   abrirse, los capítulos brotan en abanico desde la flor. */
+.pet-nav {
+  @apply fixed top-1/2 left-3 z-40 size-16 -translate-y-1/2 md:left-6;
+  --pet-turn: 0deg;
+  transition: opacity 0.4s ease;
+}
+
+.pet-nav[data-section='1'] {
+  --pet-turn: 60deg;
+}
+.pet-nav[data-section='2'] {
+  --pet-turn: 120deg;
+}
+.pet-nav[data-section='3'] {
+  --pet-turn: 180deg;
+}
+.pet-nav[data-section='4'] {
+  --pet-turn: 240deg;
+}
+.pet-nav[data-section='5'] {
+  --pet-turn: 300deg;
+}
+
+.pet-story[data-counter-hidden] .pet-nav {
+  @apply pointer-events-none opacity-0;
+}
+
+/* Zona que mantiene el abanico abierto mientras el cursor va de la flor a
+   los capítulos */
+.pet-nav__pad {
+  @apply pointer-events-none absolute top-1/2 left-0 h-[360px] w-[320px] -translate-y-1/2;
+}
+
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__pad {
+  @apply pointer-events-auto;
+}
+
+.pet-nav__flower {
+  @apply relative z-10 flex size-16 cursor-pointer items-center justify-center rounded-full;
+}
+
+.pet-nav__bloom {
+  @apply size-12;
+  rotate: var(--pet-turn);
+  transition:
+    rotate 0.9s var(--pet-spring),
+    scale 0.5s var(--pet-spring);
+}
+
+.pet-nav__bloom .pet-flower__paw {
+  rotate: calc(var(--pet-turn) * -1);
+  transition: rotate 0.9s var(--pet-spring);
+}
+
+.pet-nav__flower:hover .pet-nav__bloom {
+  scale: 1.08;
+}
+
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__bloom {
+  rotate: calc(var(--pet-turn) + 90deg);
+  scale: 0.92;
+}
+
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__bloom .pet-flower__paw {
+  rotate: calc((var(--pet-turn) + 90deg) * -1);
+}
+
+.pet-nav__ring {
+  @apply absolute inset-0 size-full -rotate-90;
+}
+
+.pet-nav__ring-track,
+.pet-nav__ring-fill {
+  fill: none;
+  stroke-width: 2;
+}
+
+.pet-nav__ring-track {
+  stroke: var(--pet-line);
+}
+
+.pet-nav__ring-fill {
+  stroke: var(--pet-lime);
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--pet-progress));
+  transition: stroke-dashoffset 0.2s linear;
+}
+
+/* Semillas: una por capítulo, alrededor de la flor */
+.pet-nav__seeds {
+  @apply absolute top-1/2 left-1/2;
+}
+
+.pet-nav__seed {
+  @apply absolute -top-1 -left-1 size-2 rounded-full;
+  background: rgb(171 196 255 / 0.55);
+  translate: var(--seed-x) var(--seed-y);
+  transition:
+    scale 0.5s var(--pet-spring),
+    background-color 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.pet-nav__seed:nth-child(1) {
+  --seed-x: 22px;
+  --seed-y: -40px;
+}
+.pet-nav__seed:nth-child(2) {
+  --seed-x: 36px;
+  --seed-y: -26px;
+}
+.pet-nav__seed:nth-child(3) {
+  --seed-x: 44px;
+  --seed-y: -10px;
+}
+.pet-nav__seed:nth-child(4) {
+  --seed-x: 44px;
+  --seed-y: 10px;
+}
+.pet-nav__seed:nth-child(5) {
+  --seed-x: 36px;
+  --seed-y: 26px;
+}
+.pet-nav__seed:nth-child(6) {
+  --seed-x: 22px;
+  --seed-y: 40px;
+}
+
+.pet-nav__seed--current {
+  background: var(--pet-lime);
+  scale: 1.5;
+}
+
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__seed {
+  @apply opacity-0;
+  scale: 0;
+}
+
+/* Abanico de capítulos */
+.pet-nav__list {
+  @apply absolute top-1/2 left-1/2;
+}
+
+.pet-nav__petal {
+  @apply invisible absolute top-0 left-0 opacity-0;
+  translate: 0 -50%;
+  scale: 0.3;
+  transform-origin: left center;
+  transition:
+    translate 0.45s var(--pet-glide),
+    scale 0.45s var(--pet-glide),
+    opacity 0.25s ease,
+    visibility 0s linear 0.45s;
+}
+
+.pet-nav__petal:nth-child(1) {
+  --petal-x: 56px;
+  --petal-y: -132px;
+}
+.pet-nav__petal:nth-child(2) {
+  --petal-x: 88px;
+  --petal-y: -80px;
+}
+.pet-nav__petal:nth-child(3) {
+  --petal-x: 104px;
+  --petal-y: -26px;
+}
+.pet-nav__petal:nth-child(4) {
+  --petal-x: 104px;
+  --petal-y: 28px;
+}
+.pet-nav__petal:nth-child(5) {
+  --petal-x: 88px;
+  --petal-y: 82px;
+}
+.pet-nav__petal:nth-child(6) {
+  --petal-x: 56px;
+  --petal-y: 134px;
+}
+
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal {
+  @apply visible opacity-100;
+  translate: var(--petal-x) calc(var(--petal-y) - 50%);
+  scale: 1;
+  transition:
+    translate 0.7s var(--pet-spring),
+    scale 0.7s var(--pet-spring),
+    opacity 0.3s ease,
+    visibility 0s;
+}
+
+/* Brotan de arriba abajo y se recogen al revés */
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(2) {
+  transition-delay: 40ms;
+}
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(3) {
+  transition-delay: 80ms;
+}
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(4) {
+  transition-delay: 120ms;
+}
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(5) {
+  transition-delay: 160ms;
+}
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(6) {
+  transition-delay: 200ms;
+}
+
+.pet-nav__item {
+  @apply flex h-10 cursor-pointer items-center gap-2 rounded-full border px-4 text-base font-medium whitespace-nowrap;
+  background: var(--pet-deep);
+  border-color: rgb(171 196 255 / 0.3);
+  color: var(--pet-peri);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    translate 0.4s var(--pet-spring);
+}
+
+.pet-nav__item:hover {
+  @apply translate-x-1.5;
+  border-color: var(--pet-peri);
+  color: var(--pet-cloud);
+}
+
+.pet-nav__item:active {
+  scale: 0.96;
+}
+
+.pet-nav__number {
+  @apply text-base font-extrabold tabular-nums;
+  color: var(--pet-lime);
+  transition: color 0.3s ease;
+}
+
+.pet-nav__item--current,
+.pet-nav__item--current:hover {
+  background: var(--pet-lime);
+  border-color: var(--pet-lime);
+  color: var(--pet-night);
+}
+
+.pet-nav__item--current .pet-nav__number {
+  color: var(--pet-night);
+}
+
+@media (max-width: 767px) {
+  .pet-nav {
+    @apply left-1 size-12;
+  }
+
+  .pet-nav__flower {
+    @apply size-12;
+  }
+
+  .pet-nav__bloom {
+    @apply size-9;
+  }
+}
+
+/* Cortina del salto entre capítulos */
+.pet-curtain {
+  @apply invisible fixed inset-0 z-[60] flex items-center justify-center px-6;
+  background: var(--pet-lime);
+  color: var(--pet-night);
+}
+
+.pet-curtain__mask {
+  @apply block overflow-hidden;
+}
+
+.pet-curtain__label {
+  @apply block text-center text-5xl leading-tight font-extrabold md:text-8xl;
+}
+
+/* ───────── 01 · Introducción ───────── */
+.pet-hero {
+  @apply relative flex min-h-svh flex-col justify-end gap-6 pt-32 pb-4 md:gap-8;
+}
+
+.pet-hero__eyebrow {
+  @apply text-lg font-medium;
+  color: var(--pet-peri);
+}
+
+.pet-hero__title {
+  @apply font-extrabold;
+  font-size: clamp(72px, 15vw, 248px);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  color: var(--pet-lime);
+}
+
+.pet-hero__title:focus {
+  outline: none;
+}
+
+.pet-hero__flower {
+  @apply absolute top-28 right-0 size-28 md:top-32 md:size-56;
+  animation: pet-spin 24s linear infinite;
+}
+
+.pet-hero__tagline {
+  @apply max-w-3xl text-xl leading-snug md:text-3xl;
+}
+
+.pet-hero__facts {
+  @apply grid grid-cols-2 gap-6 border-t pt-6 md:grid-cols-4;
+  border-color: var(--pet-line);
+}
+
+.pet-hero__fact-label {
+  @apply text-base;
+  color: var(--pet-mute);
+}
+
+.pet-hero__fact-text {
+  @apply text-lg font-medium;
+}
+
+.pet-cover {
+  @apply aspect-[4/5] overflow-hidden rounded-[32px] md:aspect-video;
+}
+
+.pet-cover__media {
+  @apply h-full w-full;
+}
+
+/* Espacio gris de imágenes y pantallas pendientes */
+.pet-placeholder {
+  @apply flex h-full w-full items-center justify-center p-6 text-center;
+  background: var(--pet-deep);
+}
+
+.pet-placeholder__label {
+  @apply max-w-xs text-base;
+  color: var(--pet-mute);
+}
+
+.pet-flower {
+  @apply inline-flex items-center justify-center;
+}
+
+.pet-flower:not(.pet-hero__flower, .pet-process__logo) {
+  @apply relative;
+}
+
+.pet-flower__svg {
+  @apply h-full w-full;
+}
+
+.pet-flower__petal {
+  fill: var(--pet-indigo);
+}
+
+.pet-flower__core {
+  fill: var(--pet-peri);
+}
+
+.pet-flower__paw {
+  @apply absolute size-[34%];
+  color: var(--pet-indigo);
+}
+
+/* Franja de los tres flujos (neutomni) */
+.pet-marquee {
+  @apply -mx-6 flex overflow-hidden border-y py-6 md:-mr-16 md:-ml-32;
+  border-color: var(--pet-line);
+}
+
+.pet-marquee__track {
+  @apply flex shrink-0 items-center;
+  animation: pet-marquee 28s linear infinite;
+}
+
+.pet-marquee__item {
+  @apply flex items-center gap-8 pr-8 text-4xl font-extrabold whitespace-nowrap md:text-7xl;
+}
+
+.pet-marquee__item:nth-child(even) {
+  color: var(--pet-lime);
+}
+
+.pet-marquee__flower {
+  @apply size-10 md:size-16;
+  animation: pet-spin 10s linear infinite;
+}
+
+/* Proceso de diseño: arcos desde el logo */
+.pet-process {
+  @apply flex flex-col gap-6;
+}
+
+.pet-process__title,
+.pet-module__title {
+  @apply font-extrabold;
+  font-size: clamp(40px, 5.4vw, 88px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.pet-process__lead,
+.pet-module__lead {
+  @apply max-w-2xl text-lg md:text-xl;
+  color: var(--pet-mute);
+}
+
+.pet-process__map {
+  @apply relative mt-8 flex flex-col;
+}
+
+.pet-process__stages {
+  @apply order-first grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-6 lg:gap-4;
+}
+
+.pet-process__stage {
+  @apply flex flex-col gap-1 border-l pl-4;
+  border-color: var(--pet-line);
+}
+
+.pet-process__stage-number {
+  @apply text-base font-medium;
+  color: var(--pet-lime);
+}
+
+.pet-process__stage-title {
+  @apply text-xl font-medium;
+}
+
+.pet-process__stage-text {
+  @apply text-base;
+  color: var(--pet-mute);
+}
+
+.pet-process__arcs {
+  @apply -mt-4 hidden w-full lg:block;
+}
+
+.pet-process__arc {
+  fill: none;
+  stroke: var(--pet-peri);
+  stroke-opacity: 0.45;
+  stroke-width: 1.5;
+  stroke-dasharray: 1;
+}
+
+.pet-process__logo {
+  @apply absolute bottom-0 left-[12%] hidden size-40 -translate-x-1/2 translate-y-1/2 lg:inline-flex;
+}
+
+/* ───────── Apertura de capítulo ───────── */
+.pet-head {
+  @apply relative flex flex-col gap-4 pt-16;
+}
+
+.pet-head__ghost {
+  @apply pointer-events-none absolute -top-8 left-0 font-extrabold whitespace-nowrap select-none;
+  font-size: clamp(140px, 22vw, 360px);
+  line-height: 1;
+  color: rgb(171 196 255 / 0.07);
+}
+
+.pet-head__number {
+  @apply relative text-lg font-medium;
+  color: var(--pet-lime);
+}
+
+.pet-head__title {
+  @apply relative max-w-5xl font-extrabold;
+  font-size: clamp(48px, 7vw, 112px);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+}
+
+.pet-head__title:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.pet-head__lead {
+  @apply relative max-w-2xl text-xl md:text-2xl;
+  color: var(--pet-mute);
+}
+
+.pet-module {
+  @apply flex flex-col gap-6;
+}
+
+.pet-module__subtitle {
+  @apply text-2xl font-medium md:text-3xl;
+}
+
+/* ───────── 02 · Investigación ───────── */
+.pet-problem {
+  @apply flex flex-col gap-8;
+}
+
+.pet-fill {
+  @apply max-w-6xl font-medium;
+  font-size: clamp(28px, 3.6vw, 56px);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+}
+
+.pet-problem__cards {
+  @apply grid gap-6 md:grid-cols-2;
+}
+
+.pet-card {
+  @apply flex flex-col gap-3 rounded-[28px] p-8;
+}
+
+.pet-card--lime {
+  background: var(--pet-lime);
+  color: var(--pet-night);
+}
+
+.pet-card--outline {
+  @apply border;
+  border-color: var(--pet-line);
+}
+
+.pet-card__title {
+  @apply text-2xl font-medium;
+}
+
+.pet-card__text {
+  @apply text-lg leading-relaxed;
+}
+
+/* Benchmark: tabla real, con desplazamiento lateral en pantallas chicas */
+.pet-bench {
+  @apply overflow-x-auto rounded-[28px] border;
+  border-color: var(--pet-line);
+}
+
+.pet-bench__table {
+  @apply w-full min-w-[720px] border-collapse text-left;
+}
+
+.pet-bench__corner,
+.pet-bench__brand {
+  @apply border-b p-6 align-bottom text-lg font-medium;
+  border-color: var(--pet-line);
+}
+
+.pet-bench__corner {
+  @apply text-base font-normal;
+  color: var(--pet-mute);
+}
+
+.pet-bench__row {
+  transition: background-color 0.3s ease;
+}
+
+.pet-bench__row:hover {
+  background: rgb(171 196 255 / 0.06);
+}
+
+.pet-bench__feature {
+  @apply border-b p-6 text-lg font-medium;
+  border-color: var(--pet-line);
+}
+
+.pet-bench__cell {
+  @apply border-b p-6 align-top;
+  border-color: var(--pet-line);
+}
+
+.pet-bench__row:last-child :is(.pet-bench__feature, .pet-bench__cell) {
+  @apply border-b-0;
+}
+
+.pet-bench__badge {
+  @apply inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-base font-medium;
+}
+
+.pet-bench__badge--yes {
+  background: var(--pet-lime);
+  border-color: var(--pet-lime);
+  color: var(--pet-night);
+}
+
+.pet-bench__badge--partial {
+  background: var(--pet-peri);
+  border-color: var(--pet-peri);
+  color: var(--pet-night);
+}
+
+.pet-bench__badge--no {
+  border-color: rgb(171 196 255 / 0.5);
+}
+
+.pet-bench__badge--unknown {
+  @apply border-dashed;
+  border-color: rgb(171 196 255 / 0.5);
+  color: var(--pet-mute);
+}
+
+.pet-bench__icon {
+  @apply size-4;
+}
+
+.pet-bench__note {
+  @apply mt-2 block text-base;
+  color: var(--pet-mute);
+}
+
+/* Hallazgos en collage de formas (referencia: Quantitative Research) */
+.pet-collage {
+  @apply grid grid-cols-1 gap-4 md:grid-cols-5 md:grid-rows-[280px_280px];
+}
+
+.pet-collage__item {
+  @apply flex flex-col justify-center gap-3 rounded-[32px] p-8 text-lg leading-snug font-medium;
+}
+
+.pet-collage__number {
+  @apply text-base font-extrabold;
+}
+
+.pet-collage__item--circle {
+  background: var(--pet-indigo);
+}
+
+.pet-collage__item--arch {
+  background: var(--pet-peri);
+  color: var(--pet-night);
+}
+
+.pet-collage__item--pill {
+  background: var(--pet-lime);
+  color: var(--pet-night);
+}
+
+.pet-collage__item--leaf {
+  background: var(--pet-cloud);
+  color: var(--pet-night);
+}
+
+.pet-collage__item--square {
+  @apply border;
+  background: var(--pet-deep);
+  border-color: var(--pet-line);
+}
+
+.pet-collage__deco {
+  @apply hidden items-center justify-center md:flex;
+}
+
+.pet-burst {
+  @apply size-56;
+  fill: var(--pet-lime);
+}
+
+.pet-collage__spin {
+  @apply inline-flex size-60;
+}
+
+.pet-collage__spin .pet-flower {
+  @apply size-full;
+}
+
+@media (min-width: 768px) {
+  .pet-collage__item--circle {
+    @apply rounded-full px-10 text-center;
+    grid-area: 1 / 1;
+  }
+
+  .pet-collage__deco--burst {
+    grid-area: 1 / 2;
+  }
+
+  .pet-collage__item--arch {
+    @apply rounded-t-full rounded-b-[32px] px-8 pt-16;
+    grid-area: 1 / 3;
+  }
+
+  .pet-collage__item--pill {
+    @apply rounded-full px-16;
+    grid-area: 1 / 4 / 2 / 6;
+  }
+
+  .pet-collage__item--leaf {
+    @apply rounded-tl-[140px] rounded-br-[140px] px-10;
+    grid-area: 2 / 1;
+  }
+
+  .pet-collage__deco--flower {
+    grid-area: 2 / 2 / 3 / 4;
+  }
+
+  .pet-collage__item--square {
+    @apply px-12;
+    grid-area: 2 / 4 / 3 / 6;
+  }
+}
+
+.pet-chips {
+  @apply flex flex-wrap gap-3;
+}
+
+.pet-chip {
+  @apply rounded-full px-5 py-2.5 text-base font-medium;
+  background: var(--pet-lime);
+  color: var(--pet-night);
+  transition: translate 0.4s var(--pet-spring);
+}
+
+.pet-chip:hover {
+  @apply -translate-y-1;
+}
+
+.pet-chip--outline {
+  @apply border bg-transparent;
+  border-color: var(--pet-peri);
+  color: var(--pet-cloud);
+}
+
+.pet-chip--indigo {
+  background: var(--pet-indigo);
+  color: var(--pet-cloud);
+}
+
+/* ───────── 03 · Usuario ───────── */
+.pet-persona {
+  @apply grid items-center gap-12 md:grid-cols-[5fr_7fr] md:gap-16;
+}
+
+.pet-persona__photo {
+  @apply aspect-[4/5] overflow-hidden rounded-t-full rounded-b-[32px];
+  background: var(--pet-peri);
+}
+
+.pet-persona__media {
+  @apply h-full w-full;
+}
+
+.pet-persona__body {
+  @apply flex flex-col gap-6;
+}
+
+.pet-persona__name {
+  @apply font-extrabold;
+  font-size: clamp(64px, 8vw, 128px);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--pet-lime);
+}
+
+.pet-persona__tags {
+  @apply flex flex-wrap gap-2;
+}
+
+.pet-persona__bio {
+  @apply max-w-2xl text-lg leading-relaxed;
+}
+
+.pet-persona__blocks {
+  @apply grid gap-8 border-t pt-8 sm:grid-cols-2;
+  border-color: var(--pet-line);
+}
+
+.pet-persona__block-title {
+  @apply mb-3 text-xl font-medium;
+}
+
+.pet-list {
+  @apply flex flex-col gap-2 text-base;
+  color: var(--pet-mute);
+}
+
+.pet-list li {
+  @apply relative pl-5;
+}
+
+.pet-list li::before {
+  @apply absolute top-2.5 left-0 size-2 rounded-full content-[''];
+  background: var(--pet-lime);
+}
+
+/* Mapa de empatía: cuatro cuadrantes cruzados por dos diagonales */
+.pet-empathy {
+  @apply relative grid gap-10 md:grid-cols-[1fr_auto_1fr] md:grid-rows-[auto_auto_auto] md:gap-x-12 md:gap-y-8;
+}
+
+.pet-empathy__line {
+  @apply absolute top-1/2 left-0 hidden h-px w-full md:block;
+  background: var(--pet-line);
+}
+
+.pet-empathy__line--a {
+  rotate: 16deg;
+}
+
+.pet-empathy__line--b {
+  rotate: -16deg;
+}
+
+.pet-empathy__center {
+  @apply relative mx-auto size-40 md:col-start-2 md:row-start-2 md:size-56;
+}
+
+.pet-empathy__center .pet-flower {
+  @apply size-full;
+}
+
+.pet-empathy__block {
+  @apply relative flex flex-col gap-3 rounded-[28px] p-6 text-center;
+  background: rgb(11 12 36 / 0.88);
+}
+
+.pet-empathy__block--0 {
+  @apply md:col-span-3 md:row-start-1 md:mx-auto md:max-w-xl;
+}
+
+.pet-empathy__block--1 {
+  @apply md:col-start-1 md:row-start-2 md:self-center;
+}
+
+.pet-empathy__block--2 {
+  @apply md:col-start-3 md:row-start-2 md:self-center;
+}
+
+.pet-empathy__block--3 {
+  @apply md:col-span-3 md:row-start-3 md:mx-auto md:max-w-xl;
+}
+
+.pet-empathy__title {
+  @apply text-2xl font-medium;
+  color: var(--pet-lime);
+}
+
+.pet-empathy__items {
+  @apply flex flex-col gap-1.5 text-base;
+  color: var(--pet-mute);
+}
+
+.pet-insight {
+  @apply flex flex-col gap-6;
+}
+
+.pet-insight__text {
+  @apply max-w-5xl;
+}
+
+/* Customer journey: en computador queda fijo y la etapa activa avanza */
+.pet-journey {
+  @apply flex flex-col gap-10;
+}
+
+.pet-journey__head {
+  @apply flex flex-col gap-4;
+}
+
+.pet-journey__board {
+  @apply relative;
+}
+
+.pet-journey__highlight {
+  @apply absolute top-0 left-0 hidden h-16 w-1/6 px-1.5 lg:block;
+}
+
+.pet-journey__highlight::before {
+  @apply block h-full rounded-full content-[''];
+  background: var(--pet-peri);
+}
+
+.pet-journey__stages {
+  @apply relative grid gap-6 sm:grid-cols-2 lg:grid-cols-6 lg:gap-0;
+}
+
+.pet-journey__stage {
+  @apply flex flex-col gap-4 lg:px-1.5;
+  transition: opacity 0.5s ease;
+}
+
+.pet-journey__name {
+  @apply flex h-16 items-center gap-2 rounded-full px-5 text-base leading-tight font-medium;
+  background: var(--pet-deep);
+  transition: color 0.4s ease;
+}
+
+.pet-journey__number {
+  @apply text-base font-extrabold;
+  color: var(--pet-lime);
+  transition: color 0.4s ease;
+}
+
+.pet-journey__card {
+  @apply flex flex-col gap-3 rounded-[28px] border p-5;
+  border-color: var(--pet-line);
+  transition:
+    border-color 0.4s ease,
+    translate 0.6s var(--pet-spring);
+}
+
+.pet-journey__action {
+  @apply text-base font-medium;
+}
+
+.pet-journey__key {
+  @apply text-base;
+  color: var(--pet-peri);
+}
+
+.pet-journey__thought {
+  @apply text-base italic;
+  color: var(--pet-mute);
+}
+
+.pet-journey__emotion,
+.pet-journey__opportunity {
+  @apply text-base;
+}
+
+.pet-journey__opportunity {
+  color: var(--pet-lime);
+}
+
+.pet-journey__insight {
+  @apply max-w-3xl text-xl font-medium md:text-2xl;
+}
+
+@media (min-width: 1024px) and (min-height: 720px) {
+  .pet-journey {
+    @apply min-h-svh justify-center py-16;
+  }
+
+  .pet-journey__stage .pet-journey__name {
+    background: transparent;
+  }
+
+  .pet-journey:has([data-current]) .pet-journey__stage:not([data-current]) {
+    opacity: 0.55;
+  }
+
+  .pet-journey__stage[data-current] .pet-journey__name,
+  .pet-journey__stage[data-current] .pet-journey__number {
+    color: var(--pet-night);
+  }
+
+  .pet-journey__stage[data-current] .pet-journey__card {
+    @apply -translate-y-2;
+    border-color: var(--pet-peri);
+  }
+}
+
+/* ───────── 04 · Solución ───────── */
+.pet-solution {
+  @apply grid items-center gap-12 lg:grid-cols-[7fr_5fr];
+}
+
+.pet-solution__problems {
+  @apply flex flex-col gap-6;
+}
+
+.pet-solution__list {
+  @apply flex flex-col gap-3;
+}
+
+.pet-solution__row {
+  @apply flex flex-wrap items-center gap-x-4 gap-y-1 rounded-[32px] p-2 pr-6 text-lg;
+  background: var(--pet-deep);
+}
+
+.pet-solution__number {
+  @apply flex size-12 shrink-0 items-center justify-center rounded-full text-base font-extrabold;
+  background: var(--pet-peri);
+  color: var(--pet-night);
+}
+
+.pet-solution__problem {
+  color: var(--pet-mute);
+}
+
+.pet-solution__arrow {
+  @apply size-5;
+  color: var(--pet-lime);
+}
+
+.pet-solution__opportunity {
+  @apply font-medium;
+  color: var(--pet-lime);
+}
+
+.pet-solution__circle {
+  @apply mx-auto flex aspect-square w-full max-w-[520px] flex-col items-center justify-center gap-4 rounded-full p-12 text-center md:p-16;
+  background: var(--pet-indigo);
+}
+
+.pet-solution__label {
+  @apply text-5xl font-extrabold md:text-6xl;
+  color: var(--pet-lime);
+}
+
+.pet-solution__text {
+  @apply text-lg leading-relaxed md:text-xl;
+}
+
+/* Quién participa: formas de la marca que giran con el scroll */
+.pet-actors {
+  @apply grid gap-12 md:grid-cols-3;
+}
+
+.pet-actor {
+  @apply flex flex-col gap-3;
+}
+
+.pet-actor__shape {
+  @apply relative mb-4 block size-32 md:size-40;
+}
+
+.pet-actor__shape--0 {
+  @apply rounded-full border-[24px];
+  border-color: var(--pet-peri);
+}
+
+.pet-actor__shape--0::after {
+  @apply absolute -top-6 left-1/2 size-6 -translate-x-1/2 rounded-full content-[''];
+  background: var(--pet-lime);
+}
+
+.pet-actor__shape--1 {
+  @apply rounded-[40%];
+  background: var(--pet-lime);
+}
+
+.pet-actor__shape--2 {
+  @apply rounded-full;
+  background: var(--pet-indigo);
+  clip-path: inset(30% 0 30% 0 round 999px);
+}
+
+.pet-actor__name {
+  @apply text-3xl font-extrabold;
+}
+
+.pet-actor__role {
+  @apply max-w-xs text-lg;
+  color: var(--pet-mute);
+}
+
+.pet-goals {
+  @apply grid gap-16 lg:grid-cols-2;
+}
+
+.pet-goals__list {
+  @apply mt-6 flex flex-col;
+}
+
+.pet-goals__item {
+  @apply flex gap-4 border-b py-4 text-lg;
+  border-color: var(--pet-line);
+}
+
+.pet-goals__number {
+  @apply font-extrabold;
+  color: var(--pet-lime);
+}
+
+.pet-goals .pet-chips {
+  @apply mt-6;
+}
+
+/* ───────── 05 · Arquitectura ───────── */
+.pet-sitemap {
+  @apply relative mt-6 grid gap-10 lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-2 lg:gap-x-0 lg:gap-y-16;
+}
+
+.pet-sitemap__center {
+  @apply mx-auto flex flex-col items-center gap-3 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center;
+}
+
+.pet-sitemap__center .pet-flower {
+  @apply size-36;
+}
+
+.pet-sitemap__brand {
+  @apply text-2xl font-extrabold;
+  color: var(--pet-lime);
+}
+
+.pet-sitemap__group {
+  @apply flex flex-col items-start gap-4 lg:flex-row lg:items-center;
+}
+
+.pet-sitemap__trunk {
+  @apply hidden h-px min-w-16 flex-1 lg:block;
+  background: var(--pet-peri);
+}
+
+.pet-sitemap__node {
+  @apply shrink-0 rounded-full px-6 py-3 text-lg font-medium;
+  background: var(--pet-indigo);
+}
+
+.pet-sitemap__screens {
+  @apply flex flex-col gap-2 border-l pl-4 lg:shrink-0;
+  border-color: var(--pet-line);
+}
+
+.pet-sitemap__screen {
+  @apply relative w-max rounded-full border px-4 py-1.5 text-base;
+  border-color: var(--pet-line);
+  color: var(--pet-mute);
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.pet-sitemap__screen:hover {
+  border-color: var(--pet-peri);
+  color: var(--pet-cloud);
+}
+
+@media (min-width: 1024px) {
+  .pet-sitemap__group--0,
+  .pet-sitemap__group--1 {
+    @apply col-start-1 flex-row-reverse justify-start;
+  }
+
+  .pet-sitemap__group--0 .pet-sitemap__trunk,
+  .pet-sitemap__group--1 .pet-sitemap__trunk {
+    @apply origin-right;
+  }
+
+  .pet-sitemap__group--0 .pet-sitemap__screens,
+  .pet-sitemap__group--1 .pet-sitemap__screens {
+    @apply items-end border-r border-l-0 pr-4 pl-0;
+  }
+
+  .pet-sitemap__group--2,
+  .pet-sitemap__group--3 {
+    @apply col-start-3;
+  }
+
+  .pet-sitemap__group--2 .pet-sitemap__trunk,
+  .pet-sitemap__group--3 .pet-sitemap__trunk {
+    @apply origin-left;
+  }
+
+  .pet-sitemap__group--0,
+  .pet-sitemap__group--2 {
+    @apply row-start-1;
+  }
+
+  .pet-sitemap__group--1,
+  .pet-sitemap__group--3 {
+    @apply row-start-2;
+  }
+}
+
+/* User flows: pestañas, pasos que son botones y su detalle */
+.pet-flows {
+  @apply mt-4 flex flex-col gap-10;
+}
+
+.pet-flows__tabs {
+  @apply flex max-w-full flex-wrap gap-1.5 self-start rounded-[28px] p-1.5;
+  background: var(--pet-deep);
+}
+
+.pet-flows__tab {
+  @apply flex cursor-pointer items-center gap-2 rounded-full px-5 py-3 text-base font-medium;
+  color: var(--pet-mute);
+  transition:
+    background-color 0.35s var(--pet-glide),
+    color 0.35s ease;
+}
+
+.pet-flows__tab:hover {
+  color: var(--pet-cloud);
+}
+
+.pet-flows__tab--current {
+  background: var(--pet-lime);
+  color: var(--pet-night);
+}
+
+.pet-flows__tab--current:hover {
+  color: var(--pet-night);
+}
+
+.pet-flows__tab-number {
+  @apply font-extrabold;
+}
+
+.pet-flows__panel {
+  @apply flex flex-col gap-8;
+}
+
+.pet-flows__goal {
+  @apply max-w-3xl text-lg;
+  color: var(--pet-mute);
+}
+
+.pet-flows__track {
+  @apply flex flex-col items-start gap-6 md:flex-row md:flex-wrap md:gap-x-0 md:gap-y-10;
+}
+
+.pet-flows__step {
+  @apply relative flex flex-col items-start gap-3 md:pr-12;
+  animation: pet-node-in 0.6s var(--pet-spring) both;
+}
+
+.pet-flows__step:not(:last-child)::after {
+  @apply absolute top-6 right-2 hidden h-0.5 w-8 origin-left content-[''] md:block;
+  background: var(--pet-line);
+  animation: pet-wire-in 0.5s var(--pet-glide) both;
+  animation-delay: inherit;
+}
+
+.pet-flows__step:nth-child(2) {
+  animation-delay: 60ms;
+}
+.pet-flows__step:nth-child(3) {
+  animation-delay: 120ms;
+}
+.pet-flows__step:nth-child(4) {
+  animation-delay: 180ms;
+}
+.pet-flows__step:nth-child(5) {
+  animation-delay: 240ms;
+}
+.pet-flows__step:nth-child(6) {
+  animation-delay: 300ms;
+}
+.pet-flows__step:nth-child(7) {
+  animation-delay: 360ms;
+}
+.pet-flows__step:nth-child(8) {
+  animation-delay: 420ms;
+}
+
+.pet-flows__node {
+  @apply inline-flex h-12 cursor-pointer items-center gap-2 rounded-full border px-5 text-base font-medium whitespace-nowrap;
+  border-color: rgb(171 196 255 / 0.4);
+  background: var(--pet-night);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    translate 0.4s var(--pet-spring),
+    scale 0.4s var(--pet-spring);
+}
+
+.pet-flows__node:hover {
+  @apply -translate-y-0.5;
+  border-color: var(--pet-peri);
+  background: var(--pet-deep);
+}
+
+.pet-flows__node--decision {
+  @apply rounded-2xl border-dashed;
+  border-color: rgb(221 243 68 / 0.6);
+}
+
+.pet-flows__node--end {
+  background: var(--pet-indigo);
+  border-color: var(--pet-indigo);
+}
+
+.pet-flows__node--current,
+.pet-flows__node--current:hover {
+  @apply scale-105 border-solid;
+  background: var(--pet-lime);
+  border-color: var(--pet-lime);
+  color: var(--pet-night);
+}
+
+.pet-flows__icon {
+  @apply size-4 shrink-0;
+}
+
+.pet-flows__branch {
+  @apply ml-4 inline-flex items-center gap-1.5 text-base;
+  color: var(--pet-peri);
+}
+
+.pet-flows__branch-icon {
+  @apply size-4;
+}
+
+.pet-flows__detail {
+  @apply max-w-3xl rounded-[28px] border p-8;
+  border-color: var(--pet-line);
+  background: var(--pet-deep);
+}
+
+.pet-flows__detail-body {
+  @apply flex flex-col gap-2;
+  animation: pet-detail-in 0.5s var(--pet-glide) both;
+}
+
+.pet-flows__detail-title {
+  @apply text-2xl font-medium;
+  color: var(--pet-lime);
+}
+
+.pet-flows__detail-text {
+  @apply text-lg leading-relaxed;
+}
+
+/* ───────── 06 · Diseño ───────── */
+.pet-wall {
+  @apply relative flex flex-col gap-8;
+}
+
+.pet-wall__copy {
+  @apply flex flex-col gap-4;
+}
+
+.pet-wall__frame {
+  @apply relative h-[560px] overflow-hidden rounded-[32px] md:h-[720px];
+  background: var(--pet-deep);
+}
+
+.pet-wall__grid {
+  @apply absolute -inset-x-[20%] -inset-y-[30%] grid grid-cols-4 gap-6;
+  rotate: -14deg;
+}
+
+.pet-wall__column {
+  @apply flex flex-col gap-6;
+}
+
+.pet-wall__phone {
+  @apply block aspect-[9/19] rounded-[32px] border-[6px];
+  border-color: var(--pet-night);
+  background: var(--pet-screen);
+}
+
+.pet-wall__phone:nth-child(3n) {
+  background: #b9bdcb;
+}
+
+/* Flow: pantallas grises señaladas con un conector que se dibuja */
+.pet-flowshow {
+  @apply relative flex flex-col gap-16 pt-24;
+}
+
+.pet-flowshow__ghost {
+  @apply pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 font-extrabold whitespace-nowrap select-none;
+  font-size: clamp(140px, 20vw, 320px);
+  line-height: 1;
+  color: rgb(171 196 255 / 0.07);
+}
+
+.pet-flowshow__intro {
+  @apply relative flex flex-col gap-4;
+}
+
+.pet-flowshow__wires {
+  @apply pointer-events-none absolute inset-0 hidden h-full w-full md:block;
+}
+
+.pet-flowshow__wire {
+  fill: none;
+  stroke: var(--pet-peri);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+}
+
+.pet-flowshow__step {
+  @apply relative grid items-center gap-8 md:grid-cols-2 md:gap-16;
+}
+
+.pet-flowshow__step--1 .pet-flowshow__text {
+  @apply md:order-first md:justify-self-end md:text-right;
+}
+
+.pet-flowshow__phone {
+  @apply aspect-[9/19] w-full max-w-[280px] justify-self-center overflow-hidden rounded-[40px] border-[8px];
+  border-color: var(--pet-deep);
+  box-shadow: 0 0 0 2px var(--pet-indigo);
+}
+
+.pet-flowshow__screen {
+  background: var(--pet-screen);
+}
+
+.pet-flowshow__screen .pet-placeholder__label {
+  color: #3a3d55;
+}
+
+.pet-flowshow__step--0 .pet-flowshow__text {
+  @apply self-start;
+}
+
+.pet-flowshow__text {
+  @apply flex max-w-md flex-col gap-3;
+}
+
+.pet-flowshow__title {
+  @apply text-3xl font-extrabold;
+}
+
+.pet-flowshow__body {
+  @apply text-lg leading-relaxed;
+  color: var(--pet-mute);
+}
+
+/* Sistema de diseño: espacio reservado */
+.pet-system {
+  @apply relative pt-24;
+}
+
+.pet-system__ghost {
+  @apply pointer-events-none absolute top-0 left-0 font-extrabold whitespace-nowrap select-none;
+  font-size: clamp(140px, 20vw, 320px);
+  line-height: 1;
+  color: rgb(171 196 255 / 0.07);
+}
+
+.pet-system__frame {
+  @apply relative flex min-h-[420px] flex-col items-center justify-center gap-4 rounded-[32px] border-2 border-dashed p-10 text-center;
+  border-color: rgb(171 196 255 / 0.4);
+}
+
+.pet-system__icon {
+  @apply size-12;
+  color: var(--pet-lime);
+}
+
+.pet-system__title {
+  @apply text-4xl font-extrabold md:text-5xl;
+}
+
+.pet-system__text {
+  @apply text-lg;
+  color: var(--pet-mute);
+}
+
+@keyframes pet-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes pet-marquee {
+  to {
+    translate: -100% 0;
+  }
+}
+
+@keyframes pet-node-in {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+    scale: 0.9;
+  }
+}
+
+@keyframes pet-wire-in {
+  from {
+    scale: 0 1;
+  }
+}
+
+@keyframes pet-detail-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+/* Celular: el submenú queda más pegado al borde */
+@media (max-width: 767px) {
+  .pet-chapter {
+    @apply pl-16;
+  }
+
+  .pet-marquee {
+    @apply -ml-16;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pet-story *,
+  .pet-story *::before,
+  .pet-story *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

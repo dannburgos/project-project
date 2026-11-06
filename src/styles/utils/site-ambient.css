@@ -1,0 +1,279 @@
+/* Vestido del sitio (referencia: armor-bd.com): oscuro con naranjas,
+   degradados con grano y vidrio que reacciona al cursor. Va fuera de Work y
+   de los casos (html:not(:has(.work-page, .case-page))), que son el universo de cada proyecto.
+   El menú de arriba y el cierre de contacto lo llevan en todo el sitio.
+   Qué páginas lo llevan se decide solo con CSS (html sin .work-page ni
+   .case-page): así no hay un instante con el tema anterior al cargar.
+   El grano va en capas quietas y sin mezcla con la pantalla, y las tarjetas
+   no desenfocan lo de atrás: las dos cosas obligaban a repintar todo en cada
+   cuadro del scroll y hacían parpadear el sitio. */
+:root {
+  --site-ink: #0e0806;
+  --site-cream: #faebe3;
+  --site-orange: #ff6a1a;
+  --site-orange-soft: #ff8a3d;
+  --site-ember: #8c160a;
+  --site-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Grano: ruido fractal en gris, para mezclar encima de los degradados */
+  --site-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* Degradado de la marca: brillo naranja arriba a la izquierda y rojo
+     profundo abajo a la derecha, sobre el casi negro cálido */
+  --site-mesh:
+    radial-gradient(42% 52% at 14% 22%, rgb(255 106 26 / 0.5), transparent 70%),
+    radial-gradient(36% 46% at 86% 78%, rgb(140 22 10 / 0.65), transparent 70%),
+    radial-gradient(30% 36% at 64% 12%, rgb(194 65 12 / 0.35), transparent 70%);
+}
+
+/* ───────── Tema cálido (solo fuera de Work y los casos) ───────── */
+html:not(:has(.work-page, .case-page)) {
+  --background: var(--site-ink);
+  --foreground: var(--site-cream);
+  --card: #1a120d;
+  --card-foreground: var(--site-cream);
+  --popover: #1a120d;
+  --popover-foreground: var(--site-cream);
+  --secondary: #241812;
+  --muted: #241812;
+  --accent: #241812;
+  --muted-foreground: rgb(250 235 227 / 0.68);
+  --border: rgb(250 235 227 / 0.1);
+  background: var(--site-ink);
+}
+
+html:not(:has(.work-page, .case-page)) body {
+  background: transparent;
+}
+
+/* Fondo fijo: degradados que se mueven lento y grano encima */
+.site-ambient {
+  @apply pointer-events-none fixed inset-0 -z-10 hidden overflow-hidden;
+}
+
+html:not(:has(.work-page, .case-page)) .site-ambient {
+  @apply block;
+}
+
+.site-ambient__mesh {
+  @apply absolute -inset-[20%];
+  background: var(--site-mesh);
+  animation: site-ambient-drift 24s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.site-ambient__grain {
+  @apply absolute inset-0 opacity-[0.07];
+  background-image: var(--site-grain);
+}
+
+@keyframes site-ambient-drift {
+  to {
+    translate: 4% -3%;
+    scale: 1.08;
+  }
+}
+
+/* ───────── Vidrio que reacciona al cursor (en todo el sitio) ─────────
+   Velo blanco muy suave con borde fino. Al pasar el cursor sube un poco, el
+   borde se enciende en naranja y un brillo naranja lo sigue por dentro
+   (--glass-x y --glass-y los pone useGlassGlow). Con data-glass="static"
+   (paneles grandes) no sube. */
+[data-glass] {
+  @apply relative isolate border;
+  background-color: rgb(255 255 255 / 0.06);
+  border-color: rgb(250 235 227 / 0.1);
+  transition:
+    translate 0.45s var(--site-spring),
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.4s ease;
+}
+
+[data-glass]::after {
+  @apply pointer-events-none absolute inset-0 -z-10 opacity-0 content-[''];
+  border-radius: inherit;
+  background: radial-gradient(
+    260px circle at var(--glass-x, 50%) var(--glass-y, 50%),
+    rgb(255 106 26 / 0.3),
+    transparent 70%
+  );
+  transition: opacity 0.35s ease;
+}
+
+@media (hover: hover) {
+  [data-glass]:hover {
+    border-color: rgb(255 106 26 / 0.5);
+    background-color: rgb(255 255 255 / 0.09);
+    box-shadow: 0 24px 48px -16px rgb(67 20 7 / 0.55);
+  }
+
+  [data-glass]:not([data-glass='static']):hover {
+    translate: 0 -6px;
+  }
+
+  [data-glass]:hover::after {
+    @apply opacity-100;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  [data-glass] {
+    background-color: #1a120d;
+  }
+}
+
+/* ───────── Menú de arriba: siempre de vidrio ───────── */
+.site-header__inner {
+  background-color: rgb(20 12 9 / 0.42);
+  border-color: rgb(250 235 227 / 0.14);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.1),
+    0 12px 32px -12px rgb(0 0 0 / 0.5);
+  backdrop-filter: blur(20px) saturate(160%);
+}
+
+.site-header[data-surface-light='true'] .site-header__inner {
+  background-color: rgb(255 255 255 / 0.5);
+  border-color: rgb(0 0 0 / 0.08);
+}
+
+/* La opción activa: píldora naranja con el texto oscuro */
+.site-header__pill {
+  background: var(--site-orange);
+  mix-blend-mode: normal;
+  z-index: 0;
+}
+
+.site-header__link {
+  @apply z-10;
+}
+
+.site-header__link--active,
+.site-header[data-surface-light='true'] .site-header__link--active {
+  color: #1a0a04;
+}
+
+/* ───────── Cierre de contacto (en todo el sitio) ───────── */
+.closing-contact {
+  background: var(--site-mesh), var(--site-ink);
+}
+
+.closing-contact::before {
+  @apply pointer-events-none absolute inset-0 opacity-[0.07] content-[''];
+  background-image: var(--site-grain);
+}
+
+.closing-contact > * {
+  @apply relative;
+}
+
+.closing-contact__title-muted {
+  color: var(--site-orange-soft);
+}
+
+.closing-contact__link {
+  @apply rounded-full;
+}
+
+.closing-contact__link:hover {
+  @apply text-white;
+  background-color: rgb(255 106 26 / 0.18);
+}
+
+/* ───────── Home ───────── */
+html:not(:has(.work-page, .case-page)) .page-curtain {
+  background: transparent;
+}
+
+.home-cover::after {
+  @apply pointer-events-none absolute inset-0 opacity-[0.07] content-[''];
+  background-image: var(--site-grain);
+}
+
+/* La presentación sube sobre la portada como una lámina de vidrio */
+html:not(:has(.work-page, .case-page)) .home-intro {
+  background: rgb(14 8 6 / 0.92);
+}
+
+html:not(:has(.work-page, .case-page)) .home-media,
+html:not(:has(.work-page, .case-page)) .home-teaser {
+  background: transparent;
+}
+
+html:not(:has(.work-page, .case-page)) .home-media__frame {
+  @apply border;
+  background-color: rgb(255 255 255 / 0.05);
+  border-color: rgb(250 235 227 / 0.1);
+}
+
+html:not(:has(.work-page, .case-page)) .home-teaser__stats {
+  @apply border-t-0 pt-0;
+}
+
+html:not(:has(.work-page, .case-page)) .home-stat {
+  @apply rounded-3xl p-5 md:p-8;
+}
+
+/* ───────── About ─────────
+   Lo que se ve por dentro de "About Me" es un naranja intenso con grano:
+   las letras brillan en naranja y, al hacer zoom, el texto va oscuro sobre
+   el naranja (buen contraste) */
+html:not(:has(.work-page, .case-page)) .about-intro {
+  background: var(--site-ink);
+}
+
+html:not(:has(.work-page, .case-page)) .about-intro__stage,
+html:not(:has(.work-page, .case-page)) .about-intro__reveal {
+  background:
+    radial-gradient(60% 70% at 78% 85%, rgb(140 22 10 / 0.55), transparent 70%),
+    radial-gradient(70% 80% at 20% 20%, #ffb067 0%, transparent 60%),
+    linear-gradient(135deg, #ff8a3d 0%, var(--site-orange) 45%, #e04a12 100%);
+}
+
+html:not(:has(.work-page, .case-page)) .about-intro__reveal::after {
+  @apply pointer-events-none absolute inset-0 opacity-[0.08] content-[''];
+  background-image: var(--site-grain);
+}
+
+html:not(:has(.work-page, .case-page)) .about-intro__cover {
+  fill: var(--site-ink);
+}
+
+html:not(:has(.work-page, .case-page)) .about-intro__groups li {
+  @apply rounded-full;
+}
+
+html:not(:has(.work-page, .case-page)) .about-tools__band {
+  @apply mx-4 rounded-[28px] md:mx-8 lg:mx-12;
+}
+
+html:not(:has(.work-page, .case-page)) .about-cv__group {
+  @apply rounded-[28px] p-6 md:p-8;
+}
+
+html:not(:has(.work-page, .case-page)) .skills-module--light {
+  background: transparent;
+}
+
+html:not(:has(.work-page, .case-page)) .skills-module--dark {
+  background: var(--site-mesh), var(--site-ink);
+}
+
+html:not(:has(.work-page, .case-page)) .skills-module__card {
+  background-image: none;
+  backdrop-filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-ambient__mesh {
+    animation: none;
+  }
+
+  [data-glass] {
+    transition: none;
+  }
+}
+
+/* Trayectoria: la etapa fijada se marca con el borde naranja */
+.journey-card--pinned[data-glass] {
+  border-color: var(--site-orange);
+}

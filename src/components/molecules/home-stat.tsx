@@ -17,6 +17,7 @@ export function HomeStat({ value, label, isActive, delay = 0 }: HomeStatProps) {
   return (
     <div
       className="home-stat"
+      data-glass
       data-visible={isActive}
       style={{ transitionDelay: `${delay}ms` }}
     >

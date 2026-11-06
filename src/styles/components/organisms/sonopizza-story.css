@@ -1,0 +1,833 @@
+/* Caso de Sonopizza (referencia de interacción: monument.tv). Escenas a
+   pantalla completa con colores planos, titulares gigantes en Bowlby One SC y
+   la mascota como sticker. Paleta de la marca: tres azules, dos naranjas,
+   blanco hueso y gris oscuro; sobre naranja el texto va en blanco. En
+   computador las escenas van una encima de otra en un escenario fijo; en
+   celular (o con "reducir movimiento"), en columna y todas visibles. */
+.sono-story {
+  --sono-navy: #002b8f;
+  --sono-royal: #0d47c9;
+  --sono-electric: #2563eb;
+  --sono-orange: #ff5a00;
+  --sono-orange-soft: #ff7a1a;
+  --sono-white: #f4f4f4;
+  --sono-dark: #1e1e1e;
+  /* Para los cuadrados de navegación, que se comparten con Planti */
+  --story-cream: var(--sono-white);
+  --story-ink: var(--sono-navy);
+  --story-light: var(--sono-white);
+  --story-mute: rgb(0 43 143 / 0.7);
+  --story-line: rgb(0 43 143 / 0.28);
+  --story-tone: #e2e7f2;
+  font-family: var(--font-sono-text), sans-serif;
+  background: var(--sono-white);
+}
+
+.sono-stage {
+  @apply relative h-svh overflow-hidden;
+}
+
+/* Cada escena ocupa todo el escenario. Arriba queda la franja de
+   navegación del sitio (96 px) y a la izquierda la barra naranja */
+.sono-view {
+  @apply absolute inset-0 flex flex-col gap-6 overflow-hidden pt-28 pr-24 pb-14 pl-32;
+  /* Centrado, pero si el contenido no cabe empieza arriba y no se sube sobre
+     la franja de navegación */
+  justify-content: safe center;
+}
+
+.sono-view--blue {
+  background: var(--sono-royal);
+  color: var(--sono-white);
+}
+
+.sono-view--navy {
+  background: var(--sono-navy);
+  color: var(--sono-white);
+}
+
+.sono-view--electric {
+  background: var(--sono-electric);
+  color: var(--sono-white);
+}
+
+.sono-view--dark {
+  background: var(--sono-dark);
+  color: var(--sono-white);
+}
+
+.sono-view--orange {
+  background: var(--sono-orange);
+  color: var(--sono-white);
+}
+
+.sono-view--soft-orange {
+  background: var(--sono-orange-soft);
+  color: var(--sono-white);
+}
+
+.sono-view--white {
+  background: var(--sono-white);
+  color: var(--sono-navy);
+}
+
+.sono-view--photo {
+  background: var(--sono-navy);
+  color: var(--sono-white);
+}
+
+/* Barra lateral fija, como en monument: es el submenú del caso. Cada
+   sección es un ícono; la actual se abre en una píldora blanca con su
+   nombre girado */
+.sono-rail {
+  @apply absolute top-24 bottom-0 left-0 z-30 flex w-12 justify-center pt-6;
+  background: var(--sono-orange);
+  color: var(--sono-white);
+}
+
+.sono-rail__list {
+  @apply flex flex-col items-center gap-3;
+}
+
+.sono-rail__item {
+  @apply flex cursor-pointer flex-col items-center gap-3 rounded-full p-2 opacity-70 transition-[opacity,background-color,color] duration-300;
+}
+
+.sono-rail__item:hover,
+.sono-rail__item:focus-visible {
+  @apply opacity-100;
+}
+
+.sono-rail__item:focus-visible {
+  @apply outline-2 outline-offset-2 outline-white;
+}
+
+.sono-rail__item--current {
+  @apply px-2 py-3 opacity-100;
+  background: var(--sono-white);
+  color: var(--sono-navy);
+}
+
+.sono-rail__icon {
+  @apply size-5 shrink-0;
+}
+
+.sono-rail__name {
+  @apply rotate-180 text-xs font-semibold tracking-[0.16em] whitespace-nowrap uppercase;
+  writing-mode: vertical-rl;
+}
+
+/* El submenú de la barra reemplaza a los cuadrados en computador; en
+   celular queda el contador de abajo */
+.sono-story .case-story__nodes {
+  @apply hidden;
+}
+
+/* Franja que barre la pantalla para pasar de una escena a otra */
+.sono-band {
+  @apply pointer-events-none absolute inset-0 z-20 scale-x-0;
+  background: var(--sono-orange);
+}
+
+/* Tipografía */
+.sono-display {
+  @apply uppercase;
+  font-family: var(--font-sono-display), sans-serif;
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+}
+
+.sono-display--xl {
+  font-size: clamp(56px, 8.4vw, 132px);
+}
+
+.sono-display--lg {
+  font-size: clamp(36px, 4.6vw, 72px);
+}
+
+.sono-display--md {
+  font-size: clamp(28px, 2.8vw, 44px);
+}
+
+.sono-display--sm {
+  @apply text-xl;
+}
+
+.sono-architecture .sono-display--sm {
+  @apply text-base;
+}
+
+.sono-sub {
+  color: var(--sono-orange);
+}
+
+.sono-view--orange .sono-sub,
+.sono-view--soft-orange .sono-sub {
+  color: var(--sono-white);
+}
+
+.sono-eyebrow,
+.sono-opener,
+.sono-label {
+  @apply text-sm font-semibold tracking-[0.18em] uppercase;
+}
+
+.sono-opener b {
+  color: var(--sono-orange);
+}
+
+.sono-view--orange .sono-opener b,
+.sono-view--soft-orange .sono-opener b {
+  color: var(--sono-white);
+}
+
+.sono-body {
+  @apply max-w-xl text-lg leading-relaxed;
+}
+
+.sono-statement {
+  @apply max-w-5xl font-semibold;
+  font-size: clamp(32px, 3.6vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.sono-statement--sm {
+  font-size: clamp(24px, 2.2vw, 34px);
+}
+
+.sono-note {
+  @apply max-w-2xl text-sm leading-6 opacity-80;
+}
+
+.sono-list {
+  @apply flex flex-col gap-2 text-lg;
+}
+
+.sono-list li::before {
+  @apply mr-3 inline-block size-2 align-middle content-[''];
+  background: currentColor;
+}
+
+/* Titulares que entran por bloques: cada palabra sale de su máscara */
+.sono-lines {
+  @apply flex flex-wrap gap-x-[0.25em];
+}
+
+.sono-lines__mask {
+  @apply block overflow-hidden;
+}
+
+.sono-lines__mask > span {
+  @apply block;
+}
+
+.sono-columns {
+  @apply grid grid-cols-2 items-start gap-16;
+  flex-direction: row;
+}
+
+.sono-view.sono-columns {
+  @apply grid content-center;
+}
+
+.sono-columns--tight {
+  @apply mt-4 gap-12;
+}
+
+.sono-block {
+  @apply flex flex-col gap-4;
+}
+
+/* Espacio marcado para una imagen que llega después */
+.sono-placeholder {
+  @apply relative flex items-end overflow-hidden rounded-2xl p-4;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgb(0 43 143 / 0.08) 0 2px,
+      transparent 2px 14px
+    ),
+    #e2e7f2;
+  color: var(--sono-navy);
+}
+
+.sono-placeholder__label {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+}
+
+.sono-sticker {
+  filter: drop-shadow(0 10px 18px rgb(0 43 143 / 0.35));
+}
+
+/* Portada: el corte en diagonal deja ver la pizza a la derecha */
+.sono-cover {
+  @apply justify-end;
+}
+
+.sono-cover__cut {
+  @apply absolute inset-0;
+  background: var(--sono-orange);
+  clip-path: polygon(58% 0%, 100% 0%, 100% 100%, 36% 100%);
+}
+
+.sono-cover__cut .sono-placeholder {
+  @apply absolute inset-y-0 right-0 w-[52%] rounded-none;
+  clip-path: polygon(22% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.sono-cover__text {
+  @apply relative z-10 flex max-w-[34vw] flex-col gap-6;
+}
+
+.sono-cover__wordmark {
+  @apply flex flex-col;
+  font-family: var(--font-sono-logo), sans-serif;
+  font-size: clamp(88px, 12vw, 200px);
+  line-height: 0.84;
+}
+
+.sono-cover__tagline {
+  @apply text-2xl font-semibold;
+}
+
+.sono-facts {
+  @apply grid grid-cols-3 gap-6 border-t pt-5;
+  border-color: rgb(244 244 244 / 0.4);
+}
+
+.sono-facts--dark {
+  border-color: var(--story-line);
+}
+
+.sono-facts dt {
+  @apply text-xs tracking-[0.14em] uppercase opacity-75;
+}
+
+.sono-facts dd {
+  @apply mt-1 text-base font-semibold;
+}
+
+.sono-cover__mascot {
+  @apply absolute right-[8%] bottom-[10%] z-10 w-[min(30vw,420px)] rotate-6;
+}
+
+/* Auditoría: cinco capturas en fila (todas parten del centro y el movimiento
+   las abre) y el panel de hallazgos a la derecha, que entra empujándolas */
+.sono-audit__board {
+  @apply relative min-h-0 flex-1;
+}
+
+.sono-audit__screens {
+  @apply absolute inset-0;
+}
+
+.sono-phone {
+  @apply absolute top-1/2 left-1/2 aspect-[1/2] h-full max-h-[460px] -translate-x-1/2 -translate-y-1/2 rounded-[32px] border-4;
+  border-color: var(--sono-navy);
+}
+
+.sono-audit__panel {
+  @apply absolute top-1/2 right-0 flex w-[62%] -translate-y-1/2 flex-col gap-5;
+}
+
+.sono-audit__seals {
+  @apply grid grid-cols-2 gap-4;
+}
+
+.sono-seal {
+  @apply flex flex-col gap-1 rounded-2xl p-4;
+  background: var(--sono-royal);
+  color: var(--sono-white);
+  box-shadow: 6px 6px 0 var(--sono-orange-soft);
+}
+
+.sono-seal__number {
+  @apply text-xs font-semibold tracking-[0.14em];
+  color: var(--sono-orange);
+}
+
+.sono-seal__title {
+  font-family: var(--font-sono-display), sans-serif;
+  @apply text-base uppercase;
+}
+
+.sono-seal__text {
+  @apply text-sm leading-5;
+}
+
+/* Benchmark: los referentes se deslizan y sus capturas van en columnas */
+.sono-marquee {
+  @apply -mx-32 overflow-hidden whitespace-nowrap;
+}
+
+.sono-marquee__track {
+  @apply inline-flex gap-16 uppercase;
+  font-family: var(--font-sono-display), sans-serif;
+  font-size: clamp(40px, 5vw, 80px);
+  color: var(--sono-orange);
+  animation: sono-marquee 18s linear infinite;
+}
+
+@keyframes sono-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.sono-bench {
+  @apply grid min-h-0 flex-1 grid-cols-4 gap-6;
+}
+
+.sono-bench__capture {
+  @apply h-full min-h-40;
+}
+
+.sono-bench__dimensions {
+  @apply flex flex-col gap-4;
+}
+
+/* Síntesis: tres oportunidades, una por línea */
+.sono-synthesis {
+  @apply flex flex-col gap-5;
+}
+
+.sono-lines__mask > .sono-synthesis__item {
+  @apply flex flex-col gap-2;
+}
+
+.sono-synthesis li:nth-child(2) .sono-display {
+  color: var(--sono-orange);
+}
+
+.sono-synthesis__direction {
+  @apply max-w-3xl;
+}
+
+/* Concepto: la foto ocupa todo y el título va girado a un lado */
+.sono-concept__photo {
+  @apply absolute inset-0 rounded-none opacity-90;
+}
+
+.sono-vertical {
+  @apply absolute top-28 bottom-14 left-14 z-10 rotate-180 uppercase;
+  writing-mode: vertical-rl;
+  font-family: var(--font-sono-display), sans-serif;
+  font-size: clamp(64px, 9vh, 120px);
+  line-height: 0.9;
+  color: var(--sono-orange);
+}
+
+.sono-concept__text {
+  @apply relative z-10 ml-auto flex w-[68%] max-w-[1040px] flex-col gap-6 rounded-3xl p-10;
+  background: var(--sono-navy);
+}
+
+.sono-chips {
+  @apply flex flex-wrap gap-2;
+}
+
+.sono-chips li {
+  @apply rounded-full border px-4 py-2 text-sm font-semibold;
+  border-color: var(--sono-orange);
+}
+
+.sono-concept__text .sono-body {
+  @apply max-w-3xl;
+}
+
+.sono-concept__synthesis {
+  @apply flex flex-wrap gap-x-4 uppercase;
+  font-family: var(--font-sono-display), sans-serif;
+  font-size: clamp(24px, 2.4vw, 36px);
+  color: var(--sono-orange);
+}
+
+/* Persona: una tarjeta tipo equipo y sus datos al lado */
+.sono-persona {
+  @apply grid grid-cols-[auto_1fr] items-center gap-16;
+}
+
+.sono-persona__card {
+  /* Toma casi todo el alto de la pantalla (lo que dejan la franja de arriba,
+     el margen de abajo y el giro) y el ancho sale de su proporción */
+  @apply flex aspect-[3/4] h-[calc(100svh-208px)] max-h-[720px] -rotate-3 flex-col gap-4 rounded-3xl p-6;
+  background: var(--sono-orange);
+  color: var(--sono-white);
+  box-shadow: 10px 10px 0 var(--sono-navy);
+}
+
+.sono-persona__portrait {
+  @apply min-h-0 flex-1;
+}
+
+.sono-persona__info {
+  @apply flex flex-col gap-6;
+}
+
+/* Journey: la curva en zigzag se dibuja y las etapas aparecen encima */
+.sono-journey__track {
+  @apply relative mb-16 h-56;
+}
+
+.sono-journey__line {
+  @apply absolute inset-0 size-full;
+}
+
+.sono-journey__line path {
+  fill: none;
+  stroke: var(--sono-navy);
+  /* Sin non-scaling-stroke: con él, el trazo punteado se mide en pantalla y
+     la curva no termina de dibujarse */
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+}
+
+/* Punto que va en la punta de la curva mientras se dibuja */
+.sono-journey__marker {
+  @apply pointer-events-none absolute z-10 size-6 -translate-x-1/2 -translate-y-1/2 rounded-full border-4;
+  background: var(--sono-white);
+  border-color: var(--sono-navy);
+  box-shadow: 0 0 0 6px rgb(244 244 244 / 0.35);
+}
+
+.sono-journey__stages {
+  @apply relative grid h-full grid-cols-5 gap-4;
+}
+
+/* Cada etapa se ubica en su pico de la curva (la línea pasa por el centro de
+   cada columna, alternando arriba y abajo) */
+.sono-journey__stages li {
+  @apply relative flex flex-col items-center gap-2 text-center text-lg font-semibold;
+}
+
+.sono-journey__stages li:nth-child(1) {
+  top: calc(70% - 20px);
+}
+
+.sono-journey__stages li:nth-child(2) {
+  top: calc(25% - 20px);
+}
+
+.sono-journey__stages li:nth-child(3) {
+  top: calc(75% - 20px);
+}
+
+.sono-journey__stages li:nth-child(4) {
+  top: calc(30% - 20px);
+}
+
+.sono-journey__stages li:nth-child(5) {
+  top: calc(65% - 20px);
+}
+
+.sono-journey__dot {
+  @apply flex size-10 items-center justify-center rounded-full text-base;
+  background: var(--sono-navy);
+  color: var(--sono-white);
+}
+
+/* Arquitectura: seis bloques, uno por sección */
+.sono-architecture {
+  @apply grid grid-cols-6 gap-4;
+}
+
+/* Cada bloque con un color de la marca; en todos, el texto va en blanco */
+.sono-architecture__block {
+  @apply flex flex-col gap-3 rounded-2xl p-5;
+  background: var(--sono-navy);
+  color: var(--sono-white);
+}
+
+.sono-architecture__block:nth-child(2) {
+  background: var(--sono-orange);
+}
+
+.sono-architecture__block:nth-child(3) {
+  background: var(--sono-royal);
+}
+
+.sono-architecture__block:nth-child(4) {
+  background: var(--sono-orange-soft);
+}
+
+.sono-architecture__block:nth-child(5) {
+  background: var(--sono-electric);
+}
+
+.sono-architecture__block:nth-child(6) {
+  background: var(--sono-dark);
+}
+
+.sono-architecture__number {
+  @apply text-sm font-semibold opacity-75;
+}
+
+.sono-architecture__block ul {
+  @apply flex flex-col gap-1 text-sm leading-5;
+}
+
+/* Flujos: tres columnas con sus pasos */
+.sono-flows {
+  @apply grid grid-cols-3 gap-6;
+}
+
+.sono-flow {
+  @apply flex flex-col gap-4 border-t-4 pt-5;
+  border-color: var(--sono-orange);
+}
+
+.sono-flow__number {
+  @apply text-5xl;
+  font-family: var(--font-sono-display), sans-serif;
+  color: var(--sono-orange);
+}
+
+.sono-flow__steps {
+  @apply flex list-inside list-decimal flex-col gap-2 text-base leading-6;
+}
+
+/* Exploración visual: personalidad en stickers y la mascota */
+.sono-stickers {
+  @apply flex max-w-3xl flex-wrap gap-3;
+}
+
+.sono-stickers li {
+  @apply rounded-full px-5 py-3 text-lg font-semibold;
+  background: var(--sono-white);
+  color: var(--sono-royal);
+}
+
+.sono-stickers li:nth-child(even) {
+  @apply -rotate-2;
+  background: var(--sono-orange);
+  color: var(--sono-white);
+}
+
+.sono-stickers li:nth-child(3n) {
+  background: var(--sono-orange-soft);
+  color: var(--sono-white);
+}
+
+.sono-visual-intro__mascot {
+  @apply absolute right-[6%] bottom-[8%] w-[min(26vw,360px)] -rotate-6;
+}
+
+/* Paleta: columnas de color a toda altura */
+.sono-palette__swatches {
+  @apply grid min-h-0 flex-1 grid-cols-7 gap-3;
+}
+
+/* En el orden de la marca: navy, royal, electric, los dos naranjas, blanco
+   hueso y gris oscuro */
+.sono-palette__swatch {
+  @apply flex flex-col justify-end gap-1 rounded-3xl p-5;
+  color: var(--sono-white);
+}
+
+.sono-palette__swatch:nth-child(1) {
+  background: var(--sono-navy);
+}
+
+.sono-palette__swatch:nth-child(2) {
+  background: var(--sono-royal);
+}
+
+.sono-palette__swatch:nth-child(3) {
+  background: var(--sono-electric);
+}
+
+.sono-palette__swatch:nth-child(4) {
+  background: var(--sono-orange);
+}
+
+.sono-palette__swatch:nth-child(5) {
+  background: var(--sono-orange-soft);
+}
+
+/* El blanco hueso es el único con texto oscuro (blanco sobre blanco no se
+   lee) y lleva borde para separarse del fondo */
+.sono-palette__swatch:nth-child(6) {
+  background: var(--sono-white);
+  color: var(--sono-dark);
+  box-shadow: inset 0 0 0 2px var(--sono-navy);
+}
+
+.sono-palette__swatch:nth-child(7) {
+  background: var(--sono-dark);
+}
+
+.sono-palette__name {
+  @apply text-xl font-semibold;
+}
+
+.sono-palette__hex {
+  @apply text-sm tracking-[0.14em] uppercase opacity-80;
+}
+
+/* Tipografía: cada fuente con su muestra grande */
+.sono-type {
+  @apply flex flex-col gap-8;
+}
+
+.sono-type__item {
+  @apply grid grid-cols-[1fr_auto] items-end gap-x-8 border-b pb-6;
+  border-color: rgb(244 244 244 / 0.3);
+}
+
+.sono-type__sample {
+  @apply row-span-2 text-6xl font-semibold;
+}
+
+.sono-type__sample--logo {
+  font-family: var(--font-sono-logo), sans-serif;
+  @apply font-normal;
+  color: var(--sono-orange);
+}
+
+.sono-type__sample--display {
+  font-family: var(--font-sono-display), sans-serif;
+  @apply font-normal uppercase;
+}
+
+.sono-type__name {
+  @apply text-right text-lg font-semibold;
+}
+
+.sono-type__role {
+  @apply text-right text-sm opacity-75;
+}
+
+/* Logotipo, mascota y fotografía */
+.sono-brand__grid {
+  @apply grid min-h-0 flex-1 grid-cols-3 items-center gap-10;
+}
+
+.sono-brand__logo {
+  @apply h-full min-h-48;
+}
+
+.sono-brand__mascot {
+  @apply flex flex-col items-center gap-4 text-center;
+}
+
+.sono-brand__mascot .sono-sticker {
+  @apply w-[min(22vw,300px)] rotate-3;
+}
+
+/* Celular o "reducir movimiento": las escenas en columna, todas visibles */
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .sono-stage {
+    @apply h-auto overflow-visible;
+  }
+
+  .sono-view {
+    @apply relative min-h-svh gap-5 px-5 pt-28 pb-16;
+  }
+
+  .sono-rail,
+  .sono-band {
+    @apply hidden;
+  }
+
+  .sono-columns,
+  .sono-view.sono-columns,
+  .sono-persona,
+  .sono-flows,
+  .sono-brand__grid {
+    @apply grid-cols-1 gap-8;
+  }
+
+  .sono-architecture,
+  .sono-palette__swatches,
+  .sono-bench {
+    @apply grid-cols-2;
+  }
+
+  .sono-palette__swatch {
+    @apply min-h-40;
+  }
+
+  .sono-journey__stages {
+    @apply grid-cols-1;
+  }
+
+  .sono-journey__stages li {
+    @apply top-0 items-start text-left;
+  }
+
+  .sono-journey__track {
+    @apply h-auto;
+  }
+
+  .sono-journey__line,
+  .sono-journey__marker {
+    @apply hidden;
+  }
+
+  /* En columna: las capturas en una fila que se desliza de lado y los
+     hallazgos debajo */
+  .sono-audit__board {
+    @apply flex flex-col gap-6;
+  }
+
+  .sono-audit__screens {
+    @apply relative inset-auto -mx-5 flex gap-4 overflow-x-auto px-5 pb-2;
+  }
+
+  .sono-phone {
+    @apply relative top-auto left-auto h-80 max-h-none shrink-0 translate-0;
+  }
+
+  .sono-phone[data-audit-slot='0'] {
+    @apply order-first;
+  }
+
+  .sono-audit__panel {
+    @apply relative top-auto right-auto w-full translate-y-0;
+  }
+
+  .sono-audit__seals {
+    @apply grid-cols-1;
+  }
+
+  .sono-facts {
+    @apply grid-cols-1;
+  }
+
+  .sono-cover__mascot,
+  .sono-visual-intro__mascot {
+    @apply relative right-auto bottom-auto w-48;
+  }
+
+  .sono-cover__cut {
+    @apply hidden;
+  }
+
+  .sono-vertical {
+    @apply relative inset-auto rotate-0;
+    writing-mode: horizontal-tb;
+  }
+
+  .sono-concept__photo {
+    @apply relative inset-auto aspect-square;
+  }
+
+  .sono-concept__text {
+    @apply ml-0 w-full p-6;
+  }
+
+  .sono-persona__card {
+    @apply aspect-auto h-auto max-h-none w-full max-w-80;
+  }
+
+  .sono-persona__portrait {
+    @apply aspect-square flex-none;
+  }
+
+  .sono-marquee {
+    @apply -mx-5;
+  }
+}

@@ -131,6 +131,13 @@ export const siteContent = {
     // no tienen la suya
     exampleSummary: 'Frase de ejemplo que resume el proyecto',
     carouselLabel: 'Proyectos',
+    carouselRole: 'carrusel',
+    // Pantalla inicial de Work, en gris, antes del primer proyecto
+    introEyebrow: 'Portafolio',
+    introText: '6 proyectos. Usa el scroll o las flechas para recorrerlos.',
+    previous: 'Proyecto anterior',
+    next: 'Proyecto siguiente',
+    showProject: 'Mostrar',
     projectCount: 6
   },
   caseStudy: {
@@ -324,18 +331,41 @@ export const siteContent = {
 // Nombres reales de los proyectos ya definidos; el resto sigue como ejemplo.
 // Los reales tienen su propia dirección (/work/planti); los de ejemplo, una
 // numerada (/work/project-3).
-const projectNames: readonly string[] = ['Planti', 'Nodus'];
-const projectSlugs: readonly string[] = ['planti', 'nodus'];
+const projectNames: readonly (string | undefined)[] = [
+  'Planti',
+  'PetRide',
+  'Sonopizza',
+  undefined,
+  undefined,
+  'Nodus'
+];
+const projectSlugs: readonly (string | undefined)[] = [
+  'planti',
+  'petride',
+  'sonopizza',
+  undefined,
+  undefined,
+  'nodus'
+];
 
 // Subtítulo de cada proyecto, bajo su nombre en el banner y en su tarjeta
-const projectIndustries: readonly string[] = [
-  'App móvil para el cuidado de plantas'
+const projectIndustries: readonly (string | undefined)[] = [
+  'App móvil para el cuidado de plantas',
+  'App de transporte para viajar con mascotas',
+  'Rediseño de app móvil para pedir pizza'
 ];
 
 // Tono del fondo del banner de cada caso (degradado con profundidad). Los
 // proyectos sin tono usan el banner negro.
-export type ProjectTone = 'green' | 'purple';
-const projectTones: readonly (ProjectTone | undefined)[] = ['green', 'purple'];
+export type ProjectTone = 'green' | 'purple' | 'blue' | 'indigo';
+const projectTones: readonly (ProjectTone | undefined)[] = [
+  'green',
+  'indigo',
+  'blue',
+  undefined,
+  undefined,
+  'purple'
+];
 
 // Portada de cada proyecto: la misma imagen en su carta del carrusel de Work
 // y como primera imagen al entrar a su caso (así la entrada se siente
@@ -344,19 +374,25 @@ export type ProjectCover = {
   label: string;
   src?: string;
 };
-const projectCovers: readonly ProjectCover[] = [
-  { label: 'Imagen principal · mockup de una persona usando Planti' }
+const projectCovers: readonly (ProjectCover | undefined)[] = [
+  { label: 'Imagen principal · mockup de una persona usando Planti' },
+  { label: 'Imagen principal · persona viajando con su mascota en PetRide' },
+  { label: 'Imagen principal · pizza de Sonopizza con la mascota' }
 ];
 
 // Frase que resume cada proyecto (su idea central), en el carrusel de Work
-const projectSummaries: readonly string[] = [
-  'Saber qué necesita tu planta es fácil. Recordarlo, no.'
+const projectSummaries: readonly (string | undefined)[] = [
+  'Saber qué necesita tu planta es fácil. Recordarlo, no.',
+  'Moverte con tu mascota sin preguntar si la aceptan.',
+  'Pedir pizza debería ser tan fácil como antojarse.'
 ];
 
 // Dos palabras clave por proyecto, para las etiquetas de su tarjeta. Las de
 // Planti salen de su ficha real; el resto usa las de ejemplo.
 const projectTags: readonly (readonly string[] | undefined)[] = [
-  ['App móvil', 'Investigación UX']
+  ['App móvil', 'Investigación UX'],
+  ['App móvil', 'Movilidad'],
+  ['App móvil', 'Rediseño']
 ];
 
 export const exampleProjects = Array.from(

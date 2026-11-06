@@ -6,6 +6,7 @@ import {
 } from 'next/font/google';
 
 import { CustomCursor } from '@/components/atoms/custom-cursor';
+import { SiteAmbient } from '@/components/atoms/site-ambient';
 import { SmoothScroll } from '@/components/atoms/smooth-scroll';
 import { SiteHeader } from '@/components/organisms/site-header';
 import { siteContent } from '@/content/site';
@@ -44,6 +45,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
       >
         <SmoothScroll />
+        <SiteAmbient />
         <CustomCursor />
         <SiteHeader />
         <main className="page">{children}</main>

@@ -20,7 +20,7 @@ export function AboutTools() {
         {tools.title}
       </h2>
 
-      <div className="about-tools__band">
+      <div className="about-tools__band" data-glass="static">
         <div className="about-tools__track">
           {[0, 1].map(half => (
             <ul

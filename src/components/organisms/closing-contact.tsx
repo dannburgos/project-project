@@ -46,13 +46,21 @@ export function ClosingContact() {
 
           <ul className="closing-contact__links">
             <li>
-              <a href={contact.linkedin.href} className="closing-contact__link">
+              <a
+                href={contact.linkedin.href}
+                className="closing-contact__link"
+                data-glass
+              >
                 {contact.linkedin.label}
                 <ArrowUpRight aria-hidden="true" />
               </a>
             </li>
             <li>
-              <a href={contact.cv.href} className="closing-contact__link">
+              <a
+                href={contact.cv.href}
+                className="closing-contact__link"
+                data-glass
+              >
                 {contact.cv.label}
                 <Download aria-hidden="true" />
               </a>
