@@ -9,6 +9,17 @@ export type CaseStoryLabeledText = {
   text: string;
 };
 
+export type CaseStoryTextPart = {
+  text: string;
+  isStrong?: boolean;
+};
+
+export type CaseStoryPrototypeFlow = {
+  number: string;
+  title: string;
+  isReady: boolean;
+};
+
 export type CaseStoryNumberedText = {
   number: string;
   title: string;
@@ -19,6 +30,10 @@ export type CaseStoryFriction = {
   number: string;
   title: string;
   question: string;
+  // Qué la provoca, en una línea
+  text: string;
+  // Cómo la vive el perfil, con su propia voz (llega como un mensaje)
+  voice: string;
 };
 
 export type CaseStoryApp = {
@@ -26,7 +41,6 @@ export type CaseStoryApp = {
   focus: string;
   strengths: readonly string[];
   gaps: readonly string[];
-  improvements: readonly string[];
 };
 
 export type CaseStoryPillar = {
@@ -56,7 +70,6 @@ export type CaseStory = {
     headline: string;
     text: string;
     facts: readonly CaseFact[];
-    imageLabel: string;
   };
   respiteLabel: string;
   problem: {
@@ -65,6 +78,8 @@ export type CaseStory = {
     done: CaseStoryLabeledText;
     frictionsLabel: string;
     frictions: readonly CaseStoryFriction[];
+    // Nombre de quien escribe en el chat de las fricciones
+    voiceName: string;
     challenge: string;
     references: readonly string[];
   };
@@ -81,7 +96,6 @@ export type CaseStory = {
     title: string;
     strengthsLabel: string;
     gapsLabel: string;
-    improvementsLabel: string;
     apps: readonly CaseStoryApp[];
     findingsLabel: string;
     findings: readonly string[];
@@ -105,5 +119,16 @@ export type CaseStory = {
     title: string;
     src: string;
     screens: readonly CaseStoryScreen[];
+    // Columna de texto junto al celular
+    eyebrow: string;
+    heading: string;
+    headingAccent: string;
+    // Párrafo con algunas frases resaltadas
+    description: readonly CaseStoryTextPart[];
+    liveHint: string;
+    flowsLabel: string;
+    soonLabel: string;
+    // Un botón por flujo; solo los que ya tienen recorrido se pueden elegir
+    flows: readonly CaseStoryPrototypeFlow[];
   };
 };

@@ -28,6 +28,7 @@ export function JourneyStageCard({
         isAcademic && 'journey-card--academic',
         isPinned && 'journey-card--pinned'
       )}
+      data-glass="static"
     >
       <button
         type="button"

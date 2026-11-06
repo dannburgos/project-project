@@ -1,0 +1,64 @@
+/* Tarjeta de un proyecto en Work. En la fila es una tarjeta alta con su
+   nombre; cuando es el proyecto activo crece y llena el fondo (el tamaño y
+   la posición los pone el carrusel). Mientras no haya imagen, lleva el
+   color de la marca del proyecto. */
+.work-card {
+  @apply absolute top-0 left-0 block cursor-pointer overflow-hidden text-left outline-none;
+  border-radius: 16px;
+  transition: box-shadow 0.3s ease;
+}
+
+.work-card:not([data-background]):hover {
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 0.85);
+}
+
+.work-card:focus-visible {
+  box-shadow: 0 0 0 3px #fff;
+}
+
+.work-card--green {
+  background: linear-gradient(160deg, #a2c96c 0%, #678e35 45%, #3d5718 100%);
+}
+
+.work-card--purple {
+  background: linear-gradient(160deg, #b39ce6 0%, #6b52a8 45%, #3c2a6b 100%);
+}
+
+.work-card--blue {
+  background: linear-gradient(160deg, #ff5a00 0%, #0d47c9 50%, #002b8f 100%);
+}
+
+.work-card--indigo {
+  background: linear-gradient(160deg, #ddf344 0%, #4849e8 50%, #0b0c24 100%);
+}
+
+.work-card--neutral {
+  background: linear-gradient(160deg, #6b7280 0%, #3f4652 45%, #23272f 100%);
+}
+
+.work-card__photo {
+  @apply absolute inset-0 size-full object-cover;
+}
+
+/* Etiqueta de la imagen pendiente: solo se ve cuando la tarjeta es el fondo */
+.work-card__label {
+  @apply absolute right-12 bottom-36 max-w-xs text-right text-base text-white/70 opacity-0 transition-opacity duration-500;
+}
+
+.work-card[data-background] .work-card__label {
+  @apply opacity-100 delay-500;
+}
+
+.work-card__name {
+  @apply absolute inset-x-3 bottom-3 text-base leading-tight font-medium text-white transition-opacity duration-300;
+}
+
+.work-card[data-background] .work-card__name {
+  @apply opacity-0;
+}
+
+@media (max-width: 899px) {
+  .work-card__label {
+    @apply hidden;
+  }
+}

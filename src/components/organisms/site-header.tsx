@@ -109,7 +109,7 @@ export function SiteHeader() {
         data-surface-light={barSurface === 'light'}
       >
         <div className="site-header__bar">
-          <div ref={barRef} className="site-header__inner">
+          <div ref={barRef} className="site-header__inner" data-glass="static">
             <nav
               ref={navRef}
               aria-label="Principal"

@@ -1,0 +1,356 @@
+/* Piezas compartidas por las pantallas de un flujo: cabecera con volver,
+   pie con el botón, panel de la planta, opciones, campos y resumen de planta */
+.planti-screen-header {
+  @apply relative mb-4 flex items-center gap-3;
+}
+
+/* El título va centrado en la pantalla, sin depender del botón de volver */
+.planti-screen-header__title {
+  @apply pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-[22px] leading-8 font-bold;
+  color: var(--planti-forest);
+}
+
+.planti-screen__footer {
+  @apply absolute inset-x-5 bottom-24.5 flex flex-col gap-3;
+}
+
+/* Panel de la planta: recortada sobre fondo crema */
+.planti-plant-hero {
+  @apply relative flex items-center justify-center overflow-hidden rounded-2xl border;
+  background: var(--planti-white);
+  color: var(--planti-grass);
+  border-color: var(--planti-card-border);
+  box-shadow: var(--planti-shadow);
+}
+
+.planti-plant-hero--large {
+  @apply h-50;
+}
+
+.planti-plant-hero--large > svg {
+  @apply size-28;
+}
+
+/* Rótulo con el nombre de la planta, sobre su foto */
+.planti-plant-hero__caption {
+  @apply absolute bottom-3 left-3 rounded-full border px-3 py-1.5 text-base font-medium;
+  background: rgb(255 255 255 / 0.92);
+  border-color: var(--planti-card-border);
+  color: var(--planti-ink);
+}
+
+.planti-plant-hero--tall {
+  @apply h-64;
+}
+
+.planti-plant-hero > svg {
+  @apply size-16;
+}
+
+.planti-plant-hero--tall > svg {
+  @apply size-32;
+}
+
+/* Opciones y campos */
+.planti-field {
+  @apply mt-5;
+}
+
+.planti-field__label {
+  @apply mb-3 text-lg leading-6 font-semibold;
+}
+
+/* Cuánta luz recibe: tres tarjetas pequeñas con ícono. La elegida, con el
+   mismo contorno verde y sombra gris que las cartas de Buscar */
+.planti-icon-choice-list {
+  @apply grid grid-cols-3 gap-3;
+}
+
+.planti-icon-choice {
+  @apply relative flex h-19 flex-col items-center justify-center gap-1 overflow-hidden rounded-2xl border-[1.5px] text-base leading-6 font-medium;
+  background: var(--planti-white);
+  border-color: transparent;
+  box-shadow: var(--planti-shadow);
+  color: var(--planti-ink);
+}
+
+.planti-icon-choice svg {
+  @apply size-6;
+  color: var(--planti-grass);
+}
+
+.planti-icon-choice--selected {
+  @apply font-semibold;
+  border-color: var(--planti-grass);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
+}
+
+/* Contenido que se desliza bajo la cabecera, sin barra visible; el espacio de
+   abajo deja pasar el botón fijo */
+.planti-screen__scroll {
+  @apply -mx-5 flex min-h-0 flex-1 flex-col overflow-y-auto px-5 pt-5 pb-44;
+  scrollbar-width: none;
+  mask-image: linear-gradient(to bottom, transparent, black 16px);
+}
+
+/* Bajo la cabecera, el contenido que se desliza empieza a 20 px, igual que la
+   primera pregunta de Buscar. El aire va en el relleno de arriba, donde el
+   desvanecido no tapa nada */
+.planti-screen-header + .planti-screen__scroll {
+  @apply -mt-4;
+}
+
+/* Lo que se desliza conserva su tamaño: no se aplasta para caber */
+.planti-screen__scroll > * {
+  @apply shrink-0;
+}
+
+.planti-screen__scroll::-webkit-scrollbar {
+  @apply hidden;
+}
+
+/* Cursor al escribir un nombre */
+.planti-field__caret {
+  @apply ml-0.5 inline-block h-5 w-0.5 rounded-full align-middle;
+  background: var(--planti-leaf);
+  animation: planti-caret 1s steps(1) infinite;
+}
+
+/* Lo que se elige se nota: cambia de color con suavidad y hace un pequeño
+   rebote */
+.planti-icon-choice,
+.planti-look-tile {
+  transition:
+    background-color 0.35s,
+    border-color 0.35s,
+    color 0.35s;
+}
+
+.planti-look-tile__label {
+  transition: background-color 0.35s;
+}
+
+.planti-icon-choice--selected,
+.planti-look-tile--selected {
+  animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes planti-select {
+  40% {
+    transform: scale(1.04);
+  }
+}
+
+.planti-personalize__fields {
+  @apply mt-5 flex flex-col gap-3;
+}
+
+.planti-input {
+  @apply flex h-12 items-center gap-3 rounded-2xl border px-4 text-base;
+  background: var(--planti-white);
+  border-color: var(--planti-input-border);
+  color: var(--planti-ink);
+}
+
+.planti-input > svg {
+  @apply size-6 shrink-0;
+  color: var(--planti-placeholder);
+  stroke-width: 1.5;
+}
+
+.planti-input__text {
+  @apply flex flex-1 items-center;
+}
+
+.planti-input--empty .planti-input__text {
+  color: var(--planti-placeholder);
+}
+
+/* Desplegable: la lista se abre debajo del campo, por encima de lo que sigue */
+.planti-select {
+  @apply relative z-20;
+}
+
+.planti-select--open .planti-input {
+  border-color: var(--planti-grass);
+}
+
+.planti-select--open .planti-input > svg:last-child {
+  @apply rotate-180;
+}
+
+.planti-input > svg:last-child {
+  transition: transform 0.25s ease-out;
+}
+
+.planti-select__menu {
+  @apply absolute inset-x-0 top-full mt-2 overflow-hidden rounded-2xl py-1;
+  background: var(--planti-white);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.16);
+  transform-origin: top;
+  animation: planti-select-open 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.planti-select__option {
+  @apply flex h-11 items-center justify-between px-4 text-base;
+  color: var(--planti-ink);
+}
+
+.planti-select__option--picked {
+  @apply font-semibold;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-select__option svg {
+  @apply size-5;
+}
+
+@keyframes planti-select-open {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scaleY(0.96);
+  }
+}
+
+.planti-input--tapped {
+  animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.planti-checkbox {
+  @apply flex items-center gap-3 text-base leading-6;
+}
+
+.planti-checkbox__box {
+  @apply flex size-5 shrink-0 items-center justify-center rounded-md border-2;
+  border-color: var(--planti-placeholder);
+  color: var(--planti-grass);
+  transition: border-color 0.3s;
+}
+
+.planti-checkbox__box svg {
+  @apply size-4;
+}
+
+.planti-checkbox__box svg path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+}
+
+.planti-checkbox--checked .planti-checkbox__box {
+  border-color: var(--planti-grass);
+}
+
+.planti-checkbox--checked .planti-checkbox__box svg path {
+  animation: planti-draw 0.4s cubic-bezier(0.65, 0, 0.35, 1) 0.15s forwards;
+}
+
+.planti-button,
+.planti-icon-choice,
+.planti-look-tile,
+.planti-match-tile,
+.planti-swatch__color,
+.planti-checkbox__box,
+.planti-input {
+  @apply relative overflow-hidden;
+}
+
+.planti-button {
+  --tap-dot: rgb(255 255 255 / 0.35);
+  --tap-ring: rgb(255 255 255 / 0.85);
+  --tap-wave: rgb(255 255 255 / 0.3);
+}
+
+.planti-button--light,
+.planti-button--secondary {
+  --tap-dot: rgb(61 87 24 / 0.25);
+  --tap-ring: rgb(61 87 24 / 0.55);
+  --tap-wave: rgb(61 87 24 / 0.16);
+}
+
+.planti-swatch__color {
+  --tap-dot: rgb(255 255 255 / 0.4);
+  --tap-ring: rgb(255 255 255 / 0.9);
+  --tap-wave: rgb(255 255 255 / 0.3);
+}
+
+:is(
+  .planti-button--pressed,
+  .planti-button--loading,
+  .planti-icon-choice--selected,
+  .planti-care-option--checked,
+  .planti-frequency__step--tapped,
+  .planti-look-tile--selected,
+  .planti-match-tile--active,
+  .planti-input--tapped,
+  .planti-checkbox--checked .planti-checkbox__box,
+  .planti-swatch--selected .planti-swatch__color
+)::before {
+  @apply pointer-events-none absolute z-10 size-8 rounded-full border-2 opacity-0 content-[''];
+  left: var(--tap-x, 50%);
+  top: var(--tap-y, 52%);
+  margin: -16px 0 0 -16px;
+  background: var(--tap-dot, rgb(61 87 24 / 0.22));
+  border-color: var(--tap-ring, rgb(61 87 24 / 0.55));
+  animation: planti-tap-dot 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+:is(
+  .planti-button--pressed,
+  .planti-button--loading,
+  .planti-icon-choice--selected,
+  .planti-care-option--checked,
+  .planti-frequency__step--tapped,
+  .planti-look-tile--selected,
+  .planti-match-tile--active,
+  .planti-input--tapped,
+  .planti-checkbox--checked .planti-checkbox__box,
+  .planti-swatch--selected .planti-swatch__color
+)::after {
+  @apply pointer-events-none absolute z-10 size-4 scale-0 rounded-full content-[''];
+  left: var(--tap-x, 50%);
+  top: var(--tap-y, 52%);
+  margin: -8px 0 0 -8px;
+  background: var(--tap-wave, rgb(61 87 24 / 0.16));
+  animation: planti-tap-wave 0.75s ease-out 0.12s forwards;
+}
+
+.planti-onboarding__next--pressed::before {
+  @apply pointer-events-none absolute size-8 rounded-full border-2 opacity-0 content-[''];
+  left: 50%;
+  top: 52%;
+  margin: -16px 0 0 -16px;
+  background: rgb(255 255 255 / 0.35);
+  border-color: rgb(255 255 255 / 0.85);
+  animation: planti-tap-dot 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes planti-tap-dot {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes planti-tap-wave {
+  from {
+    opacity: 1;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(24);
+  }
+}

@@ -1,29 +1,16 @@
-import { ShowcaseCard } from '@/components/molecules/showcase-card';
 import { ClosingContact } from '@/components/organisms/closing-contact';
 import { PageCurtain } from '@/components/organisms/page-curtain';
-import { exampleProjects, siteContent } from '@/content/site';
+import { WorkCarousel } from '@/components/organisms/work-carousel';
+import { exampleProjects } from '@/content/site';
 
+// Work: arranca en gris y, con el scroll o las flechas, cada proyecto crece
+// desde su tarjeta hasta volverse el fondo. Al terminar, la página sigue
+// hacia el cierre de contacto
 export default function WorkPage() {
-  const { work } = siteContent;
-
   return (
     <div className="work-page">
-      <PageCurtain>
-        <h1 className="work-title">{work.title}</h1>
-        <ul className="work-grid">
-          {exampleProjects.map(project => (
-            <li key={project.slug}>
-              <ShowcaseCard
-                href={`/work/${project.slug}`}
-                title={project.name}
-                description={project.industry}
-                actionLabel={work.caseAction}
-                mediaLabel={work.imageLabel}
-                tags={project.tags}
-              />
-            </li>
-          ))}
-        </ul>
+      <PageCurtain variant="flush">
+        <WorkCarousel projects={exampleProjects} />
       </PageCurtain>
 
       <ClosingContact />

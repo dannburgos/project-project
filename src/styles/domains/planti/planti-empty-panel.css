@@ -1,0 +1,25 @@
+/* Inicio la primera vez: una tarjeta verde suave que invita a añadir
+   la primera planta */
+.planti-empty-panel {
+  @apply flex flex-col items-center rounded-3xl px-6 pt-8 pb-6 text-center text-balance;
+  background: #eff5ec;
+}
+
+.planti-empty-panel__icon {
+  @apply mb-4 flex size-24 items-center justify-center rounded-full;
+  background: var(--planti-white);
+  color: var(--planti-leaf);
+}
+
+.planti-empty-panel__icon svg {
+  @apply size-12;
+}
+
+.planti-empty-panel__title {
+  @apply mb-1.5 text-xl leading-7 font-semibold;
+}
+
+.planti-empty-panel__body {
+  @apply mb-6 text-base leading-6;
+  color: var(--planti-stone);
+}

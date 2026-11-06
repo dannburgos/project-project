@@ -1,21 +1,63 @@
 /* Prototipo de Planti. Su sistema de diseño (colores, tipografía, espacios)
-   vive en esta carpeta y no se mezcla con el del portafolio. Los valores
-   definitivos llegan con el sistema de diseño de Dann; por ahora, lo mínimo
-   para arrancar. */
+   vive en esta carpeta y no se mezcla con el del portafolio.
+
+   Dirección: app clara y limpia. Fondo blanco y tarjetas blancas con borde
+   verde suave y sombra marcada; sin tarjetas crema. El verde, como acento y
+   para las acciones. Esquinas suaves (16 en tarjetas, 12 en botones). Todas
+   las medidas son múltiplos de 2 px, sobre un celular de 390 x 844. */
+:root {
+  /* Verdes (UI Kit de Planti) */
+  --planti-forest: #23330e;
+  --planti-leaf: #3d5718;
+  --planti-grass: #678e35;
+  --planti-sprout: #a2c96c;
+  --planti-dew: #eef4e2;
+
+  /* Neutros cálidos */
+  --planti-white: #ffffff;
+  /* Fondo de las pantallas */
+  --planti-canvas: #f9f9f9;
+  --planti-line: #f0ece0;
+  /* Borde verde suave de las tarjetas */
+  --planti-card-border: #c5d9a3;
+  --planti-ink: #22261a;
+  --planti-stone: #6a6a5c;
+  --planti-mist: #b8b5a6;
+  --planti-charcoal: #4d4d4d;
+  --planti-placeholder: #9a9a9a;
+  --planti-input-border: #e8e8e8;
+  --planti-fog: #f3f4f6;
+  /* Fondo claro tras las fotos de las plantas */
+  --planti-cream: #fbf8ef;
+
+  /* Fondos de foto provisionales, hasta tener las imágenes */
+  --planti-photo-warm: #9c8b6e;
+
+  /* Aviso */
+  --planti-terracotta-tint: #f9e8df;
+  --planti-terracotta-ink: #8a3f22;
+
+  /* Sombra de las tarjetas: suave, pero se nota sobre el blanco */
+  --planti-shadow:
+    0 6px 18px rgb(35 51 14 / 0.1), 0 1px 4px rgb(35 51 14 / 0.06);
+
+  /* Celular: pantalla de 375 x 750 con un bisel de 12 */
+  --planti-screen-width: 375px;
+  --planti-screen-height: 750px;
+  --planti-screen-radius: 44px;
+  --planti-bezel: 12px;
+  --planti-device-radius: 56px;
+  --planti-bezel-color: #11110f;
+}
+
+/* La pantalla del celular, siempre a su tamaño real. El escenario la escala
+   para que quepa en el espacio disponible. */
 .planti-app {
-  @apply mx-auto flex min-h-svh w-full max-w-md flex-col bg-white text-neutral-900;
-  font-family: var(--font-geist-sans), sans-serif;
-}
-
-/* Pantalla de arranque, mientras se diseñan las pantallas reales */
-.planti-starter {
-  @apply flex flex-1 flex-col items-center justify-center gap-2 p-8 text-center;
-}
-
-.planti-starter__name {
-  @apply text-3xl font-semibold tracking-tight;
-}
-
-.planti-starter__note {
-  @apply text-sm text-neutral-500;
+  @apply relative flex flex-col overflow-hidden;
+  width: var(--planti-screen-width);
+  height: var(--planti-screen-height);
+  border-radius: var(--planti-screen-radius);
+  background: var(--planti-canvas);
+  color: var(--planti-ink);
+  font-family: var(--font-poppins), sans-serif;
 }

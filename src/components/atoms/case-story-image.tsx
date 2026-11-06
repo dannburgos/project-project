@@ -4,6 +4,8 @@ import { cn } from '@/lib/utils';
 
 type CaseStoryImageProps = ComponentProps<'div'> & {
   label: string;
+  // La foto, cuando ya exista; mientras tanto se muestra la etiqueta
+  src?: string;
   // tone: imagen de apoyo (tono plano) · paper: sobre el mundo verde ·
   // leaf: imagen grande de respiro (con franjas de hojas)
   variant?: 'tone' | 'paper' | 'leaf';
@@ -12,6 +14,7 @@ type CaseStoryImageProps = ComponentProps<'div'> & {
 // Espacio marcado para una imagen que llega después: dice qué foto va ahí
 export function CaseStoryImage({
   label,
+  src,
   variant = 'tone',
   className,
   ...props
@@ -28,9 +31,13 @@ export function CaseStoryImage({
       )}
       {...props}
     >
-      <span className="story-image__label" aria-hidden="true">
-        {label}
-      </span>
+      {src ? (
+        <img src={src} alt="" className="story-image__photo" />
+      ) : (
+        <span className="story-image__label" aria-hidden="true">
+          {label}
+        </span>
+      )}
     </div>
   );
 }

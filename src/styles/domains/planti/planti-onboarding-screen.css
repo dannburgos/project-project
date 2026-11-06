@@ -1,0 +1,84 @@
+/* Onboarding: una sola pantalla de intro, con foto a pantalla completa. Título, texto y botón abajo sobre un velo
+   oscuro que deja leer. El botón lleva una línea que lo rodea y, al completarla, se
+   pulsa solo. */
+.planti-onboarding {
+  @apply relative flex flex-1 flex-col justify-end;
+  color: var(--planti-white);
+}
+
+.planti-onboarding__photo {
+  @apply absolute inset-0 size-full object-cover object-top;
+}
+
+.planti-onboarding__content {
+  @apply relative flex flex-col items-center px-6 pt-24 pb-12 text-center text-balance;
+  background: linear-gradient(to top, rgb(20 24 12 / 0.7) 55%, transparent);
+}
+
+.planti-onboarding__title {
+  @apply mb-2 text-3xl leading-9 font-bold;
+}
+
+.planti-onboarding__text {
+  @apply mb-8 text-base leading-6;
+  color: rgb(255 255 255 / 0.9);
+}
+
+.planti-onboarding__next {
+  @apply relative flex size-16 items-center justify-center rounded-full;
+  background: var(--planti-leaf);
+  color: var(--planti-white);
+}
+
+.planti-onboarding__next svg:not(.planti-onboarding__ring) {
+  @apply size-6;
+}
+
+/* La línea que rodea el botón: empieza arriba y da la vuelta completa */
+.planti-onboarding__ring {
+  @apply pointer-events-none absolute -inset-2 size-[calc(100%+16px)] -rotate-90;
+}
+
+.planti-onboarding__ring-track,
+.planti-onboarding__ring-line {
+  fill: none;
+  stroke-width: 3;
+}
+
+.planti-onboarding__ring-track {
+  stroke: rgb(255 255 255 / 0.3);
+}
+
+.planti-onboarding__ring-line {
+  stroke: var(--planti-white);
+  stroke-linecap: round;
+  stroke-dasharray: 214;
+}
+
+/* Al completar la vuelta, el botón se pulsa: se hunde y suelta una onda */
+.planti-onboarding__next--pressed {
+  animation: planti-ring-press 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.planti-onboarding__next--pressed::after {
+  @apply absolute inset-0 rounded-full content-[''];
+  border: 2px solid var(--planti-white);
+  animation: planti-ring-wave 0.45s ease-out forwards;
+}
+
+@keyframes planti-ring-press {
+  50% {
+    transform: scale(0.88);
+  }
+}
+
+@keyframes planti-ring-wave {
+  from {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}

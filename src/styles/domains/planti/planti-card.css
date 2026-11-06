@@ -1,0 +1,134 @@
+/* Tarjetas y filas de cuidados. Fondo blanco, borde fino y la única sombra
+   del sistema. */
+.planti-card {
+  @apply rounded-2xl border p-4;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  box-shadow: var(--planti-shadow);
+}
+
+.planti-section-head {
+  @apply mb-3 flex items-baseline justify-between;
+}
+
+.planti-section-head__title {
+  @apply text-2xl leading-8 font-bold;
+  color: var(--planti-forest);
+}
+
+.planti-section-head__aside {
+  @apply text-base font-medium;
+  color: var(--planti-grass);
+}
+
+.planti-care-card {
+  @apply flex flex-col gap-4;
+}
+
+/* El primer cuidado, completo: qué toca, dónde y cuándo, y cómo hacerlo */
+.planti-care-primary {
+  @apply flex flex-col gap-3;
+}
+
+.planti-care-primary__head {
+  @apply flex items-center gap-3;
+}
+
+.planti-care-primary__thumb {
+  @apply flex size-12 shrink-0 items-center justify-center rounded-xl border;
+  background: var(--planti-white);
+  color: var(--planti-grass);
+  border-color: var(--planti-card-border);
+}
+
+.planti-care-primary__thumb svg {
+  @apply size-6;
+}
+
+.planti-care-primary__text {
+  @apply flex-1;
+}
+
+.planti-care-primary__name {
+  @apply text-base leading-6 font-semibold;
+}
+
+.planti-care-primary__meta {
+  @apply text-base leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-care-primary__how {
+  @apply flex items-center gap-3 rounded-xl border px-3 py-2.5 text-base leading-6;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+}
+
+.planti-care-primary__how p {
+  @apply flex-1;
+}
+
+.planti-care-primary__how svg {
+  @apply size-5 shrink-0;
+  color: var(--planti-mist);
+}
+
+.planti-care-card > .planti-task {
+  @apply border-t pt-4;
+  border-color: var(--planti-line);
+}
+
+.planti-progress {
+  @apply h-1.5 w-full appearance-none overflow-hidden rounded-full border-0;
+  background: var(--planti-dew);
+}
+
+.planti-progress::-webkit-progress-bar {
+  background: var(--planti-dew);
+}
+
+.planti-progress::-webkit-progress-value {
+  @apply rounded-full;
+  background: var(--planti-grass);
+}
+
+.planti-progress::-moz-progress-bar {
+  @apply rounded-full;
+  background: var(--planti-grass);
+}
+
+.planti-task {
+  @apply flex items-center gap-3;
+}
+
+.planti-task__icon {
+  @apply flex size-10 shrink-0 items-center justify-center rounded-xl;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-task__icon svg {
+  @apply size-5;
+}
+
+.planti-task__text {
+  @apply flex-1;
+}
+
+.planti-task__name {
+  @apply text-base leading-6 font-semibold;
+}
+
+.planti-task__time {
+  @apply text-base leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-task-list {
+  @apply flex flex-col gap-3;
+}
+
+.planti-task-list .planti-task + .planti-task {
+  @apply border-t pt-3;
+  border-color: var(--planti-line);
+}

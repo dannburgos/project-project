@@ -23,8 +23,7 @@ export const plantiStory: CaseStory = {
       { label: 'Rol', value: 'Product Designer · UX/UI' },
       { label: 'Categoría', value: 'Estilo de vida' },
       { label: 'Tipo', value: 'Proyecto conceptual' }
-    ],
-    imageLabel: 'Imagen principal · mockup de una persona usando Planti'
+    ]
   },
   respiteLabel: 'Respiro · hojas de cerca, a todo el ancho',
   problem: {
@@ -43,11 +42,26 @@ export const plantiStory: CaseStory = {
       {
         number: '01',
         title: 'Entender',
-        question: '¿Qué necesita realmente mi planta?'
+        question: '¿Qué necesita realmente mi planta?',
+        text: 'La información suele ser general y no considera las necesidades ni el contexto de cada planta.',
+        voice: 'Busco información para entender qué sucede.'
       },
-      { number: '02', title: 'Decidir', question: '¿Qué debería hacer?' },
-      { number: '03', title: 'Mantener', question: '¿Cómo lo vuelvo rutina?' }
+      {
+        number: '02',
+        title: 'Decidir',
+        question: '¿Qué debería hacer?',
+        text: 'Convertir lo que sabes en qué hacer y cuándo hacerlo.',
+        voice: 'Saber qué hacer y cuándo hacerlo.'
+      },
+      {
+        number: '03',
+        title: 'Mantener',
+        question: '¿Cómo lo vuelvo rutina?',
+        text: 'Sostener esos cuidados como una rutina constante.',
+        voice: 'Consulto la información e intento recordarla.'
+      }
     ],
+    voiceName: 'Laura',
     challenge:
       'El reto no es encontrar información. Es convertirla en decisiones de cuidado.',
     references: [
@@ -94,9 +108,10 @@ export const plantiStory: CaseStory = {
   },
   benchmark: {
     title: '¿Qué hacen hoy las apps de plantas?',
-    strengthsLabel: 'Hace bien',
-    gapsLabel: 'Le falta',
-    improvementsLabel: 'Puede mejorar',
+    // Dos categorías por app; lo que cada una podría mejorar ya lo resumen
+    // los hallazgos del benchmark
+    strengthsLabel: 'Lo que resuelve',
+    gapsLabel: 'Lo que deja sin resolver',
     apps: [
       {
         name: 'PlantIn',
@@ -106,11 +121,7 @@ export const plantiStory: CaseStory = {
           'Información detallada de cada planta',
           'Enfoque técnico y completo'
         ],
-        gaps: ['Curva de aprendizaje alta', 'Mucha información al empezar'],
-        improvements: [
-          'Simplificar el inicio',
-          'Mostrar la información de forma progresiva'
-        ]
+        gaps: ['Curva de aprendizaje alta', 'Mucha información al empezar']
       },
       {
         name: 'PictureThis',
@@ -124,10 +135,6 @@ export const plantiStory: CaseStory = {
           'Depende del escaneo',
           'Muchas funciones con suscripción',
           'Poco acompañamiento después del diagnóstico'
-        ],
-        improvements: [
-          'Conectar el diagnóstico con acciones claras',
-          'Acompañar después del análisis'
         ]
       },
       {
@@ -142,10 +149,6 @@ export const plantiStory: CaseStory = {
           'Experiencia visual poco emocional',
           'Poca sensación de acompañamiento',
           'Personalización limitada'
-        ],
-        improvements: [
-          'Crear conexión emocional',
-          'Mostrar el progreso de forma motivadora'
         ]
       }
     ],
@@ -226,6 +229,23 @@ export const plantiStory: CaseStory = {
   prototype: {
     title: 'Prototipo interactivo',
     src: '/prototypes/planti',
+    eyebrow: 'Prototipo interactivo · 2026',
+    heading: 'Cuida tus plantas, ',
+    headingAccent: 'sin adivinar.',
+    description: [
+      { text: 'Planti reúne lo que necesita cada planta en un solo lugar. ' },
+      { text: 'Le cuentas cómo es,', isStrong: true },
+      { text: ' te ayuda a encontrarla y ' },
+      { text: 'convierte sus necesidades en cuidados.', isStrong: true }
+    ],
+    liveHint: 'El celular de la derecha recorre cada flujo, dale play',
+    flowsLabel: 'Elige un flujo',
+    soonLabel: 'Próximamente',
+    flows: [
+      { number: '01', title: 'Incorporar una planta', isReady: true },
+      { number: '02', title: 'Crear una rutina de cuidado', isReady: true },
+      { number: '03', title: 'Completar un cuidado', isReady: false }
+    ],
     screens: [
       { label: 'Pantalla principal · Inicio', isMain: true },
       { label: 'Pantalla principal · Mis plantas', isMain: true },

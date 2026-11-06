@@ -19,7 +19,7 @@
   @apply sr-only;
 }
 
-/* Títulos de categoría bien notorios, con su marca */
+/* Títulos de las dos categorías bien notorios, con su marca */
 .story-marker-title {
   @apply mt-5 mb-1.5 flex items-center gap-2.5 text-base font-semibold tracking-wide;
   color: var(--story-ink);
@@ -36,10 +36,6 @@
 
 .story-marker-title--gaps::before {
   border: 1.5px solid var(--story-ink);
-}
-
-.story-marker-title--improvements::before {
-  background: var(--story-ink);
 }
 
 .story-findings {

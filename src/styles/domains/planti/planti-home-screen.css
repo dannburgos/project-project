@@ -1,0 +1,105 @@
+/* Inicio: cabecera fija, contenido que hace scroll y barra de navegación
+   flotante */
+.planti-icon-button {
+  @apply flex size-11 items-center justify-center rounded-xl border;
+  background: var(--planti-white);
+  border-color: var(--planti-card-border);
+  color: var(--planti-stone);
+  box-shadow: var(--planti-shadow);
+}
+
+.planti-icon-button--flat {
+  @apply size-10 rounded-full border-0;
+  background: var(--planti-fog);
+  color: var(--planti-leaf);
+  box-shadow: none;
+}
+
+.planti-icon-button svg {
+  @apply size-5;
+}
+
+/* Inicio sin margen lateral: el contenido ocupa todo el ancho de la pantalla
+   y lleva su propio espacio, para que la sombra de las tarjetas no se corte */
+.planti-home-screen {
+  @apply px-0;
+}
+
+.planti-home-header {
+  @apply flex items-start justify-between px-5;
+}
+
+.planti-home-header__greeting {
+  @apply text-2xl leading-8 font-bold;
+  color: var(--planti-forest);
+}
+
+.planti-home-header__daypart {
+  @apply text-lg leading-6 font-medium;
+  color: var(--planti-leaf);
+}
+
+.planti-home-screen__date {
+  @apply flex flex-col;
+}
+
+.planti-home-screen__day {
+  @apply text-xl leading-7 font-medium;
+  color: #444444;
+}
+
+.planti-home-screen__note {
+  @apply text-base leading-6;
+  color: #444444;
+}
+
+/* El contenido se desliza sin barra visible; el espacio de abajo deja pasar
+   la barra de navegación */
+.planti-home-screen__content {
+  @apply flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto px-5 pt-6 pb-32;
+  scrollbar-width: none;
+  /* Al deslizar, lo que sube se desvanece bajo la cabecera */
+  mask-image: linear-gradient(to bottom, transparent, black 16px);
+}
+
+.planti-home-screen__content > * {
+  @apply shrink-0;
+}
+
+.planti-home-screen__content::-webkit-scrollbar {
+  @apply hidden;
+}
+
+/* Desvanecido detrás de la barra, para que el contenido no se corte en seco */
+.planti-home-screen::after {
+  @apply pointer-events-none absolute inset-x-0 bottom-0 h-32 content-[''];
+  background: linear-gradient(to top, var(--planti-canvas) 45%, transparent);
+}
+
+/* Barra anclada abajo, con las esquinas de arriba redondeadas */
+.planti-nav {
+  @apply absolute inset-x-0 bottom-0 z-10 rounded-t-3xl px-4 pt-2.5 pb-5;
+  background: var(--planti-white);
+  box-shadow: 0 -6px 18px rgb(35 51 14 / 0.08);
+}
+
+.planti-nav__list {
+  @apply flex items-center justify-around;
+}
+
+.planti-nav__item {
+  @apply flex w-20 flex-col items-center gap-0.5 text-xs font-medium;
+  color: var(--planti-placeholder);
+}
+
+.planti-nav__icon {
+  @apply flex h-8 w-12 items-center justify-center;
+}
+
+.planti-nav__icon svg {
+  @apply size-6;
+}
+
+.planti-nav__item--active {
+  color: var(--planti-leaf);
+}

@@ -46,7 +46,7 @@ export function SkillsModule({
 
         <ul className="skills-module__cards">
           {items.map(item => (
-            <li key={item.title} className="skills-module__card">
+            <li key={item.title} className="skills-module__card" data-glass>
               <h3 className="skills-module__title">{item.title}</h3>
               <p className="skills-module__text">{item.text}</p>
             </li>

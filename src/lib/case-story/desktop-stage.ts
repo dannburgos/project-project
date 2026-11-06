@@ -10,6 +10,7 @@ import {
   CLIP_HIDDEN_LEFT,
   CLIP_HIDDEN_RIGHT,
   CLIP_SHOWN,
+  LINE_BLOCK,
   STORY_CURVE,
   STORY_JUMP_EVENT,
   addBlockReveal,
@@ -35,10 +36,17 @@ const FLOWS_STEP = 11;
 const RAIN_STEP = 12;
 
 const PARK = 48;
-// Franja de navegación de arriba: la línea del esqueleto va debajo de ella
-const BAND = 96;
 const GESTURE_GAP_MS = 220;
-const RAIN_DISTANCE_PX = 2600;
+// La lluvia avanza por gestos: el primero la deja a la mitad (las pantallas
+// a medio subir) y el segundo la termina y lleva al prototipo
+const RAIN_HALF = 0.5;
+const RAIN_GESTURE_S = 1.3;
+// En el segundo gesto, el prototipo empieza a entrar cuando las últimas
+// pantallas todavía están saliendo
+const PROTOTYPE_OVERLAP_S = 0;
+// El último tramo de la lluvia va más pausado, para que las pantallas sigan a
+// la vista mientras entra el prototipo
+const RAIN_EXIT_S = 1.8;
 const LINE_ON_GREEN = 'rgba(162, 201, 108, 0.3)';
 const AXIS_ON_GREEN = '#a2c96c';
 
@@ -110,31 +118,6 @@ export function setupDesktopStage(root: HTMLElement) {
       );
     }
   };
-  // Bisagra: el eje se va al borde y la imagen se abre a todo el ancho
-  const hinge = (name: string, from: string) => {
-    tl.set(
-      view(name),
-      {
-        autoAlpha: 1,
-        clipPath: `inset(${BAND}px ${width / 2}px 0px ${PARK}px)`
-      },
-      '+=0.01'
-    );
-    tl.to(view(name), { clipPath: 'inset(0px 0px 0px 0px)', duration: 1.7 });
-    tl.fromTo(
-      `${view(name)} [data-respite-image]`,
-      { scale: 1.1 },
-      { scale: 1, duration: 2, ease: 'expo.out' },
-      '<'
-    );
-    moveAxis(parkRight, '<', 1.7);
-    tl.to(
-      `${view(from)} [data-axis-text]`,
-      { x: width * 0.4, autoAlpha: 0, duration: 1.4 },
-      '<'
-    );
-    hide(view(from));
-  };
   // Barrido: la línea cruza la pantalla y descubre la capa nueva
   const sweep = (name: string, previous: string) => {
     const isFromRight = axisX > width / 2;
@@ -151,12 +134,25 @@ export function setupDesktopStage(root: HTMLElement) {
     hide(view(previous));
   };
   // Rodado horizontal: el módulo rueda a la izquierda y el siguiente llega
-  // rodando desde la derecha, con sus piezas en capas
+  // rodando desde la derecha, con sus piezas en capas. Si el eje está entre
+  // los márgenes (dividiendo el módulo), se va pegado a él a la misma
+  // velocidad: así nunca cruza por encima del texto. Ya fuera de pantalla,
+  // reaparece con un fundido en su nuevo lugar.
   const roll = (out: string, next: string, parts: string, axisTo?: number) => {
+    const isAxisInside = axisX > PARK + 1 && axisX < parkRight - 1;
+    tl.addLabel(`${out}-roll`);
     tl.to(view(out), { x: -width, duration: 1.8 });
     show(view(next), '<');
     tl.fromTo(view(next), { x: width }, { x: 0, duration: 1.8 }, '<');
-    const pieces = all(`${view(next)} ${parts}`);
+    // Cada parte se busca solo dentro del módulo que llega
+    const pieces = parts
+      ? all(
+          parts
+            .split(',')
+            .map(part => `${view(next)} ${part.trim()}`)
+            .join(', ')
+        )
+      : [];
     if (pieces.length) {
       tl.fromTo(
         pieces,
@@ -165,7 +161,15 @@ export function setupDesktopStage(root: HTMLElement) {
         '<0.05'
       );
     }
-    if (axisTo !== undefined) moveAxis(axisTo, '<', 1.8);
+    if (isAxisInside) {
+      const target = axisTo ?? PARK;
+      tl.to('[data-axis]', { x: axisX - width, duration: 1.8 }, `${out}-roll`);
+      tl.set('[data-axis]', { autoAlpha: 0, x: target }, `${out}-roll+=1.8`);
+      tl.to('[data-axis]', { autoAlpha: 1, duration: 0.5 }, '>');
+      axisX = target;
+    } else if (axisTo !== undefined) {
+      moveAxis(axisTo, `${out}-roll`, 1.8);
+    }
     hide(view(out));
   };
 
@@ -177,10 +181,17 @@ export function setupDesktopStage(root: HTMLElement) {
   // 0 · Introducción, la más pausada
   axisIn('intro', { slow: 1.3 });
   mark();
-  // 1 · Respiro
-  hinge('respite', 'intro');
+  // 1 · Respiro: la introducción rueda a la izquierda y el respiro llega
+  // rodando desde la derecha (la imagen no se agranda)
+  roll('intro', 'respite', '[data-respite-image]', PARK);
   mark();
-  // 2 · Problema: la frase llega cubierta y se destapa; luego la brecha
+  // 2 · Problema: la línea aparece en el borde derecho y cruza la pantalla
+  // descubriendo la frase, que llega cubierta y se destapa; luego la brecha
+  tl.set('[data-axis]', { autoAlpha: 0, x: parkRight }, '+=0.01').to(
+    '[data-axis]',
+    { autoAlpha: 1, duration: 0.3 }
+  );
+  axisX = parkRight;
   sweep('problem', 'respite');
   addBlockReveal(tl, one(`${view('problem')} [data-reveal]`), '-=0.2');
   tl.fromTo(
@@ -196,7 +207,46 @@ export function setupDesktopStage(root: HTMLElement) {
   );
   mark();
   // 3 · Rueda hacia las tres fricciones
-  roll('problem', 'frictions', '[data-part="column"]');
+  // El módulo llega rodando; luego una línea recorre las tres fricciones como
+  // un camino y sigue hasta el borde. Al pasar por cada parada, su cuadrito
+  // aparece con un impulso y su contenido sube, una fricción tras otra.
+  roll('problem', 'frictions', '');
+  tl.addLabel('frictions-path', '-=0.5');
+  tl.fromTo(
+    `${view('frictions')} [data-part="path"]`,
+    { scaleX: 0 },
+    { scaleX: 1, duration: 2.6, ease: 'power2.inOut' },
+    'frictions-path'
+  );
+  all(`${view('frictions')} [data-part="column"]`).forEach((column, index) => {
+    const at = `frictions-path+=${0.25 + index * 0.6}`;
+    tl.fromTo(
+      column.querySelector('[data-part="node"]'),
+      { scale: 0 },
+      { scale: 1, duration: 0.7, ease: 'back.out(3)' },
+      at
+    ).fromTo(
+      queryAll(column, '[data-part="step-part"]'),
+      { y: 60, autoAlpha: 0 },
+      { y: 0, autoAlpha: 1, duration: 1.2, stagger: 0.08 },
+      at
+    );
+  });
+  // Laura escribe: en cada parada aparece "escribiendo…" y luego su mensaje
+  all(`${view('frictions')} [data-part="chat-item"]`).forEach((item, index) => {
+    const at = `frictions-path+=${0.45 + index * 0.6}`;
+    const typing = item.querySelector('[data-part="typing"]');
+    const bubble = item.querySelector('[data-part="bubble"]');
+    tl.fromTo(typing, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, at)
+      .to(typing, { autoAlpha: 0, duration: 0.15 }, `${at}+=0.7`)
+      .fromTo(
+        bubble,
+        { autoAlpha: 0, y: 12, scale: 0.96, transformOrigin: 'left top' },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
+        `${at}+=0.8`
+      );
+  });
+
   mark();
   // 4 · El reto con los referentes
   leave(view('frictions'));
@@ -310,9 +360,9 @@ export function setupDesktopStage(root: HTMLElement) {
     { scale: 1, autoAlpha: 1, duration: 1.8 },
     '<'
   ).fromTo(
-    `${view('prototype')} [data-part="label"]`,
+    `${view('prototype')} [data-part="copy"] > *`,
     { autoAlpha: 0, y: 20 },
-    { autoAlpha: 1, y: 0, duration: 1.2 },
+    { autoAlpha: 1, y: 0, duration: 1.2, stagger: 0.15 },
     '<0.4'
   );
   mark();
@@ -361,6 +411,22 @@ export function setupDesktopStage(root: HTMLElement) {
       rain.progress(rainProgress);
     }
   };
+  // Un gesto en la lluvia: la lleva con impulso hasta la mitad o hasta un
+  // extremo; mientras se mueve, el resto del gesto no cuenta
+  const glideRain = (progress: number, onComplete?: () => void) => {
+    rainProgress = progress;
+    isBusy = true;
+    gsap.to(rain, {
+      progress,
+      duration: RAIN_GESTURE_S,
+      ease: 'power3.out',
+      overwrite: true,
+      onComplete: () => {
+        isBusy = false;
+        onComplete?.();
+      }
+    });
+  };
 
   // ---- Un gesto = un paso ----
   const stepCount = labels.length;
@@ -370,6 +436,7 @@ export function setupDesktopStage(root: HTMLElement) {
   let isLocked = false;
   let lastEventTime = 0;
   let playing: gsap.core.Tween | null = null;
+  let prototypeEntry: gsap.core.Tween | null = null;
 
   const lock = () => {
     if (isLocked) return;
@@ -408,6 +475,7 @@ export function setupDesktopStage(root: HTMLElement) {
     window.scrollTo(0, trigger.start + stepLength * step);
   };
 
+  const titleBlocks = all(LINE_BLOCK);
   const notifySurface = () =>
     window.dispatchEvent(new Event(SURFACE_CHANGE_EVENT));
 
@@ -427,24 +495,36 @@ export function setupDesktopStage(root: HTMLElement) {
       isBusy = false;
       return;
     }
-    if (step > RAIN_STEP) setRain(1, false);
+    // Si la lluvia todavía está terminando de subir, se deja que termine
+    if (step > RAIN_STEP && !gsap.isTweening(rain)) setRain(1, false);
     if (step < RAIN_STEP) setRain(0, false);
     isBusy = true;
     const distance =
       from < 0
         ? tl.labels[labels[step]]
         : Math.abs(tl.labels[labels[step]] - tl.time());
+    // Al volver se rebobina el movimiento (lo que entró por la derecha sale
+    // por la derecha), más rápido y sin bloques: los títulos nunca se
+    // vuelven a tapar; el bloque solo aparece al avanzar
+    const isGoingBack = from > step;
+    const keepTitlesUncovered = () => {
+      if (isGoingBack) gsap.set(titleBlocks, { scaleX: 0 });
+    };
     let frame = 0;
     playing = tl.tweenTo(labels[step], {
-      duration: gsap.utils.clamp(1.4, 3.2, distance * 0.9),
+      duration: isGoingBack
+        ? gsap.utils.clamp(0.9, 1.4, distance * 0.5)
+        : gsap.utils.clamp(1.4, 3.2, distance * 0.9),
       ease: 'none',
       // El logo y el menú del sitio revisan el fondo mientras cambian las
       // capas (la página no se mueve)
       onUpdate: () => {
+        keepTitlesUncovered();
         frame += 1;
         if (frame % 8 === 0) notifySurface();
       },
       onComplete: () => {
+        keepTitlesUncovered();
         isBusy = false;
         notifySurface();
       }
@@ -452,25 +532,50 @@ export function setupDesktopStage(root: HTMLElement) {
   };
 
   // direction: 1 baja, -1 sube. Devuelve true si el escenario usa el gesto.
-  const consume = (direction: 1 | -1, amount: number) => {
+  const consume = (direction: 1 | -1) => {
     if (!isLocked) return false;
     const now = performance.now();
     const isNewGesture = now - lastEventTime > GESTURE_GAP_MS;
     lastEventTime = now;
     if (isBusy) return true;
-    // Desde los flujos, el primer gesto ya empieza a subir las pantallas
-    if (current === FLOWS_STEP && direction > 0 && isNewGesture)
+    if (!isNewGesture) return true;
+    // Desde los flujos, el primer gesto sube las pantallas hasta la mitad
+    if (current === FLOWS_STEP && direction > 0) {
       goTo(RAIN_STEP);
-    // En la lluvia, el scroll mueve las capas de forma continua
-    if (
-      current === RAIN_STEP &&
-      ((direction > 0 && rainProgress < 1) ||
-        (direction < 0 && rainProgress > 0))
-    ) {
-      setRain(rainProgress + (direction * amount) / RAIN_DISTANCE_PX);
+      glideRain(RAIN_HALF);
       return true;
     }
-    if (!isNewGesture) return true;
+    // Desde el prototipo, al subir se vuelve directo a la mitad de la lluvia
+    if (current === RAIN_STEP + 1 && direction < 0) {
+      goTo(RAIN_STEP);
+      glideRain(RAIN_HALF);
+      return true;
+    }
+    // En la lluvia, cada gesto es medio tramo: de la mitad sigue al
+    // prototipo (o vuelve a los flujos al subir)
+    if (current === RAIN_STEP) {
+      const isPastHalf = rainProgress > RAIN_HALF + 0.01;
+      const isBeforeHalf = rainProgress < RAIN_HALF - 0.01;
+      if (direction > 0 && isBeforeHalf) glideRain(RAIN_HALF);
+      else if (direction > 0) {
+        // Las pantallas terminan de subir y, casi enseguida, entran el
+        // celular y el texto del prototipo, sin un tramo vacío en medio
+        rainProgress = 1;
+        isBusy = true;
+        gsap.to(rain, {
+          progress: 1,
+          duration: RAIN_EXIT_S,
+          ease: 'power1.inOut',
+          overwrite: true
+        });
+        prototypeEntry?.kill();
+        prototypeEntry = gsap.delayedCall(PROTOTYPE_OVERLAP_S, () =>
+          goTo(RAIN_STEP + 1)
+        );
+      } else if (isPastHalf) glideRain(RAIN_HALF);
+      else glideRain(0, () => goTo(FLOWS_STEP));
+      return true;
+    }
     const next = current + direction;
     if (next < 0) return true;
     if (next > stepCount - 1) {
@@ -485,7 +590,7 @@ export function setupDesktopStage(root: HTMLElement) {
   const handleWheel = (event: WheelEvent) => {
     const delta = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
     if (!delta) return;
-    if (consume(delta > 0 ? 1 : -1, Math.abs(delta))) {
+    if (consume(delta > 0 ? 1 : -1)) {
       event.preventDefault();
       event.stopImmediatePropagation();
     }
@@ -499,7 +604,7 @@ export function setupDesktopStage(root: HTMLElement) {
     if (y === undefined || lastTouchY === null) return;
     const delta = lastTouchY - y;
     lastTouchY = y;
-    if (delta && consume(delta > 0 ? 1 : -1, Math.abs(delta) * 3)) {
+    if (delta && consume(delta > 0 ? 1 : -1)) {
       event.preventDefault();
     }
   };
@@ -517,12 +622,49 @@ export function setupDesktopStage(root: HTMLElement) {
         : 0;
     if (!direction) return;
     lastEventTime = 0;
-    if (consume(direction, 700)) event.preventDefault();
+    if (consume(direction)) event.preventDefault();
+  };
+  // Salto desde el contador: va directo a la sección elegida, sin recorrer las
+  // de en medio. El escenario se apaga un instante, se pone en ese paso y
+  // vuelve a aparecer
+  const jumpTo = (step: number) => {
+    if (step === current && !isBusy) return;
+    playing?.kill();
+    prototypeEntry?.kill();
+    gsap.killTweensOf(rain);
+    isBusy = true;
+    gsap.to(stage, {
+      autoAlpha: 0,
+      duration: 0.18,
+      ease: 'power1.out',
+      overwrite: true,
+      onComplete: () => {
+        current = step;
+        announceSection(root, STEP_SECTION[step]);
+        setWorld(step);
+        syncScroll(step);
+        setRain(step > RAIN_STEP ? 1 : 0, false);
+        tl.seek(labels[step]);
+        gsap.set(titleBlocks, { scaleX: 0 });
+        notifySurface();
+        gsap.to(stage, {
+          autoAlpha: 1,
+          duration: 0.32,
+          ease: 'power1.out',
+          onComplete: () => {
+            isBusy = false;
+          }
+        });
+      }
+    });
   };
   const handleJump = (event: Event) => {
     const section = (event as CustomEvent<number>).detail;
+    const step = SECTION_STEP[section] ?? 0;
     lock();
-    goTo(SECTION_STEP[section] ?? 0);
+    // "Prototipo" arranca en la lluvia, que aún deja ver los flujos: el salto
+    // va directo al prototipo interactivo
+    jumpTo(step === RAIN_STEP ? RAIN_STEP + 1 : step);
   };
 
   window.addEventListener('wheel', handleWheel, {
@@ -546,7 +688,10 @@ export function setupDesktopStage(root: HTMLElement) {
 
   return () => {
     playing?.kill();
+    prototypeEntry?.kill();
     gsap.killTweensOf(rain);
+    gsap.killTweensOf(stage);
+    gsap.set(stage, { clearProps: 'opacity,visibility' });
     window.clearTimeout(surfaceTimeout);
     window.removeEventListener('wheel', handleWheel, { capture: true });
     window.removeEventListener('touchstart', handleTouchStart);

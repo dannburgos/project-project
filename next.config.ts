@@ -1,7 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Sin el indicador "N" de desarrollo: se colaba dentro de los prototipos
+  devIndicators: false
 };
 
 export default nextConfig;

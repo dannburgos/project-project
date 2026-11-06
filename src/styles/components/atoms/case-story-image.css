@@ -38,6 +38,10 @@
   @apply hidden;
 }
 
+.story-image__photo {
+  @apply absolute inset-0 z-10 size-full object-cover;
+}
+
 .story-image__label {
   @apply relative z-10 text-xs tracking-widest uppercase;
 }

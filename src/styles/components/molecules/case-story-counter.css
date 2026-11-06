@@ -1,13 +1,92 @@
-/* Contador discreto del recorrido. En computador va en la franja de
-   navegación, a la derecha y a la altura del menú; en celular queda abajo,
-   como una etiqueta. En el mundo verde cambia a tonos claros. */
+/* Navegación del recorrido. En computador, siete cuadrados justo encima de
+   la línea de arriba (en la franja libre, para no caer sobre las imágenes),
+   junto al cuadrito de la esquina; toman el color del mundo en que va el
+   recorrido (tinta en el crema, verde claro en el verde) */
 .case-story__counter {
-  @apply fixed top-8 right-12 z-40 text-right transition-opacity duration-500;
+  @apply fixed top-20 left-18 z-40 -translate-y-1/2 transition-opacity duration-500;
+  --node-color: var(--story-ink);
 }
 
-/* Fuera del recorrido (en lo que viene después) el contador se esconde */
+.case-story[data-world='green'] .case-story__counter {
+  --node-color: var(--story-light);
+}
+
+/* Fuera del recorrido (en lo que viene después) se esconde */
 .case-story[data-counter-hidden] .case-story__counter {
   @apply pointer-events-none opacity-0;
+}
+
+.case-story__nodes {
+  @apply flex items-center gap-5;
+}
+
+.case-story__node-list {
+  @apply flex items-center gap-6;
+}
+
+/* Cada sección es un cuadrado: la actual, rellena y más grande; las ya
+   vistas, rellenas y tenues; las que faltan, solo el contorno */
+.case-story__node {
+  @apply relative block size-2.5 cursor-pointer border-[1.5px] transition-transform duration-200;
+  border-color: var(--node-color);
+  background: var(--story-cream);
+}
+
+.case-story[data-world='green'] .case-story__node {
+  background: var(--story-ink);
+}
+
+.case-story__node:hover,
+.case-story__node:focus-visible {
+  @apply scale-150;
+}
+
+.case-story__node--done {
+  @apply opacity-60;
+  background: var(--node-color);
+}
+
+.case-story .case-story__node--current {
+  @apply scale-140;
+  background: var(--node-color);
+}
+
+/* La línea se pinta desde el cuadrado anterior hasta este, si ya se llegó */
+.case-story__node--done::before,
+.case-story__node--current::before {
+  @apply pointer-events-none absolute top-1/2 right-full h-px w-6 -translate-y-1/2 content-[''];
+  background: var(--node-color);
+}
+
+.case-story__node-list > li:first-child .case-story__node::before {
+  @apply hidden;
+}
+
+/* Nombre al pasar el cursor, encima de la línea */
+.case-story__node-tip {
+  @apply pointer-events-none absolute bottom-full left-1/2 mb-3 -translate-x-1/2 translate-y-1 px-2 py-1 text-[11px] font-medium whitespace-nowrap opacity-0 transition duration-150;
+  background: var(--story-cream);
+  color: var(--story-ink);
+  box-shadow: 0 0 0 1px var(--story-line);
+}
+
+.case-story__node:hover .case-story__node-tip,
+.case-story__node:focus-visible .case-story__node-tip {
+  @apply translate-y-0 opacity-100;
+}
+
+.case-story__nodes-current {
+  @apply text-xs tracking-[0.14em] uppercase transition-colors duration-500;
+  color: var(--node-color);
+}
+
+.case-story__nodes-current b {
+  @apply font-semibold;
+}
+
+/* El contador de abajo solo va en celular */
+.case-story__counter-mobile {
+  @apply hidden;
 }
 
 .case-story__counter-button {
@@ -17,10 +96,6 @@
 
 .case-story__counter-button b {
   @apply font-semibold;
-}
-
-.case-story[data-world='green'] .case-story__counter-button {
-  color: var(--story-light);
 }
 
 .case-story__jump {
@@ -40,7 +115,15 @@
 
 @media (max-width: 899px), (prefers-reduced-motion: reduce) {
   .case-story__counter {
-    @apply top-auto right-auto bottom-4 left-8 text-left;
+    @apply top-auto bottom-4 left-8 translate-y-0 text-left;
+  }
+
+  .case-story__nodes {
+    @apply hidden;
+  }
+
+  .case-story__counter-mobile {
+    @apply relative block;
   }
 
   .case-story__counter-button {
@@ -52,6 +135,7 @@
   .case-story[data-world='green'] .case-story__counter-button {
     background: var(--story-ink);
     border-color: var(--story-light);
+    color: var(--story-light);
   }
 
   .case-story__jump {
