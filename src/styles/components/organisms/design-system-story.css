@@ -1,0 +1,744 @@
+/* Caso del sistema de diseño (referencia: brand.dropbox.com). Grises con un
+   solo acento amarillo mientras se define la marca. Arriba, un mosaico de
+   tarjetas sobre una cuadrícula de líneas finas; en computador se arma con
+   el scroll alrededor del cuadro del logo. Debajo, la documentación. */
+.ds-story {
+  --ds-ink: #161615;
+  --ds-graphite: #4a4a46;
+  --ds-fog: #c9c9c3;
+  --ds-stone: #e4e4df;
+  --ds-bone: #f2f2ee;
+  --ds-paper: #fafaf8;
+  --ds-signal: #ffd23f;
+  --ds-line: rgb(22 22 21 / 0.08);
+  @apply relative;
+  font-family: var(--font-ds), sans-serif;
+  background-color: var(--ds-paper);
+  background-image:
+    linear-gradient(var(--ds-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ds-line) 1px, transparent 1px);
+  background-size: 120px 120px;
+  color: var(--ds-ink);
+}
+
+.ds-story :focus-visible {
+  outline: 2px solid var(--ds-ink);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 6px var(--ds-signal);
+}
+
+/* ───────── Mosaico ───────── */
+.ds-mosaic {
+  @apply relative flex flex-col gap-3 px-4 pt-28 pb-16 md:px-8;
+}
+
+.ds-mosaic__grid {
+  @apply grid grid-cols-2 gap-3;
+}
+
+.ds-card {
+  @apply relative flex min-h-48 flex-col justify-between overflow-hidden rounded-[4px] p-5 md:p-6;
+  transition:
+    filter 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.ds-card__name {
+  @apply relative z-10 text-xl font-medium md:text-2xl;
+}
+
+.ds-card:hover {
+  filter: brightness(0.96);
+  box-shadow: inset 0 0 0 2px var(--ds-ink);
+}
+
+.ds-card--color {
+  background: var(--ds-ink);
+  color: var(--ds-paper);
+}
+
+.ds-card--voice {
+  background: var(--ds-signal);
+}
+
+.ds-card--typography {
+  background: var(--ds-stone);
+}
+
+.ds-card--iconography {
+  background: var(--ds-graphite);
+  color: var(--ds-paper);
+}
+
+.ds-card--spacing {
+  background: var(--ds-bone);
+  box-shadow: inset 0 0 0 1px var(--ds-fog);
+}
+
+.ds-card--components {
+  background: #2b2b29;
+  color: var(--ds-paper);
+}
+
+.ds-card--motion {
+  background: var(--ds-fog);
+}
+
+.ds-card--accessibility {
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px var(--ds-fog);
+}
+
+.ds-mosaic__lines {
+  @apply hidden;
+}
+
+.ds-mosaic__frame {
+  @apply flex flex-col gap-3;
+}
+
+/* La tarjeta central. En celular (o sin movimiento) es la introducción,
+   oscura y con sus dos textos; en computador cambia con el scroll */
+.ds-tile {
+  @apply relative order-first flex flex-col gap-4 overflow-hidden rounded-[4px] p-6 pb-20 md:p-10 md:pb-24;
+  background: var(--ds-ink);
+  color: var(--ds-paper);
+  container-type: size;
+}
+
+.ds-tile__statement {
+  @apply flex flex-col gap-4;
+}
+
+.ds-tile__eyebrow {
+  @apply text-base font-medium;
+  color: var(--ds-signal);
+}
+
+.ds-tile__title {
+  @apply max-w-3xl font-bold;
+  font-size: clamp(32px, 3.4vw, 56px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+.ds-tile__text {
+  @apply max-w-2xl text-xl leading-snug font-medium;
+}
+
+/* El logo: abajo a la izquierda, siempre; se achica con la tarjeta */
+.ds-tile__mark {
+  @apply absolute bottom-6 left-6 font-bold md:bottom-10 md:left-10;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--ds-signal);
+}
+
+.ds-mosaic__hint {
+  @apply hidden;
+}
+
+/* Computador con movimiento: el mosaico en molinete alrededor del cuadro del
+   logo (proporciones medidas en la referencia a 1440 × 860) */
+@media (min-width: 900px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  .ds-mosaic {
+    @apply block h-svh overflow-hidden p-0;
+    background: var(--ds-paper);
+  }
+
+  /* Cuadrícula que se aleja con el zoom */
+  .ds-mosaic__lines {
+    @apply absolute -inset-1/2 block;
+    background-image:
+      linear-gradient(var(--ds-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--ds-line) 1px, transparent 1px);
+    background-size: 120px 120px;
+    background-position: center;
+  }
+
+  .ds-mosaic__frame {
+    @apply absolute block;
+    inset: 88px 12px 12px;
+  }
+
+  .ds-mosaic__grid {
+    @apply absolute inset-0 block;
+  }
+
+  .ds-card {
+    @apply absolute min-h-0;
+  }
+
+  .ds-card--color {
+    left: 0.694%;
+    top: 1.163%;
+    width: 18.611%;
+    height: 54.07%;
+  }
+  .ds-card--voice {
+    left: 20%;
+    top: 1.163%;
+    width: 33.125%;
+    height: 42.442%;
+  }
+  .ds-card--typography {
+    left: 53.819%;
+    top: 1.163%;
+    width: 26.181%;
+    height: 54.07%;
+  }
+  .ds-card--iconography {
+    left: 80.694%;
+    top: 1.163%;
+    width: 18.611%;
+    height: 42.442%;
+  }
+  .ds-card--spacing {
+    left: 0.694%;
+    top: 56.395%;
+    width: 18.611%;
+    height: 42.442%;
+  }
+  .ds-card--components {
+    left: 20%;
+    top: 44.767%;
+    width: 26.181%;
+    height: 54.07%;
+  }
+  .ds-card--motion {
+    left: 46.875%;
+    top: 56.395%;
+    width: 33.125%;
+    height: 42.442%;
+  }
+  .ds-card--accessibility {
+    left: 80.694%;
+    top: 44.767%;
+    width: 18.611%;
+    height: 54.07%;
+  }
+
+  /* El cuadro del logo, en el hueco del centro del molinete */
+  .ds-tile {
+    @apply absolute z-20 block p-0;
+    left: 46.875%;
+    top: 44.767%;
+    width: 6.25%;
+    height: 10.465%;
+    box-shadow: inset 0 0 0 1px var(--ds-line);
+  }
+
+  .ds-tile__statement,
+  .ds-tile__text {
+    @apply absolute top-10 right-10 left-10;
+  }
+
+  .ds-tile__statement .ds-tile__eyebrow {
+    color: var(--ds-graphite);
+  }
+
+  .ds-tile__title {
+    font-size: clamp(36px, 3.6vw, 60px);
+  }
+
+  .ds-tile__text {
+    @apply top-8 right-8 left-8;
+    font-size: clamp(24px, 2vw, 32px);
+    line-height: 1.15;
+  }
+
+  .ds-tile__mark {
+    left: max(10px, 6cqw);
+    bottom: max(10px, 6cqh);
+    font-size: clamp(16px, 9cqmin, 32px);
+  }
+
+  .ds-mosaic__hint {
+    @apply absolute bottom-6 left-1/2 z-30 block -translate-x-1/2 text-base font-medium;
+    color: var(--ds-graphite);
+  }
+}
+
+/* ───────── Ilustraciones de las tarjetas ───────── */
+.ds-art {
+  @apply relative flex flex-1 items-end justify-end;
+  transition: translate 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ds-card:hover .ds-art {
+  @apply -translate-y-1;
+}
+
+.ds-art__swatch {
+  @apply absolute size-12 rounded-[4px] border-2 md:size-24;
+  border-color: var(--ds-paper);
+}
+
+.ds-art__swatch:nth-child(1) {
+  @apply right-12 bottom-12 md:right-16 md:bottom-16;
+}
+.ds-art__swatch:nth-child(2) {
+  @apply right-6 bottom-6 md:right-8 md:bottom-8;
+  background: var(--ds-signal);
+}
+.ds-art__swatch:nth-child(3) {
+  @apply right-0 bottom-0;
+}
+
+.ds-art__quote {
+  @apply absolute top-0 left-0 font-bold;
+  font-size: clamp(96px, 9vw, 160px);
+  line-height: 0.8;
+}
+
+.ds-art__quote--end {
+  @apply top-auto right-0 bottom-0 left-auto;
+}
+
+.ds-art__glyph {
+  @apply font-medium;
+  font-size: clamp(88px, 9vw, 168px);
+  line-height: 0.8;
+}
+
+.ds-art__icons {
+  @apply grid grid-cols-2 gap-4;
+}
+
+.ds-art__icons svg {
+  @apply size-10 md:size-12;
+  stroke-width: 1.5;
+}
+
+.ds-art__bars {
+  @apply flex items-end gap-2;
+}
+
+.ds-art__bars span {
+  @apply block w-6 rounded-[2px];
+  background: var(--ds-ink);
+}
+
+.ds-art__bars span:nth-child(1) {
+  @apply h-4;
+}
+.ds-art__bars span:nth-child(2) {
+  @apply h-8;
+}
+.ds-art__bars span:nth-child(3) {
+  @apply h-12;
+}
+.ds-art__bars span:nth-child(4) {
+  @apply h-20;
+  background: var(--ds-signal);
+}
+
+.ds-art__ui {
+  @apply flex flex-col items-end gap-4;
+}
+
+.ds-art__button {
+  @apply block h-12 w-36 rounded-full;
+  background: var(--ds-signal);
+}
+
+.ds-art__toggle {
+  @apply relative block h-8 w-16 rounded-full;
+  background: var(--ds-graphite);
+}
+
+.ds-art__toggle::after {
+  @apply absolute top-1 right-1 size-6 rounded-full content-[''];
+  background: var(--ds-paper);
+}
+
+.ds-art__curve {
+  @apply size-28 md:size-36;
+  overflow: visible;
+}
+
+.ds-art__curve path {
+  fill: none;
+  stroke: var(--ds-ink);
+  stroke-width: 2;
+}
+
+.ds-art__curve circle {
+  fill: var(--ds-ink);
+}
+
+.ds-art__contrast {
+  @apply block size-28 rounded-full border-2 md:size-36;
+  border-color: var(--ds-ink);
+  background: linear-gradient(90deg, var(--ds-ink) 50%, var(--ds-signal) 50%);
+}
+
+/* ───────── Documentación ───────── */
+.ds-docs {
+  @apply flex flex-col gap-6 px-4 pb-24 md:px-8 lg:px-12;
+}
+
+.ds-docs__intro {
+  @apply flex flex-col gap-3 py-16 md:py-24;
+}
+
+.ds-docs__title {
+  @apply font-bold;
+  font-size: clamp(48px, 7vw, 112px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.ds-docs__text {
+  @apply max-w-2xl text-xl;
+  color: var(--ds-graphite);
+}
+
+.ds-doc {
+  @apply grid scroll-mt-24 gap-8 rounded-[4px] border bg-white p-6 md:p-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-12;
+  border-color: var(--ds-fog);
+}
+
+.ds-doc__head {
+  @apply flex flex-col gap-3 lg:sticky lg:top-24 lg:self-start;
+}
+
+.ds-doc__group {
+  @apply text-base font-medium;
+  color: var(--ds-graphite);
+}
+
+.ds-doc__title {
+  @apply text-4xl font-bold md:text-5xl;
+  letter-spacing: -0.02em;
+}
+
+.ds-doc__summary {
+  @apply text-lg;
+}
+
+.ds-doc__note {
+  @apply mt-2 flex flex-wrap items-center gap-2 text-base;
+  color: var(--ds-graphite);
+}
+
+.ds-doc__badge {
+  @apply rounded-full px-3 py-0.5 text-base font-medium;
+  background: var(--ds-signal);
+  color: var(--ds-ink);
+}
+
+.ds-doc__body {
+  @apply flex min-w-0 flex-col gap-8;
+}
+
+/* Color */
+.ds-swatches {
+  @apply grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-5;
+}
+
+.ds-swatch {
+  @apply flex flex-col gap-1 text-base;
+}
+
+.ds-swatch__chip {
+  @apply mb-2 block aspect-square rounded-[4px] border;
+  border-color: var(--ds-fog);
+}
+
+.ds-swatch__chip--161615 {
+  background: #161615;
+}
+.ds-swatch__chip--4a4a46 {
+  background: #4a4a46;
+}
+.ds-swatch__chip--c9c9c3 {
+  background: #c9c9c3;
+}
+.ds-swatch__chip--f2f2ee {
+  background: #f2f2ee;
+}
+.ds-swatch__chip--ffd23f {
+  background: #ffd23f;
+}
+
+.ds-swatch__name {
+  @apply font-medium;
+}
+
+.ds-swatch__hex,
+.ds-swatch__role {
+  color: var(--ds-graphite);
+}
+
+/* Tipografía */
+.ds-type__family {
+  @apply text-lg font-medium;
+}
+
+.ds-type {
+  @apply flex flex-col border-t;
+  border-color: var(--ds-fog);
+}
+
+.ds-type__step {
+  @apply flex flex-col gap-1 border-b py-5;
+  border-color: var(--ds-fog);
+}
+
+.ds-type__meta {
+  @apply text-base;
+  color: var(--ds-graphite);
+}
+
+.ds-type__sample {
+  @apply leading-tight font-medium;
+}
+
+.ds-type__step--0 .ds-type__sample {
+  @apply font-bold;
+  font-size: clamp(40px, 5vw, 64px);
+}
+.ds-type__step--1 .ds-type__sample {
+  @apply text-3xl font-bold;
+}
+.ds-type__step--2 .ds-type__sample {
+  @apply text-2xl;
+}
+.ds-type__step--3 .ds-type__sample {
+  @apply text-base font-normal;
+}
+
+/* Iconografía */
+.ds-icons {
+  @apply grid grid-cols-4 gap-4 sm:grid-cols-8;
+}
+
+.ds-icons__item {
+  @apply flex flex-col items-center gap-2 text-center text-base;
+}
+
+.ds-icons__box {
+  @apply block aspect-square w-full rounded-[4px] border-2 border-dashed;
+  border-color: var(--ds-fog);
+}
+
+/* Reglas cortas, en tarjetas */
+.ds-rules {
+  @apply grid gap-4 sm:grid-cols-3;
+}
+
+.ds-rules--two {
+  @apply sm:grid-cols-2;
+}
+
+.ds-rule {
+  @apply flex flex-col gap-1 rounded-[4px] p-5 text-base;
+  background: var(--ds-bone);
+}
+
+.ds-rule__title {
+  @apply text-lg font-bold;
+}
+
+/* Espaciado */
+.ds-space {
+  @apply flex flex-col gap-3;
+}
+
+.ds-space__step {
+  @apply grid grid-cols-[72px_1fr] items-center gap-4 text-base;
+}
+
+.ds-space__bar {
+  @apply block h-4 rounded-[2px];
+  background: var(--ds-ink);
+}
+
+.ds-space__bar--4 {
+  width: 16px;
+}
+.ds-space__bar--8 {
+  width: 32px;
+}
+.ds-space__bar--12 {
+  width: 48px;
+}
+.ds-space__bar--16 {
+  width: 64px;
+}
+.ds-space__bar--24 {
+  width: 96px;
+}
+.ds-space__bar--32 {
+  width: 128px;
+}
+.ds-space__bar--48 {
+  width: 192px;
+}
+.ds-space__bar--64 {
+  width: 256px;
+  background: var(--ds-signal);
+}
+
+/* Componentes */
+.ds-components {
+  @apply flex flex-col gap-8;
+}
+
+.ds-components__row {
+  @apply flex flex-wrap gap-3;
+}
+
+.ds-button {
+  @apply inline-flex h-12 cursor-pointer items-center rounded-full px-6 text-base font-medium;
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ds-button--0 {
+  background: var(--ds-ink);
+  color: var(--ds-paper);
+}
+
+.ds-button--0:hover {
+  background: var(--ds-graphite);
+}
+
+.ds-button--1 {
+  box-shadow: inset 0 0 0 2px var(--ds-ink);
+}
+
+.ds-button--1:hover {
+  background: var(--ds-bone);
+}
+
+.ds-button--2 {
+  @apply px-2 underline underline-offset-4;
+}
+
+.ds-button--state-1 {
+  background: var(--ds-graphite);
+}
+
+.ds-button--state-2 {
+  outline: 2px solid var(--ds-ink);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px var(--ds-signal);
+}
+
+.ds-button--state-3 {
+  @apply cursor-default;
+  background: var(--ds-stone);
+  color: #6e6e69;
+}
+
+.ds-components__states {
+  @apply grid grid-cols-2 gap-6 sm:grid-cols-4;
+}
+
+.ds-components__state {
+  @apply flex flex-col items-start gap-3 text-base;
+  color: var(--ds-graphite);
+}
+
+.ds-field {
+  @apply flex max-w-md flex-col gap-2;
+}
+
+.ds-field__label {
+  @apply text-base font-medium;
+}
+
+.ds-field__input {
+  @apply h-12 rounded-[4px] border-2 bg-white px-4 text-base;
+  border-color: var(--ds-fog);
+}
+
+.ds-field__input:focus-visible {
+  border-color: var(--ds-ink);
+}
+
+.ds-field__help {
+  @apply text-base;
+  color: var(--ds-graphite);
+}
+
+/* Voz y tono */
+.ds-dodont {
+  @apply grid gap-4 sm:grid-cols-2;
+}
+
+.ds-dodont__item {
+  @apply flex flex-col gap-3 rounded-[4px] border-t-4 p-5 text-lg;
+  background: var(--ds-bone);
+  border-color: #b3261e;
+}
+
+.ds-dodont__item--do {
+  border-color: var(--ds-ink);
+}
+
+.ds-dodont__label {
+  @apply inline-flex items-center gap-2 text-base font-bold;
+}
+
+.ds-dodont__label svg {
+  @apply size-5;
+}
+
+/* Motion: cada punto recorre su pista a su duración */
+.ds-motion {
+  @apply flex flex-col gap-5;
+}
+
+.ds-motion__token {
+  @apply grid gap-2 text-base sm:grid-cols-[1fr_auto] sm:items-center;
+}
+
+.ds-motion__track {
+  @apply relative block h-2 rounded-full sm:col-span-2;
+  background: var(--ds-bone);
+}
+
+.ds-motion__dot {
+  @apply absolute top-1/2 left-0 block size-4 -translate-y-1/2 rounded-full;
+  background: var(--ds-ink);
+  animation: ds-travel 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
+}
+
+.ds-motion__dot--0 {
+  animation-duration: 1.2s;
+}
+
+.ds-motion__dot--2 {
+  animation-duration: 3.6s;
+  background: var(--ds-signal);
+  box-shadow: inset 0 0 0 2px var(--ds-ink);
+}
+
+.ds-motion__name {
+  @apply font-bold;
+}
+
+.ds-motion__use {
+  color: var(--ds-graphite);
+}
+
+@keyframes ds-travel {
+  to {
+    left: calc(100% - 16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-motion__dot {
+    animation: none;
+  }
+
+  .ds-card,
+  .ds-art {
+    transition: none;
+  }
+}
