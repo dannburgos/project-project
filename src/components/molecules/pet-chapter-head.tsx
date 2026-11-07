@@ -6,7 +6,7 @@ type PetChapterHeadProps = {
 };
 
 // Apertura de un capítulo de PetRide: palabra gigante de fondo que se desliza
-// con el scroll, número y título que sube letra por letra. El título recibe
+// con el scroll y título que sube letra por letra. El título recibe
 // el foco cuando se llega desde el submenú.
 export function PetChapterHead({ head }: PetChapterHeadProps) {
   return (
@@ -14,15 +14,14 @@ export function PetChapterHead({ head }: PetChapterHeadProps) {
       <span className="pet-head__ghost" aria-hidden="true" data-pet-ghost>
         {head.ghost}
       </span>
-      <span className="pet-head__number" aria-hidden="true">
-        {head.number}
-      </span>
       <h2 className="pet-head__title" tabIndex={-1} data-pet-focus>
         <PetLetters text={head.title} />
       </h2>
-      <p className="pet-head__lead" data-pet-rise>
-        {head.lead}
-      </p>
+      {head.lead && (
+        <p className="pet-head__lead" data-pet-rise>
+          {head.lead}
+        </p>
+      )}
     </header>
   );
 }

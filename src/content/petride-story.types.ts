@@ -12,10 +12,27 @@ export type PetListBlock = {
 };
 
 export type PetChapterHead = {
-  number: string;
   ghost: string;
   title: string;
-  lead: string;
+  // La bajada es opcional: hay capítulos que abren solo con el título
+  lead?: string;
+};
+
+export type PetImage = {
+  src: string;
+  alt: string;
+};
+
+export type PetCollagePhoto = {
+  // Etiqueta del espacio gris mientras la foto no llega
+  label: string;
+  image?: PetImage;
+};
+
+export type PetCompetitorLogo = {
+  src: string;
+  alt: string;
+  tone: 'cabify' | 'uber' | 'indrive';
 };
 
 export type PetBenchmarkState = 'yes' | 'partial' | 'no' | 'unknown';
@@ -32,8 +49,6 @@ export type PetBenchmarkRow = {
 
 export type PetJourneyStage = {
   name: string;
-  action: string;
-  thought: string;
   emotion: string;
   opportunity: string;
 };
@@ -86,14 +101,12 @@ export type PetrideStory = {
     placeholder: string;
   };
   intro: {
-    eyebrow: string;
     wordmark: string;
     tagline: string;
     facts: readonly PetLabeledText[];
     coverLabel: string;
     marquee: readonly string[];
     processTitle: string;
-    processLead: string;
     process: readonly PetLabeledText[];
   };
   research: {
@@ -106,37 +119,34 @@ export type PetrideStory = {
     benchmarkLead: string;
     benchmarkFeatureLabel: string;
     competitors: readonly string[];
+    // Logo de cada app, en el mismo orden que las columnas del benchmark
+    competitorLogos: readonly PetCompetitorLogo[];
     benchmarkStates: Record<PetBenchmarkState, string>;
     benchmark: readonly PetBenchmarkRow[];
-    benchmarkNote: string;
     findingsTitle: string;
     findings: readonly string[];
-    opportunitiesTitle: string;
-    opportunities: readonly string[];
+    // Espacios para fotos de mascotas dentro del collage de hallazgos
+    findingsPhotos: readonly PetCollagePhoto[];
+    // Retrato que cierra el collage, en el lugar de la flor
+    findingsPortrait: PetImage;
+    // Versión corta de la oportunidad para la tarjeta del collage
+    findingsOpportunity: string;
   };
   user: {
     head: PetChapterHead;
-    personaLabel: string;
     personaName: string;
     personaTags: readonly string[];
     personaBio: string;
-    personaPhotoLabel: string;
+    personaPhoto: PetImage;
     personaBlocks: readonly PetListBlock[];
-    hypothesisNote: string;
     empathyTitle: string;
     empathy: readonly PetListBlock[];
-    insightLabel: string;
-    insight: string;
     journeyTitle: string;
-    journeyLead: string;
     journeyLabels: {
-      action: string;
-      thought: string;
       emotion: string;
       opportunity: string;
     };
     journey: readonly PetJourneyStage[];
-    journeyInsight: string;
   };
   solution: {
     head: PetChapterHead;
@@ -166,7 +176,6 @@ export type PetrideStory = {
   design: {
     head: PetChapterHead;
     wireframesTitle: string;
-    wireframesLead: string;
     wireframeCount: number;
     flowGhost: string;
     flowTitle: string;

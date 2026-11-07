@@ -19,16 +19,12 @@ import {
 // - rise / pop / shape / slide: piezas que entran al llegar a la vista
 // - ghost / speed / spin: parallax ligado al scroll
 // - arc / line / draw: trazos que se dibujan con el scroll
-// - journey: módulo fijo en el que la etapa activa avanza con el scroll
 // Sin animación (reducir movimiento) el contenido queda visible tal cual y
 // los saltos del submenú son directos.
 
 const EASE_OUT = 'expo.out';
 const EASE_BOUNCE = 'back.out(2.2)';
 const ENTER = 'top 82%';
-// El journey solo se fija con sus seis columnas (desde 1024 px) y cuando
-// cabe completo en el alto de la pantalla
-const JOURNEY_PIN_QUERY = '(min-width: 1024px) and (min-height: 720px)';
 
 function pageTop(element: Element) {
   return element.getBoundingClientRect().top + window.scrollY;
@@ -53,10 +49,11 @@ function jumpTo(root: HTMLElement, index: number) {
   announceSection(root, index);
 }
 
-// Los capítulos avisan cuál está en pantalla y cuánto lleva recorrido, para
-// los punticos del submenú
+// Los capítulos avisan cuál está en pantalla, para los punticos del submenú.
+// El anillo de la flor, en cambio, mide el recorrido de todo el caso: no se
+// reinicia al cambiar de capítulo
 function trackChapters(root: HTMLElement) {
-  return queryAll(root, '[data-pet-chapter]').map(chapter =>
+  const chapters = queryAll(root, '[data-pet-chapter]').map(chapter =>
     ScrollTrigger.create({
       trigger: chapter,
       start: 'top center',
@@ -64,13 +61,17 @@ function trackChapters(root: HTMLElement) {
       onToggle: self => {
         if (self.isActive)
           announceSection(root, Number(chapter.dataset.petChapter));
-      },
-      onUpdate: self => {
-        if (self.isActive)
-          root.style.setProperty('--pet-progress', self.progress.toFixed(3));
       }
     })
   );
+  const overall = ScrollTrigger.create({
+    trigger: root,
+    start: 'top top',
+    end: 'bottom bottom',
+    onUpdate: self =>
+      root.style.setProperty('--pet-progress', self.progress.toFixed(3))
+  });
+  return [...chapters, overall];
 }
 
 function listenJumps(root: HTMLElement, onJump: (index: number) => void) {
@@ -140,7 +141,7 @@ function curtainJump(root: HTMLElement, index: number) {
     jumpTo(root, index);
     return;
   }
-  label.textContent = `${String(index + 1).padStart(2, '0')} ${names[index]?.textContent ?? ''}`;
+  label.textContent = names[index]?.textContent ?? '';
   gsap.killTweensOf([curtain, label]);
   gsap
     .timeline()
@@ -199,8 +200,10 @@ function fillWords(root: HTMLElement) {
       ease: 'none',
       scrollTrigger: {
         trigger: text,
-        start: 'top 78%',
-        end: 'bottom 42%',
+        // Se pinta en poco scroll: empieza al asomarse y termina cuando su
+        // parte de arriba llega a la mitad de la pantalla
+        start: 'top 90%',
+        end: 'top 50%',
         scrub: true
       }
     });
@@ -238,7 +241,6 @@ function revealOnEnter(root: HTMLElement) {
       transformOrigin: '50% 50%',
       duration: 1.1,
       ease: 'elastic.out(1, 0.6)',
-      stagger: { each: 0.08, from: 'random' },
       scrollTrigger: { trigger: group, start: 'top 75%' }
     });
   });
@@ -311,8 +313,9 @@ function scrubOnScroll(root: HTMLElement) {
   });
 
   queryAll(root, '[data-pet-spin]').forEach(shape => {
+    // Los grados pueden indicarse en el atributo (data-pet-spin="90")
     gsap.to(shape, {
-      rotate: 180,
+      rotate: Number(shape.dataset.petSpin) || 180,
       ease: 'none',
       scrollTrigger: {
         trigger: shape,
@@ -323,17 +326,27 @@ function scrubOnScroll(root: HTMLElement) {
     });
   });
 
+  // La imagen principal sube y crece con el scroll, sin cambiar su borde: la
+  // esquina siempre se ve de 32 px, así que el radio se compensa mientras
+  // escala (a 80 % de tamaño, 40 px; a 100 %, 32 px)
   queryAll(root, '[data-pet-expand]').forEach(media => {
     gsap.fromTo(
       media,
-      { clipPath: 'inset(8% 22% 8% 22% round 999px)' },
       {
-        clipPath: 'inset(0% 0% 0% 0% round 32px)',
+        scale: 0.8,
+        y: 48,
+        transformOrigin: 'center top',
+        '--cover-radius': '40px'
+      },
+      {
+        scale: 1,
+        y: 0,
+        '--cover-radius': '32px',
         ease: 'none',
         scrollTrigger: {
           trigger: media,
-          start: 'top 90%',
-          end: 'center center',
+          start: 'top bottom',
+          end: 'top 15%',
           scrub: true
         }
       }
@@ -371,45 +384,77 @@ function scrubOnScroll(root: HTMLElement) {
       scrollTrigger: { trigger: group, start: 'top 72%' }
     });
   });
+
+  // Mapa de empatía: sobre cada línea azul crece, muy sutil, una verde desde
+  // el centro hacia los extremos, al ritmo del giro de la flor
+  queryAll(root, '[data-pet-line-fill]').forEach(fill => {
+    gsap.to(fill, {
+      scaleX: 1,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: fill.closest('[data-pet-lines]') ?? fill,
+        start: 'top 65%',
+        end: 'bottom 50%',
+        scrub: true
+      }
+    });
+  });
 }
 
-function pinJourney(root: HTMLElement) {
+// Customer journey: al llegar a la sección, los títulos de las columnas nacen
+// creciendo y, a la vez en todas, la información de cada una se despliega hacia
+// abajo desde su título.
+function revealJourney(root: HTMLElement) {
   const media = gsap.matchMedia();
-  media.add(JOURNEY_PIN_QUERY, () => {
-    queryAll(root, '[data-pet-journey]').forEach(module => {
-      const stages = queryAll(module, '[data-pet-stage]');
-      const highlight = module.querySelector<HTMLElement>(
-        '[data-pet-highlight]'
+  media.add('all', () => {
+    queryAll(root, '[data-pet-journey-board]').forEach(board => {
+      const stages = queryAll(board, '[data-pet-journey-stage]');
+      const names = stages.map(stage =>
+        stage.querySelector('.pet-journey__name')
       );
-      const setCurrent = (current: number) => {
-        stages.forEach((stage, index) =>
-          stage.toggleAttribute('data-current', index === current)
+      const cards = stages.map(stage =>
+        stage.querySelector('.pet-journey__card')
+      );
+      if (stages.length === 0) return;
+
+      const timeline = gsap.timeline({
+        // Arranca apenas la fila de títulos asoma por abajo
+        scrollTrigger: { trigger: board, start: 'top 88%', once: true }
+      });
+      // Los títulos crecen, con un pequeño rebote
+      timeline.fromTo(
+        names,
+        { autoAlpha: 0, scale: 0.6, y: -14, transformOrigin: '50% 0%' },
+        { autoAlpha: 1, scale: 1, y: 0, duration: 0.5, ease: 'back.out(2)' },
+        0
+      );
+      // La información sale hacia abajo desde cada título, todas a la vez
+      timeline.fromTo(
+        cards,
+        { autoAlpha: 0, clipPath: 'inset(0% 0% 100% 0% round 28px)' },
+        {
+          autoAlpha: 1,
+          clipPath: 'inset(0% 0% 0% 0% round 28px)',
+          duration: 0.7,
+          ease: 'power3.out'
+        },
+        0.2
+      );
+      // Y su contenido entra fila por fila
+      cards.forEach(card => {
+        if (!card) return;
+        timeline.fromTo(
+          Array.from(card.children),
+          { autoAlpha: 0, y: 14 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.45,
+            ease: 'power2.out',
+            stagger: 0.1
+          },
+          0.35
         );
-        if (highlight)
-          gsap.to(highlight, {
-            xPercent: current * 100,
-            duration: 0.6,
-            ease: 'expo.out',
-            overwrite: true
-          });
-      };
-      setCurrent(0);
-      ScrollTrigger.create({
-        trigger: module,
-        start: 'top top',
-        end: `+=${stages.length * 50}%`,
-        pin: true,
-        // El capítulo es flex y GSAP no reserva el espacio del tramo fijo en
-        // un padre flex si no se le pide: sin esto, lo que sigue se sube
-        // encima del journey
-        pinSpacing: true,
-        onUpdate: self =>
-          setCurrent(
-            Math.min(
-              stages.length - 1,
-              Math.floor(self.progress * stages.length)
-            )
-          )
       });
     });
   });
@@ -423,7 +468,7 @@ export function setupPetrideMotion(root: HTMLElement) {
   fillWords(root);
   revealOnEnter(root);
   scrubOnScroll(root);
-  const journey = pinJourney(root);
+  const journey = revealJourney(root);
   const triggers = trackChapters(root);
   const counter = watchCounterVisibility(root);
   const stopJumps = listenJumps(root, index => curtainJump(root, index));
@@ -436,8 +481,5 @@ export function setupPetrideMotion(root: HTMLElement) {
     triggers.forEach(trigger => trigger.kill());
     counter.kill();
     root.removeAttribute('data-counter-hidden');
-    queryAll(root, '[data-current]').forEach(stage =>
-      stage.removeAttribute('data-current')
-    );
   };
 }

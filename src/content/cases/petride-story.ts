@@ -19,7 +19,6 @@ export const petrideStory: PetrideStory = {
     placeholder: 'Espacio reservado'
   },
   intro: {
-    eyebrow: 'Caso 02 · App móvil',
     wordmark: 'PetRide',
     tagline:
       'Transporte por app para moverte con tu mascota, con conductores preparados para recibirla.',
@@ -32,8 +31,6 @@ export const petrideStory: PetrideStory = {
     coverLabel: 'Imagen principal · persona viajando con su mascota en PetRide',
     marquee: ['Registrar mascota', 'Solicitar viaje', 'Gestionar viaje'],
     processTitle: 'Proceso de diseño',
-    processLead:
-      'Del problema a la interfaz, en seis etapas que se apoyan una en la otra.',
     process: [
       { title: 'Investigación', text: 'Investigación secundaria · Benchmark' },
       { title: 'Usuario', text: 'Arquetipo · Empatía · Journey' },
@@ -45,10 +42,9 @@ export const petrideStory: PetrideStory = {
   },
   research: {
     head: {
-      number: '02',
       ghost: 'Reto',
       title: 'Investigar y descubrir',
-      lead: 'Qué pasa hoy cuando alguien necesita moverse con su mascota.'
+      lead: 'Qué pasa hoy cuando alguien necesita moverse con su mascota y duda si la aceptarán.'
     },
     problemLabel: 'El problema',
     problem:
@@ -66,6 +62,19 @@ export const petrideStory: PetrideStory = {
       'Tres apps de movilidad y cómo resuelven hoy los viajes con mascotas.',
     benchmarkFeatureLabel: 'Qué revisamos',
     competitors: ['Cabify Mascotas', 'Uber Pet', 'inDrive'],
+    competitorLogos: [
+      {
+        src: '/petride/logos/cabify.png',
+        alt: 'Logo de Cabify',
+        tone: 'cabify'
+      },
+      { src: '/petride/logos/uber.webp', alt: 'Logo de Uber', tone: 'uber' },
+      {
+        src: '/petride/logos/indrive.png',
+        alt: 'Logo de inDrive',
+        tone: 'indrive'
+      }
+    ],
     benchmarkStates: {
       yes: 'Sí',
       partial: 'En parte',
@@ -114,39 +123,50 @@ export const petrideStory: PetrideStory = {
         ]
       }
     ],
-    benchmarkNote:
-      'Referencia conceptual: la cobertura y las políticas de estas apps pueden cambiar.',
     findingsTitle: 'Lo que encontramos',
     findings: [
       'Especializarse comunica con claridad que el servicio acepta mascotas.',
-      'La aceptación del conductor y el estado del vehículo pesan en la decisión.',
       'Conocer las condiciones antes de confirmar reduce la incertidumbre.',
       'El tamaño, la cantidad y el tipo de animal cambian la compatibilidad.',
-      'Ver quién conduce y cómo es el vehículo genera confianza.'
+      'Ver quién conduce y cómo es el vehículo genera confianza, y la aceptación del conductor y el estado del vehículo pesan en la decisión.'
     ],
-    opportunitiesTitle: 'Oportunidades para PetRide',
-    opportunities: [
-      'Registrar a cada mascota',
-      'Revisar la compatibilidad desde la solicitud',
-      'Mostrar precio y condiciones antes',
-      'Presentar al conductor y su vehículo',
-      'Chat y seguimiento durante el viaje',
-      'Varias mascotas en una solicitud'
-    ]
+    findingsPhotos: [
+      {
+        label: 'Foto · perro asomado en la ventana del carro',
+        image: {
+          src: '/petride/fotos/perrito3.jpg',
+          alt: 'Chihuahua negro y café apoyado sobre un gato gris'
+        }
+      },
+      {
+        label: 'Foto · bulldog asomado por el borde',
+        image: {
+          src: '/petride/fotos/perrito2-recorte.webp',
+          alt: 'Bulldog blanco asomándose por el borde de abajo'
+        }
+      }
+    ],
+    findingsOpportunity:
+      'Movilidad pensada para la mascota, de la solicitud al final del viaje.',
+    findingsPortrait: {
+      src: '/petride/fotos/persona8.jpg',
+      alt: 'Mujer de pelo rizado sonriendo mientras carga a su perro'
+    }
   },
   user: {
     head: {
-      number: '03',
       ghost: 'Usuario',
       title: 'Para quién es',
       lead: 'Una persona que vive en la ciudad y lleva a su mascota a todas partes.'
     },
-    personaLabel: 'Persona (arquetipo)',
     personaName: 'Gabriela',
     personaTags: ['32 años', 'Empleada', 'DogLover'],
     personaBio:
       'Gabriela vive en un apartamento en la ciudad. Trabaja de forma híbrida y se mueve todo el tiempo en apps de movilidad. Vive con su perro de tamaño mediano y suele llevarlo a distintos lugares.',
-    personaPhotoLabel: 'Foto · Gabriela con su perro',
+    personaPhoto: {
+      src: '/petride/fotos/persona5-recorte.webp',
+      alt: 'Mujer joven besando a su perro, un bóxer boston, mientras lo carga'
+    },
     personaBlocks: [
       {
         title: 'Comportamiento',
@@ -181,7 +201,6 @@ export const petrideStory: PetrideStory = {
         ]
       }
     ],
-    hypothesisNote: 'Arquetipo hipotético, construido sin entrevistas.',
     empathyTitle: 'Mapa de empatía',
     empathy: [
       {
@@ -217,71 +236,48 @@ export const petrideStory: PetrideStory = {
         ]
       }
     ],
-    insightLabel: 'Insight',
-    insight:
-      'Cuando me muevo con mi mascota no solo busco un carro que me lleve. Necesito saber que el conductor y las condiciones del viaje son adecuados para ella.',
     journeyTitle: 'Customer journey',
-    journeyLead:
-      'Un viaje inmediato dentro de la ciudad, de la necesidad a la calificación.',
     journeyLabels: {
-      action: 'Acción',
-      thought: 'Piensa',
       emotion: 'Siente',
       opportunity: 'Oportunidad'
     },
     journey: [
       {
         name: 'Surge la necesidad',
-        action: 'Identifica el destino y que necesita transporte.',
-        thought: '¿Dónde consigo un carro que acepte a mi mascota?',
         emotion: 'Incertidumbre',
-        opportunity: 'Comunicar qué resuelve PetRide'
+        opportunity: 'Comunicar qué resuelve PetRide al inicio'
       },
       {
         name: 'Explora el servicio',
-        action: 'Entra a la app y la consulta.',
-        thought: '¿El servicio tiene las condiciones que necesito?',
         emotion: 'Expectativa',
         opportunity: 'Explicar cómo funciona y sus condiciones'
       },
       {
         name: 'Configura el viaje',
-        action: 'Indica origen, destino y mascotas.',
-        thought: '¿Encontraré un conductor adecuado?',
-        emotion: 'Expectativa e incertidumbre',
-        opportunity: 'Considerar las características y la compatibilidad'
+        emotion: 'Duda y expectativa',
+        opportunity: 'Cruzar mascota, conductor y compatibilidad'
       },
       {
         name: 'Espera la asignación',
-        action: 'Espera mientras se busca conductor.',
-        thought: '¿Quién hará el viaje?',
         emotion: 'Expectativa',
-        opportunity: 'Estados claros y datos del conductor'
+        opportunity: 'Mostrar estados claros y datos del conductor'
       },
       {
         name: 'Hace el viaje',
-        action: 'Se encuentra con el conductor y viaja.',
-        thought: 'Quiero saber que todo va bien.',
         emotion: 'Tranquilidad',
-        opportunity: 'Chat y seguimiento del viaje'
+        opportunity: 'Chat y seguimiento durante todo el viaje'
       },
       {
         name: 'Llega y califica',
-        action: 'Llega a su destino y califica el servicio.',
-        thought: '¿Cómo nos fue?',
         emotion: 'Satisfacción o inconformidad',
-        opportunity: 'Facilitar la calificación'
+        opportunity: 'Facilitar la calificación del servicio'
       }
-    ],
-    journeyInsight:
-      'La confianza se construye antes de pedir el viaje y se mantiene durante todo el servicio.'
+    ]
   },
   solution: {
     head: {
-      number: '04',
       ghost: 'Solución',
-      title: 'Lo que proponemos',
-      lead: 'Cada problema del recorrido se vuelve una decisión del producto.'
+      title: 'Lo que proponemos'
     },
     problemsTitle: 'De problema a oportunidad',
     problems: [
@@ -348,7 +344,6 @@ export const petrideStory: PetrideStory = {
   },
   architecture: {
     head: {
-      number: '05',
       ghost: 'Mapa',
       title: 'Cómo se organiza',
       lead: 'Una arquitectura enfocada solo en los tres recorridos del prototipo.'
@@ -550,13 +545,11 @@ export const petrideStory: PetrideStory = {
   },
   design: {
     head: {
-      number: '06',
       ghost: 'Diseño',
       title: 'De la estructura a la interfaz',
       lead: 'Las pantallas toman forma, de la baja fidelidad al diseño final.'
     },
     wireframesTitle: 'Wireframes',
-    wireframesLead: 'Aquí van las pantallas de baja y media fidelidad.',
     wireframeCount: 16,
     flowGhost: 'Flow',
     flowTitle: 'Registrar mascota',

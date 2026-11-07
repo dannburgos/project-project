@@ -1,14 +1,7 @@
 'use client';
 
-import {
-  ArrowRight,
-  Check,
-  CircleHelp,
-  Layers,
-  Minus,
-  X,
-  type LucideIcon
-} from 'lucide-react';
+import Image from 'next/image';
+import { Layers } from 'lucide-react';
 import { Outfit as outfitFont } from 'next/font/google';
 
 import { PetFillText } from '@/components/atoms/pet-fill-text';
@@ -17,11 +10,9 @@ import { PetLetters } from '@/components/atoms/pet-letters';
 import { PetPlaceholder } from '@/components/atoms/pet-placeholder';
 import { PetChapterHead } from '@/components/molecules/pet-chapter-head';
 import { PetFlowExplorer } from '@/components/molecules/pet-flow-explorer';
+import { PetModuleTitle } from '@/components/molecules/pet-module-title';
 import { PetSideNav } from '@/components/molecules/pet-side-nav';
-import type {
-  PetBenchmarkState,
-  PetrideStory as PetrideStoryContent
-} from '@/content/petride-story.types';
+import type { PetrideStory as PetrideStoryContent } from '@/content/petride-story.types';
 import { usePetrideStory } from '@/hooks/use-petride-story';
 import { cn } from '@/lib/utils';
 
@@ -32,19 +23,8 @@ const outfit = outfitFont({
   weight: ['400', '500', '800']
 });
 
-const STATE_ICON: Record<PetBenchmarkState, LucideIcon> = {
-  yes: Check,
-  partial: Minus,
-  no: X,
-  unknown: CircleHelp
-};
-
 // Velocidad de cada columna del muro de wireframes
 const WIREFRAME_SPEEDS = [0.3, -0.2, 0.4, -0.3] as const;
-// Forma de cada hallazgo en el collage, como en la referencia
-const FINDING_SHAPES = ['circle', 'arch', 'pill', 'leaf', 'square'] as const;
-// Radio de cada arco del proceso, del más cercano al logo al más lejano
-const ARC_RADII = [220, 300, 380, 460, 540, 620] as const;
 
 type PetrideStoryProps = {
   story: PetrideStoryContent;
@@ -83,9 +63,6 @@ export function PetrideStory({ story }: PetrideStoryProps) {
         aria-labelledby="petride-title"
       >
         <div className="pet-hero">
-          <p className="pet-hero__eyebrow" data-pet-rise>
-            {intro.eyebrow}
-          </p>
           <h1
             id="petride-title"
             className="pet-hero__title"
@@ -115,61 +92,27 @@ export function PetrideStory({ story }: PetrideStoryProps) {
           />
         </div>
 
-        <div className="pet-marquee" aria-hidden="true">
-          {[0, 1].map(copy => (
-            <div key={copy} className="pet-marquee__track">
-              {intro.marquee.map(item => (
-                <span key={item} className="pet-marquee__item">
-                  {item}
-                  <PetFlower className="pet-marquee__flower" hasPaw={false} />
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-
-        <div className="pet-process" data-pet-trace>
-          <h2 className="pet-process__title">
-            <PetLetters text={intro.processTitle} />
-          </h2>
-          <p className="pet-process__lead" data-pet-rise>
-            {intro.processLead}
-          </p>
-          <div className="pet-process__map">
-            <svg
-              className="pet-process__arcs"
-              viewBox="0 0 1000 640"
-              aria-hidden="true"
-            >
-              {ARC_RADII.map(radius => (
-                <path
-                  key={radius}
-                  className="pet-process__arc"
-                  d={`M 120 ${640 - radius} A ${radius} ${radius} 0 0 1 ${120 + radius} 640`}
-                  pathLength={1}
-                  data-pet-arc
-                />
-              ))}
-            </svg>
-            <PetFlower className="pet-process__logo" />
-            <ol className="pet-process__stages">
-              {intro.process.map((stage, index) => (
-                <li
-                  key={stage.title}
-                  className="pet-process__stage"
-                  data-pet-rise
-                >
-                  <span className="pet-process__stage-number">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span className="pet-process__stage-title">
-                    {stage.title}
-                  </span>
-                  <span className="pet-process__stage-text">{stage.text}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
+        <div className="pet-process">
+          <PetModuleTitle text={intro.processTitle} as="h2" />
+          {/* Bento de seis bloques de distinto tamaño, con las formas de la
+              marca. Se lee de izquierda a derecha y de arriba abajo, y cada
+              bloque tiene una flecha hacia el siguiente. Al llegar saltan con
+              rebote, como el collage de hallazgos */}
+          <ol className="pet-process__bento" data-pet-shapes>
+            {intro.process.map((stage, index) => (
+              <li
+                key={stage.title}
+                className={cn(
+                  'pet-process__tile',
+                  `pet-process__tile--${index}`
+                )}
+                data-pet-shape
+              >
+                <h3 className="pet-process__stage-title">{stage.title}</h3>
+                <p className="pet-process__stage-text">{stage.text}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -203,9 +146,7 @@ export function PetrideStory({ story }: PetrideStoryProps) {
         </div>
 
         <div className="pet-module">
-          <h3 className="pet-module__title">
-            <PetLetters text={research.benchmarkTitle} />
-          </h3>
+          <PetModuleTitle text={research.benchmarkTitle} />
           <p className="pet-module__lead" data-pet-rise>
             {research.benchmarkLead}
           </p>
@@ -223,15 +164,32 @@ export function PetrideStory({ story }: PetrideStoryProps) {
                   <th scope="col" className="pet-bench__corner">
                     {research.benchmarkFeatureLabel}
                   </th>
-                  {research.competitors.map(competitor => (
-                    <th
-                      key={competitor}
-                      scope="col"
-                      className="pet-bench__brand"
-                    >
-                      {competitor}
-                    </th>
-                  ))}
+                  {research.competitors.map((competitor, index) => {
+                    const logo = research.competitorLogos[index];
+                    return (
+                      <th
+                        key={competitor}
+                        scope="col"
+                        className="pet-bench__brand"
+                      >
+                        <span
+                          className={cn(
+                            'pet-bench__logo',
+                            `pet-bench__logo--${logo.tone}`
+                          )}
+                        >
+                          <Image
+                            src={logo.src}
+                            alt={logo.alt}
+                            width={192}
+                            height={144}
+                            className="pet-bench__logo-img"
+                          />
+                        </span>
+                        {competitor}
+                      </th>
+                    );
+                  })}
                 </tr>
               </thead>
               <tbody>
@@ -240,99 +198,96 @@ export function PetrideStory({ story }: PetrideStoryProps) {
                     <th scope="row" className="pet-bench__feature">
                       {row.feature}
                     </th>
-                    {row.cells.map((cell, index) => {
-                      const Icon = STATE_ICON[cell.state];
-                      return (
-                        <td
-                          key={research.competitors[index]}
-                          className="pet-bench__cell"
+                    {row.cells.map((cell, index) => (
+                      <td
+                        key={research.competitors[index]}
+                        className="pet-bench__cell"
+                      >
+                        <span
+                          className={cn(
+                            'pet-bench__badge',
+                            `pet-bench__badge--${cell.state}`
+                          )}
+                          data-pet-pop
                         >
-                          <span
-                            className={cn(
-                              'pet-bench__badge',
-                              `pet-bench__badge--${cell.state}`
-                            )}
-                            data-pet-pop
-                          >
-                            <Icon
-                              className="pet-bench__icon"
-                              aria-hidden="true"
-                            />
-                            {research.benchmarkStates[cell.state]}
-                          </span>
-                          <span className="pet-bench__note">{cell.note}</span>
-                        </td>
-                      );
-                    })}
+                          {research.benchmarkStates[cell.state]}
+                        </span>
+                        <span className="pet-bench__note">{cell.note}</span>
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="pet-note" data-pet-rise>
-            {research.benchmarkNote}
-          </p>
         </div>
 
         <div className="pet-module">
-          <h3 className="pet-module__title">
-            <PetLetters text={research.findingsTitle} />
-          </h3>
-          <ol className="pet-collage" data-pet-shapes>
+          <PetModuleTitle text={research.findingsTitle} />
+          {/* Collage de hallazgos (referencia: Quantitative Research): los
+              hallazgos en formas de colores, fotos de mascotas, soles que
+              giran y la flor de la marca en una píldora alta */}
+          <ul className="pet-collage" data-pet-shapes>
             {research.findings.map((finding, index) => (
               <li
                 key={finding}
                 className={cn(
                   'pet-collage__item',
-                  `pet-collage__item--${FINDING_SHAPES[index]}`
+                  `pet-collage__item--finding-${index}`
                 )}
                 data-pet-shape
               >
-                <span className="pet-collage__number">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
                 {finding}
               </li>
             ))}
-            <li
-              className="pet-collage__deco pet-collage__deco--burst"
-              aria-hidden="true"
-              data-pet-shape
-            >
-              <svg className="pet-burst" viewBox="0 0 200 200" data-pet-spin>
-                {Array.from({ length: 16 }, (_, ray) => (
-                  <rect
-                    key={ray}
-                    x="96"
-                    y="4"
-                    width="8"
-                    height="96"
-                    rx="4"
-                    transform={`rotate(${ray * 22.5} 100 100)`}
+            {research.findingsPhotos.map((photo, index) => (
+              <li
+                key={photo.label}
+                className={cn(
+                  'pet-collage__photo',
+                  `pet-collage__photo--${index}`
+                )}
+                data-pet-shape
+              >
+                {photo.image ? (
+                  <Image
+                    src={photo.image.src}
+                    alt={photo.image.alt}
+                    fill
+                    sizes="(min-width: 1024px) 40vw, 100vw"
+                    quality={92}
+                    className="pet-collage__img"
                   />
-                ))}
-              </svg>
-            </li>
-            <li
-              className="pet-collage__deco pet-collage__deco--flower"
-              aria-hidden="true"
-              data-pet-shape
-            >
-              <span data-pet-spin className="pet-collage__spin">
-                <PetFlower />
-              </span>
-            </li>
-          </ol>
-
-          <h3 className="pet-module__subtitle" data-pet-rise>
-            {research.opportunitiesTitle}
-          </h3>
-          <ul className="pet-chips" data-pet-pop-group>
-            {research.opportunities.map(item => (
-              <li key={item} className="pet-chip" data-pet-pop>
-                {item}
+                ) : (
+                  <PetPlaceholder
+                    label={photo.label}
+                    className="pet-collage__media"
+                  />
+                )}
               </li>
             ))}
+            <li
+              className="pet-collage__item pet-collage__item--opportunity"
+              data-pet-shape
+            >
+              <span className="pet-collage__number">
+                {research.opportunity.title}
+              </span>
+              {research.findingsOpportunity}
+            </li>
+            <li
+              className="pet-collage__photo pet-collage__photo--portrait"
+              data-pet-shape
+            >
+              <Image
+                src={research.findingsPortrait.src}
+                alt={research.findingsPortrait.alt}
+                fill
+                sizes="(min-width: 1024px) 40vw, 100vw"
+                quality={92}
+                className="pet-collage__img"
+              />
+            </li>
           </ul>
         </div>
       </section>
@@ -348,15 +303,16 @@ export function PetrideStory({ story }: PetrideStoryProps) {
 
         <div className="pet-persona">
           <div className="pet-persona__photo" data-pet-reveal>
-            <PetPlaceholder
-              label={user.personaPhotoLabel}
+            <Image
+              src={user.personaPhoto.src}
+              alt={user.personaPhoto.alt}
+              fill
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              quality={92}
               className="pet-persona__media"
             />
           </div>
           <div className="pet-persona__body">
-            <p className="pet-label" data-pet-rise>
-              {user.personaLabel}
-            </p>
             <h3 className="pet-persona__name">
               <PetLetters text={user.personaName} />
             </h3>
@@ -390,29 +346,30 @@ export function PetrideStory({ story }: PetrideStoryProps) {
                 </div>
               ))}
             </div>
-            <p className="pet-note" data-pet-rise>
-              {user.hypothesisNote}
-            </p>
           </div>
         </div>
 
         <div className="pet-module">
-          <h3 className="pet-module__title">
-            <PetLetters text={user.empathyTitle} />
-          </h3>
+          <PetModuleTitle text={user.empathyTitle} />
           <div className="pet-empathy" data-pet-lines>
             <span
               className="pet-empathy__line pet-empathy__line--a"
               aria-hidden="true"
               data-pet-line
-            />
+            >
+              <span className="pet-empathy__fill" data-pet-line-fill />
+            </span>
             <span
               className="pet-empathy__line pet-empathy__line--b"
               aria-hidden="true"
               data-pet-line
-            />
+            >
+              <span className="pet-empathy__fill" data-pet-line-fill />
+            </span>
             <div className="pet-empathy__center" data-pet-grow>
-              <PetFlower />
+              <span className="pet-empathy__spin" data-pet-spin="45">
+                <PetFlower />
+              </span>
             </div>
             {user.empathy.map((block, index) => (
               <div
@@ -434,54 +391,20 @@ export function PetrideStory({ story }: PetrideStoryProps) {
           </div>
         </div>
 
-        <div className="pet-insight">
-          <p className="pet-label" data-pet-rise>
-            {user.insightLabel}
-          </p>
-          <blockquote className="pet-insight__quote">
-            <PetFillText text={user.insight} className="pet-insight__text" />
-          </blockquote>
-        </div>
-
-        <div className="pet-journey" data-pet-journey>
+        <div className="pet-journey">
           <div className="pet-journey__head">
-            <h3 className="pet-module__title">
-              <PetLetters text={user.journeyTitle} />
-            </h3>
-            <p className="pet-module__lead" data-pet-rise>
-              {user.journeyLead}
-            </p>
+            <PetModuleTitle text={user.journeyTitle} />
           </div>
-          <div className="pet-journey__board">
-            <span
-              className="pet-journey__highlight"
-              aria-hidden="true"
-              data-pet-highlight
-            />
+          <div className="pet-journey__board" data-pet-journey-board>
             <ol className="pet-journey__stages">
-              {user.journey.map((stage, index) => (
+              {user.journey.map(stage => (
                 <li
                   key={stage.name}
                   className="pet-journey__stage"
-                  data-pet-stage
+                  data-pet-journey-stage
                 >
-                  <h4 className="pet-journey__name">
-                    <span className="pet-journey__number" aria-hidden="true">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    {stage.name}
-                  </h4>
+                  <h4 className="pet-journey__name">{stage.name}</h4>
                   <dl className="pet-journey__card">
-                    <div>
-                      <dt className="sr-only">{user.journeyLabels.action}</dt>
-                      <dd className="pet-journey__action">{stage.action}</dd>
-                    </div>
-                    <div>
-                      <dt className="pet-journey__key">
-                        {user.journeyLabels.thought}
-                      </dt>
-                      <dd className="pet-journey__thought">{stage.thought}</dd>
-                    </div>
                     <div>
                       <dt className="pet-journey__key">
                         {user.journeyLabels.emotion}
@@ -501,7 +424,6 @@ export function PetrideStory({ story }: PetrideStoryProps) {
               ))}
             </ol>
           </div>
-          <p className="pet-journey__insight">{user.journeyInsight}</p>
         </div>
       </section>
 
@@ -520,20 +442,13 @@ export function PetrideStory({ story }: PetrideStoryProps) {
               {solution.problemsTitle}
             </h3>
             <ol className="pet-solution__list" data-pet-slides>
-              {solution.problems.map((item, index) => (
+              {solution.problems.map(item => (
                 <li
                   key={item.problem}
-                  className="pet-solution__row"
+                  className="pet-solution__tile"
                   data-pet-slide
                 >
-                  <span className="pet-solution__number" aria-hidden="true">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
                   <span className="pet-solution__problem">{item.problem}</span>
-                  <ArrowRight
-                    className="pet-solution__arrow"
-                    aria-hidden="true"
-                  />
                   <span className="pet-solution__opportunity">
                     {item.opportunity}
                   </span>
@@ -541,16 +456,14 @@ export function PetrideStory({ story }: PetrideStoryProps) {
               ))}
             </ol>
           </div>
-          <div className="pet-solution__circle" data-pet-grow>
+          <div className="pet-solution__block" data-pet-grow>
             <h3 className="pet-solution__label">{solution.solutionLabel}</h3>
             <p className="pet-solution__text">{solution.solution}</p>
           </div>
         </div>
 
         <div className="pet-module">
-          <h3 className="pet-module__title">
-            <PetLetters text={solution.actorsTitle} />
-          </h3>
+          <PetModuleTitle text={solution.actorsTitle} />
           <ul className="pet-actors">
             {solution.actors.map((actor, index) => (
               <li key={actor.name} className="pet-actor" data-pet-rise>
@@ -614,9 +527,7 @@ export function PetrideStory({ story }: PetrideStoryProps) {
         <PetChapterHead head={architecture.head} />
 
         <div className="pet-module">
-          <h3 className="pet-module__title">
-            <PetLetters text={architecture.siteMapTitle} />
-          </h3>
+          <PetModuleTitle text={architecture.siteMapTitle} />
           <p className="pet-module__lead" data-pet-rise>
             {architecture.siteMapLead}
           </p>
@@ -659,10 +570,35 @@ export function PetrideStory({ story }: PetrideStoryProps) {
           </div>
         </div>
 
+        {/* Dos líneas con los tres flujos que corren en sentidos contrarios */}
+        <div className="pet-marquee" aria-hidden="true">
+          {['forward', 'reverse'].map(direction => (
+            <div
+              key={direction}
+              className={cn(
+                'pet-marquee__row',
+                `pet-marquee__row--${direction}`
+              )}
+            >
+              {[0, 1].map(copy => (
+                <div key={copy} className="pet-marquee__track">
+                  {intro.marquee.map(item => (
+                    <span key={item} className="pet-marquee__item">
+                      {item}
+                      <PetFlower
+                        className="pet-marquee__flower"
+                        hasPaw={false}
+                      />
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+
         <div className="pet-module">
-          <h3 className="pet-module__title">
-            <PetLetters text={architecture.flowsTitle} />
-          </h3>
+          <PetModuleTitle text={architecture.flowsTitle} />
           <p className="pet-module__lead" data-pet-rise>
             {architecture.flowsLead}
           </p>
@@ -695,17 +631,12 @@ export function PetrideStory({ story }: PetrideStoryProps) {
         </div>
         <div className="pet-wall">
           <div className="pet-wall__copy">
-            <h3 className="pet-module__title">
-              <PetLetters text={design.wireframesTitle} />
-            </h3>
-            <p className="pet-module__lead" data-pet-rise>
-              {design.wireframesLead}
-            </p>
+            <PetModuleTitle text={design.wireframesTitle} />
           </div>
           <div
             className="pet-wall__frame"
             role="img"
-            aria-label={design.wireframesLead}
+            aria-label={design.wireframesTitle}
           >
             <div className="pet-wall__grid">
               {WIREFRAME_SPEEDS.map((speed, column) => (

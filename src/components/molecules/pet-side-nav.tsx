@@ -74,9 +74,6 @@ export function PetSideNav({ sections, label, openLabel }: PetSideNavProps) {
                 data-pet-nav-item
                 onClick={() => handleJump(index)}
               >
-                <span className="pet-nav__number" aria-hidden="true">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
                 <span className="pet-nav__name" data-pet-section-name>
                   {name}
                 </span>
