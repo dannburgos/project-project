@@ -5,6 +5,7 @@ import {
   Pizza,
   Route,
   Search,
+  Smartphone,
   Target,
   type LucideIcon
 } from 'lucide-react';
@@ -18,13 +19,15 @@ type SonoRailNavProps = {
 };
 
 // Un ícono por sección, en el orden del caso: portada, el reto, lo que
-// encontramos, la experiencia propuesta y la exploración visual
+// encontramos, la experiencia propuesta, la exploración visual y el
+// producto en acción
 const SECTION_ICONS: readonly LucideIcon[] = [
   Pizza,
   Target,
   Search,
   Route,
-  Palette
+  Palette,
+  Smartphone
 ];
 
 // Submenú del caso de Sonopizza dentro de la barra naranja (en computador).

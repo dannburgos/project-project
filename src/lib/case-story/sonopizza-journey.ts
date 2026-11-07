@@ -71,6 +71,10 @@ export function addJourneyMotion(
       y: 24,
       autoAlpha: 0
     });
+    gsap.set(stage.querySelector('[data-journey-card]'), {
+      y: 40,
+      autoAlpha: 0
+    });
   });
 
   const start = timeline.duration() - 0.3;
@@ -108,6 +112,11 @@ export function addJourneyMotion(
         stage.querySelector('[data-journey-label]'),
         { y: 0, autoAlpha: 1, duration: 0.7, ease: 'expo.out' },
         at + 0.08
+      )
+      .to(
+        stage.querySelector('[data-journey-card]'),
+        { y: 0, autoAlpha: 1, duration: 0.8, ease: 'expo.out' },
+        at + 0.18
       );
   });
 

@@ -15,11 +15,36 @@ export type SonoFlow = {
   number: string;
   title: string;
   steps: readonly string[];
+  goal: string;
+  map: SonoFlowMap;
 };
 
-export type SonoSection = {
-  title: string;
-  items: readonly string[];
+// Diagrama de un flujo sobre un lienzo de 1400 × 520. Cada pantalla y cada
+// camino tiene un orden: el diagrama crece en ese orden, así las ramas que
+// comparten orden salen a la vez
+export type SonoFlowNodeKind = 'start' | 'step' | 'decision' | 'alt' | 'end';
+
+export type SonoFlowNode = {
+  label: string;
+  detail?: string;
+  kind: SonoFlowNodeKind;
+  x: number;
+  y: number;
+  order: number;
+};
+
+export type SonoFlowEdge = {
+  path: string;
+  isAlt?: boolean;
+  order: number;
+  label?: string;
+  labelX?: number;
+  labelY?: number;
+};
+
+export type SonoFlowMap = {
+  nodes: readonly SonoFlowNode[];
+  edges: readonly SonoFlowEdge[];
 };
 
 export type SonoSwatch = {
@@ -60,7 +85,6 @@ export type SonopizzaStory = {
   audit: {
     number: string;
     name: string;
-    subtitle: string;
     title: string;
     // Cinco capturas: la primera es la principal (la del centro)
     captures: readonly string[];
@@ -68,16 +92,18 @@ export type SonopizzaStory = {
     note: string;
   };
   benchmark: {
-    subtitle: string;
     title: string;
-    references: readonly string[];
+    lead: string;
     captureLabel: string;
     dimensionsTitle: string;
     dimensions: readonly string[];
+    takeawayTitle: string;
+    // Lo que falta por documentar se muestra con este texto
+    pending: string;
+    apps: readonly SonoBenchmarkApp[];
     note: string;
   };
   synthesis: {
-    subtitle: string;
     title: string;
     opportunities: readonly SonoLabeledText[];
     direction: string;
@@ -85,7 +111,6 @@ export type SonopizzaStory = {
   concept: {
     number: string;
     name: string;
-    subtitle: string;
     verticalTitle: string;
     title: string;
     text: string;
@@ -93,29 +118,41 @@ export type SonopizzaStory = {
     principles: readonly string[];
     synthesis: readonly string[];
     photoLabel: string;
+    // Espacio para una imagen del concepto, junto al texto
+    imageLabel: string;
   };
   persona: {
     subtitle: string;
     name: string;
     portraitLabel: string;
     facts: readonly SonoLabeledText[];
-    context: string;
-    note: string;
+    context: readonly SonoTextPart[];
   };
   journey: {
     subtitle: string;
     title: string;
-    stages: readonly string[];
-    note: string;
+    // Nombre de cada fila de las tarjetas: acción, piensa, fricción y
+    // oportunidad
+    rowLabels: {
+      action: string;
+      thought: string;
+      friction: string;
+      opportunity: string;
+    };
+    stages: readonly SonoJourneyStage[];
   };
   architecture: {
-    subtitle: string;
     title: string;
-    sections: readonly SonoSection[];
+    root: string;
+    legend: {
+      nav: string;
+      step: string;
+      flow: string;
+    };
+    sections: readonly SonoSiteNode[];
     navigation: string;
   };
   flows: {
-    subtitle: string;
     title: string;
     items: readonly SonoFlow[];
     note: string;
@@ -135,5 +172,69 @@ export type SonopizzaStory = {
     mascotText: string;
     photographyTitle: string;
     photography: readonly string[];
+    // Elementos de marca hechos con partes de la pizza (por diseñar)
+    elements: {
+      title: string;
+      lead: string;
+      pending: string;
+      items: readonly SonoLabeledText[];
+    };
+    // Lo que tendría el sistema de diseño de Sonopizza (por construir)
+    system: {
+      title: string;
+      lead: string;
+      pending: string;
+      groups: readonly SonoListGroup[];
+    };
   };
+  // 05 · El producto en acción: una escena por flujo (referencia:
+  // motionin.design/gallery/marathon)
+  product: {
+    number: string;
+    name: string;
+    stepLabel: string;
+    scenes: readonly SonoProductScene[];
+  };
+};
+
+export type SonoProductScene = {
+  // Número y nombre del flujo (los mismos de flows.items)
+  number: string;
+  title: string;
+  text: string;
+  screenLabel: string;
+  chips: readonly SonoLabeledText[];
+};
+
+// Un referente del benchmark: lo que se observó en cada dimensión (en el
+// mismo orden de dimensions) y lo que se toma de él. Vacío = por completar.
+export type SonoBenchmarkApp = {
+  name: string;
+  observations: readonly string[];
+  takeaway: string;
+};
+
+// Una etapa del journey. Las acciones salen de los flujos; las fricciones,
+// de la auditoría, y las oportunidades, de la síntesis y la arquitectura
+export type SonoJourneyStage = {
+  name: string;
+  action: string;
+  thought: string;
+  friction: string;
+  opportunity: string;
+};
+
+// Una pantalla del sitemap: de la navegación principal, un paso del flujo
+// de compra o el final del recorrido
+export type SonoSiteNodeKind = 'nav' | 'step' | 'end';
+
+export type SonoSiteNode = {
+  title: string;
+  kind: SonoSiteNodeKind;
+  items: readonly string[];
+};
+
+export type SonoListGroup = {
+  title: string;
+  items: readonly string[];
 };
