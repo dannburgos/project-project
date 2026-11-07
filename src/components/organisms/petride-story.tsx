@@ -9,7 +9,7 @@ import { PetFlower } from '@/components/atoms/pet-flower';
 import { PetLetters } from '@/components/atoms/pet-letters';
 import { PetPlaceholder } from '@/components/atoms/pet-placeholder';
 import { PetChapterHead } from '@/components/molecules/pet-chapter-head';
-import { PetFlowExplorer } from '@/components/molecules/pet-flow-explorer';
+import { PetFlowChart } from '@/components/molecules/pet-flow-chart';
 import { PetModuleTitle } from '@/components/molecules/pet-module-title';
 import { PetSideNav } from '@/components/molecules/pet-side-nav';
 import type { PetrideStory as PetrideStoryContent } from '@/content/petride-story.types';
@@ -35,7 +35,7 @@ type PetrideStoryProps = {
 // cloud. Seis capítulos con submenú lateral de punticos.
 export function PetrideStory({ story }: PetrideStoryProps) {
   const ref = usePetrideStory<HTMLDivElement>();
-  const { intro, research, user, solution, architecture, design } = story;
+  const { intro, research, user, architecture, design } = story;
 
   return (
     <div
@@ -71,7 +71,15 @@ export function PetrideStory({ story }: PetrideStoryProps) {
           >
             <PetLetters text={intro.wordmark} trigger="load" />
           </h1>
-          <PetFlower className="pet-hero__flower" />
+          <Image
+            src={intro.logo.src}
+            alt={intro.logo.alt}
+            width={193}
+            height={224}
+            priority
+            unoptimized
+            className="pet-hero__logo"
+          />
           <p className="pet-hero__tagline" data-pet-rise>
             {intro.tagline}
           </p>
@@ -147,9 +155,6 @@ export function PetrideStory({ story }: PetrideStoryProps) {
 
         <div className="pet-module">
           <PetModuleTitle text={research.benchmarkTitle} />
-          <p className="pet-module__lead" data-pet-rise>
-            {research.benchmarkLead}
-          </p>
           <div
             className="pet-bench"
             role="region"
@@ -158,7 +163,7 @@ export function PetrideStory({ story }: PetrideStoryProps) {
             data-pet-pop-group
           >
             <table className="pet-bench__table">
-              <caption className="sr-only">{research.benchmarkLead}</caption>
+              <caption className="sr-only">{research.benchmarkTitle}</caption>
               <thead>
                 <tr>
                   <th scope="col" className="pet-bench__corner">
@@ -427,174 +432,41 @@ export function PetrideStory({ story }: PetrideStoryProps) {
         </div>
       </section>
 
-      {/* 04 · Solución */}
+      {/* 04 · Arquitectura */}
       <section
         className="pet-chapter"
         id="petride-3"
         data-pet-chapter="3"
         aria-label={story.sections[3]}
       >
-        <PetChapterHead head={solution.head} />
-
-        <div className="pet-solution">
-          <div className="pet-solution__problems">
-            <h3 className="pet-module__subtitle" data-pet-rise>
-              {solution.problemsTitle}
-            </h3>
-            <ol className="pet-solution__list" data-pet-slides>
-              {solution.problems.map(item => (
-                <li
-                  key={item.problem}
-                  className="pet-solution__tile"
-                  data-pet-slide
-                >
-                  <span className="pet-solution__problem">{item.problem}</span>
-                  <span className="pet-solution__opportunity">
-                    {item.opportunity}
-                  </span>
-                </li>
-              ))}
-            </ol>
-          </div>
-          <div className="pet-solution__block" data-pet-grow>
-            <h3 className="pet-solution__label">{solution.solutionLabel}</h3>
-            <p className="pet-solution__text">{solution.solution}</p>
-          </div>
-        </div>
-
-        <div className="pet-module">
-          <PetModuleTitle text={solution.actorsTitle} />
-          <ul className="pet-actors">
-            {solution.actors.map((actor, index) => (
-              <li key={actor.name} className="pet-actor" data-pet-rise>
-                <span
-                  className={cn(
-                    'pet-actor__shape',
-                    `pet-actor__shape--${index}`
-                  )}
-                  aria-hidden="true"
-                  data-pet-spin
-                />
-                <h4 className="pet-actor__name">{actor.name}</h4>
-                <p className="pet-actor__role">{actor.role}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="pet-module pet-goals">
-          <div>
-            <h3 className="pet-module__subtitle" data-pet-rise>
-              {solution.goalsTitle}
-            </h3>
-            <ol className="pet-goals__list">
-              {solution.goals.map((goal, index) => (
-                <li key={goal} className="pet-goals__item" data-pet-rise>
-                  <span className="pet-goals__number" aria-hidden="true">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  {goal}
-                </li>
-              ))}
-            </ol>
-          </div>
-          <div>
-            <h3 className="pet-module__subtitle" data-pet-rise>
-              {solution.mvpTitle}
-            </h3>
-            <ul className="pet-chips" data-pet-pop-group>
-              {solution.mvp.map(item => (
-                <li
-                  key={item}
-                  className="pet-chip pet-chip--indigo"
-                  data-pet-pop
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* 05 · Arquitectura */}
-      <section
-        className="pet-chapter"
-        id="petride-4"
-        data-pet-chapter="4"
-        aria-label={story.sections[4]}
-      >
         <PetChapterHead head={architecture.head} />
 
         <div className="pet-module">
           <PetModuleTitle text={architecture.siteMapTitle} />
-          <p className="pet-module__lead" data-pet-rise>
-            {architecture.siteMapLead}
-          </p>
-          <div className="pet-sitemap" data-pet-lines>
-            <div className="pet-sitemap__center" data-pet-grow>
-              <PetFlower />
+          <div className="pet-sitemap" data-pet-diagram>
+            <div className="pet-sitemap__root">
               <span className="pet-sitemap__brand">
                 {architecture.siteMapCenter}
               </span>
+              <span className="pet-sitemap__stem">
+                <PetFlower />
+              </span>
             </div>
-            {architecture.siteMap.map((group, index) => (
-              <div
-                key={group.name}
-                className={cn(
-                  'pet-sitemap__group',
-                  `pet-sitemap__group--${index}`
-                )}
-              >
-                <span
-                  className="pet-sitemap__trunk"
-                  aria-hidden="true"
-                  data-pet-line
-                />
-                <h4 className="pet-sitemap__node" data-pet-rise>
-                  {group.name}
-                </h4>
-                <ul className="pet-sitemap__screens">
-                  {group.screens.map(screen => (
-                    <li
-                      key={screen}
-                      className="pet-sitemap__screen"
-                      data-pet-rise
-                    >
-                      {screen}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Dos líneas con los tres flujos que corren en sentidos contrarios */}
-        <div className="pet-marquee" aria-hidden="true">
-          {['forward', 'reverse'].map(direction => (
-            <div
-              key={direction}
-              className={cn(
-                'pet-marquee__row',
-                `pet-marquee__row--${direction}`
-              )}
-            >
-              {[0, 1].map(copy => (
-                <div key={copy} className="pet-marquee__track">
-                  {intro.marquee.map(item => (
-                    <span key={item} className="pet-marquee__item">
-                      {item}
-                      <PetFlower
-                        className="pet-marquee__flower"
-                        hasPaw={false}
-                      />
-                    </span>
-                  ))}
+            <div className="pet-sitemap__branches">
+              {architecture.siteMap.map(group => (
+                <div key={group.name} className="pet-sitemap__group">
+                  <h4 className="pet-sitemap__node">{group.name}</h4>
+                  <ul className="pet-sitemap__screens">
+                    {group.screens.map(screen => (
+                      <li key={screen} className="pet-sitemap__screen">
+                        {screen}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ))}
             </div>
-          ))}
+          </div>
         </div>
 
         <div className="pet-module">
@@ -602,27 +474,25 @@ export function PetrideStory({ story }: PetrideStoryProps) {
           <p className="pet-module__lead" data-pet-rise>
             {architecture.flowsLead}
           </p>
-          <PetFlowExplorer
+          <PetFlowChart
             flows={architecture.flows}
             hint={architecture.flowsHint}
-            branchLabel={architecture.branchLabel}
+            yesLabel={architecture.flowYes}
+            noLabel={architecture.flowNo}
           />
         </div>
       </section>
 
-      {/* 06 · Diseño */}
+      {/* 05 · Diseño */}
       <section
         className="pet-chapter"
-        id="petride-5"
-        data-pet-chapter="5"
-        aria-label={story.sections[5]}
+        id="petride-4"
+        data-pet-chapter="4"
+        aria-label={story.sections[4]}
       >
         <PetChapterHead head={design.head} />
 
         <div className="pet-system">
-          <span className="pet-system__ghost" aria-hidden="true" data-pet-ghost>
-            {design.systemGhost}
-          </span>
           <div className="pet-system__frame" data-pet-rise>
             <Layers className="pet-system__icon" aria-hidden="true" />
             <h3 className="pet-system__title">{design.systemTitle}</h3>
@@ -662,20 +532,10 @@ export function PetrideStory({ story }: PetrideStoryProps) {
         </div>
 
         <div className="pet-flowshow" data-pet-flowshow data-pet-trace>
-          <span
-            className="pet-flowshow__ghost"
-            aria-hidden="true"
-            data-pet-ghost
-          >
-            {design.flowGhost}
-          </span>
           <div className="pet-flowshow__intro">
             <h3 className="pet-module__title">
               <PetLetters text={design.flowTitle} />
             </h3>
-            <p className="pet-module__lead" data-pet-rise>
-              {design.flowLead}
-            </p>
           </div>
           <svg className="pet-flowshow__wires" aria-hidden="true">
             <path className="pet-flowshow__wire" pathLength={1} data-pet-wire />

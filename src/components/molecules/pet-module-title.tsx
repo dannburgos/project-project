@@ -17,9 +17,6 @@ export function PetModuleTitle({
 }: PetModuleTitleProps) {
   return (
     <Tag className={cn('pet-module__title', className)}>
-      <span className="pet-module__ghost" aria-hidden="true" data-pet-ghost>
-        {text}
-      </span>
       <PetLetters text={text} className="pet-module__letters" />
     </Tag>
   );

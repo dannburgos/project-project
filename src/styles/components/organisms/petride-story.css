@@ -13,7 +13,6 @@
   --pet-mute: rgb(245 249 255 / 0.74);
   --pet-line: rgb(171 196 255 / 0.24);
   /* Palabras gigantes de fondo de los títulos: apenas se insinúan */
-  --pet-ghost: rgb(171 196 255 / 0.025);
   /* Lo que separa un módulo del siguiente (y un capítulo del siguiente), en
      computador y en celular */
   --pet-module-gap: 200px;
@@ -197,55 +196,6 @@
 }
 
 /* Semillas: una por capítulo, alrededor de la flor */
-.pet-nav__seeds {
-  @apply absolute top-1/2 left-1/2;
-}
-
-.pet-nav__seed {
-  @apply absolute -top-1 -left-1 size-2 rounded-full;
-  background: rgb(171 196 255 / 0.55);
-  translate: var(--seed-x) var(--seed-y);
-  transition:
-    scale 0.5s var(--pet-spring),
-    background-color 0.3s ease,
-    opacity 0.3s ease;
-}
-
-.pet-nav__seed:nth-child(1) {
-  --seed-x: 22px;
-  --seed-y: -40px;
-}
-.pet-nav__seed:nth-child(2) {
-  --seed-x: 36px;
-  --seed-y: -26px;
-}
-.pet-nav__seed:nth-child(3) {
-  --seed-x: 44px;
-  --seed-y: -10px;
-}
-.pet-nav__seed:nth-child(4) {
-  --seed-x: 44px;
-  --seed-y: 10px;
-}
-.pet-nav__seed:nth-child(5) {
-  --seed-x: 36px;
-  --seed-y: 26px;
-}
-.pet-nav__seed:nth-child(6) {
-  --seed-x: 22px;
-  --seed-y: 40px;
-}
-
-.pet-nav__seed--current {
-  background: var(--pet-lime);
-  scale: 1.5;
-}
-
-.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__seed {
-  @apply opacity-0;
-  scale: 0;
-}
-
 /* Abanico de capítulos */
 .pet-nav__list {
   @apply absolute top-1/2 left-1/2;
@@ -401,9 +351,9 @@
   outline: none;
 }
 
-.pet-hero__flower {
-  @apply absolute top-28 right-0 size-28 md:top-32 md:size-56;
-  animation: pet-spin 24s linear infinite;
+.pet-hero__logo {
+  /* En celular va sobre el nombre, sin taparlo; desde 768 px, a su derecha */
+  @apply order-first h-24 w-auto self-start md:absolute md:top-32 md:right-0 md:order-none md:h-56;
 }
 
 .pet-hero__tagline {
@@ -454,7 +404,7 @@
   @apply inline-flex items-center justify-center;
 }
 
-.pet-flower:not(.pet-hero__flower) {
+.pet-flower {
   @apply relative;
 }
 
@@ -475,48 +425,6 @@
   color: var(--pet-indigo);
 }
 
-/* Franja de los tres flujos (neutomni): dos líneas con el mismo texto que
-   corren en sentidos contrarios, tenues para no competir con el contenido */
-.pet-marquee {
-  @apply -mx-6 flex flex-col gap-2 overflow-hidden border-y py-6 md:-mr-16 md:-ml-32;
-  border-color: var(--pet-line);
-}
-
-.pet-marquee__row {
-  @apply flex;
-}
-
-.pet-marquee__track {
-  @apply flex shrink-0 items-center;
-  animation: pet-marquee 28s linear infinite;
-}
-
-.pet-marquee__row--reverse .pet-marquee__track {
-  animation-direction: reverse;
-}
-
-.pet-marquee__item {
-  @apply flex items-center gap-8 pr-8 text-4xl font-extrabold whitespace-nowrap md:text-7xl;
-  color: rgb(245 249 255 / 0.18);
-}
-
-.pet-marquee__item:nth-child(even) {
-  color: rgb(221 243 68 / 0.28);
-}
-
-.pet-marquee__row--reverse .pet-marquee__item {
-  color: rgb(221 243 68 / 0.28);
-}
-
-.pet-marquee__row--reverse .pet-marquee__item:nth-child(even) {
-  color: rgb(245 249 255 / 0.18);
-}
-
-.pet-marquee__flower {
-  @apply size-10 opacity-40 md:size-16;
-  animation: pet-spin 10s linear infinite;
-}
-
 /* Proceso de diseño: seis etapas en columnas */
 .pet-process {
   @apply flex flex-col gap-6;
@@ -527,17 +435,6 @@
   font-size: var(--pet-title-size);
   line-height: 0.96;
   letter-spacing: -0.035em;
-}
-
-/* El mismo título, gigante y tenue detrás, como en las aperturas de
-   capítulo */
-.pet-module__ghost {
-  @apply pointer-events-none absolute top-1/2 left-0 -z-10 whitespace-nowrap select-none;
-  /* Centrado sin translate: GSAP lo desliza con el scroll */
-  margin-top: -0.5em;
-  font-size: 2.4em;
-  line-height: 1;
-  color: var(--pet-ghost);
 }
 
 .pet-process__lead,
@@ -663,13 +560,6 @@
 /* ───────── Apertura de capítulo ───────── */
 .pet-head {
   @apply relative flex flex-col gap-4 pt-16;
-}
-
-.pet-head__ghost {
-  @apply pointer-events-none absolute -top-8 left-0 font-extrabold whitespace-nowrap select-none;
-  font-size: clamp(140px, 22vw, 360px);
-  line-height: 1;
-  color: var(--pet-ghost);
 }
 
 .pet-head__title {
@@ -966,11 +856,6 @@
   color: var(--pet-cloud);
 }
 
-.pet-chip--indigo {
-  background: var(--pet-indigo);
-  color: var(--pet-cloud);
-}
-
 /* ───────── 03 · Usuario ───────── */
 .pet-persona {
   @apply grid items-center gap-12 md:grid-cols-[5fr_7fr] md:gap-16;
@@ -1155,130 +1040,16 @@
   @apply max-w-3xl text-xl font-medium md:text-2xl;
 }
 
-/* ───────── 04 · Solución ───────── */
-/* A la izquierda, un mosaico con cada problema y su oportunidad; a la derecha,
-   la solución en una pieza alta con la forma de arco de la marca */
-.pet-solution {
-  @apply grid gap-12 lg:grid-cols-[7fr_5fr] lg:items-stretch;
-}
-
-.pet-solution__problems {
-  @apply flex flex-col gap-6;
-}
-
-.pet-solution__list {
-  @apply grid flex-1 grid-cols-1 gap-3 sm:grid-cols-2;
-}
-
-.pet-solution__tile {
-  @apply flex min-h-40 flex-col justify-between gap-6 rounded-[32px] p-6;
-  background: var(--pet-deep);
-}
-
-.pet-solution__tile:last-child {
-  @apply sm:col-span-2;
-}
-
-.pet-solution__problem {
-  @apply text-base;
-  color: var(--pet-mute);
-}
-
-.pet-solution__opportunity {
-  @apply text-2xl leading-tight font-extrabold;
-  color: var(--pet-lime);
-}
-
-.pet-solution__block {
-  @apply flex flex-col items-center justify-center gap-4 rounded-t-full rounded-b-[32px] px-10 pt-32 pb-12 text-center md:px-14;
-  background: var(--pet-indigo);
-}
-
-.pet-solution__label {
-  @apply text-5xl font-extrabold md:text-6xl;
-  color: var(--pet-lime);
-}
-
-.pet-solution__text {
-  @apply text-lg leading-relaxed md:text-xl;
-}
-
-/* Quién participa: formas de la marca que giran con el scroll */
-.pet-actors {
-  @apply grid gap-12 md:grid-cols-3;
-}
-
-.pet-actor {
-  @apply flex flex-col gap-3;
-}
-
-.pet-actor__shape {
-  @apply relative mb-4 block size-32 md:size-40;
-}
-
-.pet-actor__shape--0 {
-  @apply rounded-full border-[24px];
-  border-color: var(--pet-peri);
-}
-
-.pet-actor__shape--0::after {
-  @apply absolute -top-6 left-1/2 size-6 -translate-x-1/2 rounded-full content-[''];
-  background: var(--pet-lime);
-}
-
-.pet-actor__shape--1 {
-  @apply rounded-[40%];
-  background: var(--pet-lime);
-}
-
-.pet-actor__shape--2 {
-  @apply rounded-full;
-  background: var(--pet-indigo);
-  clip-path: inset(30% 0 30% 0 round 999px);
-}
-
-.pet-actor__name {
-  @apply text-3xl font-extrabold;
-}
-
-.pet-actor__role {
-  @apply max-w-xs text-lg;
-  color: var(--pet-mute);
-}
-
-.pet-goals {
-  @apply grid gap-16 lg:grid-cols-2;
-}
-
-.pet-goals__list {
-  @apply mt-6 flex flex-col;
-}
-
-.pet-goals__item {
-  @apply flex gap-4 border-b py-4 text-lg;
-  border-color: var(--pet-line);
-}
-
-.pet-goals__number {
-  @apply font-extrabold;
-  color: var(--pet-lime);
-}
-
-.pet-goals .pet-chips {
-  @apply mt-6;
-}
-
 /* ───────── 05 · Arquitectura ───────── */
+/* Site map: PetRide arriba y cuatro ramas hacia abajo. Cada rama lleva su
+   entrada y sus pantallas apiladas, unidas por una línea fina */
 .pet-sitemap {
-  @apply relative mt-6 grid gap-10 lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-2 lg:gap-x-0 lg:gap-y-16;
+  @apply relative flex flex-col items-center gap-8;
+  --pet-connector: rgb(171 196 255 / 0.45);
 }
 
-.pet-sitemap__center {
-  @apply mx-auto flex flex-col items-center gap-3 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center;
-}
-
-.pet-sitemap__center .pet-flower {
-  @apply size-36;
+.pet-sitemap__root {
+  @apply relative flex flex-col items-center;
 }
 
 .pet-sitemap__brand {
@@ -1286,225 +1057,341 @@
   color: var(--pet-lime);
 }
 
-.pet-sitemap__group {
-  @apply flex flex-col items-start gap-4 lg:flex-row lg:items-center;
+/* La línea vertical sale de PetRide y baja hasta las ramas; la flor de la
+   huella queda en medio de esa línea */
+.pet-sitemap__stem {
+  @apply relative flex flex-col items-center py-6;
 }
 
-.pet-sitemap__trunk {
-  @apply hidden h-px min-w-16 flex-1 lg:block;
-  background: var(--pet-peri);
+.pet-sitemap__stem::before {
+  @apply absolute top-0 bottom-0 left-1/2 w-px content-[''];
+  background: var(--pet-connector);
+}
+
+.pet-sitemap__stem .pet-flower {
+  @apply relative size-28;
+}
+
+.pet-sitemap__branches {
+  @apply relative grid w-full gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4;
+}
+
+.pet-sitemap__group {
+  @apply relative flex flex-col items-center gap-5;
 }
 
 .pet-sitemap__node {
-  @apply shrink-0 rounded-full px-6 py-3 text-lg font-extrabold;
+  @apply rounded-full px-6 py-3 text-center text-lg font-extrabold;
   background: var(--pet-indigo);
 }
 
 .pet-sitemap__screens {
-  @apply flex flex-col gap-2 border-l pl-4 lg:shrink-0;
-  border-color: var(--pet-line);
+  @apply relative flex flex-col items-center gap-2;
+}
+
+.pet-sitemap__screens::before {
+  @apply absolute top-[-20px] bottom-4 left-1/2 w-px content-[''];
+  background: var(--pet-line);
 }
 
 .pet-sitemap__screen {
-  @apply relative w-max rounded-full border px-4 py-1.5 text-base;
+  @apply relative rounded-full border px-4 py-1.5 text-center text-base;
   border-color: var(--pet-line);
+  background: var(--pet-night);
   color: var(--pet-mute);
-  transition:
-    border-color 0.3s ease,
-    color 0.3s ease;
 }
 
-.pet-sitemap__screen:hover {
-  border-color: var(--pet-peri);
-  color: var(--pet-cloud);
+/* Las uniones solo desde 1024 px, cuando las cuatro ramas van en fila: del
+   tronco sale una barra, y de ella baja cada rama con una flecha. Los extremos
+   se doblan redondeados y las uniones llegan siempre a su rama. */
+@media (min-width: 1024px) {
+  .pet-sitemap__group::before {
+    @apply absolute -top-8 -right-2 -left-2 h-8 content-[''];
+    border-top: 1px solid var(--pet-connector);
+  }
+
+  .pet-sitemap__group::after {
+    @apply absolute -top-8 left-1/2 h-8 w-px content-[''];
+    background: var(--pet-connector);
+  }
+
+  .pet-sitemap__group:first-child::before {
+    @apply left-1/2 rounded-tl-xl;
+    border-left: 1px solid var(--pet-connector);
+  }
+
+  .pet-sitemap__group:last-child::before {
+    @apply right-1/2 rounded-tr-xl;
+    border-right: 1px solid var(--pet-connector);
+  }
+
+  .pet-sitemap__group:first-child::after,
+  .pet-sitemap__group:last-child::after {
+    @apply hidden;
+  }
+
+  .pet-sitemap__node {
+    @apply relative;
+  }
+
+  .pet-sitemap__node::before {
+    @apply absolute -top-[5px] left-1/2 -translate-x-1/2 content-[''];
+    width: 0;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-top: 5px solid var(--pet-connector);
+  }
+}
+
+/* El site map crece al llegar: el tronco baja y la flor aparece en él, la barra
+   se abre hacia los lados, de ella caen las ramas con su flecha, y bajo cada
+   rama la línea de pantallas va creciendo mientras las píldoras nacen una
+   tras otra. Todo con retrasos encadenados, para que línea y píldoras avancen
+   a la vez. Solo se esconde cuando el movimiento lo prepara (data-pending). */
+.pet-sitemap {
+  --lines-end: 0.9s;
+}
+
+.pet-sitemap__group {
+  --g: 0;
+}
+
+.pet-sitemap__group:nth-child(2) {
+  --g: 1;
+}
+
+.pet-sitemap__group:nth-child(3) {
+  --g: 2;
+}
+
+.pet-sitemap__group:nth-child(4) {
+  --g: 3;
+}
+
+.pet-sitemap__screen {
+  --k: 0;
+}
+
+.pet-sitemap__screen:nth-child(2) {
+  --k: 1;
+}
+
+.pet-sitemap__screen:nth-child(3) {
+  --k: 2;
+}
+
+.pet-sitemap__screen:nth-child(4) {
+  --k: 3;
+}
+
+.pet-sitemap__screen:nth-child(5) {
+  --k: 4;
+}
+
+.pet-sitemap__brand {
+  transition: opacity 0.5s ease;
+}
+
+.pet-sitemap__stem::before {
+  transform-origin: top;
+  transition: transform 0.8s linear 0.1s;
+}
+
+.pet-sitemap__stem .pet-flower {
+  transition:
+    opacity 0.4s ease 0.45s,
+    scale 0.6s var(--pet-spring) 0.45s;
+}
+
+.pet-sitemap__node {
+  transition:
+    opacity 0.35s ease calc(var(--lines-end) + var(--g) * 0.08s),
+    scale 0.45s var(--pet-spring) calc(var(--lines-end) + var(--g) * 0.08s);
+}
+
+.pet-sitemap__screens::before {
+  transform-origin: top;
+  transition: transform 1s linear
+    calc(var(--lines-end) + 0.2s + var(--g) * 0.08s);
+}
+
+.pet-sitemap__screen {
+  transition:
+    opacity 0.35s ease
+      calc(var(--lines-end) + 0.3s + var(--g) * 0.08s + var(--k) * 0.15s),
+    translate 0.45s var(--pet-glide)
+      calc(var(--lines-end) + 0.3s + var(--g) * 0.08s + var(--k) * 0.15s);
 }
 
 @media (min-width: 1024px) {
-  .pet-sitemap__group--0,
-  .pet-sitemap__group--1 {
-    @apply col-start-1 flex-row-reverse justify-start;
+  .pet-sitemap {
+    --lines-end: 1.55s;
   }
 
-  .pet-sitemap__group--0 .pet-sitemap__trunk,
-  .pet-sitemap__group--1 .pet-sitemap__trunk {
-    @apply origin-right;
+  .pet-sitemap__group::before {
+    transition: transform 0.4s ease 1.25s;
   }
 
-  .pet-sitemap__group--0 .pet-sitemap__screens,
-  .pet-sitemap__group--1 .pet-sitemap__screens {
-    @apply items-end border-r border-l-0 pr-4 pl-0;
+  .pet-sitemap__group:nth-child(-n + 2)::before {
+    transform-origin: right center;
   }
 
-  .pet-sitemap__group--2,
-  .pet-sitemap__group--3 {
-    @apply col-start-3;
+  .pet-sitemap__group:nth-child(n + 3)::before {
+    transform-origin: left center;
   }
 
-  .pet-sitemap__group--2 .pet-sitemap__trunk,
-  .pet-sitemap__group--3 .pet-sitemap__trunk {
-    @apply origin-left;
+  .pet-sitemap__group:nth-child(2)::before,
+  .pet-sitemap__group:nth-child(3)::before {
+    transition-delay: 0.95s;
   }
 
-  .pet-sitemap__group--0,
-  .pet-sitemap__group--2 {
-    @apply row-start-1;
+  .pet-sitemap__group::after {
+    transform-origin: top;
+    transition: transform 0.3s ease 1.3s;
   }
 
-  .pet-sitemap__group--1,
-  .pet-sitemap__group--3 {
-    @apply row-start-2;
+  .pet-sitemap__node::before {
+    transition: opacity 0.2s ease 1.4s;
   }
 }
 
-/* User flows: pestañas, pasos que son botones y su detalle */
-.pet-flows {
-  @apply mt-4 flex flex-col gap-10;
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__brand {
+  opacity: 0;
 }
 
-.pet-flows__tabs {
-  @apply flex max-w-full flex-wrap gap-1.5 self-start rounded-[28px] p-1.5;
-  background: var(--pet-deep);
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__stem::before {
+  transform: scaleY(0);
 }
 
-.pet-flows__tab {
-  @apply flex cursor-pointer items-center gap-2 rounded-full px-5 py-3 text-base font-medium;
-  color: var(--pet-mute);
-  transition:
-    background-color 0.35s var(--pet-glide),
-    color 0.35s ease;
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__stem .pet-flower {
+  opacity: 0;
+  scale: 0.3;
 }
 
-.pet-flows__tab:hover {
-  color: var(--pet-cloud);
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__group::before {
+  transform: scaleX(0);
 }
 
-.pet-flows__tab--current {
-  background: var(--pet-lime);
-  color: var(--pet-night);
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__group::after {
+  transform: scaleY(0);
 }
 
-.pet-flows__tab--current:hover {
-  color: var(--pet-night);
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__node {
+  opacity: 0;
+  scale: 0.8;
 }
 
-.pet-flows__tab-number {
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__node::before {
+  opacity: 0;
+}
+
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__screens::before {
+  transform: scaleY(0);
+}
+
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__screen {
+  opacity: 0;
+  translate: 0 8px;
+}
+
+/* User flows como diagramas de flujo verticales, uno junto al otro: cápsula de
+   inicio, rectángulos, rombos para las decisiones y flechas. Cada dibujo
+   escala con su columna, así que no hay scroll lateral. */
+.pet-flowchart {
+  @apply grid gap-12 md:grid-cols-3 md:gap-6;
+}
+
+.pet-flowchart__flow {
+  @apply m-0;
+}
+
+.pet-flowchart__svg {
+  @apply block h-auto w-full;
+}
+
+.pet-flowchart__start {
+  fill: var(--pet-indigo);
+}
+
+.pet-flowchart__start-text {
   @apply font-extrabold;
+  font-size: 9.5px;
+  text-anchor: middle;
+  fill: var(--pet-cloud);
 }
 
-.pet-flows__panel {
-  @apply flex flex-col gap-8;
+.pet-flowchart__link,
+.pet-flowchart__alt {
+  fill: none;
+  stroke: var(--pet-peri);
+  stroke-width: 1;
 }
 
-.pet-flows__goal {
-  @apply max-w-3xl text-lg;
-  color: var(--pet-mute);
+.pet-flowchart__alt {
+  stroke-dasharray: 3 3;
+  stroke-opacity: 0.6;
 }
 
-.pet-flows__track {
-  @apply flex flex-col items-start gap-6 md:flex-row md:flex-wrap md:gap-x-0 md:gap-y-10;
+.pet-flowchart__reveal {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 8;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
 }
 
-.pet-flows__step {
-  @apply relative flex flex-col items-start gap-3 md:pr-12;
-  animation: pet-node-in 0.6s var(--pet-spring) both;
+.pet-flowchart__head {
+  fill: none;
+  stroke: var(--pet-peri);
+  stroke-width: 1.4;
 }
 
-.pet-flows__step:not(:last-child)::after {
-  @apply absolute top-6 right-2 hidden h-0.5 w-8 origin-left content-[''] md:block;
-  background: var(--pet-line);
-  animation: pet-wire-in 0.5s var(--pet-glide) both;
-  animation-delay: inherit;
+.pet-flowchart__step {
+  fill: var(--pet-deep);
+  stroke: rgb(171 196 255 / 0.3);
 }
 
-.pet-flows__step:nth-child(2) {
-  animation-delay: 60ms;
-}
-.pet-flows__step:nth-child(3) {
-  animation-delay: 120ms;
-}
-.pet-flows__step:nth-child(4) {
-  animation-delay: 180ms;
-}
-.pet-flows__step:nth-child(5) {
-  animation-delay: 240ms;
-}
-.pet-flows__step:nth-child(6) {
-  animation-delay: 300ms;
-}
-.pet-flows__step:nth-child(7) {
-  animation-delay: 360ms;
-}
-.pet-flows__step:nth-child(8) {
-  animation-delay: 420ms;
+.pet-flowchart__step--end {
+  fill: var(--pet-indigo);
+  stroke: var(--pet-indigo);
 }
 
-.pet-flows__node {
-  @apply inline-flex h-12 cursor-pointer items-center gap-2 rounded-full border px-5 text-base font-medium whitespace-nowrap;
-  border-color: rgb(171 196 255 / 0.4);
-  background: var(--pet-night);
-  transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    color 0.3s ease,
-    translate 0.4s var(--pet-spring),
-    scale 0.4s var(--pet-spring);
+.pet-flowchart__decision {
+  fill: var(--pet-night);
+  stroke: var(--pet-lime);
+  stroke-width: 1.2;
 }
 
-.pet-flows__node:hover {
-  @apply -translate-y-0.5;
-  border-color: var(--pet-peri);
-  background: var(--pet-deep);
+.pet-flowchart__label {
+  @apply font-medium;
+  font-size: 8.6px;
+  text-anchor: middle;
+  fill: var(--pet-cloud);
 }
 
-.pet-flows__node--decision {
-  @apply rounded-2xl border-dashed;
-  border-color: rgb(221 243 68 / 0.6);
+.pet-flowchart__label--decision {
+  fill: var(--pet-lime);
 }
 
-.pet-flows__node--end {
-  background: var(--pet-indigo);
-  border-color: var(--pet-indigo);
+.pet-flowchart__tag {
+  font-size: 7.6px;
+  fill: var(--pet-peri);
 }
 
-.pet-flows__node--current,
-.pet-flows__node--current:hover {
-  @apply scale-105 border-solid;
-  background: var(--pet-lime);
-  border-color: var(--pet-lime);
-  color: var(--pet-night);
+.pet-flowchart__tag--center {
+  text-anchor: middle;
 }
 
-.pet-flows__icon {
-  @apply size-4 shrink-0;
+.pet-flowchart__leaf {
+  fill: var(--pet-night);
+  stroke: rgb(171 196 255 / 0.35);
+  stroke-dasharray: 3 2;
 }
 
-.pet-flows__branch {
-  @apply ml-4 inline-flex items-center gap-1.5 text-base;
-  color: var(--pet-peri);
-}
-
-.pet-flows__branch-icon {
-  @apply size-4;
-}
-
-.pet-flows__detail {
-  @apply max-w-3xl rounded-[28px] border p-8;
-  border-color: var(--pet-line);
-  background: var(--pet-deep);
-}
-
-.pet-flows__detail-body {
-  @apply flex flex-col gap-2;
-  animation: pet-detail-in 0.5s var(--pet-glide) both;
-}
-
-.pet-flows__detail-title {
-  @apply text-2xl font-extrabold;
-  color: var(--pet-lime);
-}
-
-.pet-flows__detail-text {
-  @apply text-lg leading-relaxed;
+.pet-flowchart__leaf-text {
+  font-size: 7.6px;
+  text-anchor: middle;
+  fill: var(--pet-cloud);
 }
 
 /* ───────── 06 · Diseño ───────── */
@@ -1542,17 +1429,7 @@
 
 /* Flow: pantallas grises señaladas con un conector que se dibuja */
 .pet-flowshow {
-  @apply relative flex flex-col gap-16 pt-24;
-  /* Su aire de 96 px de arriba (para la palabra de fondo) va dentro del
-     espacio entre módulos */
-  margin-top: -6rem;
-}
-
-.pet-flowshow__ghost {
-  @apply pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 font-extrabold whitespace-nowrap select-none;
-  font-size: clamp(140px, 20vw, 320px);
-  line-height: 1;
-  color: var(--pet-ghost);
+  @apply relative flex flex-col gap-16;
 }
 
 .pet-flowshow__intro {
@@ -1612,20 +1489,7 @@
 
 /* Sistema de diseño: espacio reservado */
 .pet-system {
-  @apply relative pt-24;
-  margin-top: -6rem;
-}
-
-/* Si va justo después de la apertura del capítulo, además queda a 64 px */
-.pet-chapter > .pet-head + .pet-system {
-  margin-top: calc(var(--pet-title-pull) - 6rem);
-}
-
-.pet-system__ghost {
-  @apply pointer-events-none absolute top-0 left-0 font-extrabold whitespace-nowrap select-none;
-  font-size: clamp(140px, 20vw, 320px);
-  line-height: 1;
-  color: var(--pet-ghost);
+  @apply relative;
 }
 
 .pet-system__frame {
@@ -1654,12 +1518,6 @@
   }
 }
 
-@keyframes pet-marquee {
-  to {
-    translate: -100% 0;
-  }
-}
-
 @keyframes pet-node-in {
   from {
     opacity: 0;
@@ -1674,21 +1532,10 @@
   }
 }
 
-@keyframes pet-detail-in {
-  from {
-    opacity: 0;
-    translate: 0 12px;
-  }
-}
-
 /* Celular: el submenú queda más pegado al borde */
 @media (max-width: 767px) {
   .pet-chapter {
     @apply pl-16;
-  }
-
-  .pet-marquee {
-    @apply -ml-16;
   }
 }
 

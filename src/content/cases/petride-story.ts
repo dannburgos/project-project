@@ -8,7 +8,6 @@ export const petrideStory: PetrideStory = {
     'Introducción',
     'Investigación',
     'Usuario',
-    'Solución',
     'Arquitectura',
     'Diseño'
   ],
@@ -20,6 +19,10 @@ export const petrideStory: PetrideStory = {
   },
   intro: {
     wordmark: 'PetRide',
+    logo: {
+      src: '/petride/logos/petride_logo.svg',
+      alt: 'Logo de PetRide: un perro y un gato dentro de un pin de ubicación, con una carretera'
+    },
     tagline:
       'Transporte por app para moverte con tu mascota, con conductores preparados para recibirla.',
     facts: [
@@ -29,7 +32,6 @@ export const petrideStory: PetrideStory = {
       { title: 'Alcance', text: '3 user flows' }
     ],
     coverLabel: 'Imagen principal · persona viajando con su mascota en PetRide',
-    marquee: ['Registrar mascota', 'Solicitar viaje', 'Gestionar viaje'],
     processTitle: 'Proceso de diseño',
     process: [
       { title: 'Investigación', text: 'Investigación secundaria · Benchmark' },
@@ -42,7 +44,6 @@ export const petrideStory: PetrideStory = {
   },
   research: {
     head: {
-      ghost: 'Reto',
       title: 'Investigar y descubrir',
       lead: 'Qué pasa hoy cuando alguien necesita moverse con su mascota y duda si la aceptarán.'
     },
@@ -58,8 +59,6 @@ export const petrideStory: PetrideStory = {
       text: 'Investigación secundaria, benchmark de apps de movilidad y análisis conceptual asistido por IA. No hubo entrevistas ni pruebas con usuarios: lo que sigue son hipótesis de diseño.'
     },
     benchmarkTitle: 'Benchmark',
-    benchmarkLead:
-      'Tres apps de movilidad y cómo resuelven hoy los viajes con mascotas.',
     benchmarkFeatureLabel: 'Qué revisamos',
     competitors: ['Cabify Mascotas', 'Uber Pet', 'inDrive'],
     competitorLogos: [
@@ -155,7 +154,6 @@ export const petrideStory: PetrideStory = {
   },
   user: {
     head: {
-      ghost: 'Usuario',
       title: 'Para quién es',
       lead: 'Una persona que vive en la ciudad y lleva a su mascota a todas partes.'
     },
@@ -274,83 +272,12 @@ export const petrideStory: PetrideStory = {
       }
     ]
   },
-  solution: {
-    head: {
-      ghost: 'Solución',
-      title: 'Lo que proponemos'
-    },
-    problemsTitle: 'De problema a oportunidad',
-    problems: [
-      {
-        problem: 'Disponibilidad incierta',
-        opportunity: 'Servicio especializado'
-      },
-      {
-        problem: 'Falta de información',
-        opportunity: 'Condiciones claras antes de confirmar'
-      },
-      {
-        problem: 'Compatibilidad limitada',
-        opportunity: 'Cruzar mascota, conductor y vehículo'
-      },
-      {
-        problem: 'Comunicación insuficiente',
-        opportunity: 'Chat con el conductor'
-      },
-      {
-        problem: 'Incertidumbre en el viaje',
-        opportunity: 'Seguimiento y estados claros'
-      }
-    ],
-    solutionLabel: 'Solución',
-    solution:
-      'PetRide conecta a personas con mascotas con conductores preparados, y tiene en cuenta las necesidades de cada animal y las condiciones del viaje.',
-    actorsTitle: 'Quién participa',
-    actors: [
-      {
-        name: 'Usuario',
-        role: 'Registra a sus mascotas y pide los viajes.'
-      },
-      {
-        name: 'Conductor',
-        role: 'Acepta y hace los viajes para los que está preparado.'
-      },
-      {
-        name: 'PetRide',
-        role: 'Gestiona la solicitud, la compatibilidad, la asignación y el seguimiento.'
-      }
-    ],
-    goalsTitle: 'Objetivos del producto',
-    goals: [
-      'Facilitar que las personas pidan transporte con sus mascotas.',
-      'Mejorar la compatibilidad entre animales y vehículos.',
-      'Generar confianza con información clara del conductor, el vehículo y el servicio.',
-      'Acompañar el viaje con comunicación y seguimiento.',
-      'Recoger la evaluación del servicio al final.'
-    ],
-    mvpTitle: 'Qué incluye el MVP',
-    mvp: [
-      'Perfiles de mascotas',
-      'Viajes inmediatos',
-      'Una o varias mascotas',
-      'Compatibilidad',
-      'Tarifa antes de confirmar',
-      'Asignación automática',
-      'Perfil del conductor',
-      'Chat',
-      'Seguimiento',
-      'Calificación'
-    ]
-  },
   architecture: {
     head: {
-      ghost: 'Mapa',
       title: 'Cómo se organiza',
-      lead: 'Una arquitectura enfocada solo en los tres recorridos del prototipo.'
+      hideTitle: true
     },
     siteMapTitle: 'Site map',
-    siteMapLead:
-      'Las cuatro entradas de la app y las pantallas que cuelgan de cada una.',
     siteMapCenter: 'PetRide',
     siteMap: [
       {
@@ -391,10 +318,10 @@ export const petrideStory: PetrideStory = {
     flowsLead:
       'Los tres recorridos del prototipo, con sus decisiones y caminos alternos.',
     flowsHint: 'Elige un paso para ver qué pasa en él.',
-    branchLabel: 'Si no',
+    flowYes: 'Sí',
+    flowNo: 'No',
     flows: [
       {
-        number: '01',
         name: 'Registrar mascota',
         goal: 'Registrar una o varias mascotas para tenerlas en cuenta al pedir un viaje.',
         nodes: [
@@ -420,7 +347,8 @@ export const petrideStory: PetrideStory = {
             kind: 'decision',
             detail:
               'Si falta algo, se marcan los campos pendientes y se conserva lo que ya escribiste.',
-            branch: 'Corregir campos'
+            branch: 'Corregir campos',
+            returnTo: 'Completar información'
           },
           {
             label: 'Revisar información',
@@ -443,7 +371,6 @@ export const petrideStory: PetrideStory = {
         ]
       },
       {
-        number: '02',
         name: 'Solicitar viaje',
         goal: 'Configurar y confirmar un viaje inmediato y conseguir un conductor compatible.',
         nodes: [
@@ -458,7 +385,8 @@ export const petrideStory: PetrideStory = {
             kind: 'decision',
             detail:
               'Si no hay mascotas registradas, abre el registro y vuelve a la solicitud.',
-            branch: 'Registrar mascota'
+            branch: 'Registrar mascota',
+            returnTo: 'Elegir mascotas'
           },
           {
             label: 'Elegir mascotas',
@@ -471,7 +399,8 @@ export const petrideStory: PetrideStory = {
             kind: 'decision',
             detail:
               'Se evalúan especie, tamaño, peso y cantidad. Si no es compatible, se explica y se puede cambiar la selección.',
-            branch: 'Cambiar selección'
+            branch: 'Cambiar selección',
+            returnTo: 'Elegir mascotas'
           },
           {
             label: 'Tarifa y resumen',
@@ -500,7 +429,6 @@ export const petrideStory: PetrideStory = {
         ]
       },
       {
-        number: '03',
         name: 'Gestionar viaje',
         goal: 'Acompañar el viaje desde la asignación hasta la calificación.',
         nodes: [
@@ -521,7 +449,8 @@ export const petrideStory: PetrideStory = {
             kind: 'decision',
             detail:
               'Mientras no llega, se sigue su ubicación. El viaje no empieza solo cuando el conductor llega.',
-            branch: 'Seguir llegada'
+            branch: 'Seguir llegada',
+            returnTo: 'Conductor en camino'
           },
           {
             label: 'Viaje en curso',
@@ -545,16 +474,11 @@ export const petrideStory: PetrideStory = {
   },
   design: {
     head: {
-      ghost: 'Diseño',
-      title: 'De la estructura a la interfaz',
-      lead: 'Las pantallas toman forma, de la baja fidelidad al diseño final.'
+      title: 'De la estructura a la interfaz'
     },
     wireframesTitle: 'Wireframes',
     wireframeCount: 16,
-    flowGhost: 'Flow',
     flowTitle: 'Registrar mascota',
-    flowLead:
-      'El flujo en pantallas reales: cada pantalla señala la acción que lleva a la siguiente.',
     flowScreens: [
       {
         label: 'Pantalla · Mis mascotas',
@@ -567,7 +491,6 @@ export const petrideStory: PetrideStory = {
         text: 'Cuatro datos obligatorios para que la compatibilidad funcione; el resto es opcional.'
       }
     ],
-    systemGhost: 'Sistema',
     systemTitle: 'Sistema de diseño',
     systemText: 'Aquí va el sistema de diseño de PetRide.'
   }

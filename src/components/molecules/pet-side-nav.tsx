@@ -47,17 +47,6 @@ export function PetSideNav({ sections, label, openLabel }: PetSideNavProps) {
           />
         </svg>
         <PetFlower className="pet-nav__bloom" />
-        <span className="pet-nav__seeds" aria-hidden="true">
-          {sections.map((name, index) => (
-            <span
-              key={name}
-              className={cn(
-                'pet-nav__seed',
-                index === section && 'pet-nav__seed--current'
-              )}
-            />
-          ))}
-        </span>
       </button>
       <ol id="pet-nav-list" className="pet-nav__list">
         {sections.map((name, index) => {

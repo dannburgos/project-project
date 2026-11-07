@@ -12,8 +12,10 @@ export type PetListBlock = {
 };
 
 export type PetChapterHead = {
-  ghost: string;
   title: string;
+  // El título puede quedar solo para lectores de pantalla y para el salto del
+  // menú, sin verse en la página
+  hideTitle?: boolean;
   // La bajada es opcional: hay capítulos que abren solo con el título
   lead?: string;
 };
@@ -53,16 +55,6 @@ export type PetJourneyStage = {
   opportunity: string;
 };
 
-export type PetProblem = {
-  problem: string;
-  opportunity: string;
-};
-
-export type PetActor = {
-  name: string;
-  role: string;
-};
-
 export type PetSiteGroup = {
   name: string;
   screens: readonly string[];
@@ -76,10 +68,11 @@ export type PetFlowNode = {
   detail: string;
   // Camino alterno que sale de una decisión
   branch?: string;
+  // Paso al que vuelve ese camino alterno (el nombre de otro paso del flujo)
+  returnTo?: string;
 };
 
 export type PetUserFlow = {
-  number: string;
   name: string;
   goal: string;
   nodes: readonly PetFlowNode[];
@@ -102,10 +95,11 @@ export type PetrideStory = {
   };
   intro: {
     wordmark: string;
+    // Logo de PetRide, que acompaña al nombre en la portada
+    logo: PetImage;
     tagline: string;
     facts: readonly PetLabeledText[];
     coverLabel: string;
-    marquee: readonly string[];
     processTitle: string;
     process: readonly PetLabeledText[];
   };
@@ -116,7 +110,6 @@ export type PetrideStory = {
     opportunity: PetLabeledText;
     method: PetLabeledText;
     benchmarkTitle: string;
-    benchmarkLead: string;
     benchmarkFeatureLabel: string;
     competitors: readonly string[];
     // Logo de cada app, en el mismo orden que las columnas del benchmark
@@ -148,40 +141,25 @@ export type PetrideStory = {
     };
     journey: readonly PetJourneyStage[];
   };
-  solution: {
-    head: PetChapterHead;
-    problemsTitle: string;
-    problems: readonly PetProblem[];
-    solutionLabel: string;
-    solution: string;
-    actorsTitle: string;
-    actors: readonly PetActor[];
-    goalsTitle: string;
-    goals: readonly string[];
-    mvpTitle: string;
-    mvp: readonly string[];
-  };
   architecture: {
     head: PetChapterHead;
     siteMapTitle: string;
-    siteMapLead: string;
     siteMapCenter: string;
     siteMap: readonly PetSiteGroup[];
     flowsTitle: string;
     flowsLead: string;
     flowsHint: string;
-    branchLabel: string;
+    // Rótulos de las flechas que salen de una decisión
+    flowYes: string;
+    flowNo: string;
     flows: readonly PetUserFlow[];
   };
   design: {
     head: PetChapterHead;
     wireframesTitle: string;
     wireframeCount: number;
-    flowGhost: string;
     flowTitle: string;
-    flowLead: string;
     flowScreens: readonly PetFlowScreen[];
-    systemGhost: string;
     systemTitle: string;
     systemText: string;
   };

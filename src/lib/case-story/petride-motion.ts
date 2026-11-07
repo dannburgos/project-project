@@ -17,7 +17,7 @@ import {
 // - letters: el título sube letra por letra con rebote
 // - fill: el párrafo se pinta palabra por palabra con el scroll
 // - rise / pop / shape / slide: piezas que entran al llegar a la vista
-// - ghost / speed / spin: parallax ligado al scroll
+// - speed / spin: parallax ligado al scroll
 // - arc / line / draw: trazos que se dibujan con el scroll
 // Sin animación (reducir movimiento) el contenido queda visible tal cual y
 // los saltos del submenú son directos.
@@ -277,23 +277,6 @@ function revealOnEnter(root: HTMLElement) {
 }
 
 function scrubOnScroll(root: HTMLElement) {
-  queryAll(root, '[data-pet-ghost]').forEach(ghost => {
-    gsap.fromTo(
-      ghost,
-      { xPercent: 12 },
-      {
-        xPercent: -12,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: ghost,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true
-        }
-      }
-    );
-  });
-
   queryAll(root, '[data-pet-speed]').forEach(column => {
     const speed = Number(column.dataset.petSpeed ?? 0);
     gsap.fromTo(
@@ -461,6 +444,97 @@ function revealJourney(root: HTMLElement) {
   return media;
 }
 
+// Diagramas que crecen al llegar: sus líneas se dibujan a la vez que nacen los
+// nodos. El site map lo hace con CSS (retrasos encadenados) y solo hay que
+// avisarle cuándo empezar; los user flows se arman con una línea de tiempo.
+function growDiagrams(root: HTMLElement) {
+  const cleanups: (() => void)[] = [];
+
+  queryAll(root, '[data-pet-diagram]').forEach(diagram => {
+    diagram.setAttribute('data-pending', '');
+    const trigger = ScrollTrigger.create({
+      trigger: diagram,
+      start: 'top 75%',
+      once: true,
+      onEnter: () => diagram.setAttribute('data-drawn', '')
+    });
+    cleanups.push(() => {
+      trigger.kill();
+      diagram.removeAttribute('data-pending');
+      diagram.removeAttribute('data-drawn');
+    });
+  });
+
+  const context = gsap.context(() => {
+    queryAll(root, '[data-pet-flowchart]').forEach(chart => {
+      queryAll(chart, '.pet-flowchart__flow').forEach(flow => {
+        const timeline = gsap.timeline({
+          scrollTrigger: { trigger: chart, start: 'top 70%', once: true }
+        });
+        const draw = (line: Element | null, at: string | number) => {
+          const reveal = line?.querySelector('[data-fc-reveal]');
+          if (!reveal) return 0;
+          timeline.fromTo(
+            reveal,
+            { strokeDashoffset: 1 },
+            { strokeDashoffset: 0, duration: 0.3, ease: 'none' },
+            at
+          );
+          return 0.3;
+        };
+        const pop = (target: Element | null, at: string | number) => {
+          if (!target) return;
+          timeline.fromTo(
+            target,
+            { opacity: 0, scale: 0.85, transformOrigin: '50% 50%' },
+            { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' },
+            at
+          );
+        };
+
+        pop(flow.querySelector('[data-fc-start]'), 0);
+        let cursor = 0.25;
+        queryAll(flow, '[data-fc-step]').forEach(step => {
+          draw(step.querySelector(':scope > [data-fc-line]'), cursor);
+          cursor += 0.28;
+          pop(step.querySelector(':scope > [data-fc-node]'), cursor);
+          const branch = step.querySelector(':scope > [data-fc-branch]');
+          // Los "Sí" del camino principal salen con el paso al que llevan
+          queryAll(step, ':scope > [data-fc-tag]').forEach(tag =>
+            timeline.fromTo(
+              tag,
+              { opacity: 0 },
+              { opacity: 1, duration: 0.2 },
+              cursor + 0.2
+            )
+          );
+          if (branch) {
+            const lines = queryAll(branch, ':scope > [data-fc-line]');
+            const tag = branch.querySelector(':scope > [data-fc-tag]');
+            const leaf = branch.querySelector(':scope > [data-fc-leaf]');
+            draw(lines[0] ?? null, cursor + 0.2);
+            if (tag)
+              timeline.fromTo(
+                tag,
+                { opacity: 0 },
+                { opacity: 1, duration: 0.2 },
+                cursor + 0.3
+              );
+            pop(leaf, cursor + 0.45);
+            draw(lines[1] ?? null, cursor + 0.75);
+          }
+          cursor += 0.3;
+        });
+      });
+    });
+  }, root);
+
+  return () => {
+    cleanups.forEach(cleanup => cleanup());
+    context.revert();
+  };
+}
+
 // Con animación: todo el movimiento del caso y saltos con cortina
 export function setupPetrideMotion(root: HTMLElement) {
   const stopWires = watchWires(root);
@@ -469,6 +543,7 @@ export function setupPetrideMotion(root: HTMLElement) {
   revealOnEnter(root);
   scrubOnScroll(root);
   const journey = revealJourney(root);
+  const diagrams = growDiagrams(root);
   const triggers = trackChapters(root);
   const counter = watchCounterVisibility(root);
   const stopJumps = listenJumps(root, index => curtainJump(root, index));
@@ -478,6 +553,7 @@ export function setupPetrideMotion(root: HTMLElement) {
     stopJumps();
     stopWires();
     journey.revert();
+    diagrams();
     triggers.forEach(trigger => trigger.kill());
     counter.kill();
     root.removeAttribute('data-counter-hidden');

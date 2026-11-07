@@ -1,4 +1,5 @@
 import { PetLetters } from '@/components/atoms/pet-letters';
+import { cn } from '@/lib/utils';
 import type { PetChapterHead as PetChapterHeadContent } from '@/content/petride-story.types';
 
 type PetChapterHeadProps = {
@@ -11,10 +12,11 @@ type PetChapterHeadProps = {
 export function PetChapterHead({ head }: PetChapterHeadProps) {
   return (
     <header className="pet-head">
-      <span className="pet-head__ghost" aria-hidden="true" data-pet-ghost>
-        {head.ghost}
-      </span>
-      <h2 className="pet-head__title" tabIndex={-1} data-pet-focus>
+      <h2
+        className={cn('pet-head__title', head.hideTitle && 'sr-only')}
+        tabIndex={-1}
+        data-pet-focus
+      >
         <PetLetters text={head.title} />
       </h2>
       {head.lead && (
