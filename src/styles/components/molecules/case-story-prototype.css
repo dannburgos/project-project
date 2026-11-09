@@ -59,37 +59,9 @@
   color: var(--story-fg);
 }
 
-.story-prototype__live {
-  @apply mt-10 flex items-center gap-3 text-lg font-medium;
-  color: var(--story-fg);
-}
-
-.story-prototype__live svg {
-  @apply size-5;
-  color: var(--story-light);
-}
-
 /* Punto que late: el celular está vivo */
-.story-prototype__dot {
-  @apply relative size-2.5 rounded-full;
-  background: var(--story-light);
-  box-shadow: 0 0 0 6px rgb(162 201 108 / 0.18);
-  animation: story-prototype-pulse 1.8s ease-in-out infinite;
-}
-
-@keyframes story-prototype-pulse {
-  50% {
-    box-shadow: 0 0 0 10px rgb(162 201 108 / 0);
-  }
-}
-
 .story-prototype__flows {
   @apply mt-8 w-full;
-}
-
-.story-prototype__flows-label {
-  @apply mb-3 text-xs tracking-[0.14em] uppercase;
-  color: var(--story-muted);
 }
 
 .story-prototype__flow-list {
@@ -165,10 +137,6 @@
 @media (max-width: 899px), (prefers-reduced-motion: reduce) {
   .story-rain {
     height: 100svh;
-  }
-
-  .story-rain > .story-opener {
-    @apply absolute top-14 right-4 left-8 z-20 m-0;
   }
 
   .story-view.story-prototype {

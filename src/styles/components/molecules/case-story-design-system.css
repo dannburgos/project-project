@@ -1,0 +1,4 @@
+/* 06 · Sistema de diseño: el título, centrado en la vista */
+.story-design-system {
+  @apply flex flex-col justify-center;
+}

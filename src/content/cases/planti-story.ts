@@ -10,22 +10,20 @@ export const plantiStory: CaseStory = {
     'Usuario',
     'Benchmark',
     'Concepto',
+    'Sistema de diseño',
     'Flujos',
     'Prototipo'
   ],
   intro: {
     name: 'Planti',
     tagline: 'App móvil para el cuidado de plantas',
-    headline: 'Saber qué necesita tu planta es fácil. Recordarlo, no.',
+    headline: 'Saber qué necesita tu\u00a0planta es fácil. Recordarlo, no.',
     text: 'La información sobre plantas existe, pero convertirla en cuidado diario es difícil. Planti conecta las necesidades de cada planta con acciones claras y una rutina fácil de mantener.',
     facts: [
       { label: 'Scope', value: 'Investigación · UX · UI' },
-      { label: 'Rol', value: 'Product Designer · UX/UI' },
-      { label: 'Categoría', value: 'Estilo de vida' },
-      { label: 'Tipo', value: 'Proyecto conceptual' }
+      { label: 'Rol', value: 'Product Designer · UX/UI' }
     ]
   },
-  respiteLabel: 'Respiro · hojas de cerca, a todo el ancho',
   problem: {
     headline:
       'Cuidar una planta parece sencillo. Hasta que tienes que hacerlo.',
@@ -43,38 +41,44 @@ export const plantiStory: CaseStory = {
         number: '01',
         title: 'Entender',
         question: '¿Qué necesita realmente mi planta?',
-        text: 'La información suele ser general y no considera las necesidades ni el contexto de cada planta.',
-        voice: 'Busco información para entender qué sucede.'
+        text: 'La información es general e ignora el\ncontexto de cada planta.'
       },
       {
         number: '02',
         title: 'Decidir',
         question: '¿Qué debería hacer?',
-        text: 'Convertir lo que sabes en qué hacer y cuándo hacerlo.',
-        voice: 'Saber qué hacer y cuándo hacerlo.'
+        text: 'Convertir lo que sabes en acciones: qué hacer y cuándo hacerlo.'
       },
       {
         number: '03',
         title: 'Mantener',
         question: '¿Cómo lo vuelvo rutina?',
-        text: 'Sostener esos cuidados como una rutina constante.',
-        voice: 'Consulto la información e intento recordarla.'
+        text: 'Sostener esos cuidados como una rutina, semana tras semana.'
       }
     ],
-    voiceName: 'Laura',
     challenge:
       'El reto no es encontrar información. Es convertirla en decisiones de cuidado.',
     references: [
-      'Referente · plantas en casa',
-      'Referente · persona cuidando sus plantas',
-      'Referente · espacio con luz natural'
+      {
+        label: 'Referente · plantas en casa',
+        src: '/planti/reference-sala-soleada.png'
+      },
+      {
+        label: 'Referente · persona cuidando sus plantas',
+        src: '/planti/reference-cuidando-planta.png'
+      },
+      {
+        label: 'Referente · espacio con luz natural',
+        src: '/planti/reference-rincon-luminoso.png'
+      }
     ]
   },
   user: {
     quote:
       '“Quiero cuidar bien mis plantas, pero no quiero tener que acordarme de qué necesita cada una.”',
     name: 'Laura',
-    details: '28 años · Diseñadora gráfica · Apartamento · Tiene 4 plantas',
+    details: '28 años · Diseñadora gráfica\nApartamento · Tiene 4 plantas',
+    photo: '/planti/laura-planti.png',
     traits: [
       { label: 'Objetivo', text: 'Plantas sanas sin complicar su rutina.' },
       {
@@ -91,20 +95,21 @@ export const plantiStory: CaseStory = {
       {
         number: '01',
         title: 'Recordar es lo más difícil',
-        text: 'Consulta la información, pero no logra retenerla para cada planta.'
+        text: 'Consulta la información, pero no logra retenerla para cada planta ni aplicarla cuando la necesita.'
       },
       {
         number: '02',
         title: 'La información está dispersa',
-        text: 'Busca en internet y en varias apps cada vez que algo cambia.'
+        text: 'Busca en internet y en varias apps cada vez que algo cambia, sin un lugar único.'
       },
       {
         number: '03',
         title: 'Quiere claridad, no más datos',
-        text: 'Espera saber qué hacer y cuándo, con recordatorios sencillos.'
+        text: 'Espera saber qué hacer y cuándo, con recordatorios sencillos y sin tener que investigar.'
       }
     ],
-    imageLabel: 'Contexto · Laura en su apartamento con sus plantas'
+    imageLabel: 'Contexto · Laura en su apartamento con sus plantas',
+    image: '/planti/user-laura-contexto.png'
   },
   benchmark: {
     title: '¿Qué hacen hoy las apps de plantas?',
@@ -115,6 +120,7 @@ export const plantiStory: CaseStory = {
     apps: [
       {
         name: 'PlantIn',
+        icon: '/planti/benchmark/plantin.png',
         focus: 'Cuidado avanzado y herramientas técnicas',
         strengths: [
           'Medidor de luz y cálculo de riego',
@@ -125,6 +131,7 @@ export const plantiStory: CaseStory = {
       },
       {
         name: 'PictureThis',
+        icon: '/planti/benchmark/picturethis.png',
         focus: 'Identificación y diagnóstico por imagen',
         strengths: [
           'Identificación rápida y precisa',
@@ -139,6 +146,7 @@ export const plantiStory: CaseStory = {
       },
       {
         name: 'Plant Parent',
+        icon: '/planti/benchmark/plant-parent.png',
         focus: 'Seguimiento y estado de la planta',
         strengths: [
           'Seguimiento del estado de salud',
@@ -160,10 +168,10 @@ export const plantiStory: CaseStory = {
     ],
     closing: 'Planti guía, acompaña y educa, sin abrumar.'
   },
+  designSystem: {
+    title: 'Sistema de diseño'
+  },
   concept: {
-    idea: 'Primero Planti aprende sobre tu planta. Después te ayuda a cuidarla.',
-    subtitle: 'Convertir información en acciones de cuidado.',
-    logoLabel: 'Logo de Planti',
     capabilitiesTitle: '¿Qué hace Planti?',
     pillars: [
       {
@@ -206,8 +214,9 @@ export const plantiStory: CaseStory = {
     ]
   },
   flows: {
-    title: 'Tres momentos para cuidar una planta',
-    imageLabel: 'Pantallas de los tres flujos',
+    title: 'Dos momentos para cuidar una planta',
+    imageLabel: 'Pantallas de los dos flujos',
+    image: '/planti/flows-jardineria-bohemia.png',
     items: [
       {
         number: '01',
@@ -216,20 +225,15 @@ export const plantiStory: CaseStory = {
       },
       {
         number: '02',
-        title: 'Crear una rutina de cuidado',
-        text: 'Convertir las necesidades de una planta en cuidados organizados.'
-      },
-      {
-        number: '03',
-        title: 'Completar un cuidado',
-        text: 'Consultar tareas y registrar los cuidados realizados.'
+        title: 'Crear una rutina',
+        text: 'La app convierte las necesidades de la planta en una rutina de cuidados.'
       }
     ]
   },
   prototype: {
     title: 'Prototipo interactivo',
     src: '/prototypes/planti',
-    eyebrow: 'Prototipo interactivo · 2026',
+    eyebrow: 'Prototipo interactivo',
     heading: 'Cuida tus plantas, ',
     headingAccent: 'sin adivinar.',
     description: [
@@ -238,23 +242,32 @@ export const plantiStory: CaseStory = {
       { text: ' te ayuda a encontrarla y ' },
       { text: 'convierte sus necesidades en cuidados.', isStrong: true }
     ],
-    liveHint: 'El celular de la derecha recorre cada flujo, dale play',
-    flowsLabel: 'Elige un flujo',
     soonLabel: 'Próximamente',
     flows: [
       { number: '01', title: 'Incorporar una planta', isReady: true },
-      { number: '02', title: 'Crear una rutina de cuidado', isReady: true },
-      { number: '03', title: 'Completar un cuidado', isReady: false }
+      { number: '02', title: 'Crear una rutina', isReady: true }
     ],
     screens: [
-      { label: 'Pantalla principal · Inicio', isMain: true },
-      { label: 'Pantalla principal · Mis plantas', isMain: true },
-      { label: 'Pantalla principal · Rutina', isMain: true },
-      { label: 'Buscar planta' },
-      { label: 'Personalizar planta' },
-      { label: 'Necesidades de cuidado' },
-      { label: 'Rutina creada' },
-      { label: 'Cuidado completado' },
+      {
+        label: 'Pantalla principal · Portada',
+        src: '/planti/screens/splash.png',
+        isMain: true
+      },
+      {
+        label: 'Pantalla principal · Inicio',
+        src: '/planti/screens/home.png',
+        isMain: true
+      },
+      {
+        label: 'Pantalla principal · Mis plantas',
+        src: '/planti/screens/plants.png',
+        isMain: true
+      },
+      { label: 'Rutina', src: '/planti/screens/routine.png' },
+      { label: 'Buscar planta', src: '/planti/screens/search.png' },
+      { label: 'Personalizar planta', src: '/planti/screens/personalize.png' },
+      { label: 'Necesidades de cuidado', src: '/planti/screens/needs.png' },
+      { label: 'Rutina creada', src: '/planti/screens/plan.png' },
       { label: 'Mockup · persona usando Planti' },
       { label: 'Logo · en contexto' }
     ]

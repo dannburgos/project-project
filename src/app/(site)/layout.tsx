@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import {
   Geist,
   Geist_Mono,
-  Playfair_Display as PlayfairDisplay
+  Playfair_Display as PlayfairDisplay,
+  Poppins
 } from 'next/font/google';
 
 import { CustomCursor } from '@/components/atoms/custom-cursor';
@@ -21,6 +22,13 @@ const geistSans = Geist({
 const playfair = PlayfairDisplay({
   variable: '--font-serif',
   subsets: ['latin']
+});
+
+// Tipografía de Planti: el caso de estudio la usa en todo su recorrido
+const poppins = Poppins({
+  variable: '--font-poppins',
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800']
 });
 
 const geistMono = Geist_Mono({
@@ -42,7 +50,7 @@ export default function RootLayout({
     // Todo el sitio en modo oscuro: activa la paleta oscura del tema
     <html lang="es" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${poppins.variable} antialiased`}
       >
         <SmoothScroll />
         <SiteAmbient />
