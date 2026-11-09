@@ -9,6 +9,7 @@ type PlantiSizeSliderProps = {
   sizes: readonly PlantiSizeOption[];
   // Cuál tamaño está elegido (ninguno, hasta que se elige)
   selectedKey: string | null;
+  onSelect?: (key: string) => void;
 };
 
 // El tamaño de la planta: una foto de la misma escena en la que la planta crece
@@ -16,7 +17,8 @@ type PlantiSizeSliderProps = {
 // bolita se desliza sola hasta el tamaño elegido.
 export function PlantiSizeSlider({
   sizes,
-  selectedKey
+  selectedKey,
+  onSelect
 }: PlantiSizeSliderProps) {
   return (
     <div className={cn('planti-size', `planti-size--${selectedKey ?? 'none'}`)}>
@@ -46,6 +48,7 @@ export function PlantiSizeSlider({
               `planti-size__stop--${size.key}`,
               size.key === selectedKey && 'planti-size__stop--active'
             )}
+            onClick={onSelect ? () => onSelect(size.key) : undefined}
           >
             {size.label}
           </li>

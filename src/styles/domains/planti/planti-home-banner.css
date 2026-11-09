@@ -1,44 +1,21 @@
-/* Banner de tres destacados: se mueve solo y deja asomar el siguiente. El
-   espacio de la derecha es para la foto de cada uno. */
+/* Tarjeta destacada de Inicio: texto a la izquierda y la foto a la derecha. */
 .planti-banner {
-  @apply relative -mx-5 -my-8 flex gap-3 overflow-x-auto px-5 py-8;
-  scrollbar-width: none;
-}
-
-.planti-banner::-webkit-scrollbar {
-  @apply hidden;
-}
-
-.planti-banner__slide {
-  @apply flex h-44 shrink-0 overflow-hidden rounded-2xl border;
-  flex-basis: calc(100% - 32px);
-  background: var(--planti-white);
-  border-color: var(--planti-card-border);
-  box-shadow: var(--planti-shadow);
+  @apply relative flex overflow-hidden rounded-2xl;
+  background: #f4f6f8;
 }
 
 .planti-banner__text {
-  @apply flex flex-1 flex-col items-start justify-center gap-1 p-4;
-}
-
-.planti-banner__tag {
-  @apply mb-1 rounded-lg px-2.5 py-0.5 text-base font-medium;
-  background: var(--planti-dew);
-  color: var(--planti-leaf);
-}
-
-.planti-banner__tag--alert {
-  background: var(--planti-terracotta-tint);
-  color: var(--planti-terracotta-ink);
+  @apply relative z-10 flex flex-1 flex-col items-start justify-center gap-1 py-5 pr-2 pl-4;
 }
 
 .planti-banner__title {
-  @apply text-base leading-6 font-semibold;
+  @apply text-lg leading-6 font-semibold text-balance;
+  color: var(--planti-forest);
 }
 
 .planti-banner__body {
-  @apply text-base leading-6;
-  color: var(--planti-stone);
+  @apply text-base leading-5 whitespace-pre-line;
+  color: var(--planti-charcoal);
 }
 
 /* El botón no se encoge si el texto de arriba es largo */
@@ -46,31 +23,12 @@
   @apply mt-2 h-10 w-auto shrink-0 px-4 text-base;
 }
 
-.planti-banner__action svg {
-  @apply size-4;
-}
-
+/* La foto ocupa toda la altura de la tarjeta, por detrás del texto, y se sale
+   un poco por la derecha: la tarjeta recorta la mano con sus esquinas */
 .planti-banner__photo {
-  @apply flex w-20 shrink-0 items-center justify-center;
-  background: var(--planti-dew);
-  color: var(--planti-grass);
+  @apply pointer-events-none absolute inset-y-0 right-0;
 }
 
-.planti-banner__photo svg {
-  @apply size-12;
-}
-
-.planti-banner__dots {
-  @apply mt-3 flex justify-center gap-1;
-}
-
-.planti-banner__dot {
-  @apply size-1.5 rounded-full;
-  background: color-mix(in srgb, var(--planti-mist) 50%, transparent);
-  transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-.planti-banner__dot--active {
-  @apply w-4;
-  background: var(--planti-leaf);
+.planti-banner__photo img {
+  @apply absolute -right-10 bottom-0 h-full w-auto max-w-none;
 }

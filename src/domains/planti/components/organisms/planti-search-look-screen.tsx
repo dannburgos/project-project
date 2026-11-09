@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import { ArrowDownToLine, Flower2, Leaf, Sprout } from 'lucide-react';
 
 import { plantiMessages } from '../../messages';
@@ -21,14 +24,20 @@ const LOOK_IMAGES: Partial<Record<keyof typeof LOOK_ICONS, string>> = {
 type PlantiSearchLookScreenProps = {
   // Ya se eligió una forma (en el recorrido, se elige a mitad de la pantalla)
   hasChoice?: boolean;
+  // Se puede elegir otra forma (en el tablero)
+  isInteractive?: boolean;
 };
 
 // Buscar, paso 1: "¿Cómo lucen las hojas de tu planta?". Quien no sabe cómo se
 // llama puede reconocerla por cómo se ve.
 export function PlantiSearchLookScreen({
-  hasChoice = true
+  hasChoice = true,
+  isInteractive = false
 }: PlantiSearchLookScreenProps) {
   const { search } = plantiMessages;
+  const [chosenKey, setChosenKey] = useState<string | null>(
+    search.look.options.find(option => 'isSelected' in option)?.key ?? null
+  );
 
   return (
     <div className="planti-screen">
@@ -41,7 +50,14 @@ export function PlantiSearchLookScreen({
             icon={LOOK_ICONS[option.key]}
             imageSrc={LOOK_IMAGES[option.key]}
             label={option.label}
-            isSelected={hasChoice && 'isSelected' in option}
+            isSelected={
+              isInteractive
+                ? option.key === chosenKey
+                : hasChoice && 'isSelected' in option
+            }
+            onSelect={
+              isInteractive ? () => setChosenKey(option.key) : undefined
+            }
           />
         ))}
       </ul>

@@ -14,13 +14,13 @@ export async function generateMetadata({
   const { flow } = await searchParams;
   const { board } = plantiMessages;
 
-  return {
-    title: getPlantiChapterNumber(flow) === 2 ? board.titleTwo : board.title
-  };
+  const titles = { 1: board.title, 2: board.titleTwo, 3: board.titleThree };
+
+  return { title: titles[getPlantiChapterNumber(flow)] };
 }
 
 // Tablero de revisión: el prototipo corriendo y las pantallas del recorrido,
-// una al lado de la otra. Con ?flow=2 muestra el capítulo 2
+// una al lado de la otra. Con ?flow=2 o ?flow=3 muestra el capítulo 2 o el 3
 export default async function PlantiBoardPage({
   searchParams
 }: PlantiBoardPageProps) {

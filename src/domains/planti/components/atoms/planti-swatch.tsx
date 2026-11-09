@@ -4,6 +4,7 @@ type PlantiSwatchProps = {
   tone: 'plain' | 'patterned' | 'other';
   label: string;
   isSelected?: boolean;
+  onSelect?: () => void;
 };
 
 // Una muestra de color redonda con su nombre debajo; la elegida lleva un aro
@@ -11,12 +12,14 @@ type PlantiSwatchProps = {
 export function PlantiSwatch({
   tone,
   label,
-  isSelected = false
+  isSelected = false,
+  onSelect
 }: PlantiSwatchProps) {
   return (
     <li
       className={cn('planti-swatch', isSelected && 'planti-swatch--selected')}
       aria-current={isSelected ? 'true' : undefined}
+      onClick={onSelect}
     >
       <span
         className={cn('planti-swatch__color', `planti-swatch__color--${tone}`)}

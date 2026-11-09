@@ -1,6 +1,6 @@
 .planti-button {
   @apply inline-flex h-12 w-full items-center justify-center gap-2 rounded-full text-base font-semibold;
-  background: var(--planti-leaf);
+  background: var(--planti-grass);
   color: var(--planti-white);
 }
 
@@ -33,7 +33,7 @@
 }
 
 .planti-sequence-button svg {
-  @apply size-4;
+  @apply size-4 fill-current;
 }
 
 /* Solo el ícono: un círculo con reproducir o pausar */

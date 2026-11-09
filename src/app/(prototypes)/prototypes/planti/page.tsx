@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import { PlantiFlowSwitcher } from '@/domains/planti/components/organisms/planti-flow-switcher';
 import { PlantiPrototype } from '@/domains/planti/components/organisms/planti-prototype';
 import { plantiMessages } from '@/domains/planti/messages';
 import { getPlantiChapterNumber } from '@/domains/planti/planti-chapters';
@@ -23,18 +24,28 @@ function isPrototypeScreen(value?: string): value is PlantiPrototypeScreen {
 // Prototipo de Planti a pantalla completa. El caso de Planti muestra esta
 // misma página dentro de un celular. Sin parámetros corre la secuencia de
 // entrada desde la portada. Mientras se construyen las pantallas, ?screen=
-// elige una suelta (splash, onboarding, home-empty, home-tasks). Con ?embed=1
+// elige una suelta (splash, onboarding, home-empty, lock-screen). Con ?embed=1
 // (dentro del caso) los controles se reducen a un botón de reproducir y pausar.
+// En la página completa, un selector deja pasar del flujo 1 al 2.
 export default async function PlantiPrototypePage({
   searchParams
 }: PlantiPrototypePageProps) {
   const { screen, embed, flow } = await searchParams;
 
+  const chapterNumber = getPlantiChapterNumber(flow);
+  const hasScreen = isPrototypeScreen(screen);
+  // En la página completa (no dentro del caso ni una pantalla suelta) se puede
+  // pasar de un flujo a otro
+  const hasSwitcher = embed !== '1' && !hasScreen;
+
   return (
-    <PlantiPrototype
-      chapterNumber={getPlantiChapterNumber(flow)}
-      screen={isPrototypeScreen(screen) ? screen : undefined}
-      hasMinimalControls={embed === '1'}
-    />
+    <>
+      {hasSwitcher && <PlantiFlowSwitcher current={chapterNumber} />}
+      <PlantiPrototype
+        chapterNumber={chapterNumber}
+        screen={hasScreen ? screen : undefined}
+        hasMinimalControls={embed === '1'}
+      />
+    </>
   );
 }
