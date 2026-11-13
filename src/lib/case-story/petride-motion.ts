@@ -234,6 +234,18 @@ function revealOnEnter(root: HTMLElement) {
     });
   });
 
+  // Etapas del proceso: suben un poco y aparecen, una tras otra, sin rebote
+  queryAll(root, '[data-pet-rise]').forEach(group => {
+    gsap.from(queryAll(group, '[data-pet-rise-item]'), {
+      y: 24,
+      autoAlpha: 0,
+      duration: 0.9,
+      ease: EASE_OUT,
+      stagger: 0.08,
+      scrollTrigger: { trigger: group, start: 'top 80%' }
+    });
+  });
+
   queryAll(root, '[data-pet-shapes]').forEach(group => {
     gsap.from(queryAll(group, '[data-pet-shape]'), {
       scale: 0,
@@ -241,7 +253,15 @@ function revealOnEnter(root: HTMLElement) {
       transformOrigin: '50% 50%',
       duration: 1.1,
       ease: 'elastic.out(1, 0.6)',
-      scrollTrigger: { trigger: group, start: 'top 75%' }
+      // Arranca cuando el grupo completo ya está a la vista; si es más alto que
+      // la pantalla, cuando su parte de arriba llega a la mitad
+      scrollTrigger: {
+        trigger: group,
+        start: () =>
+          group.offsetHeight < window.innerHeight * 0.85
+            ? 'bottom 92%'
+            : 'top 50%'
+      }
     });
   });
 

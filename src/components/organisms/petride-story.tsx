@@ -102,11 +102,10 @@ export function PetrideStory({ story }: PetrideStoryProps) {
 
         <div className="pet-process">
           <PetModuleTitle text={intro.processTitle} as="h2" />
-          {/* Bento de seis bloques de distinto tamaño, con las formas de la
-              marca. Se lee de izquierda a derecha y de arriba abajo, y cada
-              bloque tiene una flecha hacia el siguiente. Al llegar saltan con
-              rebote, como el collage de hallazgos */}
-          <ol className="pet-process__bento" data-pet-shapes>
+          {/* Seis bloques del mismo tamaño, con las formas de la marca. Se leen de
+              izquierda a derecha y de arriba abajo. Al llegar suben un poco y
+              aparecen, uno tras otro */}
+          <ol className="pet-process__bento" data-pet-rise>
             {intro.process.map((stage, index) => (
               <li
                 key={stage.title}
@@ -114,7 +113,7 @@ export function PetrideStory({ story }: PetrideStoryProps) {
                   'pet-process__tile',
                   `pet-process__tile--${index}`
                 )}
-                data-pet-shape
+                data-pet-rise-item
               >
                 <h3 className="pet-process__stage-title">{stage.title}</h3>
                 <p className="pet-process__stage-text">{stage.text}</p>

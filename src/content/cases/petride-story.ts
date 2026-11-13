@@ -27,8 +27,8 @@ export const petrideStory: PetrideStory = {
       'Transporte por app para moverte con tu mascota, con conductores preparados para recibirla.',
     facts: [
       { title: 'Plataforma', text: 'App móvil' },
-      { title: 'Mercado', text: 'Principales ciudades de Colombia' },
-      { title: 'Servicio', text: 'Viajes urbanos inmediatos' },
+      { title: 'Mercado', text: 'Colombia' },
+      { title: 'Servicio', text: 'Viajes urbanos' },
       { title: 'Alcance', text: '3 user flows' }
     ],
     coverLabel: 'Imagen principal · persona viajando con su mascota en PetRide',
@@ -44,8 +44,7 @@ export const petrideStory: PetrideStory = {
   },
   research: {
     head: {
-      title: 'Investigar y descubrir',
-      lead: 'Qué pasa hoy cuando alguien necesita moverse con su mascota y duda si la aceptarán.'
+      title: 'Investigar y descubrir'
     },
     problemLabel: 'El problema',
     problem:
@@ -154,13 +153,13 @@ export const petrideStory: PetrideStory = {
   },
   user: {
     head: {
-      title: 'Para quién es',
+      title: 'Una usuaria, una mascota',
       lead: 'Una persona que vive en la ciudad y lleva a su mascota a todas partes.'
     },
     personaName: 'Gabriela',
     personaTags: ['32 años', 'Empleada', 'DogLover'],
     personaBio:
-      'Gabriela vive en un apartamento en la ciudad. Trabaja de forma híbrida y se mueve todo el tiempo en apps de movilidad. Vive con su perro de tamaño mediano y suele llevarlo a distintos lugares.',
+      'Gabriela vive en un apartamento en la ciudad. Trabaja de forma híbrida y se mueve en apps de movilidad. Vive con su perro mediano y lo lleva a distintos lugares.',
     personaPhoto: {
       src: '/petride/fotos/persona5-recorte.webp',
       alt: 'Mujer joven besando a su perro, un bóxer boston, mientras lo carga'
@@ -170,31 +169,27 @@ export const petrideStory: PetrideStory = {
         title: 'Comportamiento',
         items: [
           'Usa apps de movilidad con frecuencia.',
-          'Confirma si aceptan mascotas.',
-          'Evita servicios con malas experiencias.'
+          'Confirma si aceptan mascotas y evita servicios con malas experiencias.'
         ]
       },
       {
         title: 'Necesidades',
         items: [
-          'Seguridad para su mascota.',
-          'Conductores dispuestos.',
+          'Seguridad para su mascota y conductores dispuestos.',
           'Condiciones claras desde el inicio.'
         ]
       },
       {
         title: 'Frustraciones',
         items: [
-          'Cancelaciones inesperadas.',
-          'Falta de opciones especializadas.',
+          'Cancelaciones inesperadas y falta de opciones especializadas.',
           'Incomodar por viajar con su mascota.'
         ]
       },
       {
         title: 'Motivaciones',
         items: [
-          'Proteger a su mascota.',
-          'Reducir el estrés del traslado.',
+          'Proteger a su mascota y reducir el estrés del traslado.',
           'Sentirse respetada y comprendida.'
         ]
       }
