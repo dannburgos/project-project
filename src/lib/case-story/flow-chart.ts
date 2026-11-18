@@ -1,26 +1,31 @@
 import type { PetFlowNode, PetUserFlow } from '@/content/petride-story.types';
 
-// Diagrama de flujo de un user flow, en unidades de un lienzo SVG vertical:
-// una cápsula de inicio, los pasos en rectángulos, las decisiones en rombos y,
-// al lado de cada decisión, su desvío con la flecha que vuelve al paso donde
-// se corrige. Todo se calcula aquí; el componente solo dibuja.
+// Diagrama de flujo de un user flow en horizontal, en unidades de un lienzo
+// SVG: arriba, el camino principal de izquierda a derecha (pasos en
+// rectángulos, decisiones en rombos); abajo, el carril de desvíos, con el
+// camino alterno de cada decisión justo debajo de ella y la flecha que vuelve
+// al paso donde se corrige. Todo se calcula aquí; el componente solo dibuja.
 
-export const FLOW_CHART_WIDTH = 270;
+// Ancho común: todos los flujos usan el mismo para que el texto se vea igual
+export const FLOW_CHART_WIDTH = 1016;
 
-const CENTER_X = 84;
-const NODE_WIDTH = 132;
-const NODE_HEIGHT = 26;
-const DIAMOND_WIDTH = 140;
-const DIAMOND_HEIGHT = 44;
-const FIRST_Y = 78;
-const PITCH = 58;
-const START_Y = 22;
-const LEAF_X = 170;
-const LEAF_WIDTH = 96;
-const LEAF_HEIGHT = 24;
+const GAP = 22;
+const STEP_WIDTH = 92;
+const STEP_HEIGHT = 42;
+const DIAMOND_WIDTH = 132;
+const DIAMOND_HEIGHT = 68;
+const MAIN_CENTER_Y = 40;
+const LEAF_WIDTH = 112;
+const LEAF_HEIGHT = 36;
+const LEAF_Y = 124;
+const PADDING_X = 2;
+const BOTTOM = 14;
+// Separación de las flechas que vuelven al mismo paso
+const RETURN_SPREAD = 10;
 
 export type FlowChartNode = {
   label: string;
+  lines: string[];
   kind: PetFlowNode['kind'];
   x: number;
   y: number;
@@ -30,11 +35,12 @@ export type FlowChartNode = {
 
 export type FlowChartBranch = {
   label: string;
+  lines: string[];
   x: number;
   y: number;
   width: number;
   height: number;
-  // Flecha del rombo al desvío y, si lo hay, su regreso a un paso
+  // Flecha de la decisión al desvío y, si lo hay, su regreso a un paso
   arrow: string;
   back: string | null;
   noX: number;
@@ -46,9 +52,9 @@ export type FlowChartBranch = {
 export type FlowChartLayout = {
   width: number;
   height: number;
-  start: { label: string; x: number; y: number; width: number; height: number };
   nodes: FlowChartNode[];
-  links: string[];
+  // Flecha que llega a cada paso desde el anterior (el primero no tiene)
+  links: (string | null)[];
   yes: { x: number; y: number; nodeIndex: number }[];
   branches: FlowChartBranch[];
 };
@@ -58,92 +64,118 @@ const isDecision = (node: PetFlowNode) => node.kind === 'decision';
 function nodeSize(node: PetFlowNode) {
   return isDecision(node)
     ? { width: DIAMOND_WIDTH, height: DIAMOND_HEIGHT }
-    : { width: NODE_WIDTH, height: NODE_HEIGHT };
+    : { width: STEP_WIDTH, height: STEP_HEIGHT };
+}
+
+// Parte el texto en hasta dos renglones, sin cortar palabras
+function wrapLabel(label: string, maxChars: number) {
+  const words = label.split(' ');
+  const lines: string[] = [];
+  let current = '';
+  words.forEach(word => {
+    const next = current ? `${current} ${word}` : word;
+    if (next.length > maxChars && current) {
+      lines.push(current);
+      current = word;
+    } else {
+      current = next;
+    }
+  });
+  if (current) lines.push(current);
+  return lines;
 }
 
 export function getFlowChartLayout(flow: PetUserFlow): FlowChartLayout {
-  const startWidth = Math.min(NODE_WIDTH + 24, flow.name.length * 6 + 36);
-  const start = {
-    label: flow.name,
-    x: CENTER_X - startWidth / 2,
-    y: START_Y - 13,
-    width: startWidth,
-    height: 26
-  };
-
-  const nodes: FlowChartNode[] = flow.nodes.map((node, index) => {
+  let cursor = PADDING_X;
+  const nodes: FlowChartNode[] = flow.nodes.map(node => {
     const size = nodeSize(node);
-    const y = FIRST_Y + index * PITCH;
-    return {
+    const placed = {
       label: node.label,
+      lines: wrapLabel(node.label, isDecision(node) ? 10 : 12),
       kind: node.kind,
-      x: CENTER_X - size.width / 2,
-      y: y - size.height / 2,
+      x: cursor,
+      y: MAIN_CENTER_Y - size.height / 2,
       ...size
     };
+    cursor += size.width + GAP;
+    return placed;
   });
 
-  const centerY = (index: number) => nodes[index].y + nodes[index].height / 2;
+  const centerX = (index: number) => nodes[index].x + nodes[index].width / 2;
+  const bottomY = (index: number) => nodes[index].y + nodes[index].height;
 
-  // Flechas que bajan de un paso al siguiente
-  const links = nodes.map((node, index) => {
-    const fromY =
-      index === 0
-        ? start.y + start.height
-        : nodes[index - 1].y + nodes[index - 1].height;
-    return `M${CENTER_X} ${fromY} L${CENTER_X} ${node.y}`;
-  });
+  // Flechas horizontales de un paso al siguiente
+  const links = nodes.map((node, index) =>
+    index === 0
+      ? null
+      : `M${nodes[index - 1].x + nodes[index - 1].width} ${MAIN_CENTER_Y} L${node.x - 2} ${MAIN_CENTER_Y}`
+  );
 
   const yes = flow.nodes.flatMap((node, index) =>
     isDecision(node) && index < nodes.length - 1
       ? [
           {
-            x: CENTER_X + 6,
-            y: nodes[index].y + nodes[index].height + 14,
+            x: nodes[index].x + nodes[index].width + GAP / 2,
+            y: MAIN_CENTER_Y - 6,
             nodeIndex: index
           }
         ]
       : []
   );
 
+  // Cuántas flechas vuelven a cada paso, para repartirlas sin encimarse
+  const returnsByTarget = new Map<number, number[]>();
+  flow.nodes.forEach((node, index) => {
+    if (!node.branch || !node.returnTo) return;
+    const target = flow.nodes.findIndex(item => item.label === node.returnTo);
+    if (target < 0) return;
+    returnsByTarget.set(target, [
+      ...(returnsByTarget.get(target) ?? []),
+      index
+    ]);
+  });
+
+  const leafMidY = LEAF_Y + LEAF_HEIGHT / 2;
   const branches = flow.nodes.flatMap((node, index) => {
     if (!node.branch) return [];
-    const from = nodes[index];
-    const cy = centerY(index);
-    const leafX = LEAF_X;
-    const leafCenterX = leafX + LEAF_WIDTH / 2;
-    const tipX = from.x + from.width;
+    const cx = centerX(index);
+    const leafX = cx - LEAF_WIDTH / 2;
     const targetIndex = node.returnTo
       ? flow.nodes.findIndex(item => item.label === node.returnTo)
       : -1;
     let back: string | null = null;
     if (targetIndex >= 0) {
-      const ty = centerY(targetIndex);
-      const leafEdgeY = ty < cy ? cy - LEAF_HEIGHT / 2 : cy + LEAF_HEIGHT / 2;
-      const targetRight = nodes[targetIndex].x + nodes[targetIndex].width;
-      back = `M${leafCenterX} ${leafEdgeY} L${leafCenterX} ${ty} L${targetRight + 3} ${ty}`;
+      const sources = returnsByTarget.get(targetIndex) ?? [];
+      const goesRight = centerX(targetIndex) > cx;
+      const oppositeSide = sources.filter(
+        source => centerX(source) > centerX(targetIndex) !== goesRight
+      );
+      // Con dos regresos al mismo paso, cada uno llega a un lado del centro
+      const offset = oppositeSide.length > 0 ? RETURN_SPREAD : 0;
+      const targetX = centerX(targetIndex) + (goesRight ? -offset : offset);
+      const leafEdge = goesRight ? leafX + LEAF_WIDTH : leafX;
+      back = `M${leafEdge} ${leafMidY} L${targetX} ${leafMidY} L${targetX} ${bottomY(targetIndex) + 3}`;
     }
     return [
       {
         label: node.branch,
+        lines: wrapLabel(node.branch, 14),
         x: leafX,
-        y: cy - LEAF_HEIGHT / 2,
+        y: LEAF_Y,
         width: LEAF_WIDTH,
         height: LEAF_HEIGHT,
-        arrow: `M${tipX} ${cy} L${leafX - 3} ${cy}`,
+        arrow: `M${cx} ${bottomY(index)} L${cx} ${LEAF_Y - 3}`,
         back,
-        noX: (tipX + leafX) / 2,
-        noY: cy - 5,
+        noX: cx + 6,
+        noY: (bottomY(index) + LEAF_Y) / 2 + 3,
         nodeIndex: index
       }
     ];
   });
 
-  const last = nodes[nodes.length - 1];
   return {
     width: FLOW_CHART_WIDTH,
-    height: last.y + last.height + 10,
-    start,
+    height: LEAF_Y + LEAF_HEIGHT + BOTTOM,
     nodes,
     links,
     yes,

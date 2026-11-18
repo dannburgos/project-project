@@ -1,3 +1,5 @@
+import type { PetDesignSystem } from '@/content/pet-design-system.types';
+
 // Contenido del caso de PetRide, contado con scroll libre. Cada capítulo
 // sale del documento de definición del producto.
 
@@ -52,6 +54,9 @@ export type PetBenchmarkRow = {
 export type PetJourneyStage = {
   name: string;
   emotion: string;
+  // Qué tan positiva es la emoción, de 1 (muy baja) a 5 (muy alta): da la
+  // altura del punto en la curva de emoción
+  level: number;
   opportunity: string;
 };
 
@@ -98,14 +103,12 @@ export type PetrideStory = {
     // Logo de PetRide, que acompaña al nombre en la portada
     logo: PetImage;
     tagline: string;
-    facts: readonly PetLabeledText[];
     coverLabel: string;
     processTitle: string;
     process: readonly PetLabeledText[];
   };
   research: {
     head: PetChapterHead;
-    problemLabel: string;
     problem: string;
     opportunity: PetLabeledText;
     method: PetLabeledText;
@@ -155,12 +158,10 @@ export type PetrideStory = {
     flows: readonly PetUserFlow[];
   };
   design: {
-    head: PetChapterHead;
     wireframesTitle: string;
     wireframeCount: number;
     flowTitle: string;
     flowScreens: readonly PetFlowScreen[];
-    systemTitle: string;
-    systemText: string;
+    system: PetDesignSystem;
   };
 };

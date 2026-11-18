@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { Layers } from 'lucide-react';
 import { Outfit as outfitFont } from 'next/font/google';
 
 import { PetFillText } from '@/components/atoms/pet-fill-text';
@@ -9,9 +8,11 @@ import { PetFlower } from '@/components/atoms/pet-flower';
 import { PetLetters } from '@/components/atoms/pet-letters';
 import { PetPlaceholder } from '@/components/atoms/pet-placeholder';
 import { PetChapterHead } from '@/components/molecules/pet-chapter-head';
+import { PetJourneyCurve } from '@/components/molecules/pet-journey-curve';
 import { PetFlowChart } from '@/components/molecules/pet-flow-chart';
 import { PetModuleTitle } from '@/components/molecules/pet-module-title';
 import { PetSideNav } from '@/components/molecules/pet-side-nav';
+import { PetDesignSystem } from '@/components/organisms/pet-design-system';
 import type { PetrideStory as PetrideStoryContent } from '@/content/petride-story.types';
 import { usePetrideStory } from '@/hooks/use-petride-story';
 import { cn } from '@/lib/utils';
@@ -20,7 +21,7 @@ import { cn } from '@/lib/utils';
 const outfit = outfitFont({
   variable: '--font-pet',
   subsets: ['latin'],
-  weight: ['400', '500', '800']
+  weight: ['400', '500', '600', '700', '800']
 });
 
 // Velocidad de cada columna del muro de wireframes
@@ -83,14 +84,6 @@ export function PetrideStory({ story }: PetrideStoryProps) {
           <p className="pet-hero__tagline" data-pet-rise>
             {intro.tagline}
           </p>
-          <dl className="pet-hero__facts">
-            {intro.facts.map(fact => (
-              <div key={fact.title} className="pet-hero__fact" data-pet-rise>
-                <dt className="pet-hero__fact-label">{fact.title}</dt>
-                <dd className="pet-hero__fact-text">{fact.text}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
 
         <div className="pet-cover" data-pet-expand>
@@ -133,7 +126,6 @@ export function PetrideStory({ story }: PetrideStoryProps) {
         <PetChapterHead head={research.head} />
 
         <div className="pet-problem">
-          <p className="pet-label">{research.problemLabel}</p>
           <PetFillText text={research.problem} className="pet-problem__text" />
           <div className="pet-problem__cards">
             {[research.opportunity, research.method].map((card, index) => (
@@ -159,7 +151,7 @@ export function PetrideStory({ story }: PetrideStoryProps) {
             role="region"
             aria-label={research.benchmarkTitle}
             tabIndex={0}
-            data-pet-pop-group
+            data-pet-after-title
           >
             <table className="pet-bench__table">
               <caption className="sr-only">{research.benchmarkTitle}</caption>
@@ -212,7 +204,6 @@ export function PetrideStory({ story }: PetrideStoryProps) {
                             'pet-bench__badge',
                             `pet-bench__badge--${cell.state}`
                           )}
-                          data-pet-pop
                         >
                           {research.benchmarkStates[cell.state]}
                         </span>
@@ -399,35 +390,10 @@ export function PetrideStory({ story }: PetrideStoryProps) {
           <div className="pet-journey__head">
             <PetModuleTitle text={user.journeyTitle} />
           </div>
-          <div className="pet-journey__board" data-pet-journey-board>
-            <ol className="pet-journey__stages">
-              {user.journey.map(stage => (
-                <li
-                  key={stage.name}
-                  className="pet-journey__stage"
-                  data-pet-journey-stage
-                >
-                  <h4 className="pet-journey__name">{stage.name}</h4>
-                  <dl className="pet-journey__card">
-                    <div>
-                      <dt className="pet-journey__key">
-                        {user.journeyLabels.emotion}
-                      </dt>
-                      <dd className="pet-journey__emotion">{stage.emotion}</dd>
-                    </div>
-                    <div>
-                      <dt className="pet-journey__key">
-                        {user.journeyLabels.opportunity}
-                      </dt>
-                      <dd className="pet-journey__opportunity">
-                        {stage.opportunity}
-                      </dd>
-                    </div>
-                  </dl>
-                </li>
-              ))}
-            </ol>
-          </div>
+          <PetJourneyCurve
+            stages={user.journey}
+            opportunityLabel={user.journeyLabels.opportunity}
+          />
         </div>
       </section>
 
@@ -484,20 +450,18 @@ export function PetrideStory({ story }: PetrideStoryProps) {
 
       {/* 05 · Diseño */}
       <section
-        className="pet-chapter"
+        className="pet-chapter pet-chapter--execution"
         id="petride-4"
         data-pet-chapter="4"
         aria-label={story.sections[4]}
       >
-        <PetChapterHead head={design.head} />
+        <span className="pet-seam" data-pet-seam aria-hidden="true">
+          <span className="pet-seam__glow" />
+          <span className="pet-seam__veil" />
+        </span>
 
-        <div className="pet-system">
-          <div className="pet-system__frame" data-pet-rise>
-            <Layers className="pet-system__icon" aria-hidden="true" />
-            <h3 className="pet-system__title">{design.systemTitle}</h3>
-            <p className="pet-system__text">{design.systemText}</p>
-          </div>
-        </div>
+        <PetDesignSystem system={design.system} />
+
         <div className="pet-wall">
           <div className="pet-wall__copy">
             <PetModuleTitle text={design.wireframesTitle} />

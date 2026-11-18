@@ -56,9 +56,9 @@ function FlowPath({
   );
 }
 
-// Los tres user flows como diagramas de flujo verticales, uno junto al otro:
-// cápsula de inicio, rectángulos, rombos para las decisiones, flechas con su
-// "Sí" y "No", y el regreso de cada desvío. El diagrama es un dibujo; para
+// Los user flows como diagramas de flujo horizontales, uno debajo del otro: el
+// camino principal arriba (rectángulos y rombos para las decisiones, con su
+// "Sí") y el carril de desvíos abajo, con su "No" y el regreso de cada desvío. El diagrama es un dibujo; para
 // lectores de pantalla va la misma información como lista.
 export function PetFlowChart({
   flows,
@@ -78,6 +78,7 @@ export function PetFlowChart({
         const markerId = `pet-flow-arrow-${flowIndex}`;
         return (
           <figure key={flow.name} className="pet-flowchart__flow">
+            <figcaption className="pet-flowchart__name">{flow.name}</figcaption>
             <svg
               className="pet-flowchart__svg"
               viewBox={`0 0 ${layout.width} ${layout.height}`}
@@ -96,23 +97,6 @@ export function PetFlowChart({
                   <path className="pet-flowchart__head" d="M1 1 L7 4 L1 7" />
                 </marker>
               </defs>
-              <g data-fc-start>
-                <rect
-                  className="pet-flowchart__start"
-                  x={layout.start.x}
-                  y={layout.start.y}
-                  width={layout.start.width}
-                  height={layout.start.height}
-                  rx={layout.start.height / 2}
-                />
-                <text
-                  className="pet-flowchart__start-text"
-                  x={layout.start.x + layout.start.width / 2}
-                  y={layout.start.y + layout.start.height / 2 + 3.4}
-                >
-                  {layout.start.label}
-                </text>
-              </g>
               {layout.nodes.map((node, index) => {
                 const cx = node.x + node.width / 2;
                 const cy = node.y + node.height / 2;
@@ -122,14 +106,16 @@ export function PetFlowChart({
                 const yes = layout.yes.find(item => item.nodeIndex === index);
                 return (
                   <g key={node.label} data-fc-step>
-                    <FlowPath
-                      id={`pet-flow-${flowIndex}-link-${index}`}
-                      d={layout.links[index]}
-                      className="pet-flowchart__link"
-                      markerId={markerId}
-                      width={layout.width}
-                      height={layout.height}
-                    />
+                    {layout.links[index] && (
+                      <FlowPath
+                        id={`pet-flow-${flowIndex}-link-${index}`}
+                        d={layout.links[index]}
+                        className="pet-flowchart__link"
+                        markerId={markerId}
+                        width={layout.width}
+                        height={layout.height}
+                      />
+                    )}
                     <g data-fc-node>
                       {node.kind === 'decision' ? (
                         <path
@@ -156,9 +142,17 @@ export function PetFlowChart({
                             'pet-flowchart__label--decision'
                         )}
                         x={cx}
-                        y={cy + 3.3}
+                        y={cy - ((node.lines.length - 1) * 13) / 2 + 4}
                       >
-                        {node.label}
+                        {node.lines.map((line, lineIndex) => (
+                          <tspan
+                            key={line}
+                            x={cx}
+                            dy={lineIndex === 0 ? 0 : 13}
+                          >
+                            {line}
+                          </tspan>
+                        ))}
                       </text>
                     </g>
                     {yes && (
@@ -201,9 +195,22 @@ export function PetFlowChart({
                           <text
                             className="pet-flowchart__leaf-text"
                             x={branch.x + branch.width / 2}
-                            y={branch.y + branch.height / 2 + 2.8}
+                            y={
+                              branch.y +
+                              branch.height / 2 -
+                              ((branch.lines.length - 1) * 12) / 2 +
+                              3.6
+                            }
                           >
-                            {branch.label}
+                            {branch.lines.map((line, lineIndex) => (
+                              <tspan
+                                key={line}
+                                x={branch.x + branch.width / 2}
+                                dy={lineIndex === 0 ? 0 : 12}
+                              >
+                                {line}
+                              </tspan>
+                            ))}
                           </text>
                         </g>
                         {branch.back && (
@@ -222,7 +229,6 @@ export function PetFlowChart({
                 );
               })}
             </svg>
-            <figcaption className="sr-only">{flow.name}</figcaption>
             <ol className="sr-only">
               {flow.nodes.map(node => (
                 <li key={node.label}>

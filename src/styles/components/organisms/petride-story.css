@@ -68,9 +68,104 @@
   @apply pt-0;
 }
 
-.pet-label {
-  @apply text-base font-medium tracking-wide uppercase;
-  color: var(--pet-lime);
+/* Desde Diseño empieza la ejecución: fondo azul oscuro con manchas
+   saturadas de índigo y azul repartidas a lo largo del capítulo, que es muy largo */
+.pet-chapter--execution {
+  @apply isolate;
+  /* Más aire entre los user flows y el arranque del sistema de diseño */
+  padding-top: calc((var(--pet-module-gap) - var(--pet-title-gap)) / 2 + 256px);
+  --pet-blob-indigo: color-mix(in srgb, var(--pet-indigo) 70%, transparent);
+  --pet-blob-blue: color-mix(in srgb, #2f3bff 45%, transparent);
+  background:
+    radial-gradient(
+      900px 720px at 8% 2%,
+      var(--pet-blob-blue),
+      transparent 70%
+    ),
+    radial-gradient(
+      1000px 800px at 96% 14%,
+      var(--pet-blob-indigo),
+      transparent 70%
+    ),
+    radial-gradient(
+      800px 640px at 4% 30%,
+      var(--pet-blob-indigo),
+      transparent 70%
+    ),
+    radial-gradient(
+      720px 600px at 92% 44%,
+      var(--pet-blob-blue),
+      transparent 70%
+    ),
+    radial-gradient(
+      960px 760px at 12% 58%,
+      var(--pet-blob-blue),
+      transparent 70%
+    ),
+    radial-gradient(
+      1000px 800px at 90% 72%,
+      var(--pet-blob-indigo),
+      transparent 70%
+    ),
+    radial-gradient(
+      880px 700px at 6% 86%,
+      var(--pet-blob-indigo),
+      transparent 70%
+    ),
+    radial-gradient(
+      900px 720px at 94% 98%,
+      var(--pet-blob-blue),
+      transparent 70%
+    ),
+    linear-gradient(180deg, var(--pet-deep), #10113a);
+}
+
+/* Paso de la investigación al diseño, sin línea: arriba el azul arranca en el
+   oscuro del capítulo anterior y, con el scroll, nace como un brillo abajo en
+   el centro y se abre como tinta hasta cubrir. --pet-seam va de 0 a 1 */
+.pet-seam {
+  @apply pointer-events-none absolute inset-x-0 top-0 -z-10 h-[1120px];
+  --pet-seam: 1;
+}
+
+.pet-seam__glow,
+.pet-seam__veil {
+  @apply absolute inset-0;
+}
+
+.pet-seam__glow {
+  background:
+    radial-gradient(
+      ellipse 36% 40% at 50% 100%,
+      color-mix(in srgb, #2f3bff 70%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 80% 90% at 50% 100%,
+      color-mix(in srgb, var(--pet-indigo) 85%, transparent),
+      transparent 72%
+    );
+  opacity: calc(0.4 + var(--pet-seam) * 0.6);
+}
+
+.pet-seam__veil {
+  background: var(--pet-night);
+  mask-image:
+    radial-gradient(
+      ellipse calc(24% + var(--pet-seam) * 176%)
+        calc(16% + var(--pet-seam) * 164%) at 50% 100%,
+      transparent 45%,
+      black 100%
+    ),
+    linear-gradient(black 25%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* Al final del recorrido el velo se va, pero el borde de arriba sigue
+   fundido con el capítulo anterior */
+.pet-seam::before {
+  @apply absolute inset-x-0 top-0 h-40 content-[''];
+  background: linear-gradient(var(--pet-night), transparent);
 }
 
 /* Títulos que suben letra por letra: cada palabra es una máscara */
@@ -321,7 +416,11 @@
 /* Cortina del salto entre capítulos */
 .pet-curtain {
   @apply invisible fixed inset-0 z-[60] flex items-center justify-center px-6;
-  background: var(--pet-lime);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pet-lime) 80%, white) 0%,
+    var(--pet-lime) 100%
+  );
   color: var(--pet-night);
 }
 
@@ -359,20 +458,6 @@
 
 .pet-hero__tagline {
   @apply max-w-3xl text-xl leading-snug md:text-3xl;
-}
-
-.pet-hero__facts {
-  @apply grid grid-cols-2 gap-6 border-t pt-6 md:grid-cols-4;
-  border-color: var(--pet-line);
-}
-
-.pet-hero__fact-label {
-  @apply text-base;
-  color: var(--pet-mute);
-}
-
-.pet-hero__fact-text {
-  @apply text-lg font-extrabold;
 }
 
 .pet-cover {
@@ -452,7 +537,9 @@
 }
 
 .pet-process__tile {
-  @apply relative flex min-h-44 flex-col justify-end gap-1.5 overflow-hidden rounded-[28px] p-6;
+  @apply relative flex min-h-44 flex-col justify-end gap-1.5 overflow-hidden rounded-2xl border p-6;
+  /* Un borde fino del color del texto, muy tenue, como el de Wireframes */
+  border-color: color-mix(in srgb, currentColor 22%, transparent);
   transition: translate 0.4s var(--pet-spring);
 }
 
@@ -460,61 +547,59 @@
   translate: 0 -6px;
 }
 
-/* La forma de la esquina: la misma tinta del bloque, muy tenue */
-.pet-process__tile::after {
-  @apply pointer-events-none absolute -top-5 -right-5 size-28 content-[''];
-  background: currentColor;
-  opacity: 0.14;
-}
-
 .pet-process__tile--0 {
-  background: var(--pet-lime);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pet-lime) 80%, white) 0%,
+    var(--pet-lime) 100%
+  );
   color: var(--pet-night);
-}
-.pet-process__tile--0::after {
-  @apply rounded-full;
 }
 
 .pet-process__tile--1 {
-  background: var(--pet-indigo);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pet-indigo) 82%, white) 0%,
+    var(--pet-indigo) 100%
+  );
   color: var(--pet-cloud);
-}
-.pet-process__tile--1::after {
-  @apply rounded-bl-full;
 }
 
 .pet-process__tile--2 {
-  background: var(--pet-peri);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pet-peri) 78%, white) 0%,
+    var(--pet-peri) 100%
+  );
   color: var(--pet-night);
-}
-.pet-process__tile--2::after {
-  @apply size-44 rounded-full;
 }
 
 .pet-process__tile--3 {
-  background: var(--pet-cloud);
+  background: linear-gradient(
+    160deg,
+    #ffffff 0%,
+    color-mix(in srgb, var(--pet-cloud) 88%, var(--pet-peri)) 100%
+  );
   color: var(--pet-night);
-}
-.pet-process__tile--3::after {
-  @apply rounded-[32px];
 }
 
 .pet-process__tile--4 {
-  @apply border;
-  background: var(--pet-deep);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pet-deep) 82%, var(--pet-peri)) 0%,
+    var(--pet-deep) 100%
+  );
   border-color: var(--pet-line);
   color: var(--pet-cloud);
 }
-.pet-process__tile--4::after {
-  @apply rounded-b-full;
-}
 
 .pet-process__tile--5 {
-  background: var(--pet-indigo);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pet-indigo) 82%, white) 0%,
+    var(--pet-indigo) 100%
+  );
   color: var(--pet-lime);
-}
-.pet-process__tile--5::after {
-  @apply rounded-full;
 }
 
 .pet-process__stage-title {
@@ -527,24 +612,26 @@
 }
 
 @media (min-width: 1024px) {
-  /* Las seis etapas en una sola fila, seis columnas del mismo tamaño */
+  /* Las etapas del mismo tamaño: tres columnas desde 1024 px y seis desde 1200 px,
+     donde caben con su relleno de 16 px */
   .pet-process__bento {
-    @apply grid-cols-6;
-    grid-auto-rows: minmax(15rem, auto);
+    @apply grid-cols-3 min-[1200px]:grid-cols-6;
+    /* Todas las tarjetas miden lo mismo: el alto de la que lleva más texto */
+    grid-auto-rows: 1fr;
   }
 
   /* El contenido va alineado arriba, no al fondo de la tarjeta */
   .pet-process__tile {
-    @apply justify-start p-4;
+    @apply min-h-0 justify-start p-4;
   }
 
-  /* El título se ajusta al ancho de la tarjeta para no partir las palabras */
   .pet-process__stage-title {
-    font-size: clamp(14px, 1.25vw, 20px);
+    font-size: 20px;
+    letter-spacing: -0.03em;
   }
 
   .pet-process__stage-text {
-    @apply text-sm;
+    @apply text-base;
   }
 }
 
@@ -566,6 +653,8 @@
 
 .pet-head__lead {
   @apply relative max-w-2xl;
+  /* Respeta los saltos de línea del texto (\n) */
+  white-space: pre-line;
   font-size: var(--pet-lead-size);
   color: var(--pet-mute);
 }
@@ -913,11 +1002,11 @@
 
 /* Mapa de empatía: cuatro cuadrantes cruzados por dos diagonales */
 .pet-empathy {
-  @apply relative grid gap-10 md:grid-cols-[1fr_auto_1fr] md:grid-rows-[auto_auto_auto] md:gap-x-12 md:gap-y-8;
+  @apply relative grid gap-6 md:grid-cols-[1fr_auto_1fr] md:grid-rows-[auto_auto_auto] md:gap-x-10 md:gap-y-7;
 }
 
 .pet-empathy__line {
-  @apply absolute top-1/2 left-[11%] hidden h-px w-[78%] md:block;
+  @apply absolute top-1/2 left-[15%] hidden h-px w-[70%] md:block;
   /* Más cortas que el módulo: terminan antes de llegar al título de arriba */
   background: var(--pet-line);
 }
@@ -931,15 +1020,15 @@
 }
 
 .pet-empathy__line--a {
-  rotate: 36deg;
+  rotate: 30deg;
 }
 
 .pet-empathy__line--b {
-  rotate: -36deg;
+  rotate: -30deg;
 }
 
 .pet-empathy__center {
-  @apply relative mx-auto size-40 md:col-start-2 md:row-start-2 md:size-56;
+  @apply relative mx-auto size-32 md:col-start-2 md:row-start-2 md:size-40;
 }
 
 .pet-empathy__spin {
@@ -951,7 +1040,7 @@
 }
 
 .pet-empathy__block {
-  @apply relative flex flex-col gap-3 p-6 text-center;
+  @apply relative flex flex-col gap-3 p-4 text-center;
 }
 
 .pet-empathy__block--0 {
@@ -971,12 +1060,12 @@
 }
 
 .pet-empathy__title {
-  @apply text-2xl font-extrabold;
+  @apply text-xl font-extrabold;
   color: var(--pet-lime);
 }
 
 .pet-empathy__items {
-  @apply flex flex-col gap-1.5 text-base;
+  @apply flex flex-col gap-2 text-base;
   color: var(--pet-mute);
 }
 
@@ -989,44 +1078,78 @@
   @apply flex flex-col gap-4;
 }
 
-.pet-journey__board {
-  @apply relative;
+/* Customer journey como curva de emoción: la línea sube y baja según cómo se
+   siente la persona; debajo, cada etapa con su oportunidad */
+.pet-curve {
+  @apply flex flex-col gap-8;
 }
 
-.pet-journey__stages {
-  @apply relative grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 xl:gap-0;
+.pet-curve__plot {
+  @apply relative mb-6 hidden h-44 lg:block;
 }
 
-.pet-journey__stage {
-  @apply flex flex-col gap-4 xl:px-1.5;
-  transition: opacity 0.5s ease;
+.pet-curve__svg {
+  @apply absolute inset-0 size-full overflow-visible;
 }
 
-.pet-journey__name {
-  @apply flex h-16 items-center justify-center rounded-full px-5 text-center text-base leading-tight font-extrabold;
-  background: var(--pet-deep);
-  transition: color 0.4s ease;
+.pet-curve__axis {
+  stroke: var(--pet-line);
+  stroke-width: 1;
+  stroke-dasharray: 4 6;
 }
 
-.pet-journey__card {
-  @apply flex flex-1 flex-col items-center justify-center gap-3 rounded-[28px] border p-5 text-center;
-  border-color: var(--pet-line);
-  transition:
-    border-color 0.4s ease,
-    translate 0.6s var(--pet-spring);
+.pet-curve__path {
+  fill: none;
+  stroke: var(--pet-lime);
+  stroke-width: 3;
+  stroke-linecap: round;
 }
 
-.pet-journey__key {
-  @apply text-base;
+.pet-curve__point {
+  @apply absolute flex size-0 items-center justify-center;
+}
+
+.pet-curve__dot {
+  @apply absolute size-4 rounded-full;
+  background: var(--pet-lime);
+  box-shadow: 0 0 0 6px var(--pet-night);
+}
+
+.pet-curve__emotion {
+  @apply absolute bottom-full mb-4 text-center text-base leading-tight whitespace-nowrap;
   color: var(--pet-peri);
 }
 
-.pet-journey__emotion,
-.pet-journey__opportunity {
-  @apply text-base;
+.pet-curve__emotion[data-below] {
+  @apply top-full bottom-auto mt-4 mb-0;
 }
 
-.pet-journey__opportunity {
+.pet-curve__stages {
+  @apply grid gap-8 sm:grid-cols-2 lg:grid-cols-6 lg:gap-4;
+}
+
+.pet-curve__stage {
+  @apply flex flex-col items-start gap-3 lg:items-center lg:text-center;
+}
+
+.pet-curve__number {
+  @apply flex size-8 items-center justify-center rounded-full text-base font-extrabold;
+  background: var(--pet-lime);
+  color: var(--pet-night);
+}
+
+.pet-curve__name {
+  @apply text-xl leading-tight font-extrabold;
+}
+
+/* La emoción como etiqueta: solo en pantallas sin curva */
+.pet-curve__chip {
+  @apply rounded-full border px-3 py-1 text-base lg:hidden;
+  border-color: var(--pet-peri);
+}
+
+.pet-curve__opportunity {
+  @apply text-base leading-snug;
   color: var(--pet-lime);
 }
 
@@ -1292,44 +1415,39 @@
    inicio, rectángulos, rombos para las decisiones y flechas. Cada dibujo
    escala con su columna, así que no hay scroll lateral. */
 .pet-flowchart {
-  @apply grid gap-12 md:grid-cols-3 md:gap-6;
+  @apply flex flex-col gap-14;
 }
 
 .pet-flowchart__flow {
-  @apply m-0;
+  @apply m-0 overflow-x-auto;
 }
 
+.pet-flowchart__name {
+  @apply mb-4 text-2xl font-extrabold;
+  color: var(--pet-lime);
+}
+
+/* En pantallas chicas el diagrama conserva su tamaño y se desliza de lado */
 .pet-flowchart__svg {
-  @apply block h-auto w-full;
-}
-
-.pet-flowchart__start {
-  fill: var(--pet-indigo);
-}
-
-.pet-flowchart__start-text {
-  @apply font-extrabold;
-  font-size: 9.5px;
-  text-anchor: middle;
-  fill: var(--pet-cloud);
+  @apply block h-auto w-full min-w-[760px];
 }
 
 .pet-flowchart__link,
 .pet-flowchart__alt {
   fill: none;
   stroke: var(--pet-peri);
-  stroke-width: 1;
+  stroke-width: 1.4;
 }
 
 .pet-flowchart__alt {
-  stroke-dasharray: 3 3;
-  stroke-opacity: 0.6;
+  stroke-dasharray: 4 4;
+  stroke-opacity: 0.7;
 }
 
 .pet-flowchart__reveal {
   fill: none;
   stroke: #fff;
-  stroke-width: 8;
+  stroke-width: 10;
   stroke-dasharray: 1;
   stroke-dashoffset: 0;
 }
@@ -1342,7 +1460,7 @@
 
 .pet-flowchart__step {
   fill: var(--pet-deep);
-  stroke: rgb(171 196 255 / 0.3);
+  stroke: rgb(171 196 255 / 0.4);
 }
 
 .pet-flowchart__step--end {
@@ -1353,12 +1471,12 @@
 .pet-flowchart__decision {
   fill: var(--pet-night);
   stroke: var(--pet-lime);
-  stroke-width: 1.2;
+  stroke-width: 1.4;
 }
 
 .pet-flowchart__label {
   @apply font-medium;
-  font-size: 8.6px;
+  font-size: 11.5px;
   text-anchor: middle;
   fill: var(--pet-cloud);
 }
@@ -1368,24 +1486,25 @@
 }
 
 .pet-flowchart__tag {
-  font-size: 7.6px;
+  font-size: 10.5px;
   fill: var(--pet-peri);
 }
 
 .pet-flowchart__tag--center {
-  text-anchor: middle;
+  text-anchor: start;
 }
 
 .pet-flowchart__leaf {
   fill: var(--pet-night);
-  stroke: rgb(171 196 255 / 0.35);
-  stroke-dasharray: 3 2;
+  stroke: var(--pet-lime);
+  stroke-opacity: 0.7;
+  stroke-dasharray: 4 3;
 }
 
 .pet-flowchart__leaf-text {
-  font-size: 7.6px;
+  font-size: 11px;
   text-anchor: middle;
-  fill: var(--pet-cloud);
+  fill: var(--pet-lime);
 }
 
 /* ───────── 06 · Diseño ───────── */
@@ -1482,30 +1601,6 @@
 }
 
 /* Sistema de diseño: espacio reservado */
-.pet-system {
-  @apply relative;
-}
-
-.pet-system__frame {
-  @apply relative flex min-h-[420px] flex-col items-center justify-center gap-4 rounded-[32px] border-2 border-dashed p-10 text-center;
-  border-color: rgb(171 196 255 / 0.4);
-}
-
-.pet-system__icon {
-  @apply size-12;
-  color: var(--pet-lime);
-}
-
-.pet-system__title {
-  @apply font-extrabold;
-  font-size: var(--pet-subtitle-size);
-}
-
-.pet-system__text {
-  @apply text-lg;
-  color: var(--pet-mute);
-}
-
 @keyframes pet-spin {
   to {
     rotate: 360deg;

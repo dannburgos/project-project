@@ -200,10 +200,11 @@ function fillWords(root: HTMLElement) {
       ease: 'none',
       scrollTrigger: {
         trigger: text,
-        // Se pinta en poco scroll: empieza al asomarse y termina cuando su
-        // parte de arriba llega a la mitad de la pantalla
-        start: 'top 90%',
-        end: 'top 50%',
+        // Se pinta mientras entra y termina cuando el texto completo ya está en
+        // la parte de abajo de la pantalla: así, cuando se baja a leer el
+        // módulo, todo el texto ya está encendido
+        start: 'top 95%',
+        end: 'bottom 80%',
         scrub: true
       }
     });
@@ -222,6 +223,23 @@ function revealOnEnter(root: HTMLElement) {
       )
   });
   gsap.set(queryAll(root, '[data-pet-rise]'), { autoAlpha: 0 });
+
+  // El cuadro llega entero, con toda su info adentro, un momento después de
+  // que sale el título: primero el título y luego la tabla, sin que sus piezas
+  // aparezcan sueltas
+  queryAll(root, '[data-pet-after-title]').forEach(box => {
+    // Se dispara junto con el título que lo precede, no cuando el cuadro ya
+    // subió: así llega mientras todavía se está viendo, justo debajo del título
+    const title = box.previousElementSibling ?? box;
+    gsap.from(box, {
+      y: 40,
+      autoAlpha: 0,
+      duration: 0.9,
+      delay: 0.7,
+      ease: EASE_OUT,
+      scrollTrigger: { trigger: title, start: ENTER, once: true }
+    });
+  });
 
   queryAll(root, '[data-pet-pop-group]').forEach(group => {
     gsap.from(queryAll(group, '[data-pet-pop]'), {
@@ -356,6 +374,24 @@ function scrubOnScroll(root: HTMLElement) {
     );
   });
 
+  // Paso al capítulo de diseño: el azul se abre desde abajo con el scroll
+  queryAll(root, '[data-pet-seam]').forEach(seam => {
+    gsap.fromTo(
+      seam,
+      { '--pet-seam': 0 },
+      {
+        '--pet-seam': 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: seam,
+          start: 'top bottom',
+          end: 'top top',
+          scrub: true
+        }
+      }
+    );
+  });
+
   // Trazos SVG con pathLength="1" (arcos y conectores)
   queryAll<SVGGeometryElement>(
     root,
@@ -404,63 +440,90 @@ function scrubOnScroll(root: HTMLElement) {
   });
 }
 
-// Customer journey: al llegar a la sección, los títulos de las columnas nacen
-// creciendo y, a la vez en todas, la información de cada una se despliega hacia
-// abajo desde su título.
+// Customer journey: cuando la curva ya está bien a la vista, la línea se dibuja
+// sola, de izquierda a derecha, en un par de segundos; a medida que llega a un
+// punto aparece su emoción y sube su etapa. No depende de cuánto se baje: una
+// vez que empieza, termina y la información queda completa. En celular no hay
+// curva y las etapas suben una tras otra.
 function revealJourney(root: HTMLElement) {
   const media = gsap.matchMedia();
-  media.add('all', () => {
-    queryAll(root, '[data-pet-journey-board]').forEach(board => {
-      const stages = queryAll(board, '[data-pet-journey-stage]');
-      const names = stages.map(stage =>
-        stage.querySelector('.pet-journey__name')
-      );
-      const cards = stages.map(stage =>
-        stage.querySelector('.pet-journey__card')
-      );
+
+  media.add('(min-width: 1024px)', () => {
+    queryAll(root, '[data-pet-journey]').forEach(journey => {
+      const curve = journey.querySelector('.pet-curve__svg');
+      const dots = queryAll(journey, '[data-pet-curve-dot]');
+      const labels = queryAll(journey, '[data-pet-curve-label]');
+      const stages = queryAll(journey, '[data-pet-journey-stage]');
       if (stages.length === 0) return;
 
       const timeline = gsap.timeline({
-        // Arranca apenas la fila de títulos asoma por abajo
-        scrollTrigger: { trigger: board, start: 'top 88%', once: true }
+        // Arranca cuando la curva ya subió a la mitad de la pantalla, para que
+        // se vea cómo crece desde el principio
+        scrollTrigger: { trigger: journey, start: 'top 62%', once: true }
       });
-      // Los títulos crecen, con un pequeño rebote
-      timeline.fromTo(
-        names,
-        { autoAlpha: 0, scale: 0.6, y: -14, transformOrigin: '50% 0%' },
-        { autoAlpha: 1, scale: 1, y: 0, duration: 0.5, ease: 'back.out(2)' },
-        0
-      );
-      // La información sale hacia abajo desde cada título, todas a la vez
-      timeline.fromTo(
-        cards,
-        { autoAlpha: 0, clipPath: 'inset(0% 0% 100% 0% round 28px)' },
-        {
-          autoAlpha: 1,
-          clipPath: 'inset(0% 0% 0% 0% round 28px)',
-          duration: 0.7,
-          ease: 'power3.out'
-        },
-        0.2
-      );
-      // Y su contenido entra fila por fila
-      cards.forEach(card => {
-        if (!card) return;
+
+      const step = 0.32;
+      const lineEnd = 0.2 + step * (dots.length - 1) + 0.25;
+      if (curve) {
         timeline.fromTo(
-          Array.from(card.children),
-          { autoAlpha: 0, y: 14 },
+          curve,
+          { clipPath: 'inset(-20% 100% -20% 0%)' },
           {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.45,
-            ease: 'power2.out',
-            stagger: 0.1
+            clipPath: 'inset(-20% -2% -20% 0%)',
+            duration: lineEnd,
+            ease: 'power1.inOut'
           },
-          0.35
+          0
+        );
+      }
+      // Cada punto, su etiqueta y su etapa aparecen cuando la línea llega
+      stages.forEach((stage, index) => {
+        const at = 0.1 + index * step;
+        if (dots[index]) {
+          timeline.fromTo(
+            dots[index],
+            { scale: 0 },
+            { scale: 1, duration: 0.4, ease: 'back.out(2.5)' },
+            at
+          );
+        }
+        if (labels[index]) {
+          timeline.fromTo(
+            labels[index],
+            { autoAlpha: 0, y: 6 },
+            { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power2.out' },
+            at + 0.1
+          );
+        }
+        timeline.fromTo(
+          stage,
+          { autoAlpha: 0, y: 24 },
+          { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' },
+          at + 0.1
         );
       });
     });
   });
+
+  media.add('(max-width: 1023px)', () => {
+    queryAll(root, '[data-pet-journey]').forEach(journey => {
+      const stages = queryAll(journey, '[data-pet-journey-stage]');
+      if (stages.length === 0) return;
+      gsap.fromTo(
+        stages,
+        { autoAlpha: 0, y: 24 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power3.out',
+          stagger: 0.1,
+          scrollTrigger: { trigger: journey, start: 'top 85%', once: true }
+        }
+      );
+    });
+  });
+
   return media;
 }
 
@@ -487,64 +550,26 @@ function growDiagrams(root: HTMLElement) {
 
   const context = gsap.context(() => {
     queryAll(root, '[data-pet-flowchart]').forEach(chart => {
-      queryAll(chart, '.pet-flowchart__flow').forEach(flow => {
-        const timeline = gsap.timeline({
-          scrollTrigger: { trigger: chart, start: 'top 70%', once: true }
-        });
-        const draw = (line: Element | null, at: string | number) => {
-          const reveal = line?.querySelector('[data-fc-reveal]');
-          if (!reveal) return 0;
-          timeline.fromTo(
-            reveal,
-            { strokeDashoffset: 1 },
-            { strokeDashoffset: 0, duration: 0.3, ease: 'none' },
-            at
-          );
-          return 0.3;
-        };
-        const pop = (target: Element | null, at: string | number) => {
-          if (!target) return;
-          timeline.fromTo(
-            target,
-            { opacity: 0, scale: 0.85, transformOrigin: '50% 50%' },
-            { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)' },
-            at
-          );
-        };
-
-        pop(flow.querySelector('[data-fc-start]'), 0);
-        let cursor = 0.25;
-        queryAll(flow, '[data-fc-step]').forEach(step => {
-          draw(step.querySelector(':scope > [data-fc-line]'), cursor);
-          cursor += 0.28;
-          pop(step.querySelector(':scope > [data-fc-node]'), cursor);
-          const branch = step.querySelector(':scope > [data-fc-branch]');
-          // Los "Sí" del camino principal salen con el paso al que llevan
-          queryAll(step, ':scope > [data-fc-tag]').forEach(tag =>
-            timeline.fromTo(
-              tag,
-              { opacity: 0 },
-              { opacity: 1, duration: 0.2 },
-              cursor + 0.2
-            )
-          );
-          if (branch) {
-            const lines = queryAll(branch, ':scope > [data-fc-line]');
-            const tag = branch.querySelector(':scope > [data-fc-tag]');
-            const leaf = branch.querySelector(':scope > [data-fc-leaf]');
-            draw(lines[0] ?? null, cursor + 0.2);
-            if (tag)
-              timeline.fromTo(
-                tag,
-                { opacity: 0 },
-                { opacity: 1, duration: 0.2 },
-                cursor + 0.3
-              );
-            pop(leaf, cursor + 0.45);
-            draw(lines[1] ?? null, cursor + 0.75);
-          }
-          cursor += 0.3;
-        });
+      // Cada flujo aparece completo de una vez: primero el primero y, justo
+      // después, el segundo. Nada paso a paso
+      const timeline = gsap.timeline({
+        scrollTrigger: { trigger: chart, start: 'top 75%', once: true }
+      });
+      queryAll(chart, '.pet-flowchart__flow').forEach((flow, index) => {
+        const at = index * 0.45;
+        timeline.fromTo(
+          flow,
+          { autoAlpha: 0, y: 24 },
+          { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' },
+          at
+        );
+        // Las líneas se dibujan todas a la vez mientras el flujo entra
+        timeline.fromTo(
+          queryAll(flow, '[data-fc-reveal]'),
+          { strokeDashoffset: 1 },
+          { strokeDashoffset: 0, duration: 0.5, ease: 'power2.out' },
+          at
+        );
       });
     });
   }, root);

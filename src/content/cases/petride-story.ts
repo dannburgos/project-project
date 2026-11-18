@@ -1,4 +1,5 @@
 import type { PetrideStory } from '@/content/petride-story.types';
+import { petrideDesignSystem } from '@/content/cases/petride-design-system';
 
 // Caso de PetRide. Fuente: .claude/knowledge/petride/ (documento de
 // definición de producto). La persona, el mapa de empatía y el journey son
@@ -25,12 +26,6 @@ export const petrideStory: PetrideStory = {
     },
     tagline:
       'Transporte por app para moverte con tu mascota, con conductores preparados para recibirla.',
-    facts: [
-      { title: 'Plataforma', text: 'App móvil' },
-      { title: 'Mercado', text: 'Colombia' },
-      { title: 'Servicio', text: 'Viajes urbanos' },
-      { title: 'Alcance', text: '3 user flows' }
-    ],
     coverLabel: 'Imagen principal · persona viajando con su mascota en PetRide',
     processTitle: 'Proceso de diseño',
     process: [
@@ -44,9 +39,8 @@ export const petrideStory: PetrideStory = {
   },
   research: {
     head: {
-      title: 'Investigar y descubrir'
+      title: '¿Qué pasa hoy?'
     },
-    problemLabel: 'El problema',
     problem:
       'Moverse con una mascota en la ciudad es incierto: no sabes si el conductor la va a aceptar, cómo es el vehículo ni si habrá alguien disponible.',
     opportunity: {
@@ -153,8 +147,7 @@ export const petrideStory: PetrideStory = {
   },
   user: {
     head: {
-      title: 'Una usuaria, una mascota',
-      lead: 'Una persona que vive en la ciudad y lleva a su mascota a todas partes.'
+      title: 'Una usuaria,\nuna mascota'
     },
     personaName: 'Gabriela',
     personaTags: ['32 años', 'Empleada', 'DogLover'],
@@ -238,31 +231,37 @@ export const petrideStory: PetrideStory = {
       {
         name: 'Surge la necesidad',
         emotion: 'Incertidumbre',
+        level: 1.5,
         opportunity: 'Comunicar qué resuelve PetRide al inicio'
       },
       {
         name: 'Explora el servicio',
         emotion: 'Expectativa',
+        level: 3.2,
         opportunity: 'Explicar cómo funciona y sus condiciones'
       },
       {
         name: 'Configura el viaje',
         emotion: 'Duda y expectativa',
+        level: 2.4,
         opportunity: 'Cruzar mascota, conductor y compatibilidad'
       },
       {
         name: 'Espera la asignación',
         emotion: 'Expectativa',
+        level: 3,
         opportunity: 'Mostrar estados claros y datos del conductor'
       },
       {
         name: 'Hace el viaje',
         emotion: 'Tranquilidad',
+        level: 4.6,
         opportunity: 'Chat y seguimiento durante todo el viaje'
       },
       {
         name: 'Llega y califica',
         emotion: 'Satisfacción o inconformidad',
+        level: 3.6,
         opportunity: 'Facilitar la calificación del servicio'
       }
     ]
@@ -311,7 +310,7 @@ export const petrideStory: PetrideStory = {
     ],
     flowsTitle: 'User flows',
     flowsLead:
-      'Los tres recorridos del prototipo, con sus decisiones y caminos alternos.',
+      'Los dos recorridos del prototipo, con sus decisiones y caminos alternos.',
     flowsHint: 'Elige un paso para ver qué pasa en él.',
     flowYes: 'Sí',
     flowNo: 'No',
@@ -422,55 +421,10 @@ export const petrideStory: PetrideStory = {
               'Aparecen el conductor y su vehículo, y empieza la gestión del viaje.'
           }
         ]
-      },
-      {
-        name: 'Gestionar viaje',
-        goal: 'Acompañar el viaje desde la asignación hasta la calificación.',
-        nodes: [
-          {
-            label: 'Conductor asignado',
-            kind: 'step',
-            detail:
-              'Foto, nombre, calificación, vehículo y placa, con el tiempo estimado de llegada.'
-          },
-          {
-            label: 'Conductor en camino',
-            kind: 'step',
-            detail:
-              'Mapa con la ubicación del conductor, chat y opción de cancelar.'
-          },
-          {
-            label: '¿Llegó al origen?',
-            kind: 'decision',
-            detail:
-              'Mientras no llega, se sigue su ubicación. El viaje no empieza solo cuando el conductor llega.',
-            branch: 'Seguir llegada',
-            returnTo: 'Conductor en camino'
-          },
-          {
-            label: 'Viaje en curso',
-            kind: 'step',
-            detail:
-              'Ruta, ubicación, chat y opción de reportar un inconveniente.'
-          },
-          {
-            label: 'Viaje finalizado',
-            kind: 'step',
-            detail: 'Resumen con origen, destino, mascotas, conductor y valor.'
-          },
-          {
-            label: 'Calificar',
-            kind: 'end',
-            detail: 'Estrellas obligatorias y comentario opcional.'
-          }
-        ]
       }
     ]
   },
   design: {
-    head: {
-      title: 'De la estructura a la interfaz'
-    },
     wireframesTitle: 'Wireframes',
     wireframeCount: 16,
     flowTitle: 'Registrar mascota',
@@ -486,7 +440,6 @@ export const petrideStory: PetrideStory = {
         text: 'Cuatro datos obligatorios para que la compatibilidad funcione; el resto es opcional.'
       }
     ],
-    systemTitle: 'Sistema de diseño',
-    systemText: 'Aquí va el sistema de diseño de PetRide.'
+    system: petrideDesignSystem
   }
 };
