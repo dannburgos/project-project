@@ -17,6 +17,9 @@ import type { PetrideStory as PetrideStoryContent } from '@/content/petride-stor
 import { usePetrideStory } from '@/hooks/use-petride-story';
 import { cn } from '@/lib/utils';
 
+// Cada celular del módulo Flow carga una pantalla real del prototipo
+const FLOW_SCREEN_SRC = '/prototypes/petride/screens';
+
 // Outfit, geométrica y gruesa en los títulos (referencia: fineacts.co)
 const outfit = outfitFont({
   variable: '--font-pet',
@@ -494,39 +497,45 @@ export function PetrideStory({ story }: PetrideStoryProps) {
           </div>
         </div>
 
-        <div className="pet-flowshow" data-pet-flowshow data-pet-trace>
+        <div className="pet-flowshow" data-pet-flowshow>
           <div className="pet-flowshow__intro">
             <h3 className="pet-module__title">
               <PetLetters text={design.flowTitle} />
             </h3>
           </div>
           <svg className="pet-flowshow__wires" aria-hidden="true">
-            <path className="pet-flowshow__wire" pathLength={1} data-pet-wire />
+            {design.flowScreens.slice(1).map(screen => (
+              <path
+                key={screen.key}
+                className="pet-flowshow__wire"
+                pathLength={1}
+                data-pet-wire
+              />
+            ))}
           </svg>
-          {design.flowScreens.map((screen, index) => (
-            <div
-              key={screen.label}
-              className={cn(
-                'pet-flowshow__step',
-                `pet-flowshow__step--${index}`
-              )}
-            >
-              <div
-                className="pet-flowshow__phone"
-                data-pet-rise
-                data-pet-wire-end={index === 0 ? 'from' : 'to'}
-              >
-                <PetPlaceholder
-                  label={screen.label}
-                  className="pet-flowshow__screen"
-                />
-              </div>
-              <div className="pet-flowshow__text" data-pet-rise>
-                <h4 className="pet-flowshow__title">{screen.title}</h4>
-                <p className="pet-flowshow__body">{screen.text}</p>
-              </div>
-            </div>
-          ))}
+          <ol className="pet-flowshow__steps">
+            {design.flowScreens.map(screen => (
+              <li key={screen.key} className="pet-flowshow__step">
+                <div
+                  className="pet-flowshow__phone"
+                  data-pet-rise
+                  data-pet-wire-node
+                >
+                  <iframe
+                    src={`${FLOW_SCREEN_SRC}/${screen.key}`}
+                    title={screen.label}
+                    loading="lazy"
+                    tabIndex={-1}
+                    className="pet-flowshow__screen"
+                  />
+                </div>
+                <div className="pet-flowshow__text" data-pet-rise>
+                  <h4 className="pet-flowshow__title">{screen.title}</h4>
+                  <p className="pet-flowshow__body">{screen.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
     </div>

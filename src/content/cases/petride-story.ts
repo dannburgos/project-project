@@ -430,14 +430,46 @@ export const petrideStory: PetrideStory = {
     flowTitle: 'Registrar mascota',
     flowScreens: [
       {
+        key: 'list',
         label: 'Pantalla · Mis mascotas',
         title: 'Empieza en Mis mascotas',
-        text: 'Desde la lista de mascotas registradas, la persona elige agregar una nueva.'
+        text: 'La persona ve las mascotas que ya registró, con su tamaño, su edad y si son de asistencia. Debajo de la lista, agrega una nueva.'
       },
       {
-        label: 'Pantalla · Registrar mascota',
-        title: 'Solo lo necesario',
-        text: 'Cuatro datos obligatorios para que la compatibilidad funcione; el resto es opcional.'
+        key: 'camera',
+        label: 'Pantalla · Foto de la mascota',
+        title: 'Primero, la foto',
+        text: 'La cámara se abre dentro de la app y un recuadro ayuda a centrar a la mascota. La foto es opcional: se puede omitir y seguir.'
+      },
+      {
+        key: 'identity',
+        label: 'Pantalla · Paso 1',
+        title: 'Quién viaja',
+        text: 'Paso 1 de 2: nombre, perro o gato, hembra o macho y raza. La raza se busca escribiendo y, si no tiene una, se elige Mestizo.'
+      },
+      {
+        key: 'travel',
+        label: 'Pantalla · Paso 2',
+        title: 'Cómo viaja',
+        text: 'El peso se elige por tamaño y la edad marca la etapa. Dos interruptores dicen si es de asistencia y si convive con otras mascotas, y queda un espacio para el conductor.'
+      },
+      {
+        key: 'review',
+        label: 'Pantalla · Revisar información',
+        title: 'El carné de viaje',
+        text: 'Antes de guardar, todo se resume en un carné sobre la foto. Si algo está mal se edita; si está bien, se guarda.'
+      },
+      {
+        key: 'registered',
+        label: 'Pantalla · Mascota registrada',
+        title: 'Lista para subir a bordo',
+        text: 'Un póster confirma el registro con los datos clave y lleva directo a pedir el primer viaje con esa mascota.'
+      },
+      {
+        key: 'listUpdated',
+        label: 'Pantalla · Mis mascotas actualizada',
+        title: 'Ya está en la lista',
+        text: 'Al volver, la nueva mascota aparece resaltada junto a las demás, lista para elegirla en cualquier viaje.'
       }
     ],
     system: petrideDesignSystem

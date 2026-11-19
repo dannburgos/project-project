@@ -1561,30 +1561,85 @@
   stroke-dasharray: 1;
 }
 
-.pet-flowshow__step {
-  @apply relative grid items-center gap-8 md:grid-cols-2 md:gap-16;
+.pet-flowshow__steps {
+  @apply relative flex flex-col gap-24 md:gap-32;
 }
 
-.pet-flowshow__step--1 .pet-flowshow__text {
-  @apply md:order-first md:justify-self-end md:text-right;
+/* Composición editorial: cada pantalla tiene su lugar en el ancho
+   disponible. El texto va pegado a su pantalla, al lado o debajo. En
+   pantallas angostas todo se apila centrado */
+.pet-flowshow__step {
+  --pet-flow-scale: 0.6;
+  @apply relative flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:gap-12;
 }
 
 .pet-flowshow__phone {
-  @apply aspect-[9/19] w-full max-w-[280px] justify-self-center overflow-hidden rounded-[40px] border-[8px];
+  @apply relative shrink-0 overflow-hidden rounded-[40px] border-[8px];
+  width: calc(390px * var(--pet-flow-scale) + 16px);
+  height: calc(844px * var(--pet-flow-scale) + 16px);
   border-color: var(--pet-deep);
+  background: var(--pet-deep);
   box-shadow: 0 0 0 2px var(--pet-indigo);
 }
 
+@media (min-width: 1024px) {
+  /* Todas del mismo tamaño; lo que cambia es su lugar en el ancho */
+  .pet-flowshow__step {
+    --pet-flow-scale: 0.72;
+  }
+
+  /* 01 Mis mascotas: a la izquierda */
+  .pet-flowshow__step:nth-child(1) {
+    padding-left: 6%;
+  }
+
+  /* 02 Cámara: a la derecha */
+  .pet-flowshow__step:nth-child(2) {
+    @apply flex-row-reverse;
+    padding-right: 10%;
+  }
+
+  /* 03 Paso 1: hacia el centro */
+  .pet-flowshow__step:nth-child(3) {
+    padding-left: 26%;
+  }
+
+  /* 04 Paso 2: contra el borde derecho */
+  .pet-flowshow__step:nth-child(4) {
+    @apply flex-row-reverse;
+    padding-right: 4%;
+  }
+
+  /* 05 Carné: a la izquierda, con el texto debajo */
+  .pet-flowshow__step:nth-child(5) {
+    @apply flex-col items-start gap-8;
+    padding-left: 10%;
+  }
+
+  /* 06 Póster: pasado el centro */
+  .pet-flowshow__step:nth-child(6) {
+    padding-left: 40%;
+  }
+
+  /* 07 Actualizada: a la derecha */
+  .pet-flowshow__step:nth-child(7) {
+    @apply flex-row-reverse;
+    padding-right: 14%;
+  }
+
+  .pet-flowshow__step:nth-child(2) .pet-flowshow__text,
+  .pet-flowshow__step:nth-child(4) .pet-flowshow__text,
+  .pet-flowshow__step:nth-child(7) .pet-flowshow__text {
+    @apply text-right;
+  }
+}
+
 .pet-flowshow__screen {
-  background: var(--pet-screen);
-}
-
-.pet-flowshow__screen .pet-placeholder__label {
-  color: #3a3d55;
-}
-
-.pet-flowshow__step--0 .pet-flowshow__text {
-  @apply self-start;
+  @apply pointer-events-none absolute top-0 left-0 block border-0;
+  width: 390px;
+  height: 844px;
+  transform: scale(var(--pet-flow-scale));
+  transform-origin: top left;
 }
 
 .pet-flowshow__text {
@@ -1592,11 +1647,11 @@
 }
 
 .pet-flowshow__title {
-  @apply text-3xl font-extrabold;
+  @apply text-3xl font-extrabold text-balance;
 }
 
 .pet-flowshow__body {
-  @apply text-lg leading-relaxed;
+  @apply text-lg leading-relaxed text-pretty;
   color: var(--pet-mute);
 }
 

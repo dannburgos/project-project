@@ -81,30 +81,38 @@ function listenJumps(root: HTMLElement, onJump: (index: number) => void) {
   return () => root.removeEventListener(STORY_JUMP_EVENT, handleJump);
 }
 
-// Conector del módulo Flow: sale del lado derecho de la primera pantalla,
-// cruza y baja con una esquina redonda hasta la segunda. Se recalcula cuando
-// cambia el tamaño de la página.
+// Conectores del módulo Flow: cada uno sale del costado de una pantalla que
+// mira hacia la siguiente, cruza y baja con una esquina redonda hasta ella.
+// Se recalculan cuando cambia el tamaño de la página.
 const WIRE_RADIUS = 32;
+
+function drawWire(box: DOMRect, start: DOMRect, end: DOMRect) {
+  const startCenter = start.left + start.width / 2;
+  const endCenter = end.left + end.width / 2;
+  const direction = endCenter >= startCenter ? 1 : -1;
+  const x1 = (direction === 1 ? start.right : start.left) - box.left;
+  const y1 = start.top - box.top + start.height * 0.72;
+  const x2 = endCenter - box.left;
+  const y2 = end.top - box.top;
+  const radius = Math.min(WIRE_RADIUS, Math.abs(x2 - x1), Math.abs(y2 - y1));
+  return `M ${x1} ${y1} H ${x2 - radius * direction} Q ${x2} ${y1} ${x2} ${y1 + radius} V ${y2}`;
+}
 
 function placeWires(root: HTMLElement) {
   queryAll(root, '[data-pet-flowshow]').forEach(module => {
     const svg = module.querySelector<SVGSVGElement>('svg');
-    const wire = module.querySelector<SVGPathElement>('[data-pet-wire]');
-    const from = module.querySelector('[data-pet-wire-end="from"]');
-    const to = module.querySelector('[data-pet-wire-end="to"]');
-    if (!svg || !wire || !from || !to) return;
+    if (!svg) return;
     const box = module.getBoundingClientRect();
-    const start = from.getBoundingClientRect();
-    const end = to.getBoundingClientRect();
-    const x1 = start.right - box.left;
-    const y1 = start.top - box.top + start.height * 0.72;
-    const x2 = end.left - box.left + end.width / 2;
-    const y2 = end.top - box.top;
-    const radius = Math.min(WIRE_RADIUS, Math.abs(x2 - x1), Math.abs(y2 - y1));
+    const nodes = queryAll(module, '[data-pet-wire-node]').map(node =>
+      node.getBoundingClientRect()
+    );
     svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
-    wire.setAttribute(
-      'd',
-      `M ${x1} ${y1} H ${x2 - radius} Q ${x2} ${y1} ${x2} ${y1 + radius} V ${y2}`
+    queryAll<SVGPathElement>(module, '[data-pet-wire]').forEach(
+      (wire, index) => {
+        const start = nodes[index];
+        const end = nodes[index + 1];
+        if (start && end) wire.setAttribute('d', drawWire(box, start, end));
+      }
     );
   });
 }
@@ -392,26 +400,47 @@ function scrubOnScroll(root: HTMLElement) {
     );
   });
 
-  // Trazos SVG con pathLength="1" (arcos y conectores)
-  queryAll<SVGGeometryElement>(
-    root,
-    '[data-pet-arc], [data-pet-draw], [data-pet-wire]'
-  ).forEach(path => {
+  // Conectores del módulo Flow: cada línea crece con el scroll desde su
+  // pantalla y termina justo cuando llega a la siguiente
+  queryAll<SVGGeometryElement>(root, '[data-pet-wire]').forEach(path => {
     gsap.fromTo(
       path,
       { strokeDashoffset: 1 },
       {
         strokeDashoffset: 0,
         ease: 'none',
+        // Sin redondear: el trazo mide 1, así que redondeado saltaría de golpe
+        autoRound: false,
         scrollTrigger: {
-          trigger: path.closest('[data-pet-trace]') ?? path,
-          start: 'top 75%',
-          end: 'center 45%',
-          scrub: true
+          trigger: path,
+          start: 'top 80%',
+          end: 'bottom 50%',
+          scrub: true,
+          invalidateOnRefresh: true
         }
       }
     );
   });
+
+  // Trazos SVG con pathLength="1" (arcos)
+  queryAll<SVGGeometryElement>(root, '[data-pet-arc], [data-pet-draw]').forEach(
+    path => {
+      gsap.fromTo(
+        path,
+        { strokeDashoffset: 1 },
+        {
+          strokeDashoffset: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: path.closest('[data-pet-trace]') ?? path,
+            start: 'top 75%',
+            end: 'center 45%',
+            scrub: true
+          }
+        }
+      );
+    }
+  );
 
   // Líneas HTML: crecen desde su origen
   queryAll(root, '[data-pet-lines]').forEach(group => {

@@ -84,6 +84,8 @@ export type PetUserFlow = {
 };
 
 export type PetFlowScreen = {
+  // Ruta de la pantalla en el prototipo (/prototypes/petride/screens/<key>)
+  key: string;
   label: string;
   title: string;
   text: string;
