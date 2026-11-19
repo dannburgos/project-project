@@ -153,19 +153,6 @@
   @apply text-xl;
 }
 
-.sono-architecture .sono-display--sm {
-  @apply text-base;
-}
-
-.sono-sub {
-  color: var(--sono-orange);
-}
-
-.sono-view--orange .sono-sub,
-.sono-view--soft-orange .sono-sub {
-  color: var(--sono-white);
-}
-
 .sono-eyebrow,
 .sono-opener,
 .sono-label {
@@ -296,10 +283,6 @@
   border-color: rgb(244 244 244 / 0.4);
 }
 
-.sono-facts--dark {
-  border-color: var(--story-line);
-}
-
 .sono-facts dt {
   @apply text-xs tracking-[0.14em] uppercase opacity-75;
 }
@@ -356,35 +339,61 @@
   @apply text-sm leading-5;
 }
 
-/* Benchmark: los referentes se deslizan y sus capturas van en columnas */
-.sono-marquee {
-  @apply -mx-32 overflow-hidden whitespace-nowrap;
+/* Benchmark: una tabla con cada app en una columna, lo observado en cada
+   aspecto y, al final, lo que se toma de cada una */
+.sono-compare {
+  @apply min-h-0 overflow-x-auto rounded-3xl;
+  background: rgb(0 43 143 / 0.35);
 }
 
-.sono-marquee__track {
-  @apply inline-flex gap-16 uppercase;
-  font-family: var(--font-sono-display), sans-serif;
-  font-size: clamp(40px, 5vw, 80px);
-  color: var(--sono-orange);
-  animation: sono-marquee 18s linear infinite;
+.sono-compare__table {
+  @apply w-full min-w-[720px] border-collapse text-left;
 }
 
-@keyframes sono-marquee {
-  to {
-    transform: translateX(-50%);
-  }
+.sono-compare__corner,
+.sono-compare__app {
+  @apply p-4 align-bottom;
 }
 
-.sono-bench {
-  @apply grid min-h-0 flex-1 grid-cols-4 gap-6;
+.sono-compare__corner {
+  @apply text-sm font-semibold tracking-[0.18em] uppercase;
 }
 
-.sono-bench__capture {
-  @apply h-full min-h-40;
+.sono-compare__app {
+  @apply w-1/4;
 }
 
-.sono-bench__dimensions {
-  @apply flex flex-col gap-4;
+.sono-compare__capture {
+  @apply mb-3 h-20 min-h-0;
+}
+
+.sono-compare__name {
+  @apply block text-xl font-semibold;
+}
+
+.sono-compare__dimension {
+  @apply border-t px-4 py-3 text-base font-semibold;
+  border-color: rgb(244 244 244 / 0.2);
+}
+
+.sono-compare__cell {
+  @apply border-t px-4 py-3 text-base;
+  border-color: rgb(244 244 244 / 0.2);
+}
+
+.sono-compare__takeaway {
+  background: var(--sono-orange);
+}
+
+.sono-compare__takeaway .sono-compare__dimension,
+.sono-compare__takeaway .sono-compare__cell {
+  @apply border-t-0 py-4;
+}
+
+.sono-compare__pending {
+  @apply inline-block rounded-full border border-dashed px-3 py-0.5 text-sm;
+  border-color: rgb(244 244 244 / 0.55);
+  color: rgb(244 244 244 / 0.85);
 }
 
 /* Síntesis: tres oportunidades, una por línea */
@@ -404,7 +413,8 @@
   @apply max-w-3xl;
 }
 
-/* Concepto: la foto ocupa todo y el título va girado a un lado */
+/* Concepto: la foto ocupa todo, el título va girado a un lado y junto al
+   texto queda un espacio para una imagen del concepto */
 .sono-concept__photo {
   @apply absolute inset-0 rounded-none opacity-90;
 }
@@ -418,8 +428,13 @@
   color: var(--sono-orange);
 }
 
+.sono-concept__image {
+  @apply absolute top-28 bottom-14 left-44 z-10 w-[22%] rounded-3xl;
+  box-shadow: 10px 10px 0 var(--sono-orange);
+}
+
 .sono-concept__text {
-  @apply relative z-10 ml-auto flex w-[68%] max-w-[1040px] flex-col gap-6 rounded-3xl p-10;
+  @apply relative z-10 ml-auto flex w-[58%] max-w-[960px] flex-col gap-6 rounded-3xl p-10;
   background: var(--sono-navy);
 }
 
@@ -448,17 +463,34 @@
   @apply grid grid-cols-[auto_1fr] items-center gap-16;
 }
 
+/* Polaroid: marco blanco con el borde de abajo más ancho, un poco girada y
+   con sombra suave, como una instantánea sobre la mesa. El velo encima de la
+   foto se aclara al aparecer (revelado) */
 .sono-persona__card {
-  /* Toma casi todo el alto de la pantalla (lo que dejan la franja de arriba,
-     el margen de abajo y el giro) y el ancho sale de su proporción */
-  @apply flex aspect-[3/4] h-[calc(100svh-208px)] max-h-[720px] -rotate-3 flex-col gap-4 rounded-3xl p-6;
-  background: var(--sono-orange);
-  color: var(--sono-white);
-  box-shadow: 10px 10px 0 var(--sono-navy);
+  @apply flex aspect-[88/107] h-[calc(100svh-208px)] max-h-[720px] -rotate-4 flex-col gap-4 rounded-[4px] px-5 pt-5 pb-6;
+  background: #fbfaf6;
+  color: var(--sono-navy);
+  box-shadow:
+    0 24px 48px -12px rgb(0 20 70 / 0.35),
+    0 2px 6px rgb(0 0 0 / 0.12);
+}
+
+.sono-persona__photo {
+  @apply relative min-h-0 flex-1 overflow-hidden;
 }
 
 .sono-persona__portrait {
-  @apply min-h-0 flex-1;
+  @apply h-full rounded-none;
+}
+
+.sono-persona__develop {
+  @apply pointer-events-none absolute inset-0;
+  background: linear-gradient(160deg, #2b2620 0%, #4a3f33 55%, #6b5a45 100%);
+}
+
+.sono-persona__caption {
+  @apply text-center text-3xl;
+  font-family: var(--font-sono-display), sans-serif;
 }
 
 .sono-persona__info {
@@ -467,7 +499,8 @@
 
 /* Journey: la curva en zigzag se dibuja y las etapas aparecen encima */
 .sono-journey__track {
-  @apply relative mb-16 h-56;
+  /* Debajo de la curva quedan las tarjetas de cada etapa */
+  @apply relative mb-[344px] h-44;
 }
 
 .sono-journey__line {
@@ -501,26 +534,65 @@
    cada columna, alternando arriba y abajo) */
 .sono-journey__stages li {
   @apply relative flex flex-col items-center gap-2 text-center text-lg font-semibold;
+  top: calc(var(--peak) * 1% - 20px);
 }
 
 .sono-journey__stages li:nth-child(1) {
-  top: calc(70% - 20px);
+  --peak: 70;
 }
 
 .sono-journey__stages li:nth-child(2) {
-  top: calc(25% - 20px);
+  --peak: 25;
 }
 
 .sono-journey__stages li:nth-child(3) {
-  top: calc(75% - 20px);
+  --peak: 75;
 }
 
 .sono-journey__stages li:nth-child(4) {
-  top: calc(30% - 20px);
+  --peak: 30;
 }
 
 .sono-journey__stages li:nth-child(5) {
-  top: calc(65% - 20px);
+  --peak: 65;
+}
+
+/* Tarjeta de cada etapa: alineadas todas debajo de la curva, sin importar
+   la altura de su pico (el track mide 176 px) */
+.sono-journey__card {
+  @apply absolute inset-x-0 flex flex-col gap-1.5 rounded-2xl border p-3 text-left text-base font-normal;
+  top: calc(236px - var(--peak) * 1.76px);
+  background: rgb(255 255 255 / 0.14);
+  border-color: rgb(255 255 255 / 0.35);
+}
+
+.sono-journey__row {
+  @apply flex flex-col gap-0.5;
+}
+
+.sono-journey__key {
+  @apply text-sm font-semibold tracking-[0.14em] uppercase;
+  opacity: 0.85;
+}
+
+.sono-journey__value {
+  @apply leading-tight;
+}
+
+.sono-journey__row--thought .sono-journey__value {
+  @apply italic;
+}
+
+.sono-journey__row--friction .sono-journey__key::before {
+  @apply mr-1.5 inline-block size-2 rounded-full align-middle content-[''];
+  background: var(--sono-navy);
+}
+
+/* La oportunidad resalta: es lo que el diseño resuelve */
+.sono-journey__row--opportunity {
+  @apply rounded-xl px-2.5 py-2;
+  background: var(--sono-white);
+  color: var(--sono-navy);
 }
 
 .sono-journey__dot {
@@ -529,64 +601,307 @@
   color: var(--sono-white);
 }
 
-/* Arquitectura: seis bloques, uno por sección */
-.sono-architecture {
-  @apply grid grid-cols-6 gap-4;
+/* Arquitectura como sitemap. El lienzo mantiene la proporción de 1400 × 600
+   (la misma del SVG de las líneas) y las pantallas se ubican en % de él */
+.sono-sitemap__head {
+  @apply flex items-end justify-between gap-8;
 }
 
-/* Cada bloque con un color de la marca; en todos, el texto va en blanco */
-.sono-architecture__block {
-  @apply flex flex-col gap-3 rounded-2xl p-5;
+.sono-sitemap__legend {
+  @apply flex flex-wrap gap-5 text-sm font-semibold;
+}
+
+.sono-sitemap__key {
+  @apply flex items-center gap-2;
+}
+
+.sono-sitemap__key::before {
+  @apply block h-4 w-7 rounded-md content-[''];
+}
+
+.sono-sitemap__key--nav::before {
+  background: var(--sono-navy);
+}
+
+.sono-sitemap__key--step::before {
+  @apply border-2 border-dashed;
+  border-color: var(--sono-navy);
+}
+
+.sono-sitemap__key--flow::before {
+  @apply h-1 rounded-full;
+  background: var(--sono-orange);
+}
+
+.sono-sitemap__canvas {
+  @apply relative mx-auto aspect-[1400/600] w-full;
+  max-width: calc((100svh - 320px) * 1400 / 600);
+}
+
+.sono-sitemap__lines {
+  @apply absolute inset-0 size-full overflow-visible;
+}
+
+.sono-sitemap__tree {
+  fill: none;
+  stroke: rgb(0 43 143 / 0.35);
+  stroke-width: 2;
+  stroke-dasharray: 1;
+}
+
+.sono-sitemap__hop {
+  fill: none;
+  stroke: var(--sono-orange);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+}
+
+.sono-sitemap__lines marker path {
+  fill: var(--sono-orange);
+}
+
+.sono-sitemap__root {
+  @apply absolute flex h-12 w-60 items-center justify-center rounded-full text-base font-semibold;
+  left: calc(50% - 120px);
+  top: calc(7.333% - 24px);
+  background: var(--sono-dark);
+  color: var(--sono-white);
+}
+
+.sono-sitemap__node {
+  @apply absolute flex flex-col justify-center gap-1.5 rounded-2xl px-4 py-3;
+  /* --lit lo sube la animación cuando el flujo llega a la pantalla */
+  --lit: 0;
+  transition: box-shadow 0.3s ease;
+}
+
+.sono-sitemap__node::after {
+  @apply pointer-events-none absolute -inset-1.5 rounded-[20px] border-[3px] content-[''];
+  border-color: var(--sono-orange);
+  opacity: var(--lit);
+}
+
+.sono-sitemap__node:hover {
+  box-shadow: 8px 8px 0 var(--sono-orange-soft);
+}
+
+.sono-sitemap__node--nav {
+  width: 20%;
+  height: 25%;
+  top: 19.167%;
   background: var(--sono-navy);
   color: var(--sono-white);
 }
 
-.sono-architecture__block:nth-child(2) {
+.sono-sitemap__node--step {
+  @apply border-2 border-dashed;
+  width: 18.571%;
+  height: 18.667%;
+  left: 40.714%;
+  background: var(--sono-white);
+  border-color: var(--sono-navy);
+  color: var(--sono-navy);
+}
+
+.sono-sitemap__node--end {
+  width: 20%;
+  height: 18.667%;
+  left: 72.857%;
+  top: 75.667%;
   background: var(--sono-orange);
+  color: var(--sono-white);
 }
 
-.sono-architecture__block:nth-child(3) {
-  background: var(--sono-royal);
+.sono-sitemap__node--0 {
+  left: 7.143%;
+}
+.sono-sitemap__node--1 {
+  left: 40%;
+}
+.sono-sitemap__node--2 {
+  top: 50.667%;
+}
+.sono-sitemap__node--3 {
+  top: 75.667%;
+}
+.sono-sitemap__node--4 {
+  left: 72.857%;
 }
 
-.sono-architecture__block:nth-child(4) {
-  background: var(--sono-orange-soft);
+.sono-sitemap__title {
+  @apply flex items-center gap-2 text-xl font-semibold;
 }
 
-.sono-architecture__block:nth-child(5) {
-  background: var(--sono-electric);
+.sono-sitemap__order {
+  @apply flex size-6 shrink-0 items-center justify-center rounded-full text-sm;
+  background: var(--sono-orange);
+  color: var(--sono-white);
 }
 
-.sono-architecture__block:nth-child(6) {
-  background: var(--sono-dark);
+.sono-sitemap__node--end .sono-sitemap__order {
+  background: var(--sono-white);
+  color: var(--sono-orange);
 }
 
-.sono-architecture__number {
-  @apply text-sm font-semibold opacity-75;
+.sono-sitemap__items {
+  @apply text-base leading-snug;
+  opacity: 0.85;
 }
 
-.sono-architecture__block ul {
-  @apply flex flex-col gap-1 text-sm leading-5;
-}
-
-/* Flujos: tres columnas con sus pasos */
-.sono-flows {
-  @apply grid grid-cols-3 gap-6;
-}
-
-.sono-flow {
-  @apply flex flex-col gap-4 border-t-4 pt-5;
+/* El punto que recorre el flujo de compra */
+.sono-sitemap__marker {
+  @apply pointer-events-none absolute z-10 -mt-2.5 -ml-2.5 size-5 rounded-full border-4;
+  background: var(--sono-white);
   border-color: var(--sono-orange);
+  box-shadow: 0 0 0 6px rgb(255 90 0 / 0.25);
 }
 
-.sono-flow__number {
-  @apply text-5xl;
+/* Flujos principales: un diagrama por flujo que crece con el scroll. El
+   lienzo mantiene la proporción de 1400 × 520 (la del SVG de los caminos) y
+   las pantallas se ubican en % de él */
+.sono-flowmaps__head {
+  @apply flex items-end justify-between gap-8;
+}
+
+.sono-flowmaps__tabs {
+  @apply flex gap-2;
+}
+
+.sono-flowmaps__tab {
+  @apply flex h-10 w-14 items-center justify-center rounded-full border-2 text-base font-semibold;
+  /* --on lo sube la animación cuando el flujo está en pantalla */
+  --on: 0;
+  border-color: var(--sono-orange);
+  background: color-mix(
+    in srgb,
+    var(--sono-orange) calc(var(--on) * 100%),
+    transparent
+  );
+}
+
+.sono-flowmaps__stage {
+  @apply relative min-h-0 flex-1;
+}
+
+.sono-flowmap {
+  @apply absolute inset-0 flex flex-col gap-4;
+}
+
+.sono-flowmap__intro {
+  @apply flex items-center gap-5;
+}
+
+.sono-flowmap__number {
+  @apply text-6xl leading-none;
   font-family: var(--font-sono-display), sans-serif;
   color: var(--sono-orange);
 }
 
-.sono-flow__steps {
-  @apply flex list-inside list-decimal flex-col gap-2 text-base leading-6;
+.sono-flowmap__title {
+  @apply text-2xl font-semibold;
+}
+
+.sono-flowmap__goal {
+  @apply text-base;
+  color: rgb(244 244 244 / 0.75);
+}
+
+.sono-flowmap__canvas {
+  @apply relative mx-auto aspect-[1400/520] w-full;
+  max-width: calc((100svh - 360px) * 1400 / 520);
+}
+
+.sono-flowmap__lines {
+  @apply absolute inset-0 size-full overflow-visible;
+}
+
+.sono-flowmap__edge {
+  fill: none;
+  stroke: rgb(244 244 244 / 0.75);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+}
+
+/* Caminos alternos: en naranja suave y más finos */
+.sono-flowmap__edge--alt {
+  stroke: var(--sono-orange-soft);
+  stroke-width: 2.5;
+}
+
+.sono-flowmap__lines marker path {
+  fill: rgb(244 244 244 / 0.85);
+}
+
+.sono-flowmap__edge-label {
+  fill: var(--sono-white);
+  font-size: 18px;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+.sono-flowmap__edge--alt + .sono-flowmap__edge-label {
+  fill: var(--sono-orange-soft);
+}
+
+.sono-flowmap__nodes {
+  @apply absolute inset-0;
+}
+
+/* Cada pantalla se centra en su punto del lienzo (lo ubica la animación) */
+.sono-flowmap__spot {
+  @apply absolute -translate-x-1/2 -translate-y-1/2;
+  width: 14.286%;
+  height: 17%;
+}
+
+.sono-flowmap__node {
+  @apply flex size-full flex-col items-center justify-center gap-0.5 rounded-2xl px-3 text-center;
+}
+
+.sono-flowmap__label {
+  @apply text-base leading-tight font-semibold;
+}
+
+.sono-flowmap__detail {
+  @apply text-sm leading-tight;
+  opacity: 0.85;
+}
+
+.sono-flowmap__node--start {
+  @apply rounded-full;
+  background: var(--sono-white);
+  color: var(--sono-navy);
+}
+
+.sono-flowmap__node--step {
+  background: var(--sono-royal);
+  color: var(--sono-white);
+  box-shadow: 5px 5px 0 var(--sono-navy);
+}
+
+.sono-flowmap__node--decision {
+  @apply border-[3px];
+  border-color: var(--sono-orange);
+  background: var(--sono-dark);
+  color: var(--sono-white);
+  border-radius: 28px 8px;
+}
+
+.sono-flowmap__node--alt {
+  @apply border-2 border-dashed;
+  border-color: var(--sono-orange-soft);
+  background: var(--sono-dark);
+  color: var(--sono-orange-soft);
+}
+
+.sono-flowmap__node--end {
+  @apply rounded-full;
+  background: var(--sono-orange);
+  color: var(--sono-white);
 }
 
 /* Exploración visual: personalidad en stickers y la mascota */
@@ -735,15 +1050,42 @@
   .sono-columns,
   .sono-view.sono-columns,
   .sono-persona,
-  .sono-flows,
   .sono-brand__grid {
     @apply grid-cols-1 gap-8;
   }
 
-  .sono-architecture,
-  .sono-palette__swatches,
-  .sono-bench {
+  .sono-palette__swatches {
     @apply grid-cols-2;
+  }
+
+  .sono-sitemap__head {
+    @apply flex-col items-start gap-4;
+  }
+
+  .sono-sitemap__canvas {
+    @apply flex aspect-auto max-w-none flex-col gap-3;
+  }
+
+  .sono-sitemap__lines,
+  .sono-sitemap__marker {
+    @apply hidden;
+  }
+
+  .sono-sitemap__root,
+  .sono-sitemap__node {
+    @apply relative inset-auto h-auto w-full;
+  }
+
+  .sono-sitemap__root {
+    @apply w-auto self-start px-6;
+  }
+
+  .sono-concept__image {
+    @apply relative inset-auto aspect-[4/3] w-full;
+  }
+
+  .sono-persona__develop {
+    @apply hidden;
   }
 
   .sono-palette__swatch {
@@ -759,7 +1101,11 @@
   }
 
   .sono-journey__track {
-    @apply h-auto;
+    @apply mb-0 h-auto;
+  }
+
+  .sono-journey__card {
+    @apply relative inset-auto top-auto w-full;
   }
 
   .sono-journey__line,
@@ -826,8 +1172,505 @@
   .sono-persona__portrait {
     @apply aspect-square flex-none;
   }
+}
 
-  .sono-marquee {
-    @apply -mx-5;
+/* ───────── 05 · El producto en acción (referencia: motionin.design/
+   gallery/marathon). Un paso por flujo: fondo propio, título que entra
+   letra por letra, el teléfono al centro y etiquetas de vidrio flotando ── */
+.sono-product {
+  @apply overflow-hidden;
+  color: var(--sono-white);
+}
+
+.sono-product__bg {
+  @apply absolute inset-0;
+}
+
+.sono-product__bg--0 {
+  background:
+    radial-gradient(
+      70% 45% at 60% 100%,
+      rgb(255 122 26 / 0.55),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      var(--sono-navy) 0%,
+      var(--sono-royal) 70%,
+      #3f6fe0 100%
+    );
+}
+
+.sono-product__bg--1 {
+  background:
+    radial-gradient(60% 50% at 30% 90%, rgb(255 90 0 / 0.45), transparent 70%),
+    linear-gradient(
+      160deg,
+      var(--sono-royal) 0%,
+      var(--sono-electric) 60%,
+      #5b8cff 100%
+    );
+}
+
+.sono-product__bg--2 {
+  background:
+    radial-gradient(
+      70% 55% at 70% 20%,
+      rgb(255 255 255 / 0.18),
+      transparent 70%
+    ),
+    linear-gradient(
+      160deg,
+      var(--sono-orange) 0%,
+      var(--sono-orange-soft) 55%,
+      var(--sono-navy) 130%
+    );
+}
+
+.sono-product__glow {
+  @apply pointer-events-none absolute inset-x-0 bottom-0 h-1/2;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.28), transparent);
+}
+
+/* El teléfono, al centro; cada flujo trae su pantalla */
+.sono-product__phone {
+  @apply absolute z-10 aspect-[9/19.5] overflow-hidden rounded-[44px] border-[10px];
+  --phone-height: min(68svh, 640px);
+  /* Centrado sin translate: GSAP mueve el teléfono en y */
+  height: var(--phone-height);
+  top: calc(50% - var(--phone-height) / 2);
+  left: calc(50% - var(--phone-height) * 9 / 19.5 / 2);
+  border-color: #0b0b0c;
+  background: #0b0b0c;
+  box-shadow:
+    0 40px 80px -20px rgb(0 20 70 / 0.6),
+    0 0 0 2px rgb(255 255 255 / 0.12);
+}
+
+.sono-product__phone::before {
+  @apply absolute top-2 left-1/2 z-10 h-6 w-24 -translate-x-1/2 rounded-full content-[''];
+  background: #0b0b0c;
+}
+
+.sono-product__screen {
+  @apply absolute inset-0 flex items-center justify-center rounded-[34px] p-6 text-center;
+  background: #d9dbe1;
+}
+
+.sono-product__screen-label {
+  @apply text-base font-semibold;
+  color: #44485a;
+}
+
+/* Cada escena ocupa el escenario; su texto va a la izquierda */
+.sono-product__scene {
+  @apply pointer-events-none absolute inset-0 z-20;
+}
+
+.sono-product__copy {
+  @apply pointer-events-auto absolute top-1/2 left-32 flex w-[calc(50%-148px-min(16svh,150px))] -translate-y-1/2 flex-col gap-5;
+}
+
+.sono-product__eyebrow {
+  @apply text-base font-semibold tracking-[0.2em] uppercase;
+  color: rgb(244 244 244 / 0.82);
+}
+
+.sono-product__title {
+  font-family: var(--font-sono-display), sans-serif;
+  font-size: clamp(44px, 4.2vw, 72px);
+  line-height: 0.92;
+  text-shadow: 0 8px 32px rgb(0 20 70 / 0.35);
+}
+
+.sono-product__word {
+  @apply mr-[0.22em] inline-block whitespace-nowrap last:mr-0;
+}
+
+.sono-product__letter {
+  @apply inline-block;
+  will-change: transform, filter, opacity;
+}
+
+.sono-product__text {
+  @apply max-w-md text-xl leading-snug;
+  color: rgb(244 244 244 / 0.9);
+}
+
+/* Vidrio: velo claro, borde fino y desenfoque de lo de atrás */
+.sono-product__pill,
+.sono-product__chip-float {
+  @apply border;
+  background: rgb(255 255 255 / 0.16);
+  border-color: rgb(255 255 255 / 0.28);
+  backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 12px 32px -12px rgb(0 20 70 / 0.45);
+}
+
+.sono-product__pill {
+  @apply flex w-max max-w-full items-center gap-3 rounded-full px-5 py-3 text-base font-semibold tracking-wide uppercase;
+}
+
+.sono-product__dot {
+  @apply size-2.5 shrink-0 rounded-full;
+  background: var(--sono-orange);
+  box-shadow: 0 0 0 4px rgb(255 90 0 / 0.3);
+}
+
+.sono-product__chips {
+  @apply absolute inset-0;
+}
+
+.sono-product__chip {
+  @apply absolute;
+}
+
+.sono-product__chip--0 {
+  top: 76%;
+  left: 34%;
+}
+
+.sono-product__chip--1 {
+  top: 18%;
+  left: 66%;
+}
+
+.sono-product__chip--2 {
+  top: 66%;
+  left: 68%;
+}
+
+.sono-product__chip-float {
+  @apply flex flex-col gap-1 rounded-[20px] px-5 py-4;
+  animation: sono-chip-float 5s ease-in-out infinite;
+}
+
+.sono-product__chip--1 .sono-product__chip-float {
+  animation-delay: -1.6s;
+}
+
+.sono-product__chip--2 .sono-product__chip-float {
+  animation-delay: -3.2s;
+}
+
+.sono-product__chip-title {
+  @apply text-base font-semibold tracking-[0.18em] uppercase;
+  color: rgb(244 244 244 / 0.8);
+}
+
+.sono-product__chip-text {
+  @apply text-2xl font-semibold;
+}
+
+@keyframes sono-chip-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 6px -8px;
+  }
+}
+
+/* Celular y "reducir movimiento": los tres flujos uno debajo del otro, con
+   el teléfono arriba mostrando la primera pantalla */
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .sono-product {
+    @apply gap-12;
+  }
+
+  .sono-product__bg--1,
+  .sono-product__bg--2,
+  .sono-product__phone:not([data-product-phone='0']) {
+    @apply hidden;
+  }
+
+  .sono-product__phone {
+    @apply relative top-auto left-auto mx-auto;
+    --phone-height: 520px;
+  }
+
+  .sono-product__scene {
+    @apply pointer-events-auto relative inset-auto flex flex-col gap-6;
+  }
+
+  .sono-product__copy {
+    @apply relative top-auto left-auto w-full translate-y-0;
+  }
+
+  .sono-product__chips {
+    @apply relative inset-auto flex flex-wrap gap-3;
+  }
+
+  .sono-product__chip {
+    @apply relative inset-auto;
+  }
+
+  .sono-product__chip-float {
+    animation: none;
+  }
+}
+
+/* Sobre el fondo naranja del flujo 03, el punto va en azul para verse */
+.sono-product__scene[data-product-scene='2'] .sono-product__dot {
+  background: var(--sono-navy);
+  box-shadow: 0 0 0 4px rgb(0 43 143 / 0.3);
+}
+
+/* 01 · Contexto y oportunidad a la izquierda; en el segundo paso el reto
+   entra desde la derecha como una tarjeta naranja que resalta, con su
+   objetivo y su alcance */
+.sono-view.sono-challenge {
+  @apply grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-center gap-12;
+}
+
+.sono-challenge__context {
+  @apply flex flex-col gap-10;
+}
+
+.sono-challenge__card {
+  @apply flex flex-col gap-6 rounded-[32px] p-10;
+  background: var(--sono-orange);
+  color: var(--sono-white);
+  box-shadow: 12px 12px 0 var(--sono-navy);
+}
+
+.sono-challenge__card .sono-eyebrow,
+.sono-challenge__card .sono-label {
+  color: var(--sono-white);
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .sono-view.sono-challenge {
+    @apply grid-cols-1;
+  }
+
+  .sono-challenge__card {
+    @apply p-6;
+    box-shadow: 8px 8px 0 var(--sono-navy);
+  }
+}
+
+/* Persona: sus datos como stickers de la marca (inclinados, con ícono, que
+   flotan suave y se enderezan al pasar el cursor) y su contexto en un globo
+   que sale de la polaroid, con las frases clave resaltadas */
+.sono-persona__stickers {
+  @apply flex flex-wrap gap-5;
+}
+
+.sono-persona__sticker {
+  @apply flex min-w-40 flex-col gap-1 rounded-2xl px-5 py-4;
+  color: var(--sono-white);
+  box-shadow: 6px 6px 0 var(--sono-navy);
+  animation: sono-chip-float 5s ease-in-out infinite;
+  transition:
+    rotate 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    scale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sono-persona__sticker:hover {
+  rotate: 0deg;
+  scale: 1.06;
+}
+
+.sono-persona__sticker--0 {
+  background: var(--sono-royal);
+  rotate: -4deg;
+}
+
+.sono-persona__sticker--1 {
+  background: var(--sono-orange);
+  rotate: 3deg;
+  animation-delay: -1.6s;
+}
+
+.sono-persona__sticker--2 {
+  background: var(--sono-electric);
+  rotate: -2deg;
+  animation-delay: -3.2s;
+}
+
+.sono-persona__icon {
+  @apply mb-1 size-6;
+}
+
+.sono-persona__fact-label {
+  @apply text-sm font-semibold tracking-[0.18em] uppercase;
+  opacity: 0.85;
+}
+
+.sono-persona__fact-text {
+  @apply text-xl font-semibold;
+}
+
+.sono-persona__bubble {
+  @apply relative max-w-2xl rounded-[28px] p-7;
+  background: var(--sono-navy);
+  color: var(--sono-white);
+  font-size: clamp(22px, 2vw, 30px);
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+/* La punta del globo apunta a la polaroid */
+.sono-persona__bubble::before {
+  @apply absolute top-10 -left-3 size-6 rotate-45 rounded-[4px] content-[''];
+  background: var(--sono-navy);
+}
+
+.sono-persona__mark {
+  color: inherit;
+  background: linear-gradient(
+    transparent 62%,
+    rgb(255 122 26 / 0.85) 62%,
+    rgb(255 122 26 / 0.85) 92%,
+    transparent 92%
+  );
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .sono-persona__sticker {
+    animation: none;
+  }
+
+  .sono-persona__bubble::before {
+    @apply hidden;
+  }
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .sono-flowmaps__head {
+    @apply flex-col items-start gap-4;
+  }
+
+  .sono-flowmaps__tabs,
+  .sono-flowmap__lines {
+    @apply hidden;
+  }
+
+  .sono-flowmaps__stage {
+    @apply flex flex-col gap-12;
+  }
+
+  .sono-flowmap {
+    @apply relative inset-auto;
+  }
+
+  .sono-flowmap__canvas {
+    @apply aspect-auto max-w-none;
+  }
+
+  .sono-flowmap__nodes {
+    @apply relative inset-auto flex flex-col gap-3;
+  }
+
+  .sono-flowmap__spot {
+    @apply relative h-auto w-full translate-x-0 translate-y-0;
+  }
+
+  .sono-flowmap__node {
+    @apply items-start px-5 py-4 text-left;
+  }
+}
+
+/* 04 · Elementos de marca: seis espacios por diseñar, cada uno con su idea */
+.sono-elements__grid {
+  @apply grid grid-cols-3 gap-5;
+}
+
+.sono-elements__slot {
+  @apply flex min-h-44 flex-col justify-end gap-2 rounded-3xl border-2 border-dashed p-6;
+  border-color: rgb(0 43 143 / 0.4);
+  background:
+    radial-gradient(circle at 85% 20%, rgb(255 90 0 / 0.14) 0 18%, transparent 19%),
+    radial-gradient(circle at 70% 38%, rgb(13 71 201 / 0.12) 0 9%, transparent 10%),
+    var(--sono-white);
+  transition:
+    border-color 0.3s ease,
+    translate 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sono-elements__slot:hover {
+  @apply -translate-y-1;
+  border-color: var(--sono-orange);
+}
+
+.sono-elements__pending {
+  @apply self-start rounded-full px-3 py-1 text-sm font-semibold;
+  background: var(--sono-orange);
+  color: var(--sono-white);
+}
+
+.sono-elements__name {
+  @apply text-2xl font-semibold;
+}
+
+.sono-elements__idea {
+  @apply text-base;
+  color: var(--sono-royal);
+}
+
+/* 04 · Sistema de diseño de Sonopizza: fundamentos, componentes y patrones
+   por construir */
+.sono-system__groups {
+  @apply grid grid-cols-[1fr_2fr_1fr] gap-6;
+}
+
+.sono-system__group {
+  @apply flex flex-col gap-4 rounded-3xl p-6;
+  background: rgb(244 244 244 / 0.08);
+}
+
+.sono-system__items {
+  @apply flex flex-col gap-2;
+}
+
+.sono-system__group:nth-child(2) .sono-system__items {
+  @apply grid grid-cols-2;
+}
+
+.sono-system__item {
+  @apply flex items-center justify-between gap-3 rounded-2xl border border-dashed px-4 py-3 text-base font-semibold;
+  border-color: rgb(244 244 244 / 0.35);
+}
+
+.sono-system__pending {
+  @apply shrink-0 text-sm font-normal;
+  color: var(--sono-orange-soft);
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .sono-elements__grid,
+  .sono-system__groups,
+  .sono-system__group:nth-child(2) .sono-system__items {
+    @apply grid-cols-1;
+  }
+}
+
+/* 04 · La exploración visual con scroll libre: la escena es un área que se
+   recorre como una página; cada bloque (paleta, tipografía, marca…) es un
+   panel de al menos una pantalla con su color */
+.sono-view.sono-free {
+  @apply p-0;
+}
+
+.sono-free__area {
+  @apply absolute inset-0 overflow-y-auto overscroll-contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sono-orange) transparent;
+}
+
+.sono-free__panel {
+  @apply relative flex min-h-svh flex-col gap-6 pt-28 pr-24 pb-20 pl-32;
+  justify-content: safe center;
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .sono-free__area {
+    @apply relative inset-auto overflow-visible;
+  }
+
+  .sono-free__panel {
+    @apply min-h-0 gap-5 px-5 pt-28 pb-16;
   }
 }

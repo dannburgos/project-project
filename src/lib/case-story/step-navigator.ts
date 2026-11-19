@@ -30,6 +30,9 @@ type StepNavigatorOptions = {
   sectionStep: readonly number[];
   // Cada vez que cambia el paso (para el color del mundo, la barra, etc.)
   onStep?: (step: number) => void;
+  // Si el paso tiene un área con scroll propio que todavía puede moverse en
+  // esa dirección, la devuelve: el gesto la recorre en vez de cambiar de paso
+  innerScroll?: (step: number, direction: 1 | -1) => HTMLElement | null;
 };
 
 export function createStepNavigator({
@@ -39,7 +42,8 @@ export function createStepNavigator({
   labels,
   stepSection,
   sectionStep,
-  onStep
+  onStep,
+  innerScroll
 }: StepNavigatorOptions) {
   const stepCount = labels.length;
   const stepLength = window.innerHeight * 0.6;
@@ -149,12 +153,25 @@ export function createStepNavigator({
   };
 
   // direction: 1 baja, -1 sube. Devuelve true si el escenario usa el gesto.
-  const consume = (direction: 1 | -1) => {
+  // Con un área de scroll propio que aún puede moverse, el gesto la recorre
+  // (devuelve false para dejar el scroll nativo; con teclado la mueve aquí).
+  // Al llegar a su borde hace falta un gesto nuevo para cambiar de paso.
+  const consume = (direction: 1 | -1, isKey = false) => {
     if (!isLocked) return false;
     const now = performance.now();
     const isNewGesture = now - lastEventTime > GESTURE_GAP_MS;
     lastEventTime = now;
-    if (isBusy || !isNewGesture) return true;
+    if (isBusy) return true;
+    const area = innerScroll?.(current, direction);
+    if (area) {
+      if (!isKey) return false;
+      area.scrollBy({
+        top: direction * area.clientHeight * 0.6,
+        behavior: 'smooth'
+      });
+      return true;
+    }
+    if (!isNewGesture) return true;
     const next = current + direction;
     if (next < 0) return true;
     if (next > stepCount - 1) {
@@ -198,7 +215,7 @@ export function createStepNavigator({
         : 0;
     if (!direction) return;
     lastEventTime = 0;
-    if (consume(direction)) event.preventDefault();
+    if (consume(direction, true)) event.preventDefault();
   };
   const handleJump = (event: Event) => {
     const section = (event as CustomEvent<number>).detail;
