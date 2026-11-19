@@ -1,4 +1,5 @@
 import type { PetrideStory } from '@/content/petride-story.types';
+import { petrideDesignSystem } from '@/content/cases/petride-design-system';
 
 // Caso de PetRide. Fuente: .claude/knowledge/petride/ (documento de
 // definición de producto). La persona, el mapa de empatía y el journey son
@@ -8,7 +9,6 @@ export const petrideStory: PetrideStory = {
     'Introducción',
     'Investigación',
     'Usuario',
-    'Solución',
     'Arquitectura',
     'Diseño'
   ],
@@ -19,21 +19,18 @@ export const petrideStory: PetrideStory = {
     placeholder: 'Espacio reservado'
   },
   intro: {
-    eyebrow: 'Caso 02 · App móvil',
     wordmark: 'PetRide',
+    logo: {
+      src: '/petride/logos/petride_logo.svg',
+      alt: 'Logo de PetRide: un perro y un gato dentro de un pin de ubicación, con una carretera'
+    },
     tagline:
       'Transporte por app para moverte con tu mascota, con conductores preparados para recibirla.',
-    facts: [
-      { title: 'Plataforma', text: 'App móvil' },
-      { title: 'Mercado', text: 'Principales ciudades de Colombia' },
-      { title: 'Servicio', text: 'Viajes urbanos inmediatos' },
-      { title: 'Alcance', text: '3 user flows' }
-    ],
-    coverLabel: 'Imagen principal · persona viajando con su mascota en PetRide',
-    marquee: ['Registrar mascota', 'Solicitar viaje', 'Gestionar viaje'],
+    cover: {
+      src: '/petride/fotos/portada-carro.webp',
+      alt: 'Dos perros asomados por las ventanas de un carro, listos para el viaje'
+    },
     processTitle: 'Proceso de diseño',
-    processLead:
-      'Del problema a la interfaz, en seis etapas que se apoyan una en la otra.',
     process: [
       { title: 'Investigación', text: 'Investigación secundaria · Benchmark' },
       { title: 'Usuario', text: 'Arquetipo · Empatía · Journey' },
@@ -45,12 +42,8 @@ export const petrideStory: PetrideStory = {
   },
   research: {
     head: {
-      number: '02',
-      ghost: 'Reto',
-      title: 'Investigar y descubrir',
-      lead: 'Qué pasa hoy cuando alguien necesita moverse con su mascota.'
+      title: '¿Qué pasa hoy?'
     },
-    problemLabel: 'El problema',
     problem:
       'Moverse con una mascota en la ciudad es incierto: no sabes si el conductor la va a aceptar, cómo es el vehículo ni si habrá alguien disponible.',
     opportunity: {
@@ -62,10 +55,21 @@ export const petrideStory: PetrideStory = {
       text: 'Investigación secundaria, benchmark de apps de movilidad y análisis conceptual asistido por IA. No hubo entrevistas ni pruebas con usuarios: lo que sigue son hipótesis de diseño.'
     },
     benchmarkTitle: 'Benchmark',
-    benchmarkLead:
-      'Tres apps de movilidad y cómo resuelven hoy los viajes con mascotas.',
     benchmarkFeatureLabel: 'Qué revisamos',
     competitors: ['Cabify Mascotas', 'Uber Pet', 'inDrive'],
+    competitorLogos: [
+      {
+        src: '/petride/logos/cabify.png',
+        alt: 'Logo de Cabify',
+        tone: 'cabify'
+      },
+      { src: '/petride/logos/uber.webp', alt: 'Logo de Uber', tone: 'uber' },
+      {
+        src: '/petride/logos/indrive.png',
+        alt: 'Logo de inDrive',
+        tone: 'indrive'
+      }
+    ],
     benchmarkStates: {
       yes: 'Sí',
       partial: 'En parte',
@@ -114,74 +118,78 @@ export const petrideStory: PetrideStory = {
         ]
       }
     ],
-    benchmarkNote:
-      'Referencia conceptual: la cobertura y las políticas de estas apps pueden cambiar.',
     findingsTitle: 'Lo que encontramos',
     findings: [
       'Especializarse comunica con claridad que el servicio acepta mascotas.',
-      'La aceptación del conductor y el estado del vehículo pesan en la decisión.',
       'Conocer las condiciones antes de confirmar reduce la incertidumbre.',
       'El tamaño, la cantidad y el tipo de animal cambian la compatibilidad.',
-      'Ver quién conduce y cómo es el vehículo genera confianza.'
+      'Ver quién conduce y cómo es el vehículo genera confianza, y la aceptación del conductor y el estado del vehículo pesan en la decisión.'
     ],
-    opportunitiesTitle: 'Oportunidades para PetRide',
-    opportunities: [
-      'Registrar a cada mascota',
-      'Revisar la compatibilidad desde la solicitud',
-      'Mostrar precio y condiciones antes',
-      'Presentar al conductor y su vehículo',
-      'Chat y seguimiento durante el viaje',
-      'Varias mascotas en una solicitud'
-    ]
+    findingsPhotos: [
+      {
+        label: 'Foto · perro asomado en la ventana del carro',
+        image: {
+          src: '/petride/fotos/perrito3.jpg',
+          alt: 'Chihuahua negro y café apoyado sobre un gato gris'
+        }
+      },
+      {
+        label: 'Foto · bulldog asomado por el borde',
+        image: {
+          src: '/petride/fotos/perrito2-recorte.webp',
+          alt: 'Bulldog blanco asomándose por el borde de abajo'
+        }
+      }
+    ],
+    findingsOpportunity:
+      'Movilidad pensada para la mascota, de la solicitud al final del viaje.',
+    findingsPortrait: {
+      src: '/petride/fotos/persona8.jpg',
+      alt: 'Mujer de pelo rizado sonriendo mientras carga a su perro'
+    }
   },
   user: {
     head: {
-      number: '03',
-      ghost: 'Usuario',
-      title: 'Para quién es',
-      lead: 'Una persona que vive en la ciudad y lleva a su mascota a todas partes.'
+      title: 'Una usuaria,\nuna mascota'
     },
-    personaLabel: 'Persona (arquetipo)',
     personaName: 'Gabriela',
     personaTags: ['32 años', 'Empleada', 'DogLover'],
     personaBio:
-      'Gabriela vive en un apartamento en la ciudad. Trabaja de forma híbrida y se mueve todo el tiempo en apps de movilidad. Vive con su perro de tamaño mediano y suele llevarlo a distintos lugares.',
-    personaPhotoLabel: 'Foto · Gabriela con su perro',
+      'Gabriela vive en un apartamento en la ciudad. Trabaja de forma híbrida y se mueve en apps de movilidad. Vive con su perro mediano y lo lleva a distintos lugares.',
+    personaPhoto: {
+      src: '/petride/fotos/persona5-recorte.webp',
+      alt: 'Mujer joven besando a su perro, un bóxer boston, mientras lo carga'
+    },
     personaBlocks: [
       {
         title: 'Comportamiento',
         items: [
           'Usa apps de movilidad con frecuencia.',
-          'Confirma si aceptan mascotas.',
-          'Evita servicios con malas experiencias.'
+          'Confirma si aceptan mascotas y evita servicios con malas experiencias.'
         ]
       },
       {
         title: 'Necesidades',
         items: [
-          'Seguridad para su mascota.',
-          'Conductores dispuestos.',
+          'Seguridad para su mascota y conductores dispuestos.',
           'Condiciones claras desde el inicio.'
         ]
       },
       {
         title: 'Frustraciones',
         items: [
-          'Cancelaciones inesperadas.',
-          'Falta de opciones especializadas.',
+          'Cancelaciones inesperadas y falta de opciones especializadas.',
           'Incomodar por viajar con su mascota.'
         ]
       },
       {
         title: 'Motivaciones',
         items: [
-          'Proteger a su mascota.',
-          'Reducir el estrés del traslado.',
+          'Proteger a su mascota y reducir el estrés del traslado.',
           'Sentirse respetada y comprendida.'
         ]
       }
     ],
-    hypothesisNote: 'Arquetipo hipotético, construido sin entrevistas.',
     empathyTitle: 'Mapa de empatía',
     empathy: [
       {
@@ -217,145 +225,56 @@ export const petrideStory: PetrideStory = {
         ]
       }
     ],
-    insightLabel: 'Insight',
-    insight:
-      'Cuando me muevo con mi mascota no solo busco un carro que me lleve. Necesito saber que el conductor y las condiciones del viaje son adecuados para ella.',
     journeyTitle: 'Customer journey',
-    journeyLead:
-      'Un viaje inmediato dentro de la ciudad, de la necesidad a la calificación.',
     journeyLabels: {
-      action: 'Acción',
-      thought: 'Piensa',
       emotion: 'Siente',
       opportunity: 'Oportunidad'
     },
     journey: [
       {
         name: 'Surge la necesidad',
-        action: 'Identifica el destino y que necesita transporte.',
-        thought: '¿Dónde consigo un carro que acepte a mi mascota?',
         emotion: 'Incertidumbre',
-        opportunity: 'Comunicar qué resuelve PetRide'
+        level: 1.5,
+        opportunity: 'Comunicar qué resuelve PetRide al inicio'
       },
       {
         name: 'Explora el servicio',
-        action: 'Entra a la app y la consulta.',
-        thought: '¿El servicio tiene las condiciones que necesito?',
         emotion: 'Expectativa',
+        level: 3.2,
         opportunity: 'Explicar cómo funciona y sus condiciones'
       },
       {
         name: 'Configura el viaje',
-        action: 'Indica origen, destino y mascotas.',
-        thought: '¿Encontraré un conductor adecuado?',
-        emotion: 'Expectativa e incertidumbre',
-        opportunity: 'Considerar las características y la compatibilidad'
+        emotion: 'Duda y expectativa',
+        level: 2.4,
+        opportunity: 'Cruzar mascota, conductor y compatibilidad'
       },
       {
         name: 'Espera la asignación',
-        action: 'Espera mientras se busca conductor.',
-        thought: '¿Quién hará el viaje?',
         emotion: 'Expectativa',
-        opportunity: 'Estados claros y datos del conductor'
+        level: 3,
+        opportunity: 'Mostrar estados claros y datos del conductor'
       },
       {
         name: 'Hace el viaje',
-        action: 'Se encuentra con el conductor y viaja.',
-        thought: 'Quiero saber que todo va bien.',
         emotion: 'Tranquilidad',
-        opportunity: 'Chat y seguimiento del viaje'
+        level: 4.6,
+        opportunity: 'Chat y seguimiento durante todo el viaje'
       },
       {
         name: 'Llega y califica',
-        action: 'Llega a su destino y califica el servicio.',
-        thought: '¿Cómo nos fue?',
         emotion: 'Satisfacción o inconformidad',
-        opportunity: 'Facilitar la calificación'
+        level: 3.6,
+        opportunity: 'Facilitar la calificación del servicio'
       }
-    ],
-    journeyInsight:
-      'La confianza se construye antes de pedir el viaje y se mantiene durante todo el servicio.'
-  },
-  solution: {
-    head: {
-      number: '04',
-      ghost: 'Solución',
-      title: 'Lo que proponemos',
-      lead: 'Cada problema del recorrido se vuelve una decisión del producto.'
-    },
-    problemsTitle: 'De problema a oportunidad',
-    problems: [
-      {
-        problem: 'Disponibilidad incierta',
-        opportunity: 'Servicio especializado'
-      },
-      {
-        problem: 'Falta de información',
-        opportunity: 'Condiciones claras antes de confirmar'
-      },
-      {
-        problem: 'Compatibilidad limitada',
-        opportunity: 'Cruzar mascota, conductor y vehículo'
-      },
-      {
-        problem: 'Comunicación insuficiente',
-        opportunity: 'Chat con el conductor'
-      },
-      {
-        problem: 'Incertidumbre en el viaje',
-        opportunity: 'Seguimiento y estados claros'
-      }
-    ],
-    solutionLabel: 'Solución',
-    solution:
-      'PetRide conecta a personas con mascotas con conductores preparados, y tiene en cuenta las necesidades de cada animal y las condiciones del viaje.',
-    actorsTitle: 'Quién participa',
-    actors: [
-      {
-        name: 'Usuario',
-        role: 'Registra a sus mascotas y pide los viajes.'
-      },
-      {
-        name: 'Conductor',
-        role: 'Acepta y hace los viajes para los que está preparado.'
-      },
-      {
-        name: 'PetRide',
-        role: 'Gestiona la solicitud, la compatibilidad, la asignación y el seguimiento.'
-      }
-    ],
-    goalsTitle: 'Objetivos del producto',
-    goals: [
-      'Facilitar que las personas pidan transporte con sus mascotas.',
-      'Mejorar la compatibilidad entre animales y vehículos.',
-      'Generar confianza con información clara del conductor, el vehículo y el servicio.',
-      'Acompañar el viaje con comunicación y seguimiento.',
-      'Recoger la evaluación del servicio al final.'
-    ],
-    mvpTitle: 'Qué incluye el MVP',
-    mvp: [
-      'Perfiles de mascotas',
-      'Viajes inmediatos',
-      'Una o varias mascotas',
-      'Compatibilidad',
-      'Tarifa antes de confirmar',
-      'Asignación automática',
-      'Perfil del conductor',
-      'Chat',
-      'Seguimiento',
-      'Calificación'
     ]
   },
   architecture: {
     head: {
-      number: '05',
-      ghost: 'Mapa',
       title: 'Cómo se organiza',
-      lead: 'Una arquitectura enfocada solo en los tres recorridos del prototipo.'
+      hideTitle: true
     },
     siteMapTitle: 'Site map',
-    siteMapLead:
-      'Las cuatro entradas de la app y las pantallas que cuelgan de cada una.',
     siteMapCenter: 'PetRide',
     siteMap: [
       {
@@ -394,12 +313,12 @@ export const petrideStory: PetrideStory = {
     ],
     flowsTitle: 'User flows',
     flowsLead:
-      'Los tres recorridos del prototipo, con sus decisiones y caminos alternos.',
+      'Los dos recorridos del prototipo, con sus decisiones y caminos alternos.',
     flowsHint: 'Elige un paso para ver qué pasa en él.',
-    branchLabel: 'Si no',
+    flowYes: 'Sí',
+    flowNo: 'No',
     flows: [
       {
-        number: '01',
         name: 'Registrar mascota',
         goal: 'Registrar una o varias mascotas para tenerlas en cuenta al pedir un viaje.',
         nodes: [
@@ -425,7 +344,8 @@ export const petrideStory: PetrideStory = {
             kind: 'decision',
             detail:
               'Si falta algo, se marcan los campos pendientes y se conserva lo que ya escribiste.',
-            branch: 'Corregir campos'
+            branch: 'Corregir campos',
+            returnTo: 'Completar información'
           },
           {
             label: 'Revisar información',
@@ -448,7 +368,6 @@ export const petrideStory: PetrideStory = {
         ]
       },
       {
-        number: '02',
         name: 'Solicitar viaje',
         goal: 'Configurar y confirmar un viaje inmediato y conseguir un conductor compatible.',
         nodes: [
@@ -463,7 +382,8 @@ export const petrideStory: PetrideStory = {
             kind: 'decision',
             detail:
               'Si no hay mascotas registradas, abre el registro y vuelve a la solicitud.',
-            branch: 'Registrar mascota'
+            branch: 'Registrar mascota',
+            returnTo: 'Elegir mascotas'
           },
           {
             label: 'Elegir mascotas',
@@ -476,7 +396,8 @@ export const petrideStory: PetrideStory = {
             kind: 'decision',
             detail:
               'Se evalúan especie, tamaño, peso y cantidad. Si no es compatible, se explica y se puede cambiar la selección.',
-            branch: 'Cambiar selección'
+            branch: 'Cambiar selección',
+            returnTo: 'Elegir mascotas'
           },
           {
             label: 'Tarifa y resumen',
@@ -503,79 +424,106 @@ export const petrideStory: PetrideStory = {
               'Aparecen el conductor y su vehículo, y empieza la gestión del viaje.'
           }
         ]
-      },
-      {
-        number: '03',
-        name: 'Gestionar viaje',
-        goal: 'Acompañar el viaje desde la asignación hasta la calificación.',
-        nodes: [
-          {
-            label: 'Conductor asignado',
-            kind: 'step',
-            detail:
-              'Foto, nombre, calificación, vehículo y placa, con el tiempo estimado de llegada.'
-          },
-          {
-            label: 'Conductor en camino',
-            kind: 'step',
-            detail:
-              'Mapa con la ubicación del conductor, chat y opción de cancelar.'
-          },
-          {
-            label: '¿Llegó al origen?',
-            kind: 'decision',
-            detail:
-              'Mientras no llega, se sigue su ubicación. El viaje no empieza solo cuando el conductor llega.',
-            branch: 'Seguir llegada'
-          },
-          {
-            label: 'Viaje en curso',
-            kind: 'step',
-            detail:
-              'Ruta, ubicación, chat y opción de reportar un inconveniente.'
-          },
-          {
-            label: 'Viaje finalizado',
-            kind: 'step',
-            detail: 'Resumen con origen, destino, mascotas, conductor y valor.'
-          },
-          {
-            label: 'Calificar',
-            kind: 'end',
-            detail: 'Estrellas obligatorias y comentario opcional.'
-          }
-        ]
       }
     ]
   },
   design: {
-    head: {
-      number: '06',
-      ghost: 'Diseño',
-      title: 'De la estructura a la interfaz',
-      lead: 'Las pantallas toman forma, de la baja fidelidad al diseño final.'
-    },
-    wireframesTitle: 'Wireframes',
-    wireframesLead: 'Aquí van las pantallas de baja y media fidelidad.',
-    wireframeCount: 16,
-    flowGhost: 'Flow',
-    flowTitle: 'Registrar mascota',
-    flowLead:
-      'El flujo en pantallas reales: cada pantalla señala la acción que lleva a la siguiente.',
-    flowScreens: [
+    flowShows: [
       {
-        label: 'Pantalla · Mis mascotas',
-        title: 'Empieza en Mis mascotas',
-        text: 'Desde la lista de mascotas registradas, la persona elige agregar una nueva.'
+        title: 'Registrar mascota',
+        screens: [
+          {
+            key: 'list',
+            label: 'Pantalla · Mis mascotas',
+            title: 'Todas en un solo lugar',
+            text: 'La persona ve las mascotas que ya registró, con su tamaño, su edad y si son de asistencia. Debajo de la lista, agrega una nueva.'
+          },
+          {
+            key: 'camera',
+            label: 'Pantalla · Foto de la mascota',
+            title: 'Una cara para reconocerla',
+            text: 'La cámara se abre dentro de la app y un recuadro ayuda a centrar a la mascota. La foto es opcional: se puede omitir y seguir.'
+          },
+          {
+            key: 'identity',
+            label: 'Pantalla · Paso 1',
+            title: 'Lo esencial primero',
+            text: 'Paso 1 de 2: nombre, perro o gato, hembra o macho y raza. La raza se busca escribiendo y, si no tiene una, se elige Mestizo.'
+          },
+          {
+            key: 'travel',
+            label: 'Pantalla · Paso 2',
+            title: 'Lo que el conductor debe saber',
+            text: 'El peso se elige por tamaño y la edad marca la etapa. Dos interruptores dicen si es de asistencia y si convive con otras mascotas, y queda un espacio para el conductor.'
+          },
+          {
+            key: 'review',
+            label: 'Pantalla · Revisar información',
+            title: 'Un último vistazo',
+            text: 'Antes de guardar, todo se resume en un carné sobre la foto. Si algo está mal se edita; si está bien, se guarda.'
+          },
+          {
+            key: 'registered',
+            label: 'Pantalla · Mascota registrada',
+            title: 'Lista para su primer viaje',
+            text: 'Un póster confirma el registro con los datos clave y lleva directo a pedir el primer viaje con esa mascota.'
+          },
+          {
+            key: 'listUpdated',
+            label: 'Pantalla · Mis mascotas actualizada',
+            title: 'Una más en la familia',
+            text: 'Al volver, la nueva mascota aparece resaltada junto a las demás, lista para elegirla en cualquier viaje.'
+          }
+        ]
       },
       {
-        label: 'Pantalla · Registrar mascota',
-        title: 'Solo lo necesario',
-        text: 'Cuatro datos obligatorios para que la compatibilidad funcione; el resto es opcional.'
+        title: 'Solicitar viaje',
+        screens: [
+          {
+            key: 'home',
+            label: 'Pantalla · Inicio',
+            title: 'Un viaje a un toque',
+            text: 'Un buscador lleva al destino y debajo están los lugares guardados, las mascotas registradas e ideas para el próximo viaje.'
+          },
+          {
+            key: 'places',
+            label: 'Pantalla · Origen y destino',
+            title: 'Lugares que las reciben',
+            text: 'El origen arranca en la ubicación actual y el destino se busca escribiendo. Las categorías muestran parques, veterinarias y guarderías que admiten mascotas.'
+          },
+          {
+            key: 'pets',
+            label: 'Pantalla · Elegir mascotas',
+            title: 'Un puesto para cada una',
+            text: 'Se eligen una o varias mascotas y un resumen cuenta los puestos libres del carro. Si conviven bien, la app lo confirma antes de seguir.'
+          },
+          {
+            key: 'fare',
+            label: 'Pantalla · Tarifa y resumen',
+            title: 'Sin sorpresas al confirmar',
+            text: 'La ruta en el mapa, la tarifa, el tiempo, la distancia y la hora de llegada quedan a la vista antes de confirmar el viaje.'
+          },
+          {
+            key: 'searching',
+            label: 'Pantalla · Buscando conductor',
+            title: 'Una espera que tranquiliza',
+            text: 'Mientras se busca, la pantalla dice quiénes viajan y que el conductor asignado aceptará a esas mascotas. Se puede cancelar.'
+          },
+          {
+            key: 'driver',
+            label: 'Pantalla · Conductor asignado',
+            title: 'Saber quién llega',
+            text: 'Aparecen la conductora verificada, su calificación, el carro con la placa y el punto de recogida en el mapa, con accesos para escribirle o llamarla.'
+          },
+          {
+            key: 'rating',
+            label: 'Pantalla · Llegada y calificación',
+            title: 'Cómo les fue',
+            text: 'Al llegar se confirma el destino y lo pagado. Se califica con huellas, se marca lo que se destaca y, si se quiere, se agradece con propina.'
+          }
+        ]
       }
     ],
-    systemGhost: 'Sistema',
-    systemTitle: 'Sistema de diseño',
-    systemText: 'Aquí va el sistema de diseño de PetRide.'
+    system: petrideDesignSystem
   }
 };

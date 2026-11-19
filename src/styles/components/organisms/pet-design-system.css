@@ -1,0 +1,1246 @@
+/* Sistema de diseño de la app de PetRide. La app es de modo claro: cada pieza
+   vive en una hoja clara dentro del caso oscuro. Botón principal en índigo,
+   tags de la marca en lila y el lima solo como fondo de acento. */
+.pet-ds {
+  text-wrap: pretty;
+  --app-night: #0b0c24;
+  --app-indigo: #4849e8;
+  --app-indigo-press: #3536b8;
+  --app-lime: #ddf344;
+  --app-peri: #abc4ff;
+  --app-cloud: #f5f9ff;
+  --app-ink: #4a4b6a;
+  --app-hint: #8c8da6;
+  --app-border: #e3e6f2;
+  --app-surface: #eef1f8;
+  --app-card: #ffffff;
+  --app-lilac: #e9edff;
+  --app-success: #16a36a;
+  --app-success-bg: #e3f6ec;
+  --app-success-text: #0e7a4e;
+  --app-warning: #f2a93b;
+  --app-warning-bg: #fff2dc;
+  --app-warning-text: #9a5b00;
+  --app-error: #e5484d;
+  --app-error-bg: #fde8e8;
+  --app-error-text: #b42328;
+  --app-shadow-card: 0 4px 16px rgb(11 12 36 / 0.06);
+  --app-shadow-float: 0 12px 32px rgb(11 12 36 / 0.12);
+  --app-fast: 160ms;
+  --app-base: 240ms;
+  --app-slow: 400ms;
+  --app-ease-in: cubic-bezier(0.22, 1, 0.36, 1);
+  --app-ease-out: cubic-bezier(0.4, 0, 1, 1);
+  --app-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.pet-ds__block {
+  @apply mt-16 flex flex-col gap-6;
+}
+
+.pet-ds__block-title {
+  @apply flex items-baseline gap-4 font-extrabold;
+  font-size: var(--pet-subtitle-size);
+}
+
+.pet-ds__block-index {
+  @apply font-extrabold;
+  color: var(--pet-lime);
+}
+
+.pet-ds__grid {
+  @apply grid grid-cols-1 gap-4 lg:grid-cols-2;
+}
+
+.pet-ds__sheet {
+  @apply flex min-w-0 flex-col gap-6 rounded-[32px] p-6 md:p-8;
+  background: var(--app-cloud);
+  color: var(--app-night);
+}
+
+.pet-ds__sheet--wide {
+  @apply lg:col-span-2;
+}
+
+.pet-ds__sheet-head {
+  @apply flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2;
+}
+
+.pet-ds__sheet-title {
+  @apply text-2xl font-bold;
+  letter-spacing: -0.02em;
+}
+
+.pet-ds__sheet-note {
+  @apply text-base;
+  color: var(--app-ink);
+}
+
+.pet-ds__sheet-badge {
+  @apply rounded-full px-4 py-1.5 text-xl font-semibold;
+  background: var(--app-lilac);
+  color: var(--app-indigo-press);
+}
+
+.pet-ds__label {
+  @apply text-sm font-medium;
+  color: var(--app-ink);
+}
+
+.pet-ds__subtitle {
+  @apply text-xl font-semibold;
+  color: var(--app-night);
+}
+
+.pet-ds__spec {
+  @apply text-sm tabular-nums;
+  color: var(--app-hint);
+}
+
+.pet-ds__stack {
+  @apply flex flex-col gap-3;
+}
+
+/* Color */
+.pet-ds__palette {
+  @apply flex flex-col gap-6;
+}
+
+.pet-ds__palette-group {
+  @apply flex flex-col gap-3;
+}
+
+.pet-ds__swatches {
+  @apply flex flex-wrap gap-3;
+}
+
+.pet-ds__swatches > li {
+  @apply flex min-w-28 flex-1;
+}
+
+.pet-ds__swatch {
+  @apply relative flex min-h-32 w-full cursor-pointer flex-col items-start justify-end gap-1 rounded-2xl border p-4 text-left;
+  border-color: var(--app-border);
+  transition:
+    scale var(--app-fast) var(--app-bounce),
+    box-shadow var(--app-base) var(--app-ease-in);
+}
+
+.pet-ds__swatch:hover {
+  box-shadow: var(--app-shadow-float);
+}
+
+.pet-ds__swatch:active {
+  scale: 0.96;
+}
+
+.pet-ds__swatch-copy {
+  @apply absolute top-3 right-3 flex size-8 items-center justify-center rounded-full opacity-0;
+  background: rgb(255 255 255 / 0.24);
+  transition: opacity var(--app-base) var(--app-ease-in);
+}
+
+.pet-ds__swatch-copy svg {
+  @apply size-4;
+}
+
+.pet-ds__swatch:hover .pet-ds__swatch-copy,
+.pet-ds__swatch:focus-visible .pet-ds__swatch-copy,
+.pet-ds__swatch.is-copied .pet-ds__swatch-copy {
+  @apply opacity-100;
+}
+
+.pet-ds__swatch.is-copied .pet-ds__swatch-copy {
+  animation: pet-ds-pop var(--app-slow) var(--app-bounce);
+}
+
+.pet-ds__swatch-name {
+  @apply text-base font-semibold;
+}
+
+.pet-ds__swatch-hex,
+.pet-ds__swatch-use {
+  @apply text-sm;
+}
+
+.pet-ds__swatch--night {
+  @apply text-white;
+  background: var(--app-night);
+}
+
+.pet-ds__swatch--indigo {
+  @apply text-white;
+  background: var(--app-indigo);
+}
+
+.pet-ds__swatch--info {
+  background: var(--app-lilac);
+  color: var(--app-indigo-press);
+}
+
+.pet-ds__swatch--lime {
+  background: var(--app-lime);
+}
+
+.pet-ds__swatch--peri {
+  background: var(--app-peri);
+}
+
+.pet-ds__swatch--cloud {
+  background: var(--app-cloud);
+}
+
+.pet-ds__swatch--ink {
+  @apply text-white;
+  background: var(--app-ink);
+}
+
+.pet-ds__swatch--hint {
+  @apply text-white;
+  background: var(--app-hint);
+}
+
+.pet-ds__swatch--border {
+  background: var(--app-border);
+}
+
+.pet-ds__swatch--surface {
+  background: var(--app-surface);
+}
+
+.pet-ds__swatch--card {
+  background: var(--app-card);
+}
+
+.pet-ds__swatch--lilac {
+  background: var(--app-lilac);
+  color: var(--app-indigo-press);
+}
+
+.pet-ds__swatch--success {
+  background: var(--app-success-bg);
+  color: var(--app-success-text);
+}
+
+.pet-ds__swatch--warning {
+  background: var(--app-warning-bg);
+  color: var(--app-warning-text);
+}
+
+.pet-ds__swatch--error {
+  background: var(--app-error-bg);
+  color: var(--app-error-text);
+}
+
+/* Tipografía */
+.pet-ds__type {
+  @apply flex flex-col;
+}
+
+.pet-ds__type-row {
+  @apply flex items-baseline justify-between gap-4 border-b py-3;
+  border-color: var(--app-border);
+}
+
+.pet-ds__type-sample--display {
+  @apply text-[32px] leading-9 font-extrabold;
+}
+
+.pet-ds__type-sample--title {
+  @apply text-2xl leading-[30px] font-bold;
+}
+
+.pet-ds__type-sample--subtitle {
+  @apply text-xl leading-[26px] font-semibold;
+}
+
+.pet-ds__type-sample--body {
+  @apply text-base leading-6 font-normal;
+}
+
+.pet-ds__type-sample--label {
+  @apply text-sm leading-5 font-medium;
+}
+
+.pet-ds__type-sample--note {
+  @apply text-xs leading-4 font-medium;
+}
+
+/* Forma */
+.pet-ds__shape {
+  @apply flex flex-col gap-4;
+}
+
+.pet-ds__spacing {
+  @apply flex items-end gap-3;
+}
+
+.pet-ds__space {
+  @apply flex flex-col items-center gap-2;
+}
+
+.pet-ds__space-bar {
+  @apply block w-4 rounded-sm;
+  background: var(--app-indigo);
+}
+
+.pet-ds__space-bar--4 {
+  @apply h-1;
+}
+
+.pet-ds__space-bar--8 {
+  @apply h-2;
+}
+
+.pet-ds__space-bar--12 {
+  @apply h-3;
+}
+
+.pet-ds__space-bar--16 {
+  @apply h-4;
+}
+
+.pet-ds__space-bar--24 {
+  @apply h-6;
+}
+
+.pet-ds__space-bar--32 {
+  @apply h-8;
+}
+
+.pet-ds__space-bar--48 {
+  @apply h-12;
+}
+
+.pet-ds__radii,
+.pet-ds__shadows {
+  @apply grid grid-cols-2 gap-3 sm:grid-cols-4;
+}
+
+.pet-ds__shadows {
+  @apply sm:grid-cols-2;
+}
+
+.pet-ds__radius {
+  @apply flex flex-col gap-1;
+}
+
+.pet-ds__radius-name {
+  @apply text-sm font-medium;
+}
+
+.pet-ds__radius-box {
+  @apply mb-1 block h-12 w-full border-2;
+  border-color: var(--app-indigo);
+  background: var(--app-lilac);
+}
+
+.pet-ds__radius-box--0 {
+  @apply rounded-lg;
+}
+
+.pet-ds__radius-box--1 {
+  @apply rounded-2xl;
+}
+
+.pet-ds__radius-box--2 {
+  @apply rounded-3xl;
+}
+
+.pet-ds__radius-box--3 {
+  @apply rounded-full;
+}
+
+.pet-ds__shadow {
+  @apply flex flex-col gap-1 rounded-2xl p-4;
+  background: var(--app-card);
+}
+
+.pet-ds__shadow--0 {
+  box-shadow: var(--app-shadow-card);
+}
+
+.pet-ds__shadow--1 {
+  box-shadow: var(--app-shadow-float);
+}
+
+/* Iconografía */
+.pet-ds__icons {
+  @apply grid grid-cols-3 gap-3 sm:grid-cols-4;
+}
+
+.pet-ds__icon {
+  @apply flex flex-col items-center gap-2 text-center;
+}
+
+.pet-ds__icon-box {
+  @apply flex size-14 items-center justify-center rounded-2xl;
+  background: var(--app-card);
+  color: var(--app-indigo);
+  box-shadow: var(--app-shadow-card);
+}
+
+.pet-ds__icon-box svg {
+  @apply size-6;
+}
+
+.pet-ds__icon-name {
+  @apply text-base;
+  color: var(--app-ink);
+}
+
+/* Motion */
+.pet-ds__demos {
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-3;
+}
+
+.pet-ds__demo {
+  @apply flex flex-col gap-1 text-center;
+}
+
+.pet-ds__demo .pet-ds__radius-name {
+  @apply text-base;
+}
+
+.pet-ds__demo-stage {
+  @apply relative mb-2 flex h-36 items-center justify-center overflow-hidden rounded-3xl;
+  background: var(--app-card);
+}
+
+.pet-ds__fx-base {
+  @apply block;
+}
+
+.pet-ds__demo-stage--press .pet-ds__fx-base {
+  @apply h-12 w-36 rounded-full;
+  background: var(--app-indigo);
+  animation: pet-ds-press 1.6s var(--app-bounce) infinite;
+}
+
+.pet-ds__demo-stage--sheet .pet-ds__fx-base {
+  @apply absolute inset-x-6 bottom-0 h-20 rounded-t-3xl;
+  background: var(--app-indigo);
+  animation: pet-ds-loop-sheet 2.4s var(--app-ease-in) infinite;
+}
+
+.pet-ds__fx-pet-pin {
+  @apply size-36;
+}
+
+.pet-ds__fx-pin-shadow {
+  fill: var(--app-night);
+  transform-origin: 100px 152px;
+  animation: pet-ds-pin-shadow 3.2s var(--app-ease-in) infinite;
+}
+
+.pet-ds__fx-pin-ring {
+  fill: none;
+  stroke: var(--app-indigo);
+  stroke-width: 2;
+  transform-origin: 100px 152px;
+  animation: pet-ds-pin-ring 3.2s var(--app-ease-in) infinite;
+}
+
+.pet-ds__fx-pin-drop {
+  transform-origin: 100px 152px;
+  animation: pet-ds-pin-drop 3.2s var(--app-ease-in) infinite;
+}
+
+.pet-ds__fx-pin-wag {
+  transform-origin: 100px 152px;
+  animation: pet-ds-pin-wag 3.2s var(--app-ease-in) infinite;
+}
+
+.pet-ds__fx-pin-body {
+  fill: var(--app-indigo);
+}
+
+.pet-ds__fx-pin-face {
+  fill: var(--app-lime);
+}
+
+.pet-ds__fx-pin-eye {
+  fill: var(--app-night);
+}
+
+.pet-ds__fx-pin-smile {
+  fill: none;
+  stroke: var(--app-night);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+/* Botones */
+.pet-ds__matrix {
+  @apply grid items-center gap-3 overflow-x-auto;
+  grid-template-columns: 96px repeat(4, minmax(168px, 1fr));
+}
+
+.pet-ds__matrix-row {
+  display: contents;
+}
+
+.pet-ds__matrix .pet-ds__label {
+  @apply text-base;
+}
+
+.pet-ds__matrix > .pet-ds__label {
+  @apply text-center;
+}
+
+.pet-ds__button {
+  @apply inline-flex h-12 items-center justify-center gap-2 rounded-full px-5 text-base font-semibold whitespace-nowrap;
+  transition: scale var(--app-fast) var(--app-bounce);
+}
+
+.pet-ds__button svg {
+  @apply size-5;
+}
+
+.pet-ds__button--primary {
+  @apply text-white;
+  background: var(--app-indigo);
+}
+
+.pet-ds__button--secondary {
+  @apply border bg-white;
+  border-color: var(--app-peri);
+  color: var(--app-indigo);
+}
+
+.pet-ds__button--ghost {
+  color: var(--app-indigo);
+}
+
+.pet-ds__button--danger {
+  @apply text-white;
+  background: var(--app-error);
+}
+
+.pet-ds__button--pressed {
+  scale: 0.96;
+}
+
+.pet-ds__button--primary.pet-ds__button--pressed {
+  background: var(--app-indigo-press);
+}
+
+.pet-ds__button--secondary.pet-ds__button--pressed,
+.pet-ds__button--ghost.pet-ds__button--pressed {
+  background: var(--app-lilac);
+}
+
+.pet-ds__button--disabled {
+  @apply border-transparent;
+  background: var(--app-surface);
+  color: var(--app-hint);
+}
+
+.pet-ds__button--ghost.pet-ds__button--disabled {
+  background: transparent;
+}
+
+.pet-ds__spinner {
+  animation: pet-spin 0.9s linear infinite;
+}
+
+/* Campos */
+.pet-ds__fields {
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+}
+
+.pet-ds__field-sample {
+  @apply flex flex-col gap-2;
+}
+
+.pet-ds__field {
+  @apply flex flex-col gap-2;
+}
+
+.pet-ds__field-label {
+  @apply text-sm font-medium;
+}
+
+.pet-ds__field-box {
+  @apply flex h-14 items-center rounded-2xl border-2 px-4 text-base;
+  border-color: transparent;
+  background: var(--app-surface);
+}
+
+.pet-ds__field-placeholder {
+  color: var(--app-hint);
+}
+
+.pet-ds__field-message {
+  @apply flex items-center gap-1 text-sm;
+  color: var(--app-ink);
+}
+
+.pet-ds__field-message svg {
+  @apply size-4;
+}
+
+.pet-ds__field--focus .pet-ds__field-box {
+  @apply bg-white;
+  border-color: var(--app-indigo);
+}
+
+.pet-ds__field--filled .pet-ds__field-box {
+  @apply bg-white;
+  border-color: var(--app-border);
+}
+
+.pet-ds__field--error .pet-ds__field-box {
+  @apply bg-white;
+  border-color: var(--app-error);
+}
+
+.pet-ds__field--error .pet-ds__field-message {
+  color: var(--app-error-text);
+}
+
+.pet-ds__caret {
+  @apply ml-px inline-block h-5 w-0.5;
+  background: var(--app-indigo);
+  animation: pet-ds-blink 1s steps(1) infinite;
+}
+
+.pet-ds__chip {
+  @apply rounded-full border bg-white px-4 py-2 text-sm font-medium;
+  border-color: var(--app-border);
+}
+
+.pet-ds__chip--on {
+  @apply text-white;
+  border-color: var(--app-indigo);
+  background: var(--app-indigo);
+}
+
+.pet-ds__card {
+  @apply flex items-center gap-3 rounded-3xl border bg-white p-4;
+  border-color: var(--app-border);
+  box-shadow: var(--app-shadow-card);
+}
+
+.pet-ds__card-body {
+  @apply flex min-w-0 flex-1 flex-col gap-0.5;
+}
+
+.pet-ds__card-title {
+  @apply text-base font-semibold;
+}
+
+.pet-ds__card-text {
+  @apply text-sm;
+  color: var(--app-ink);
+}
+
+.pet-ds__card-end {
+  @apply flex flex-col items-end gap-1;
+}
+
+.pet-ds__avatar {
+  @apply flex size-12 shrink-0 items-center justify-center rounded-2xl text-lg font-semibold;
+  background: var(--app-lilac);
+  color: var(--app-indigo-press);
+}
+
+.pet-ds__avatar svg {
+  @apply size-6;
+}
+
+.pet-ds__avatar--pet {
+  background: var(--app-lime);
+  color: var(--app-night);
+}
+
+.pet-ds__avatar--soft {
+  background: var(--app-surface);
+  color: var(--app-indigo);
+}
+
+.pet-ds__rating {
+  @apply flex items-center gap-1 text-sm font-medium;
+}
+
+.pet-ds__rating svg {
+  @apply size-4;
+  color: var(--app-warning);
+  fill: var(--app-warning);
+}
+
+.pet-ds__tag {
+  @apply self-start rounded-lg px-3 py-1 text-sm font-medium whitespace-nowrap;
+  background: var(--app-lilac);
+  color: var(--app-indigo-press);
+}
+
+.pet-ds__card > .pet-ds__tag {
+  @apply self-center;
+}
+
+.pet-ds__tag--success {
+  background: var(--app-success-bg);
+  color: var(--app-success-text);
+}
+
+/* Navegación */
+.pet-ds__header {
+  @apply flex items-center gap-3 rounded-3xl bg-white p-3;
+}
+
+.pet-ds__round {
+  @apply flex size-10 items-center justify-center rounded-full border;
+  border-color: var(--app-border);
+}
+
+.pet-ds__header-title {
+  @apply text-lg font-semibold;
+}
+
+.pet-ds__steps {
+  @apply flex flex-col gap-2 rounded-3xl bg-white p-4;
+}
+
+.pet-ds__steps-bars {
+  @apply flex gap-2;
+}
+
+.pet-ds__steps-bar {
+  @apply h-1.5 flex-1 rounded-full;
+  background: var(--app-border);
+}
+
+.pet-ds__steps-bar--on {
+  background: var(--app-indigo);
+}
+
+.pet-ds__tabbar {
+  @apply flex items-center justify-around rounded-full bg-white p-2;
+  box-shadow: var(--app-shadow-float);
+}
+
+.pet-ds__tab {
+  @apply flex h-12 min-w-12 items-center justify-center gap-2 rounded-full px-3 text-base font-semibold;
+  color: var(--app-hint);
+}
+
+.pet-ds__tab--on {
+  @apply px-5 text-white;
+  background: var(--app-indigo);
+}
+
+.pet-ds__tab svg {
+  @apply size-6;
+}
+
+/* Avisos */
+.pet-ds__toast,
+.pet-ds__banner {
+  @apply flex items-center gap-3 rounded-2xl px-4 py-3 text-base font-medium;
+}
+
+.pet-ds__toast svg,
+.pet-ds__banner svg {
+  @apply size-5 shrink-0;
+}
+
+.pet-ds__toast {
+  @apply self-start text-white;
+  background: var(--app-night);
+  box-shadow: var(--app-shadow-float);
+}
+
+.pet-ds__toast svg {
+  color: var(--app-lime);
+}
+
+.pet-ds__banner {
+  text-wrap: balance;
+  background: var(--app-lilac);
+  color: var(--app-indigo-press);
+}
+
+.pet-ds__modal {
+  @apply flex w-full max-w-xs flex-col gap-2 rounded-3xl bg-white p-5 text-center;
+}
+
+.pet-ds__modal .pet-ds__button--danger {
+  @apply mt-2;
+}
+
+.pet-ds__sheet-demo {
+  @apply flex flex-col gap-1 rounded-t-[28px] bg-white px-5 pt-3 pb-5;
+  box-shadow: var(--app-shadow-float);
+}
+
+.pet-ds__handle {
+  @apply mx-auto mb-2 block h-1.5 w-10 rounded-full;
+  background: var(--app-border);
+}
+
+/* Estados de pantalla */
+.pet-ds__screens {
+  @apply grid grid-cols-1 gap-4 md:grid-cols-3;
+}
+
+.pet-ds__screen {
+  @apply flex flex-col items-center gap-2 rounded-3xl bg-white p-6 text-center;
+}
+
+.pet-ds__screen .pet-ds__button {
+  @apply mt-3;
+}
+
+.pet-ds__screen-icon {
+  @apply mb-2 flex size-20 items-center justify-center rounded-full;
+  background: var(--app-lime);
+}
+
+.pet-ds__screen-icon svg {
+  @apply size-8;
+}
+
+.pet-ds__screen-icon--pulse {
+  background: var(--app-lilac);
+  color: var(--app-indigo);
+  animation: pet-ds-ring 1.6s ease-out infinite;
+}
+
+.pet-ds__screen-icon--error {
+  background: var(--app-error-bg);
+  color: var(--app-error-text);
+}
+
+/* Interacción: botones de prueba */
+.pet-ds__button--live {
+  @apply cursor-pointer;
+}
+
+.pet-ds__button--live:hover {
+  filter: brightness(1.06);
+}
+
+.pet-ds__button--live:active,
+button.pet-ds__button:active:not(:disabled) {
+  scale: 0.96;
+}
+
+.pet-ds__button--primary.pet-ds__button--loading {
+  background: var(--app-indigo-press);
+}
+
+.pet-ds__button--small {
+  @apply h-10 px-4 text-sm;
+}
+
+.pet-ds__button--small svg {
+  @apply size-4;
+}
+
+button.pet-ds__button:disabled {
+  @apply cursor-not-allowed border-transparent;
+  background: var(--app-surface);
+  color: var(--app-hint);
+}
+
+button.pet-ds__button--ghost:disabled {
+  background: transparent;
+}
+
+/* Interacción: tipografía */
+.pet-ds__tester {
+  @apply flex flex-col gap-2;
+}
+
+.pet-ds__input {
+  @apply h-12 w-full rounded-2xl border-2 bg-white px-4 text-base outline-none;
+  border-color: var(--app-border);
+  color: var(--app-night);
+  transition: border-color var(--app-fast) linear;
+}
+
+.pet-ds__input::placeholder {
+  color: var(--app-hint);
+}
+
+.pet-ds__input:focus {
+  border-color: var(--app-indigo);
+}
+
+.pet-ds__type-sample {
+  @apply min-w-0 truncate;
+}
+
+/* Interacción: campo vivo */
+.pet-ds__live-field {
+  @apply flex flex-col gap-3 rounded-3xl bg-white p-5;
+}
+
+.pet-ds__live-row {
+  @apply flex flex-col gap-3 sm:flex-row sm:items-start;
+}
+
+.pet-ds__live-row .pet-ds__field {
+  @apply flex-1;
+}
+
+.pet-ds__live-submit {
+  @apply cursor-pointer sm:mt-7;
+}
+
+.pet-ds__field-input {
+  @apply w-full outline-none;
+  color: var(--app-night);
+  transition:
+    border-color var(--app-fast) linear,
+    background var(--app-fast) linear;
+}
+
+.pet-ds__field-input::placeholder {
+  color: var(--app-hint);
+}
+
+.pet-ds__field-input:focus {
+  @apply bg-white;
+  border-color: var(--app-indigo);
+}
+
+.pet-ds__field.is-shaking .pet-ds__field-box {
+  animation: pet-ds-shake 0.48s ease-in-out;
+}
+
+.pet-ds__field-message--success {
+  color: var(--app-success-text);
+}
+
+.pet-ds__field-message--success svg {
+  animation: pet-ds-pop var(--app-slow) var(--app-bounce);
+}
+
+/* Interacción: chips */
+button.pet-ds__chip {
+  @apply cursor-pointer;
+  transition:
+    background var(--app-fast) linear,
+    border-color var(--app-fast) linear,
+    color var(--app-fast) linear;
+}
+
+button.pet-ds__chip:active {
+  scale: 0.94;
+}
+
+button.pet-ds__chip.pet-ds__chip--on {
+  animation: pet-ds-pop var(--app-base) var(--app-bounce);
+}
+
+/* Interacción: navegación */
+.pet-ds__steps-bar {
+  transition: background var(--app-base) var(--app-ease-in);
+}
+
+.pet-ds__steps-foot {
+  @apply flex items-center justify-between gap-3;
+}
+
+.pet-ds__steps-actions {
+  @apply flex gap-2;
+}
+
+.pet-ds__tab {
+  @apply cursor-pointer;
+  transition:
+    background var(--app-base) var(--app-ease-in),
+    color var(--app-base) var(--app-ease-in),
+    padding var(--app-base) var(--app-ease-in);
+}
+
+.pet-ds__tab-label {
+  @apply sr-only;
+}
+
+.pet-ds__tab--on .pet-ds__tab-label {
+  @apply not-sr-only;
+  animation: pet-ds-fade-in var(--app-base) var(--app-ease-in);
+}
+
+/* Interacción: avisos en el mini celular */
+.pet-ds__live-feedback {
+  @apply flex flex-col items-center gap-6;
+}
+
+.pet-ds__triggers {
+  @apply flex flex-wrap justify-center gap-2;
+}
+
+.pet-ds__phone {
+  @apply relative h-150 w-full max-w-72 shrink-0 overflow-hidden rounded-[40px] border-[6px];
+  border-color: var(--app-night);
+  background: var(--app-cloud);
+}
+
+.pet-ds__phone-screen {
+  @apply flex h-full flex-col gap-3 px-4 pt-12 pb-6;
+}
+
+.pet-ds__phone-map {
+  @apply relative block flex-1 overflow-hidden rounded-3xl;
+  background:
+    linear-gradient(90deg, var(--app-border) 2px, transparent 2px) 0 0 / 48px
+      48px,
+    linear-gradient(var(--app-border) 2px, transparent 2px) 0 0 / 48px 48px,
+    var(--app-surface);
+}
+
+.pet-ds__phone-map::after {
+  @apply absolute top-1/2 left-1/2 size-4 -translate-1/2 rounded-full border-4 bg-white;
+  content: '';
+  border-color: var(--app-indigo);
+}
+
+.pet-ds__phone-card {
+  @apply flex items-center gap-2 rounded-2xl bg-white p-3 text-sm font-medium;
+  box-shadow: var(--app-shadow-card);
+}
+
+.pet-ds__phone-card svg {
+  @apply size-4 shrink-0;
+  color: var(--app-indigo);
+}
+
+.pet-ds__phone-line {
+  @apply block h-3 rounded-md;
+  background: var(--app-border);
+}
+
+.pet-ds__phone-line--short {
+  @apply w-3/5;
+}
+
+.pet-ds__phone-toast {
+  @apply absolute inset-x-3 top-3 z-10 text-sm;
+  animation: pet-ds-drop var(--app-slow) var(--app-ease-in) both;
+}
+
+.pet-ds__phone-banner {
+  @apply absolute inset-x-3 top-3 z-10 text-sm;
+  animation: pet-ds-drop var(--app-slow) var(--app-ease-in) both;
+}
+
+.pet-ds__icon-button {
+  @apply ml-auto flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full;
+}
+
+.pet-ds__icon-button svg {
+  @apply size-4;
+}
+
+.pet-ds__phone-backdrop {
+  @apply absolute inset-0 z-10 flex items-center justify-center p-4;
+  background: rgb(11 12 36 / 0.4);
+  animation: pet-ds-fade-in var(--app-base) linear both;
+}
+
+.pet-ds__phone-backdrop .pet-ds__modal {
+  animation: pet-ds-pop var(--app-slow) var(--app-bounce) both;
+}
+
+.pet-ds__phone-backdrop .pet-ds__button {
+  @apply cursor-pointer text-sm;
+}
+
+.pet-ds__phone-backdrop--sheet {
+  @apply items-end p-0;
+}
+
+.pet-ds__phone-dismiss {
+  @apply absolute inset-0 cursor-pointer;
+}
+
+.pet-ds__phone-backdrop--sheet .pet-ds__sheet-demo {
+  @apply relative w-full gap-2;
+  animation: pet-ds-sheet-in var(--app-slow) var(--app-ease-in) both;
+}
+
+.pet-ds__phone-backdrop--sheet .pet-ds__button {
+  @apply mt-2;
+}
+
+@keyframes pet-ds-press {
+  0%,
+  100% {
+    scale: 1;
+  }
+  35% {
+    scale: 0.88;
+  }
+}
+
+@keyframes pet-ds-sheet-in {
+  from {
+    translate: 0 100%;
+  }
+}
+
+@keyframes pet-ds-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgb(72 73 232 / 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 20px rgb(72 73 232 / 0);
+  }
+}
+
+@keyframes pet-ds-pop {
+  0% {
+    scale: 0.4;
+    opacity: 0;
+  }
+  60% {
+    scale: 1.15;
+    opacity: 1;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes pet-ds-shake {
+  0%,
+  100% {
+    translate: 0;
+  }
+  20%,
+  60% {
+    translate: -8px 0;
+  }
+  40%,
+  80% {
+    translate: 8px 0;
+  }
+}
+
+@keyframes pet-ds-drop {
+  from {
+    translate: 0 -120%;
+    opacity: 0;
+  }
+}
+
+@keyframes pet-ds-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pet-ds-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes pet-ds-loop-sheet {
+  0% {
+    translate: 0 100%;
+  }
+  25%,
+  75% {
+    translate: 0 0;
+  }
+  100% {
+    translate: 0 100%;
+  }
+}
+
+@keyframes pet-ds-pin-drop {
+  0% {
+    transform: translateY(-120px) scale(0.9, 1.1);
+  }
+  22% {
+    transform: translateY(0) scale(1.18, 0.8);
+  }
+  30% {
+    transform: translateY(-18px) scale(0.95, 1.06);
+  }
+  38% {
+    transform: translateY(0) scale(1.06, 0.94);
+  }
+  44%,
+  82% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes pet-ds-pin-shadow {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  22% {
+    transform: scale(1.25);
+    opacity: 0.22;
+  }
+  30% {
+    transform: scale(0.8);
+    opacity: 0.12;
+  }
+  40%,
+  82% {
+    transform: scale(1);
+    opacity: 0.18;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes pet-ds-pin-ring {
+  0%,
+  22% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  24% {
+    opacity: 0.9;
+  }
+  62%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes pet-ds-pin-wag {
+  0%,
+  52%,
+  100% {
+    transform: rotate(0);
+  }
+  58% {
+    transform: rotate(-14deg);
+  }
+  64% {
+    transform: rotate(12deg);
+  }
+  70% {
+    transform: rotate(-8deg);
+  }
+  76% {
+    transform: rotate(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pet-ds *,
+  .pet-ds *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

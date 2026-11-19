@@ -1,0 +1,1664 @@
+/* Flujo 2 de PetRide (Solicitar viaje): inicio, lugares, elegir mascotas,
+   mapa con la ruta y la hoja inferior del viaje */
+
+/* Inicio */
+.petride-home__body {
+  @apply flex flex-col gap-8;
+}
+
+.petride-home {
+  @apply pt-0;
+}
+
+/* Encabezado de Inicio: índigo de borde a borde, desde arriba de la barra de
+   estado; el contenido sigue el margen de 24 px de la pantalla */
+.petride-hero {
+  @apply relative flex shrink-0 flex-col gap-3 overflow-hidden rounded-b-[32px] px-6 pt-[60px] pb-6 text-white;
+  background:
+    radial-gradient(
+      120% 90% at 100% 0%,
+      rgb(171 196 255 / 0.35),
+      transparent 55%
+    ),
+    linear-gradient(160deg, #5b5cf2, var(--pr-indigo) 50%, #2f2ea6);
+  box-shadow: 0 16px 32px rgb(72 73 232 / 0.28);
+}
+
+.petride-hero__grid {
+  @apply absolute inset-0;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask: linear-gradient(180deg, #000 0, transparent 80%);
+}
+
+.petride-hero__heading {
+  @apply relative text-[28px] leading-8 font-bold;
+}
+
+/* La ruta completa: sale del carro y llega al pin, sin cortarse */
+.petride-hero__trip {
+  @apply relative h-14;
+}
+
+.petride-hero__route {
+  @apply absolute inset-0 size-full;
+  fill: none;
+  stroke: var(--pr-lime);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 2 10;
+}
+
+.petride-hero__car {
+  @apply absolute top-2 left-0 flex size-10 items-center justify-center rounded-full;
+  background: var(--pr-night);
+  color: var(--pr-lime);
+  box-shadow: 0 6px 16px rgb(11 12 36 / 0.35);
+}
+
+.petride-hero__car svg {
+  @apply size-5;
+}
+
+.petride-hero__pin {
+  @apply absolute top-2 right-2 size-8 rounded-[50%_50%_50%_4px];
+  rotate: -45deg;
+  background: var(--pr-lime);
+  box-shadow: 0 6px 16px rgb(11 12 36 / 0.3);
+}
+
+.petride-hero__pin::after {
+  @apply absolute top-1/2 left-1/2 size-2.5 -translate-1/2 rounded-full content-[''];
+  background: var(--pr-night);
+}
+
+.petride-hero__copy {
+  @apply relative flex flex-col gap-1;
+}
+
+.petride-hero__title {
+  @apply text-2xl leading-7 font-bold;
+}
+
+.petride-hero__text {
+  @apply text-base text-balance;
+  color: rgb(255 255 255 / 0.78);
+}
+
+.petride-search {
+  @apply relative flex h-14 w-full items-center gap-3 rounded-2xl bg-white pr-2 pl-4 text-left;
+  color: var(--pr-night);
+}
+
+.petride-search__icon {
+  @apply size-5 shrink-0;
+  color: var(--pr-indigo);
+}
+
+.petride-search__text {
+  @apply flex-1 text-lg font-medium;
+}
+
+.petride-search__when {
+  @apply flex h-10 items-center gap-1.5 rounded-xl px-3 text-sm font-medium;
+  background: var(--pr-lilac);
+  color: var(--pr-indigo-press);
+}
+
+.petride-search__when svg {
+  @apply size-4;
+}
+
+.petride-section-head {
+  @apply mb-3 flex items-baseline justify-between;
+}
+
+.petride-section-head__title {
+  @apply text-xl font-semibold;
+}
+
+.petride-section-head__action {
+  @apply text-base font-medium;
+  color: var(--pr-indigo);
+}
+
+.petride-home-pets__list {
+  @apply flex gap-4;
+}
+
+.petride-home-pets__item {
+  @apply flex w-[70px] flex-col items-center gap-1.5;
+}
+
+.petride-home-pets__photo,
+.petride-home-pets__add {
+  @apply size-16 rounded-2xl;
+}
+
+.petride-home-pets__photo {
+  @apply object-cover;
+}
+
+.petride-home-pets__add {
+  @apply flex items-center justify-center border-2 border-dashed;
+  border-color: var(--pr-peri);
+  color: var(--pr-indigo);
+}
+
+.petride-home-pets__add svg {
+  @apply size-6;
+}
+
+.petride-home-pets__name {
+  @apply text-base font-medium;
+}
+
+/* Origen y destino */
+.petride-places {
+  @apply flex flex-col gap-4 pt-2;
+}
+
+.petride-places__list {
+  @apply flex flex-col gap-2;
+}
+
+/* Cada resultado es una tarjeta blanca suave sobre un fondo apenas gris; el
+   primero, el más cercano a la ruta, va con un toque lila */
+.petride-place {
+  @apply flex items-start gap-3.5 rounded-[20px] border bg-white px-3 py-3;
+  border-color: #eceff7;
+}
+
+.petride-place:first-child {
+  border-color: var(--pr-peri);
+  background: #f4f6ff;
+}
+
+.petride-place__icon {
+  @apply flex size-11 shrink-0 items-center justify-center rounded-2xl;
+  background: var(--pr-success-bg);
+  color: var(--pr-success);
+}
+
+.petride-place__icon svg {
+  @apply size-5;
+}
+
+.petride-place__body {
+  @apply flex min-w-0 flex-1 flex-col;
+}
+
+.petride-place__name {
+  @apply truncate text-base font-medium;
+  color: var(--pr-night);
+}
+
+.petride-place__name strong {
+  @apply font-semibold;
+  color: var(--pr-indigo-press);
+}
+
+.petride-place__area {
+  @apply truncate text-sm;
+  color: var(--pr-ink);
+}
+
+.petride-place__distance {
+  @apply flex shrink-0 flex-col items-end text-sm font-medium;
+  color: var(--pr-ink);
+}
+
+.petride-place__distance strong {
+  @apply text-base font-semibold;
+  color: var(--pr-night);
+}
+
+/* Elegir mascotas */
+.petride-trip-pets {
+  @apply flex flex-col gap-4 pt-2;
+}
+
+.petride-trip-pets__head {
+  @apply flex flex-col gap-1;
+}
+
+.petride-trip-pets__title {
+  @apply text-[32px] leading-9 font-bold;
+}
+
+.petride-trip-pets__lead {
+  @apply text-base;
+  color: var(--pr-ink);
+}
+
+.petride-trip-pets__list {
+  @apply flex flex-col gap-3;
+}
+
+.petride-trip-pet {
+  @apply flex items-center gap-4 rounded-3xl border-2 bg-white p-3 pr-4;
+  border-color: var(--pr-border);
+}
+
+.petride-trip-pet--on {
+  border-color: var(--pr-indigo);
+  background: var(--pr-lilac);
+}
+
+.petride-trip-pet__photo {
+  @apply size-16 shrink-0 rounded-2xl object-cover;
+}
+
+.petride-trip-pet__body {
+  @apply flex min-w-0 flex-1 flex-col gap-0.5;
+}
+
+.petride-trip-pet__name {
+  @apply text-lg font-semibold;
+}
+
+.petride-trip-pet__meta {
+  @apply truncate text-sm;
+  color: var(--pr-ink);
+}
+
+.petride-trip-pet__check {
+  @apply flex size-7 shrink-0 items-center justify-center rounded-full border-2 text-transparent;
+  border-color: var(--pr-border);
+}
+
+.petride-trip-pet__check svg {
+  @apply size-4;
+  stroke-width: 3;
+}
+
+.petride-trip-pet--on .petride-trip-pet__check {
+  border-color: var(--pr-indigo);
+  background: var(--pr-indigo);
+  color: #fff;
+}
+
+/* Mapa del viaje */
+.petride-trip {
+  @apply pt-0;
+}
+
+.petride-map {
+  @apply absolute inset-0 overflow-hidden;
+  background: #e6eaf4;
+}
+
+.petride-map__layer {
+  @apply absolute inset-0;
+}
+
+.petride-map[data-variant='route'] .petride-map__layer {
+  transform: translateY(-36px);
+}
+
+.petride-map[data-variant='driver'] .petride-map__layer {
+  transform: translateY(-66px);
+}
+
+.petride-map__svg {
+  @apply absolute top-0 left-0 h-[844px] w-[390px];
+}
+
+/* Ciudad: cuadras con edificios, avenida con carril y calles con nombre */
+.petride-map__block {
+  fill: #fbfcff;
+}
+
+.petride-map__building {
+  fill: #eef1fa;
+  stroke: #e2e6f3;
+  stroke-width: 1;
+}
+
+.petride-map__avenue {
+  fill: #f3f5fc;
+}
+
+.petride-map__lane {
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-dasharray: 8 10;
+}
+
+.petride-map__street {
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: #9aa0b8;
+}
+
+/* Parque de la 93: pasto, sendero, estanque y árboles con sombra */
+.petride-map__park {
+  fill: #d5eedc;
+}
+
+.petride-map__park-path {
+  fill: none;
+  stroke: #f4fbf6;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.petride-map__pond {
+  fill: #b9dcf3;
+  stroke: #a3d0ee;
+  stroke-width: 1.5;
+}
+
+.petride-map__tree-shadow {
+  fill: rgb(22 120 70 / 0.16);
+}
+
+.petride-map__tree {
+  fill: #9fd4b0;
+  stroke: #86c69a;
+  stroke-width: 1.5;
+}
+
+/* Rutas */
+.petride-map__route-shadow,
+.petride-map__route-casing,
+.petride-map__route,
+.petride-map__ghost,
+.petride-map__arrow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.petride-map__route-shadow {
+  stroke: rgb(72 73 232 / 0.18);
+  stroke-width: 22;
+}
+
+.petride-map__route-casing {
+  stroke: #fff;
+  stroke-width: 12;
+}
+
+.petride-map__route {
+  stroke: var(--pr-indigo);
+  stroke-width: 6;
+}
+
+.petride-map__arrow {
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+/* Con el conductor: el viaje que sigue va en sombra */
+.petride-map__ghost {
+  stroke: var(--pr-peri);
+  stroke-width: 4;
+  stroke-dasharray: 2 9;
+}
+
+/* Lugares para mascotas: parque, veterinaria y café */
+.petride-map__place {
+  @apply absolute z-[2] flex size-8 -translate-1/2 items-center justify-center rounded-full border-2 border-white;
+  box-shadow: 0 4px 10px rgb(11 12 36 / 0.18);
+}
+
+.petride-map__place svg {
+  @apply size-4;
+}
+
+.petride-map__place--park {
+  @apply top-[396px] left-[142px] text-white;
+  background: var(--pr-success);
+}
+
+.petride-map__place--vet {
+  @apply top-[208px] left-[36px] text-white;
+  background: var(--pr-indigo);
+}
+
+.petride-map__place--cafe {
+  @apply top-[584px] left-[354px];
+  background: #f5b301;
+  color: var(--pr-night);
+}
+
+/* Destino */
+.petride-map__halo {
+  @apply absolute top-[161px] left-[301px] size-24 -translate-1/2 rounded-full;
+  background: radial-gradient(circle, rgb(221 243 68 / 0.45), transparent 68%);
+}
+
+.petride-map__pin {
+  @apply absolute top-[117px] left-[285px] size-8 rounded-[50%_50%_50%_4px];
+  rotate: -45deg;
+  background: var(--pr-lime);
+  box-shadow:
+    0 0 0 2px var(--pr-night),
+    0 8px 16px rgb(11 12 36 / 0.25);
+}
+
+.petride-map__pin::after {
+  @apply absolute top-1/2 left-1/2 size-2.5 -translate-1/2 rounded-full content-[''];
+  background: var(--pr-night);
+}
+
+.petride-map[data-variant='driver'] .petride-map__pin {
+  @apply opacity-60;
+}
+
+.petride-map[data-variant='driver'] .petride-map__halo {
+  @apply hidden;
+}
+
+.petride-map__callout {
+  @apply absolute top-[118px] right-[116px] z-[3] flex flex-col rounded-2xl px-3.5 py-2 whitespace-nowrap text-white;
+  background: var(--pr-night);
+  box-shadow: 0 10px 22px rgb(11 12 36 / 0.22);
+}
+
+.petride-map__callout::after {
+  @apply absolute top-1/2 -right-1.5 size-3 -translate-y-1/2 rotate-45 rounded-[2px] content-[''];
+  background: var(--pr-night);
+}
+
+.petride-map__callout-name {
+  @apply text-base leading-5 font-semibold;
+}
+
+.petride-map__callout-time {
+  @apply text-sm leading-5;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.petride-map__callout-label {
+  @apply mr-1 font-medium;
+  color: var(--pr-lime);
+}
+
+.petride-map__minutes {
+  @apply absolute top-[302px] left-[248px] z-[3] flex size-14 -translate-1/2 flex-col items-center justify-center rounded-full border-[3px] border-white text-sm leading-none font-semibold text-white;
+  background: var(--pr-indigo);
+  box-shadow: 0 8px 18px rgb(72 73 232 / 0.35);
+}
+
+.petride-map__minutes strong {
+  @apply text-xl font-bold;
+}
+
+/* Origen */
+.petride-map__origin {
+  @apply absolute top-[443px] left-[89px] z-[2] size-5 -translate-1/2 rounded-full border-4 border-white;
+  background: var(--pr-indigo);
+  box-shadow:
+    0 0 0 12px rgb(72 73 232 / 0.16),
+    0 4px 10px rgb(11 12 36 / 0.25);
+}
+
+.petride-map__tag {
+  @apply absolute z-[3] flex h-8 items-center rounded-full px-3 text-sm font-semibold whitespace-nowrap;
+  box-shadow: 0 6px 14px rgb(11 12 36 / 0.18);
+}
+
+.petride-map__tag--origin {
+  @apply top-[471px] left-[89px] -translate-x-1/2;
+  background: var(--pr-night);
+  color: #fff;
+}
+
+.petride-map__tag--pickup {
+  @apply top-[471px] left-[89px] -translate-x-1/2 bg-white;
+  color: var(--pr-night);
+}
+
+/* Punto de recogida: ondas que salen desde el origen */
+.petride-map__wave {
+  @apply absolute top-[443px] left-[89px] -translate-1/2 rounded-full border;
+  border-color: rgb(72 73 232 / 0.3);
+  background: rgb(72 73 232 / 0.06);
+}
+
+.petride-map__wave--inner {
+  @apply size-24;
+}
+
+.petride-map__wave--outer {
+  @apply size-40;
+  border-color: rgb(72 73 232 / 0.16);
+  background: rgb(72 73 232 / 0.03);
+}
+
+/* Carro del conductor en camino */
+.petride-map__car {
+  @apply absolute flex -translate-1/2 items-center justify-center rounded-full;
+  background: var(--pr-night);
+  color: var(--pr-lime);
+  box-shadow: 0 6px 14px rgb(11 12 36 / 0.3);
+}
+
+.petride-map__car--driver {
+  @apply top-[443px] left-[248px] z-[4] size-12 border-[3px] border-white;
+  box-shadow:
+    0 0 0 6px rgb(221 243 68 / 0.35),
+    0 8px 18px rgb(11 12 36 / 0.3);
+}
+
+.petride-map__car--driver svg {
+  @apply size-6 -scale-x-100;
+}
+
+.petride-trip__back {
+  @apply absolute top-16 left-6 z-10 flex size-11 items-center justify-center rounded-full bg-white;
+  color: var(--pr-night);
+  box-shadow: 0 6px 16px rgb(11 12 36 / 0.16);
+}
+
+.petride-trip__back svg {
+  @apply size-5;
+}
+
+/* Hoja inferior del viaje */
+.petride-sheet {
+  @apply absolute inset-x-0 bottom-0 z-10 flex flex-col gap-4 rounded-t-[32px] bg-white px-6 pt-3 pb-10;
+  box-shadow: 0 -12px 32px rgb(11 12 36 / 0.12);
+}
+
+.petride-sheet__handle {
+  @apply mx-auto h-1.5 w-10 rounded-full;
+  background: var(--pr-border);
+}
+
+.petride-sheet__title {
+  @apply text-2xl leading-8 font-bold;
+}
+
+.petride-sheet__lead {
+  @apply text-base text-balance;
+  color: var(--pr-ink);
+}
+
+.petride-sheet__eyebrow {
+  @apply -mb-3 flex items-center gap-2 text-sm font-bold tracking-[0.12em] uppercase;
+  color: var(--pr-success);
+}
+
+.petride-sheet__eyebrow::before {
+  @apply size-2 rounded-full content-[''];
+  background: var(--pr-success);
+  box-shadow: 0 0 0 4px var(--pr-success-bg);
+}
+
+.petride-stops {
+  @apply relative flex flex-col gap-3;
+}
+
+.petride-stops::before {
+  @apply absolute top-3 bottom-3 left-[6px] border-l-2 border-dashed content-[''];
+  border-color: var(--pr-peri);
+}
+
+.petride-stops__item {
+  @apply relative flex items-start gap-3 text-base font-medium;
+}
+
+.petride-stops__origin {
+  @apply mt-1 size-3.5 shrink-0 rounded-full border-[3px] bg-white;
+  border-color: var(--pr-indigo);
+}
+
+.petride-stops__pin {
+  @apply mt-1 size-3.5 shrink-0 rounded-[3px];
+  rotate: 45deg;
+  background: var(--pr-lime);
+  box-shadow: 0 0 0 2px var(--pr-night);
+}
+
+.petride-avatars {
+  @apply flex shrink-0;
+}
+
+.petride-avatars__item {
+  @apply size-10 rounded-full border-[3px] border-white object-cover;
+}
+
+.petride-avatars__item + .petride-avatars__item {
+  @apply -ml-3;
+}
+
+/* Conductor asignado */
+.petride-car {
+  @apply flex items-center gap-3 py-1;
+}
+
+/* Placa con el estilo de las placas de Colombia */
+.petride-car__plate {
+  @apply rounded-lg border-2 px-3 py-1 text-lg font-bold tracking-[0.08em];
+  border-color: var(--pr-night);
+  background: #f6c90e;
+  color: var(--pr-night);
+}
+
+/* Lugares guardados */
+.petride-saved {
+  @apply -mr-6 flex gap-2 overflow-hidden;
+  mask: linear-gradient(90deg, #000 80%, transparent);
+}
+
+.petride-saved__item {
+  @apply flex shrink-0 items-center gap-2.5 rounded-[18px] border bg-white py-2 pr-3.5 pl-2 whitespace-nowrap;
+  border-color: var(--pr-border);
+}
+
+.petride-saved__icon {
+  @apply flex size-10 items-center justify-center rounded-xl;
+  background: var(--pr-lilac);
+  color: var(--pr-indigo);
+}
+
+.petride-saved__icon svg {
+  @apply size-5;
+}
+
+.petride-saved__text {
+  @apply flex flex-col text-sm leading-5;
+  color: var(--pr-ink);
+}
+
+.petride-saved__text strong {
+  @apply font-semibold;
+  color: var(--pr-night);
+}
+
+.petride-home__body {
+  @apply gap-4 pt-4;
+}
+
+/* Elegir mascotas: asistencia, capacidad y si pueden viajar juntas */
+.petride-trip-pet__name {
+  @apply flex items-center gap-2;
+}
+
+.petride-trip-pet__badge {
+  @apply flex items-center gap-1 rounded-lg px-2 py-0.5 text-sm font-medium;
+  background: var(--pr-indigo);
+  color: var(--pr-lime);
+}
+
+.petride-trip-pet__badge svg {
+  @apply size-4;
+}
+
+.petride-together {
+  @apply flex items-center gap-3 rounded-2xl p-3;
+  background: var(--pr-success-bg);
+}
+
+.petride-together__icon {
+  @apply flex size-8 shrink-0 items-center justify-center rounded-full text-white;
+  background: var(--pr-success);
+}
+
+.petride-together__icon svg {
+  @apply size-4;
+  stroke-width: 3;
+}
+
+.petride-together__text {
+  @apply flex flex-col text-sm leading-5;
+  color: var(--pr-ink);
+}
+
+.petride-together__text strong {
+  @apply text-base font-semibold;
+  color: var(--pr-night);
+}
+
+/* Buscando: estado en vivo y lo que se revisa */
+/* Conductor asignado: estado del viaje, perfil, carro y nota */
+.petride-car-art {
+  @apply h-7 w-16 shrink-0;
+}
+
+.petride-car-art__body,
+.petride-car-art__hub {
+  fill: #b9bec9;
+}
+
+.petride-car-art__glass {
+  fill: #e9f0ff;
+}
+
+.petride-car-art__wheel {
+  fill: var(--pr-night);
+}
+
+.petride-car-art__light {
+  fill: var(--pr-lime);
+}
+
+.petride-car__text {
+  @apply flex flex-1 flex-col text-sm;
+  color: var(--pr-ink);
+}
+
+.petride-car__text strong {
+  @apply text-base font-semibold whitespace-nowrap;
+  color: var(--pr-night);
+}
+
+/* Llegada y calificación */
+.petride-arrived {
+  @apply overflow-hidden pt-0;
+  background: var(--pr-night);
+}
+
+.petride-arrived__top {
+  @apply relative flex h-[264px] shrink-0 flex-col justify-end gap-3.5 px-6 pb-11 text-white;
+}
+
+.petride-arrived__grid {
+  @apply absolute inset-0;
+  background-image:
+    linear-gradient(rgb(171 196 255 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(171 196 255 / 0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.petride-arrived__glow {
+  @apply absolute -top-24 -right-24 size-[360px] rounded-full;
+  background: radial-gradient(circle, rgb(72 73 232 / 0.7), transparent 64%);
+}
+
+.petride-arrived__close {
+  @apply absolute top-16 right-6 z-10 flex size-10 items-center justify-end;
+  color: rgb(255 255 255 / 0.7);
+}
+
+.petride-arrived__close svg {
+  @apply size-6;
+}
+
+.petride-arrived__copy {
+  @apply relative flex flex-col gap-1;
+}
+
+.petride-arrived__eyebrow {
+  @apply flex items-center gap-1.5 text-sm font-bold tracking-[0.16em] uppercase;
+  color: var(--pr-lime);
+}
+
+.petride-arrived__eyebrow svg {
+  @apply size-4;
+}
+
+.petride-arrived__title {
+  @apply text-[32px] leading-9 font-bold;
+}
+
+.petride-arrived__meta {
+  @apply text-base;
+  color: rgb(255 255 255 / 0.7);
+}
+
+.petride-arrived__facts {
+  @apply relative flex items-center gap-2;
+}
+
+.petride-arrived__fact {
+  @apply flex h-12 items-center gap-2 rounded-full border py-1 pr-4 pl-1 text-sm font-medium;
+  border-color: rgb(255 255 255 / 0.14);
+  background: rgb(255 255 255 / 0.08);
+}
+
+.petride-arrived__fact .petride-avatars__item {
+  @apply size-10 border-[var(--pr-night)];
+}
+
+.petride-arrived__fact--paid {
+  @apply ml-auto flex-col items-end justify-center gap-0 px-4 leading-4;
+  color: rgb(255 255 255 / 0.7);
+}
+
+.petride-arrived__fact--paid strong {
+  @apply text-base font-semibold text-white;
+}
+
+.petride-rate {
+  @apply relative -mt-6 flex flex-1 flex-col gap-4 rounded-t-[32px] bg-white px-6 pt-5 pb-10;
+}
+
+.petride-rate__photo {
+  @apply size-11 shrink-0 rounded-full border-[3px] border-white object-cover;
+  box-shadow: 0 0 0 2px var(--pr-lime);
+}
+
+.petride-rate__question {
+  @apply text-lg leading-6 font-semibold;
+}
+
+.petride-rate__tags {
+  @apply flex w-full flex-col gap-2 text-left;
+}
+
+.petride-rate__tags-title {
+  @apply text-base font-semibold;
+}
+
+.petride-rate__tag-list {
+  @apply flex flex-wrap gap-2;
+}
+
+.petride-rate__tag {
+  @apply flex h-9 shrink-0 items-center whitespace-nowrap rounded-full border-2 bg-white px-3.5 text-sm font-medium;
+  border-color: var(--pr-border);
+  color: var(--pr-ink);
+}
+
+.petride-rate__tag--on {
+  border-color: var(--pr-indigo);
+  background: var(--pr-lilac);
+  color: var(--pr-indigo-press);
+}
+
+.petride-rate .petride-button {
+  @apply mt-auto;
+}
+
+/* Lo obligatorio va suelto en la hoja; lo opcional, en una tarjeta gris */
+.petride-rate__score {
+  @apply flex flex-col gap-3;
+}
+
+.petride-rate__card {
+  @apply flex flex-col gap-3 rounded-[22px] border bg-white p-4;
+  border-color: #eceff7;
+}
+
+.petride-rate__card--optional {
+  @apply border-transparent;
+  background: #f5f7fc;
+}
+
+.petride-rate__who {
+  @apply flex items-center gap-3;
+}
+
+.petride-rate__optional {
+  @apply text-sm font-bold tracking-[0.1em] uppercase;
+  color: var(--pr-hint);
+}
+
+.petride-rate__card--optional .petride-rate__tip {
+  @apply bg-white;
+}
+
+.petride-rate__card--optional .petride-rate__tip--on {
+  background: var(--pr-night);
+}
+
+.petride-rate__card--optional .petride-rate__message {
+  @apply border-transparent bg-white;
+}
+
+/* Origen y destino: buscador índigo, categorías para mascotas y resultados */
+.petride-places-screen {
+  @apply pt-0;
+}
+
+.petride-place-search {
+  @apply relative shrink-0 overflow-hidden rounded-b-[32px] px-6 pt-[52px] pb-6 text-white;
+  background:
+    radial-gradient(
+      120% 90% at 100% 0%,
+      rgb(171 196 255 / 0.35),
+      transparent 55%
+    ),
+    linear-gradient(160deg, #5b5cf2, var(--pr-indigo) 50%, #2f2ea6);
+  box-shadow: 0 16px 32px rgb(72 73 232 / 0.28);
+}
+
+.petride-place-search__grid {
+  @apply absolute inset-0;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask: linear-gradient(180deg, #000, transparent 80%);
+}
+
+.petride-place-search__bar {
+  @apply relative flex h-16 items-center gap-3;
+}
+
+.petride-place-search__back {
+  @apply flex size-11 shrink-0 items-center justify-center rounded-full border text-white;
+  border-color: rgb(255 255 255 / 0.3);
+  background: rgb(255 255 255 / 0.16);
+}
+
+.petride-place-search__back svg {
+  @apply size-5;
+}
+
+.petride-place-search__title {
+  @apply text-[22px] font-bold;
+}
+
+.petride-place-search__fields {
+  @apply relative flex flex-col gap-4;
+}
+
+/* Intercambiar: montado sobre la unión de los dos campos, a la derecha */
+.petride-place-search__swap {
+  @apply absolute top-1/2 right-[10px] z-[2] flex size-8 -translate-y-1/2 items-center justify-center rounded-full;
+  background: var(--pr-lime);
+  color: var(--pr-night);
+  box-shadow: 0 0 0 4px var(--pr-indigo);
+}
+
+.petride-place-search__swap svg {
+  @apply size-4;
+}
+
+.petride-place-field {
+  @apply flex h-14 items-center gap-3 rounded-2xl border bg-white px-3.5 text-base font-medium;
+  border-color: #fff;
+  color: var(--pr-night);
+}
+
+.petride-place-field--focus {
+  box-shadow: 0 0 0 4px rgb(221 243 68 / 0.6);
+}
+
+.petride-place-field__origin {
+  @apply size-3.5 shrink-0 rounded-full border-[3px];
+  border-color: var(--pr-indigo);
+  box-shadow: 0 0 0 4px rgb(72 73 232 / 0.14);
+}
+
+.petride-place-field__pin {
+  @apply size-3.5 shrink-0 rounded-[4px];
+  rotate: 45deg;
+  background: var(--pr-lime);
+  box-shadow: 0 0 0 2px var(--pr-night);
+}
+
+.petride-place-field__text {
+  @apply flex flex-1 flex-col leading-5;
+}
+
+.petride-place-field__label {
+  @apply text-sm font-medium;
+  color: var(--pr-hint);
+}
+
+.petride-place-field__value {
+  @apply flex items-center gap-0.5;
+}
+
+.petride-places-screen {
+  background: #f7f8fc;
+}
+
+.petride-places-screen .petride-places {
+  @apply gap-3.5 pt-5;
+}
+
+.petride-categories {
+  @apply -mr-6 flex gap-2 overflow-hidden;
+  mask: linear-gradient(90deg, #000 85%, transparent);
+}
+
+.petride-categories__item {
+  @apply flex h-10 shrink-0 items-center gap-1.5 rounded-full border-[1.5px] bg-white px-3.5 text-sm font-medium whitespace-nowrap;
+  border-color: var(--pr-border);
+  color: var(--pr-ink);
+}
+
+.petride-categories__item svg {
+  @apply size-4;
+}
+
+.petride-categories__item--on {
+  @apply text-white;
+  border-color: var(--pr-night);
+  background: var(--pr-night);
+}
+
+.petride-categories__item--on svg {
+  color: var(--pr-lime);
+}
+
+.petride-place__badge {
+  @apply mt-1.5 flex items-center gap-1 self-start rounded-lg px-2 py-0.5 text-sm font-medium;
+  background: var(--pr-success-bg);
+  color: #11845a;
+}
+
+.petride-place__badge svg {
+  @apply size-3.5;
+}
+
+/* Inicio: ideas para el próximo viaje, en carrusel */
+.petride-ideas {
+  @apply flex flex-col gap-2.5;
+}
+
+.petride-ideas__list {
+  @apply -mr-6 flex gap-2.5 overflow-hidden;
+}
+
+.petride-idea {
+  @apply flex h-28 w-[290px] shrink-0 items-center gap-3.5 rounded-3xl px-4;
+}
+
+.petride-idea__icon {
+  @apply flex size-14 shrink-0 items-center justify-center rounded-[18px];
+}
+
+.petride-idea__icon svg {
+  @apply size-7;
+}
+
+.petride-idea__text {
+  @apply flex flex-1 flex-col gap-0.5;
+}
+
+.petride-idea__title {
+  @apply text-lg leading-[22px] font-semibold;
+}
+
+.petride-idea__meta {
+  @apply text-sm leading-5;
+}
+
+.petride-ideas__dots {
+  @apply flex justify-center gap-1.5;
+}
+
+.petride-ideas__dot {
+  @apply size-1.5 rounded-full bg-[#d7dcef];
+}
+
+.petride-ideas__dot--on {
+  @apply w-5 rounded-[4px];
+  background: var(--pr-indigo);
+}
+
+.petride-idea--lime {
+  background: var(--pr-lime);
+  color: var(--pr-night);
+}
+
+.petride-idea--lime .petride-idea__icon {
+  background: var(--pr-night);
+  color: var(--pr-lime);
+}
+
+.petride-idea--lilac {
+  background: var(--pr-lilac);
+  color: var(--pr-indigo-press);
+}
+
+.petride-idea--lilac .petride-idea__icon {
+  @apply text-white;
+  background: var(--pr-indigo);
+}
+
+.petride-idea--night {
+  @apply text-white;
+  background: var(--pr-night);
+}
+
+.petride-idea--night .petride-idea__icon {
+  background: var(--pr-lime);
+  color: var(--pr-night);
+}
+
+.petride-idea--night .petride-idea__meta {
+  color: rgb(255 255 255 / 0.7);
+}
+
+.petride-ideas .petride-section-head__title {
+  @apply text-xl font-semibold;
+}
+
+/* Elegir mascotas: los puestos como un carro con ventanas */
+.petride-capacity-car__art {
+  @apply relative block h-[84px] w-[184px] shrink-0;
+}
+
+.petride-capacity-car__svg {
+  @apply absolute inset-0 size-full;
+}
+
+/* Cada ventana es un puesto: con la foto de la mascota o libre */
+.petride-capacity-car__window {
+  @apply absolute top-[14px] flex h-[26px] w-[34px] items-center justify-center overflow-hidden rounded-md;
+}
+
+/* Reflejo del vidrio sobre cada foto */
+.petride-capacity-car__window::after {
+  @apply pointer-events-none absolute inset-0 content-[''];
+  background: linear-gradient(
+    115deg,
+    rgb(255 255 255 / 0.35) 0 18%,
+    transparent 18% 30%,
+    rgb(255 255 255 / 0.18) 30% 38%,
+    transparent 38%
+  );
+}
+
+.petride-capacity-car__window img {
+  @apply size-full object-cover;
+}
+
+.petride-capacity-car__window--back {
+  @apply left-[44px];
+}
+
+.petride-capacity-car__window--middle {
+  @apply left-[82px];
+}
+
+.petride-capacity-car__window--front {
+  @apply left-[120px] w-[28px] rounded-none shadow-none;
+  clip-path: polygon(0 0, 30% 0, 100% 100%, 0 100%);
+}
+
+.petride-capacity-car__window--free {
+  @apply shadow-none;
+  background: rgb(255 255 255 / 0.12);
+  color: var(--pr-lime);
+}
+
+.petride-capacity-car__window--free svg {
+  @apply size-3.5;
+  stroke-width: 3;
+}
+
+.petride-capacity-car__window--front.petride-capacity-car__window--free {
+  @apply justify-start pl-1;
+  background: rgb(221 243 68 / 0.25);
+}
+
+/* Ilustración del carro */
+.petride-capacity-car__stop-top {
+  stop-color: #6a6bf6;
+}
+
+.petride-capacity-car__stop-mid {
+  stop-color: var(--pr-indigo);
+}
+
+.petride-capacity-car__stop-low {
+  stop-color: #3637c4;
+}
+
+.petride-capacity-car__body {
+  fill: url(#petride-car-body);
+}
+
+.petride-capacity-car__lower {
+  fill: #2f2ea6;
+  opacity: 0.55;
+}
+
+.petride-capacity-car__roof-shine,
+.petride-capacity-car__belt {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.petride-capacity-car__roof-shine {
+  stroke: rgb(255 255 255 / 0.35);
+  stroke-width: 1.2;
+}
+
+.petride-capacity-car__belt {
+  stroke: rgb(171 196 255 / 0.45);
+  stroke-width: 1;
+}
+
+.petride-capacity-car__frame {
+  fill: #12133a;
+}
+
+.petride-capacity-car__seam {
+  fill: none;
+  stroke: #2f2ea6;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+.petride-capacity-car__handle {
+  fill: var(--pr-peri);
+}
+
+.petride-capacity-car__mirror {
+  fill: #3637c4;
+}
+
+.petride-capacity-car__decal {
+  fill: var(--pr-lime);
+}
+
+.petride-capacity-car__beam {
+  fill: rgb(221 243 68 / 0.12);
+}
+
+.petride-capacity-car__headlight {
+  fill: var(--pr-lime);
+}
+
+.petride-capacity-car__taillight {
+  fill: #ff6b6b;
+}
+
+.petride-capacity-car__bumper {
+  fill: #1d1e5c;
+}
+
+.petride-capacity-car__arch {
+  fill: #12133a;
+}
+
+.petride-capacity-car__tire {
+  fill: #07081c;
+  stroke: #24256a;
+  stroke-width: 1.5;
+}
+
+.petride-capacity-car__rim {
+  fill: var(--pr-peri);
+}
+
+.petride-capacity-car__spokes {
+  stroke: var(--pr-indigo);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.petride-capacity-car__hub {
+  fill: var(--pr-night);
+}
+
+.petride-capacity-car__tire-shine {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.18);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.petride-capacity-car__speed {
+  stroke: rgb(171 196 255 / 0.4);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.petride-capacity-car__shadow {
+  fill: rgb(0 0 0 / 0.45);
+}
+
+.petride-capacity-car__rack {
+  fill: none;
+  stroke: #24256a;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.petride-capacity-car__road {
+  stroke: rgb(221 243 68 / 0.5);
+  stroke-width: 2;
+  stroke-dasharray: 10 8;
+}
+
+/* Tarifa y resumen: el carro con las mascotas y el precio, chips y recorrido */
+.petride-trip--fare .petride-map__layer {
+  transform: translateY(-60px);
+}
+
+.petride-sheet--fare {
+  @apply gap-3.5;
+}
+
+.petride-fare-hero {
+  @apply flex items-center justify-between rounded-[20px] py-2.5 pr-4 pl-1;
+  background: var(--pr-night);
+}
+
+.petride-fare-hero__price {
+  @apply flex flex-col items-end text-[30px] leading-none font-extrabold;
+  color: var(--pr-lime);
+}
+
+.petride-fare-hero__label {
+  @apply mb-1.5 text-sm font-medium;
+  color: rgb(255 255 255 / 0.7);
+}
+
+.petride-fare-chips {
+  @apply flex gap-2;
+}
+
+.petride-fare-chips__item {
+  @apply flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-semibold whitespace-nowrap;
+  background: var(--pr-surface);
+}
+
+.petride-fare-chips__item svg {
+  @apply size-4;
+  color: var(--pr-indigo);
+}
+
+.petride-fare-chips__item--lime {
+  background: var(--pr-lime);
+}
+
+.petride-fare-chips__item--lime svg {
+  color: var(--pr-night);
+}
+
+/* Elegir mascotas: quién viaja y cuánto espacio queda, en una frase */
+.petride-seats {
+  @apply flex flex-col gap-3 rounded-[20px] border-[1.5px] bg-white px-4 pt-3.5 pb-4;
+  border-color: var(--pr-border);
+}
+
+.petride-seats__row {
+  @apply flex items-center gap-3;
+}
+
+.petride-seats__stack {
+  @apply flex shrink-0;
+}
+
+.petride-seats__stack > * + * {
+  @apply -ml-3.5;
+}
+
+.petride-seats__photo,
+.petride-seats__free {
+  @apply size-11 rounded-full border-[3px] border-white;
+}
+
+.petride-seats__photo {
+  @apply object-cover;
+}
+
+.petride-seats__free {
+  @apply flex items-center justify-center;
+  background: var(--pr-surface);
+  color: var(--pr-indigo);
+  outline: 2px dashed var(--pr-peri);
+  outline-offset: -5px;
+}
+
+.petride-seats__free svg {
+  @apply size-4;
+}
+
+.petride-seats__text {
+  @apply flex min-w-0 flex-1 flex-col text-sm leading-5;
+  color: var(--pr-ink);
+}
+
+.petride-seats__names {
+  @apply truncate text-base font-semibold;
+  color: var(--pr-night);
+}
+
+.petride-seats__count {
+  @apply shrink-0 text-[28px] leading-none font-extrabold;
+  color: var(--pr-indigo);
+}
+
+.petride-seats__count small {
+  @apply text-base font-semibold;
+  color: var(--pr-hint);
+}
+
+.petride-seats__bar {
+  @apply flex h-2 overflow-hidden rounded-full;
+  background: var(--pr-surface);
+}
+
+.petride-seats__fill {
+  @apply flex-1;
+}
+
+.petride-seats__fill--on {
+  background: var(--pr-indigo);
+}
+
+/* Buscando conductor: póster de espera en la noche de la marca */
+.petride-waiting {
+  @apply relative overflow-hidden pt-0 text-white;
+  background: var(--pr-night);
+}
+
+.petride-waiting__grid {
+  @apply absolute inset-0;
+  background-image:
+    linear-gradient(rgb(171 196 255 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(171 196 255 / 0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.petride-waiting__glow {
+  @apply absolute top-[120px] left-[-45px] size-[480px] rounded-full;
+  background: radial-gradient(circle, rgb(72 73 232 / 0.6), transparent 64%);
+}
+
+.petride-waiting__ring {
+  @apply absolute top-[300px] left-1/2 -translate-1/2 rounded-full border-[1.5px];
+  border-color: rgb(221 243 68 / 0.3);
+}
+
+.petride-waiting__ring--inner {
+  @apply size-[220px];
+}
+
+.petride-waiting__ring--middle {
+  @apply size-[320px] opacity-60;
+}
+
+.petride-waiting__ring--outer {
+  @apply size-[420px] opacity-30;
+}
+
+/* El carro de la tarifa, más grande */
+.petride-waiting__car {
+  @apply absolute top-[300px] left-1/2 h-[84px] w-[184px];
+  transform: translate(-50%, -50%) scale(1.4);
+}
+
+.petride-waiting__copy {
+  @apply absolute inset-x-6 top-[470px] flex flex-col items-center gap-2 text-center;
+}
+
+/* Estado sobre el carro: píldora lima */
+.petride-waiting__status {
+  @apply absolute top-[190px] left-1/2 z-[3] flex h-9 -translate-x-1/2 items-center gap-2 rounded-full px-3.5 text-sm font-bold;
+  background: var(--pr-lime);
+  color: var(--pr-night);
+}
+
+.petride-waiting__dot {
+  @apply size-2 rounded-full;
+  background: var(--pr-night);
+  box-shadow: 0 0 0 4px rgb(11 12 36 / 0.15);
+}
+
+.petride-waiting__title {
+  @apply text-[30px] leading-9 font-bold text-balance;
+}
+
+.petride-waiting__text {
+  @apply text-base text-balance;
+  color: rgb(255 255 255 / 0.7);
+}
+
+.petride-waiting__trip {
+  @apply absolute inset-x-6 bottom-[108px] flex h-14 items-center justify-between rounded-[18px] border px-[18px] text-base font-medium;
+  border-color: rgb(255 255 255 / 0.14);
+  background: rgb(255 255 255 / 0.06);
+}
+
+.petride-waiting__place {
+  @apply flex items-center gap-2;
+}
+
+.petride-waiting__place svg {
+  @apply size-[18px];
+  color: var(--pr-lime);
+}
+
+.petride-waiting__price {
+  @apply text-lg font-semibold;
+  color: var(--pr-lime);
+}
+
+.petride-waiting__cancel {
+  @apply absolute inset-x-6 bottom-10 h-14 rounded-full border-[1.5px] text-base font-semibold text-white;
+  border-color: rgb(255 255 255 / 0.3);
+}
+
+/* Conductor asignado: hoja de borde a borde con la presentación de quien llega */
+.petride-sheet--driver {
+  @apply h-[370px] justify-between pt-3 pb-10;
+}
+
+.petride-driver-card__head {
+  @apply flex items-center gap-3.5;
+}
+
+.petride-driver-card__photo {
+  @apply size-16 shrink-0 rounded-full border-[3px] border-white object-cover;
+  box-shadow: 0 0 0 2px var(--pr-lime);
+}
+
+.petride-driver-card__heading {
+  @apply flex flex-col items-start gap-1;
+}
+
+.petride-driver-card__badge {
+  @apply flex h-6 items-center gap-1 rounded-full px-2 text-sm font-medium;
+  background: var(--pr-lilac);
+  color: var(--pr-indigo-press);
+}
+
+.petride-driver-card__badge svg {
+  @apply size-3.5;
+  color: var(--pr-indigo);
+}
+
+.petride-driver-card__title {
+  @apply text-2xl leading-8 font-bold;
+}
+
+.petride-driver-card__stats {
+  @apply grid grid-cols-3 rounded-2xl;
+  background: var(--pr-surface);
+}
+
+.petride-driver-card__stat {
+  @apply flex flex-col-reverse items-center py-2.5;
+}
+
+.petride-driver-card__stat + .petride-driver-card__stat {
+  @apply border-l;
+  border-color: var(--pr-border);
+}
+
+.petride-driver-card__stat-label {
+  @apply text-sm;
+  color: var(--pr-hint);
+}
+
+.petride-driver-card__stat-value {
+  @apply flex items-center gap-1 text-lg font-semibold;
+}
+
+.petride-driver-card__stat-value svg {
+  @apply size-4;
+  fill: #f5b301;
+  color: #f5b301;
+}
+
+.petride-driver-card__actions {
+  @apply grid grid-cols-2 gap-2.5;
+}
+
+.petride-car__plate {
+  @apply whitespace-nowrap;
+}
+
+/* Calificación con huellas: se encienden en índigo y lima hasta la elegida,
+   que crece un poco y flota */
+.petride-rate__paws {
+  @apply flex items-center justify-between;
+}
+
+.petride-rate__paw {
+  @apply flex size-14 items-center justify-center rounded-[18px];
+  background: #f1f3fa;
+  color: #c3c8de;
+}
+
+.petride-paw-mark {
+  @apply size-[26px];
+  fill: currentColor;
+}
+
+.petride-rate__paw--on {
+  background: var(--pr-indigo);
+  color: var(--pr-lime);
+}
+
+.petride-rate__paw--chosen {
+  scale: 1.08;
+  box-shadow: 0 8px 18px rgb(72 73 232 / 0.35);
+}
+
+.petride-rate__read {
+  @apply -mt-1 flex items-baseline justify-between text-sm;
+  color: var(--pr-hint);
+}
+
+.petride-rate__read strong {
+  @apply text-base font-semibold;
+  color: var(--pr-night);
+}
+
+/* Propina opcional */
+.petride-rate__tips {
+  @apply flex w-full flex-col gap-2 text-left;
+}
+
+.petride-rate__tip-list {
+  @apply grid grid-cols-4 gap-1.5;
+}
+
+.petride-rate__tip {
+  @apply flex h-10 items-center justify-center rounded-xl border-[1.5px] text-sm font-normal;
+  border-color: var(--pr-border);
+}
+
+.petride-rate__tip--on {
+  border-color: var(--pr-night);
+  background: var(--pr-night);
+  color: var(--pr-lime);
+}
+
+/* Mensaje para la conductora */
+.petride-rate__message {
+  @apply flex h-12 w-full items-center truncate rounded-2xl border-2 px-4 text-left text-base;
+  border-color: var(--pr-border);
+  color: var(--pr-hint);
+}
