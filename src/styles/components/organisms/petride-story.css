@@ -475,6 +475,13 @@
   @apply h-full w-full;
 }
 
+/* La foto viene sin fondo: el cielo es el periwinkle de la marca y el carro
+   se apoya en el borde de abajo */
+.pet-cover__photo {
+  @apply object-cover object-[42%_bottom];
+  background: var(--pet-peri);
+}
+
 /* Espacio gris de imágenes y pantallas pendientes */
 .pet-placeholder {
   @apply flex h-full w-full items-center justify-center p-6 text-center;
@@ -1508,38 +1515,6 @@
 }
 
 /* ───────── 06 · Diseño ───────── */
-.pet-wall {
-  @apply relative flex flex-col gap-16;
-}
-
-.pet-wall__copy {
-  @apply flex flex-col gap-4;
-}
-
-.pet-wall__frame {
-  @apply relative h-[560px] overflow-hidden rounded-[32px] md:h-[720px];
-  background: var(--pet-deep);
-}
-
-.pet-wall__grid {
-  @apply absolute -inset-x-[20%] -inset-y-[30%] grid grid-cols-4 gap-6;
-  rotate: -14deg;
-}
-
-.pet-wall__column {
-  @apply flex flex-col gap-6;
-}
-
-.pet-wall__phone {
-  @apply block aspect-[9/19] rounded-[32px] border-[6px];
-  border-color: var(--pet-night);
-  background: var(--pet-screen);
-}
-
-.pet-wall__phone:nth-child(3n) {
-  background: #b9bdcb;
-}
-
 /* Flow: pantallas grises señaladas con un conector que se dibuja */
 .pet-flowshow {
   @apply relative flex flex-col gap-16;

@@ -17,3 +17,12 @@ export function formatPetrideAge(
     count: age
   });
 }
+
+// Nombres de las mascotas que viajan: "Toby", "Toby y Kira", "Toby, Luna y Kira"
+export function joinPetrideNames(names: readonly string[], template: string) {
+  if (names.length < 2) return names.join('');
+  return fillPetrideTemplate(template, {
+    first: names.slice(0, -1).join(', '),
+    second: names[names.length - 1]
+  });
+}

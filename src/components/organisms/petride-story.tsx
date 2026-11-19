@@ -27,9 +27,6 @@ const outfit = outfitFont({
   weight: ['400', '500', '600', '700', '800']
 });
 
-// Velocidad de cada columna del muro de wireframes
-const WIREFRAME_SPEEDS = [0.3, -0.2, 0.4, -0.3] as const;
-
 type PetrideStoryProps = {
   story: PetrideStoryContent;
 };
@@ -90,9 +87,14 @@ export function PetrideStory({ story }: PetrideStoryProps) {
         </div>
 
         <div className="pet-cover" data-pet-expand>
-          <PetPlaceholder
-            label={intro.coverLabel}
-            className="pet-cover__media"
+          <Image
+            src={intro.cover.src}
+            alt={intro.cover.alt}
+            width={1672}
+            height={941}
+            priority
+            unoptimized
+            className="pet-cover__media pet-cover__photo"
           />
         </div>
 
@@ -465,78 +467,48 @@ export function PetrideStory({ story }: PetrideStoryProps) {
 
         <PetDesignSystem system={design.system} />
 
-        <div className="pet-wall">
-          <div className="pet-wall__copy">
-            <PetModuleTitle text={design.wireframesTitle} />
-          </div>
-          <div
-            className="pet-wall__frame"
-            role="img"
-            aria-label={design.wireframesTitle}
-          >
-            <div className="pet-wall__grid">
-              {WIREFRAME_SPEEDS.map((speed, column) => (
-                <div
-                  key={speed}
-                  className="pet-wall__column"
-                  data-pet-speed={speed}
-                >
-                  {Array.from(
-                    { length: design.wireframeCount / 4 },
-                    (_, index) => (
-                      <span
-                        key={`${column}-${index}`}
-                        className="pet-wall__phone"
-                        aria-hidden="true"
-                      />
-                    )
-                  )}
-                </div>
-              ))}
+        {design.flowShows.map(flow => (
+          <div key={flow.title} className="pet-flowshow" data-pet-flowshow>
+            <div className="pet-flowshow__intro">
+              <h3 className="pet-module__title">
+                <PetLetters text={flow.title} />
+              </h3>
             </div>
+            <svg className="pet-flowshow__wires" aria-hidden="true">
+              {flow.screens.slice(1).map(screen => (
+                <path
+                  key={screen.key}
+                  className="pet-flowshow__wire"
+                  pathLength={1}
+                  data-pet-wire
+                />
+              ))}
+            </svg>
+            <ol className="pet-flowshow__steps">
+              {flow.screens.map(screen => (
+                <li key={screen.key} className="pet-flowshow__step">
+                  <div
+                    className="pet-flowshow__phone"
+                    data-pet-rise
+                    data-pet-wire-node
+                  >
+                    <iframe
+                      src={`${FLOW_SCREEN_SRC}/${screen.key}`}
+                      title={screen.label}
+                      loading="lazy"
+                      tabIndex={-1}
+                      className="pet-flowshow__screen"
+                    />
+                  </div>
+                  <div className="pet-flowshow__text" data-pet-rise>
+                    <h4 className="pet-flowshow__title">{screen.title}</h4>
+                    <p className="pet-flowshow__body">{screen.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
-        </div>
-
-        <div className="pet-flowshow" data-pet-flowshow>
-          <div className="pet-flowshow__intro">
-            <h3 className="pet-module__title">
-              <PetLetters text={design.flowTitle} />
-            </h3>
-          </div>
-          <svg className="pet-flowshow__wires" aria-hidden="true">
-            {design.flowScreens.slice(1).map(screen => (
-              <path
-                key={screen.key}
-                className="pet-flowshow__wire"
-                pathLength={1}
-                data-pet-wire
-              />
-            ))}
-          </svg>
-          <ol className="pet-flowshow__steps">
-            {design.flowScreens.map(screen => (
-              <li key={screen.key} className="pet-flowshow__step">
-                <div
-                  className="pet-flowshow__phone"
-                  data-pet-rise
-                  data-pet-wire-node
-                >
-                  <iframe
-                    src={`${FLOW_SCREEN_SRC}/${screen.key}`}
-                    title={screen.label}
-                    loading="lazy"
-                    tabIndex={-1}
-                    className="pet-flowshow__screen"
-                  />
-                </div>
-                <div className="pet-flowshow__text" data-pet-rise>
-                  <h4 className="pet-flowshow__title">{screen.title}</h4>
-                  <p className="pet-flowshow__body">{screen.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
+        ))}
       </section>
     </div>
   );

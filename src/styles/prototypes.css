@@ -18,4 +18,6 @@
 @import './domains/petride/petride.css';
 @import './domains/petride/petride-parts.css';
 @import './domains/petride/petride-screens.css';
+@import './domains/petride/petride-trip.css';
 @import './domains/petride/petride-motion.css';
+@import './domains/petride/petride-motion-trip.css';

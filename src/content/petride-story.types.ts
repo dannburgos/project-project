@@ -91,6 +91,12 @@ export type PetFlowScreen = {
   text: string;
 };
 
+// Un flujo del prototipo mostrado en el caso: título y sus pantallas en orden
+export type PetFlowShow = {
+  title: string;
+  screens: readonly PetFlowScreen[];
+};
+
 export type PetrideStory = {
   // Nombres de los capítulos, para el submenú lateral
   sections: readonly string[];
@@ -105,7 +111,7 @@ export type PetrideStory = {
     // Logo de PetRide, que acompaña al nombre en la portada
     logo: PetImage;
     tagline: string;
-    coverLabel: string;
+    cover: PetImage;
     processTitle: string;
     process: readonly PetLabeledText[];
   };
@@ -160,10 +166,8 @@ export type PetrideStory = {
     flows: readonly PetUserFlow[];
   };
   design: {
-    wireframesTitle: string;
-    wireframeCount: number;
-    flowTitle: string;
-    flowScreens: readonly PetFlowScreen[];
+    // Un bloque por flujo, uno debajo del otro
+    flowShows: readonly PetFlowShow[];
     system: PetDesignSystem;
   };
 };

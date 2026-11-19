@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 type PetrideButtonProps = {
   variant?: 'primary' | 'secondary' | 'ghost' | 'lime' | 'ghost-light';
   isFull?: boolean;
+  isDisabled?: boolean;
   children: React.ReactNode;
 };
 
@@ -10,11 +11,13 @@ type PetrideButtonProps = {
 export function PetrideButton({
   variant = 'primary',
   isFull = false,
+  isDisabled = false,
   children
 }: PetrideButtonProps) {
   return (
     <button
       type="button"
+      disabled={isDisabled}
       className={cn(
         'petride-button',
         `petride-button--${variant}`,

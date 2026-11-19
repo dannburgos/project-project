@@ -26,7 +26,10 @@ export const petrideStory: PetrideStory = {
     },
     tagline:
       'Transporte por app para moverte con tu mascota, con conductores preparados para recibirla.',
-    coverLabel: 'Imagen principal · persona viajando con su mascota en PetRide',
+    cover: {
+      src: '/petride/fotos/portada-carro.webp',
+      alt: 'Dos perros asomados por las ventanas de un carro, listos para el viaje'
+    },
     processTitle: 'Proceso de diseño',
     process: [
       { title: 'Investigación', text: 'Investigación secundaria · Benchmark' },
@@ -425,51 +428,100 @@ export const petrideStory: PetrideStory = {
     ]
   },
   design: {
-    wireframesTitle: 'Wireframes',
-    wireframeCount: 16,
-    flowTitle: 'Registrar mascota',
-    flowScreens: [
+    flowShows: [
       {
-        key: 'list',
-        label: 'Pantalla · Mis mascotas',
-        title: 'Empieza en Mis mascotas',
-        text: 'La persona ve las mascotas que ya registró, con su tamaño, su edad y si son de asistencia. Debajo de la lista, agrega una nueva.'
+        title: 'Registrar mascota',
+        screens: [
+          {
+            key: 'list',
+            label: 'Pantalla · Mis mascotas',
+            title: 'Todas en un solo lugar',
+            text: 'La persona ve las mascotas que ya registró, con su tamaño, su edad y si son de asistencia. Debajo de la lista, agrega una nueva.'
+          },
+          {
+            key: 'camera',
+            label: 'Pantalla · Foto de la mascota',
+            title: 'Una cara para reconocerla',
+            text: 'La cámara se abre dentro de la app y un recuadro ayuda a centrar a la mascota. La foto es opcional: se puede omitir y seguir.'
+          },
+          {
+            key: 'identity',
+            label: 'Pantalla · Paso 1',
+            title: 'Lo esencial primero',
+            text: 'Paso 1 de 2: nombre, perro o gato, hembra o macho y raza. La raza se busca escribiendo y, si no tiene una, se elige Mestizo.'
+          },
+          {
+            key: 'travel',
+            label: 'Pantalla · Paso 2',
+            title: 'Lo que el conductor debe saber',
+            text: 'El peso se elige por tamaño y la edad marca la etapa. Dos interruptores dicen si es de asistencia y si convive con otras mascotas, y queda un espacio para el conductor.'
+          },
+          {
+            key: 'review',
+            label: 'Pantalla · Revisar información',
+            title: 'Un último vistazo',
+            text: 'Antes de guardar, todo se resume en un carné sobre la foto. Si algo está mal se edita; si está bien, se guarda.'
+          },
+          {
+            key: 'registered',
+            label: 'Pantalla · Mascota registrada',
+            title: 'Lista para su primer viaje',
+            text: 'Un póster confirma el registro con los datos clave y lleva directo a pedir el primer viaje con esa mascota.'
+          },
+          {
+            key: 'listUpdated',
+            label: 'Pantalla · Mis mascotas actualizada',
+            title: 'Una más en la familia',
+            text: 'Al volver, la nueva mascota aparece resaltada junto a las demás, lista para elegirla en cualquier viaje.'
+          }
+        ]
       },
       {
-        key: 'camera',
-        label: 'Pantalla · Foto de la mascota',
-        title: 'Primero, la foto',
-        text: 'La cámara se abre dentro de la app y un recuadro ayuda a centrar a la mascota. La foto es opcional: se puede omitir y seguir.'
-      },
-      {
-        key: 'identity',
-        label: 'Pantalla · Paso 1',
-        title: 'Quién viaja',
-        text: 'Paso 1 de 2: nombre, perro o gato, hembra o macho y raza. La raza se busca escribiendo y, si no tiene una, se elige Mestizo.'
-      },
-      {
-        key: 'travel',
-        label: 'Pantalla · Paso 2',
-        title: 'Cómo viaja',
-        text: 'El peso se elige por tamaño y la edad marca la etapa. Dos interruptores dicen si es de asistencia y si convive con otras mascotas, y queda un espacio para el conductor.'
-      },
-      {
-        key: 'review',
-        label: 'Pantalla · Revisar información',
-        title: 'El carné de viaje',
-        text: 'Antes de guardar, todo se resume en un carné sobre la foto. Si algo está mal se edita; si está bien, se guarda.'
-      },
-      {
-        key: 'registered',
-        label: 'Pantalla · Mascota registrada',
-        title: 'Lista para subir a bordo',
-        text: 'Un póster confirma el registro con los datos clave y lleva directo a pedir el primer viaje con esa mascota.'
-      },
-      {
-        key: 'listUpdated',
-        label: 'Pantalla · Mis mascotas actualizada',
-        title: 'Ya está en la lista',
-        text: 'Al volver, la nueva mascota aparece resaltada junto a las demás, lista para elegirla en cualquier viaje.'
+        title: 'Solicitar viaje',
+        screens: [
+          {
+            key: 'home',
+            label: 'Pantalla · Inicio',
+            title: 'Un viaje a un toque',
+            text: 'Un buscador lleva al destino y debajo están los lugares guardados, las mascotas registradas e ideas para el próximo viaje.'
+          },
+          {
+            key: 'places',
+            label: 'Pantalla · Origen y destino',
+            title: 'Lugares que las reciben',
+            text: 'El origen arranca en la ubicación actual y el destino se busca escribiendo. Las categorías muestran parques, veterinarias y guarderías que admiten mascotas.'
+          },
+          {
+            key: 'pets',
+            label: 'Pantalla · Elegir mascotas',
+            title: 'Un puesto para cada una',
+            text: 'Se eligen una o varias mascotas y un resumen cuenta los puestos libres del carro. Si conviven bien, la app lo confirma antes de seguir.'
+          },
+          {
+            key: 'fare',
+            label: 'Pantalla · Tarifa y resumen',
+            title: 'Sin sorpresas al confirmar',
+            text: 'La ruta en el mapa, la tarifa, el tiempo, la distancia y la hora de llegada quedan a la vista antes de confirmar el viaje.'
+          },
+          {
+            key: 'searching',
+            label: 'Pantalla · Buscando conductor',
+            title: 'Una espera que tranquiliza',
+            text: 'Mientras se busca, la pantalla dice quiénes viajan y que el conductor asignado aceptará a esas mascotas. Se puede cancelar.'
+          },
+          {
+            key: 'driver',
+            label: 'Pantalla · Conductor asignado',
+            title: 'Saber quién llega',
+            text: 'Aparecen la conductora verificada, su calificación, el carro con la placa y el punto de recogida en el mapa, con accesos para escribirle o llamarla.'
+          },
+          {
+            key: 'rating',
+            label: 'Pantalla · Llegada y calificación',
+            title: 'Cómo les fue',
+            text: 'Al llegar se confirma el destino y lo pagado. Se califica con huellas, se marca lo que se destaca y, si se quiere, se agradece con propina.'
+          }
+        ]
       }
     ],
     system: petrideDesignSystem

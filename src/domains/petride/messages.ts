@@ -2,7 +2,159 @@
 // {llaves} son plantillas: se llenan con fillPetrideTemplate
 export const petrideMessages = {
   meta: {
-    boardTitle: 'PetRide · Registrar mascota'
+    boardTitle: 'PetRide · Registrar mascota',
+    boardTwoTitle: 'PetRide · Solicitar viaje'
+  },
+  boardTwo: {
+    eyebrow: 'Flujo 02',
+    title: 'Solicitar viaje',
+    hint: 'Todas las pantallas del flujo, en orden.',
+    groups: {
+      main: 'Recorrido principal'
+    },
+    frames: {
+      home: {
+        title: 'Inicio',
+        note: 'Pedir un viaje y ver las mascotas, nada más.'
+      },
+      places: {
+        title: 'Origen y destino',
+        note: 'Buscador índigo, categorías para mascotas y resultados cercanos.'
+      },
+      pets: {
+        title: 'Elegir mascotas',
+        note: 'Una o varias, según el espacio del vehículo.'
+      },
+      fare: {
+        title: 'Tarifa y resumen',
+        note: 'El mismo carro con las mascotas y el precio antes de confirmar.'
+      },
+      searching: {
+        title: 'Buscando conductor',
+        note: 'Póster de espera con el carro de las mascotas, sin mapa.'
+      },
+      driver: {
+        title: 'Conductor asignado',
+        note: 'Tarjeta de presentación: quién llega y por qué confiar.'
+      },
+      rating: {
+        title: 'Llegada y calificación',
+        note: 'Resumen del viaje y estrellas para la conductora.'
+      }
+    }
+  },
+  home: {
+    title: '¿A dónde vamos hoy?',
+    heroTitle: 'Viaja con tus mascotas',
+    heroText: 'Conductores que las aceptan, en cada viaje.',
+    search: '¿A dónde vamos?',
+    now: 'Ahora',
+    petsTitle: 'Tus mascotas',
+    petsAll: 'Ver todas',
+    addPet: 'Agregar',
+    quickTitle: 'Ir a un lugar guardado',
+    planTitle: 'Planea tu próximo viaje',
+    ideaMeta: '{place} · {minutes} min'
+  },
+  places: {
+    title: '¿A dónde vamos?',
+    originLabel: 'Origen',
+    destinationLabel: 'Destino',
+    origin: 'Ubicación actual',
+    originDetail: 'Cra. 7 # 72-10',
+    swap: 'Intercambiar origen y destino',
+    categoriesLabel: 'Tipo de lugar',
+    categories: ['Parques', 'Veterinarias', 'Guarderías', 'Tiendas'],
+    results: '{count} parques cerca de ti',
+    petFriendly: 'Admite mascotas',
+    minutes: '{minutes} min',
+    placeLine: '{address} · {area}'
+  },
+  tripPets: {
+    title: '¿Quién viaja?',
+    lead: 'Elige una o varias mascotas.',
+    capacity: '{count} de {total} puestos para mascotas',
+    seatsCount: '{count} de {total} puestos',
+    seatsFraction: '/{total}',
+    seatsFreeOne: 'Queda 1 puesto libre',
+    seatsFreeMany: 'Quedan {count} puestos libres',
+    seatsFull: 'El carro va completo',
+    petMeta: '{breed} · {size}',
+    select: 'Elegir a {name}',
+    assistance: 'Asistencia',
+    friendlyTitle: 'Pueden viajar juntos',
+    friendlyText: '{names} conviven con otras mascotas.',
+    freeSlot: 'Puesto libre',
+    continue: 'Continuar'
+  },
+  fare: {
+    title: 'Tu viaje',
+    priceLabel: 'Tarifa',
+    arrivalLabel: 'Llegas',
+    minutesUnit: 'min',
+    you: 'Tú',
+    chipMinutes: '{minutes} min',
+    chipDistance: '{distance} km',
+    chipArrival: 'Llegas {time}',
+    confirm: 'Confirmar viaje'
+  },
+  searching: {
+    status: 'Buscando…',
+    title: 'Buscamos a quien lleve a {names}',
+    text: 'Te asignaremos un conductor compatible con tus preferencias.',
+    cancel: 'Cancelar viaje'
+  },
+  driver: {
+    verified: 'Verificada',
+    title: '{name} llega en {minutes} min',
+    pickup: 'Te recoge aquí',
+    statsLabel: 'Datos de {name}',
+    ratingLabel: 'Calificación',
+    tripsLabel: 'Viajes',
+    yearsValue: '{count} años',
+    yearsLabel: 'En PetRide',
+    plateLabel: 'Placa',
+    message: 'Mensaje',
+    call: 'Llamar'
+  },
+  rating: {
+    close: 'Cerrar',
+    eyebrow: 'Llegaste',
+    meta: 'A las {time}',
+    petsArrived: '{names} llegaron',
+    paidLabel: 'Pagaste',
+    question: '¿Cómo te fue con {name}?',
+    scoreLabel: 'Calificación',
+    scoreRead: '{score} de 5',
+    scores: [
+      { label: 'Mal' },
+      { label: 'Regular' },
+      { label: 'Bien' },
+      { label: 'Muy bien' },
+      { label: 'Excelente' }
+    ],
+    positiveTitle: '¿Qué destacas?',
+    positiveTags: [
+      'Trato con mascotas',
+      'Puntual',
+      'Conducción tranquila',
+      'Carro limpio'
+    ],
+    negativeTitle: '¿Qué falló?',
+    negativeTags: [
+      'Trato con mascotas',
+      'Llegó tarde',
+      'Conducción brusca',
+      'Carro sucio'
+    ],
+    optionalTitle: 'Opcional · Agradece a {name}',
+    tipTitle: '¿Agradecer con propina?',
+    tips: ['$2.000', '$3.000', '$5.000', 'Otro'],
+    message: 'Escríbele algo a {name}',
+    send: 'Enviar calificación'
+  },
+  trip: {
+    and: '{first} y {second}'
   },
   board: {
     eyebrow: 'Flujo 01',

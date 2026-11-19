@@ -12,6 +12,10 @@
   @apply w-full;
 }
 
+.petride-button:disabled {
+  @apply cursor-not-allowed opacity-40;
+}
+
 .petride-button--primary {
   @apply text-white;
   background: var(--pr-indigo);
@@ -40,7 +44,7 @@
 
 /* Encabezado */
 .petride-header {
-  @apply flex h-16 shrink-0 items-center gap-3 px-5;
+  @apply flex h-16 shrink-0 items-center gap-3 px-6;
 }
 
 .petride-header__back {
