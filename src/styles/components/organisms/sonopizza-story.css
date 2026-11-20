@@ -28,9 +28,11 @@
 }
 
 /* Cada escena ocupa todo el escenario. Arriba queda la franja de
-   navegación del sitio (96 px) y a la izquierda la barra naranja */
+   navegación del sitio (96 px) y a la izquierda la barra naranja. Cada
+   escena aísla sus capas: lo que lleva z-10 adentro no se sube sobre la
+   escena que entra encima */
 .sono-view {
-  @apply absolute inset-0 flex flex-col gap-6 overflow-hidden pt-28 pr-24 pb-14 pl-32;
+  @apply absolute inset-0 isolate flex flex-col gap-6 overflow-hidden pt-28 pr-24 pb-14 pl-32;
   /* Centrado, pero si el contenido no cabe empieza arriba y no se sube sobre
      la franja de navegación */
   justify-content: safe center;
@@ -71,26 +73,30 @@
   color: var(--sono-navy);
 }
 
-.sono-view--photo {
-  background: var(--sono-navy);
-  color: var(--sono-white);
-}
-
 /* Barra lateral fija, como en monument: es el submenú del caso. Cada
-   sección es un ícono; la actual se abre en una píldora blanca con su
-   nombre girado */
+   sección es un ícono; la actual se marca con una píldora blanca (una sola,
+   que viaja por la barra) y su nombre girado */
 .sono-rail {
   @apply absolute top-24 bottom-0 left-0 z-30 flex w-12 justify-center pt-6;
   background: var(--sono-orange);
   color: var(--sono-white);
 }
 
+.sono-rail__pill {
+  @apply pointer-events-none absolute top-0 left-0 rounded-full;
+  background: var(--sono-white);
+}
+
 .sono-rail__list {
-  @apply flex flex-col items-center gap-3;
+  @apply relative z-10 flex flex-col items-center gap-3;
+}
+
+.sono-rail__entry {
+  @apply relative;
 }
 
 .sono-rail__item {
-  @apply flex cursor-pointer flex-col items-center gap-3 rounded-full p-2 opacity-70 transition-[opacity,background-color,color] duration-300;
+  @apply flex cursor-pointer flex-col items-center gap-3 rounded-full p-2 opacity-70 transition-[opacity,color] duration-300;
 }
 
 .sono-rail__item:hover,
@@ -104,8 +110,44 @@
 
 .sono-rail__item--current {
   @apply px-2 py-3 opacity-100;
-  background: var(--sono-white);
   color: var(--sono-navy);
+}
+
+/* Onda blanca que sale del ícono al tocarlo */
+.sono-rail__ripple {
+  @apply pointer-events-none invisible absolute top-4.5 left-1/2 size-10 -translate-1/2 rounded-full border-2 border-white opacity-0;
+}
+
+/* Sticker con el número y el nombre de la sección, al pasar el cursor:
+   azul marino, borde blanco, sombra naranja e inclinado, como los sellos de
+   la marca. Se esconde mientras corre un salto */
+.sono-rail__tip {
+  @apply pointer-events-none invisible absolute top-4.5 left-full ml-5 flex items-center gap-2.5 rounded-full border-2 px-4.5 py-2.5 text-base font-semibold whitespace-nowrap opacity-0;
+  background: var(--sono-navy);
+  border-color: var(--sono-white);
+  color: var(--sono-white);
+  box-shadow: 4px 4px 0 var(--sono-orange-soft);
+  transform: translate(-12px, -50%) rotate(-10deg) scale(0.85);
+  transition:
+    opacity 0.2s,
+    visibility 0.2s,
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sono-rail__tip b {
+  @apply font-normal;
+  font-family: var(--font-sono-display), sans-serif;
+  color: var(--sono-orange-soft);
+}
+
+.sono-rail__entry:hover .sono-rail__tip,
+.sono-rail__item:focus-visible + .sono-rail__tip {
+  @apply visible opacity-100;
+  transform: translate(0, -50%) rotate(-3deg) scale(1);
+}
+
+.sono-story[data-jumping] .sono-rail__tip {
+  @apply invisible opacity-0;
 }
 
 .sono-rail__icon {
@@ -127,6 +169,42 @@
 .sono-band {
   @apply pointer-events-none absolute inset-0 z-20 scale-x-0;
   background: var(--sono-orange);
+}
+
+/* Salto desde el submenú: la misma franja naranja, con el número y el nombre
+   de la sección a la que se va. Los títulos se apilan en el mismo lugar y
+   solo se ve el del destino */
+.sono-jump {
+  @apply pointer-events-none invisible absolute inset-0 z-20 grid items-center pl-36 opacity-0;
+  background: var(--sono-orange);
+}
+
+.sono-jump__title {
+  @apply col-start-1 row-start-1 m-0 flex flex-col gap-2 uppercase;
+  font-family: var(--font-sono-display), sans-serif;
+  line-height: 0.92;
+}
+
+.sono-jump__number {
+  font-size: clamp(120px, 14vw, 200px);
+  color: var(--sono-navy);
+}
+
+.sono-jump__name {
+  @apply flex max-w-5xl flex-wrap;
+  column-gap: 0.28em;
+  font-size: clamp(56px, 6vw, 88px);
+  color: var(--sono-white);
+}
+
+/* Cada palabra agrupa sus letras sin recortarlas: las letras entran y
+   salen con opacidad, así que no hay borde invisible que las corte */
+.sono-jump__word {
+  @apply inline-block;
+}
+
+.sono-jump__letter {
+  @apply inline-block;
 }
 
 /* Tipografía */
@@ -305,137 +383,595 @@
   @apply absolute inset-0;
 }
 
+/* Marco con la proporción de las capturas de la app actual (1170 × 2210) */
 .sono-phone {
-  @apply absolute top-1/2 left-1/2 aspect-[1/2] h-full max-h-[460px] -translate-x-1/2 -translate-y-1/2 rounded-[32px] border-4;
+  @apply absolute top-1/2 left-1/2 m-0 h-full max-h-[460px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[32px] border-4 bg-white;
+  aspect-ratio: 1170 / 2210;
   border-color: var(--sono-navy);
 }
 
+.sono-phone__screen {
+  @apply block size-full object-cover object-top;
+}
+
 .sono-audit__panel {
-  @apply absolute top-1/2 right-0 flex w-[62%] -translate-y-1/2 flex-col gap-5;
+  @apply absolute top-1/2 right-0 flex w-[66%] -translate-y-1/2 flex-col gap-5;
 }
 
 .sono-audit__seals {
   @apply grid grid-cols-2 gap-4;
 }
 
+/* Cada hallazgo: el número grande y condensado a la izquierda, con
+   prioridad; a la derecha, el título y el texto */
 .sono-seal {
-  @apply flex flex-col gap-1 rounded-2xl p-4;
+  @apply grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-4 gap-y-1 rounded-2xl p-4;
   background: var(--sono-royal);
   color: var(--sono-white);
   box-shadow: 6px 6px 0 var(--sono-orange-soft);
 }
 
 .sono-seal__number {
-  @apply text-xs font-semibold tracking-[0.14em];
-  color: var(--sono-orange);
+  @apply row-span-2 leading-none;
+  font-family: var(--font-sono-condensed), sans-serif;
+  font-size: 44px;
+  color: var(--sono-orange-soft);
 }
 
+/* Título y texto en una sola línea, para que las seis tarjetas midan igual */
 .sono-seal__title {
   font-family: var(--font-sono-display), sans-serif;
-  @apply text-base uppercase;
+  @apply text-base whitespace-nowrap uppercase;
 }
 
 .sono-seal__text {
-  @apply text-sm leading-5;
+  @apply text-sm leading-5 whitespace-nowrap;
 }
 
-/* Benchmark: una tabla con cada app en una columna, lo observado en cada
-   aspecto y, al final, lo que se toma de cada una */
-.sono-compare {
-  @apply min-h-0 overflow-x-auto rounded-3xl;
-  background: rgb(0 43 143 / 0.35);
+/* Benchmark y hallazgos (en fondo claro): tres slides que se pasan con clic.
+   Arriba, el nombre de la escena y los controles; en cada slide, su número
+   en letra condensada, el par de aspectos, una tarjeta por marca y una barra
+   azul marino con el hallazgo y lo que se lleva a Sonopizza */
+/* Poco espacio entre el encabezado y la slide: el número y el título
+   quedan pegados a "Benchmark y hallazgos" */
+.sono-bench {
+  @apply flex w-full flex-col gap-3;
 }
 
-.sono-compare__table {
-  @apply w-full min-w-[720px] border-collapse text-left;
+.sono-bench__top {
+  @apply flex items-center justify-between gap-6;
 }
 
-.sono-compare__corner,
-.sono-compare__app {
-  @apply p-4 align-bottom;
+/* Controles de slides (benchmark y flujos): flechas a los lados de las
+   pestañas numeradas */
+.sono-slide-nav {
+  @apply flex items-center gap-2;
 }
 
-.sono-compare__corner {
-  @apply text-sm font-semibold tracking-[0.18em] uppercase;
+.sono-slide-nav__tabs {
+  @apply flex items-center gap-1 rounded-full border-2 bg-white p-1;
+  border-color: var(--sono-navy);
 }
 
-.sono-compare__app {
-  @apply w-1/4;
+.sono-slide-nav__tab {
+  @apply cursor-pointer rounded-full px-3.5 py-1 text-lg leading-6 transition-colors duration-300;
+  font-family: var(--font-sono-condensed), sans-serif;
+  letter-spacing: 0.04em;
+  color: rgb(0 43 143 / 0.55);
 }
 
-.sono-compare__capture {
-  @apply mb-3 h-20 min-h-0;
+.sono-slide-nav__tab:hover {
+  color: var(--sono-navy);
 }
 
-.sono-compare__name {
-  @apply block text-xl font-semibold;
+.sono-slide-nav__tab--current,
+.sono-slide-nav__tab--current:hover {
+  background: var(--sono-navy);
+  color: var(--sono-white);
 }
 
-.sono-compare__dimension {
-  @apply border-t px-4 py-3 text-base font-semibold;
-  border-color: rgb(244 244 244 / 0.2);
+.sono-slide-nav__tab:focus-visible,
+.sono-slide-nav__arrow:focus-visible {
+  @apply outline-2 outline-offset-2;
+  outline-color: var(--sono-orange);
 }
 
-.sono-compare__cell {
-  @apply border-t px-4 py-3 text-base;
-  border-color: rgb(244 244 244 / 0.2);
-}
-
-.sono-compare__takeaway {
+.sono-slide-nav__arrow {
+  @apply grid size-12 cursor-pointer place-items-center rounded-full border-2 transition-[translate,box-shadow,opacity] duration-200;
   background: var(--sono-orange);
+  border-color: var(--sono-navy);
+  color: var(--sono-white);
+  box-shadow: 4px 4px 0 var(--sono-navy);
 }
 
-.sono-compare__takeaway .sono-compare__dimension,
-.sono-compare__takeaway .sono-compare__cell {
-  @apply border-t-0 py-4;
+.sono-slide-nav__arrow svg {
+  @apply size-6;
 }
 
-.sono-compare__pending {
-  @apply inline-block rounded-full border border-dashed px-3 py-0.5 text-sm;
-  border-color: rgb(244 244 244 / 0.55);
-  color: rgb(244 244 244 / 0.85);
+.sono-slide-nav__arrow:hover:not(:disabled) {
+  @apply -translate-0.5;
+  box-shadow: 6px 6px 0 var(--sono-navy);
 }
 
-/* Síntesis: tres oportunidades, una por línea */
-.sono-synthesis {
-  @apply flex flex-col gap-5;
+.sono-slide-nav__arrow:active:not(:disabled) {
+  @apply translate-0.5;
+  box-shadow: 2px 2px 0 var(--sono-navy);
 }
 
-.sono-lines__mask > .sono-synthesis__item {
+.sono-slide-nav__arrow:disabled {
+  @apply cursor-default opacity-30;
+  box-shadow: none;
+}
+
+/* Sobre fondo oscuro (flujos): pestañas con borde claro y la actual en
+   naranja; las flechas con sombra clara */
+.sono-slide-nav--dark .sono-slide-nav__tabs {
+  @apply bg-transparent;
+  border-color: rgb(244 244 244 / 0.4);
+}
+
+.sono-slide-nav--dark .sono-slide-nav__tab {
+  color: rgb(244 244 244 / 0.6);
+}
+
+.sono-slide-nav--dark .sono-slide-nav__tab:hover {
+  color: var(--sono-white);
+}
+
+.sono-slide-nav--dark .sono-slide-nav__tab--current,
+.sono-slide-nav--dark .sono-slide-nav__tab--current:hover {
+  background: var(--sono-orange);
+  color: var(--sono-white);
+}
+
+.sono-slide-nav--dark .sono-slide-nav__arrow {
+  border-color: var(--sono-white);
+  box-shadow: 4px 4px 0 rgb(244 244 244 / 0.25);
+}
+
+.sono-slide-nav--dark .sono-slide-nav__arrow:hover:not(:disabled) {
+  box-shadow: 6px 6px 0 rgb(244 244 244 / 0.25);
+}
+
+.sono-slide-nav--dark .sono-slide-nav__arrow:active:not(:disabled) {
+  box-shadow: 2px 2px 0 rgb(244 244 244 / 0.25);
+}
+
+.sono-slide-nav--dark .sono-slide-nav__arrow:disabled {
+  box-shadow: none;
+}
+
+/* En la primera slide la flecha de avanzar empuja de vez en cuando hacia la
+   derecha, para que se note que hay más */
+.sono-slide-nav__arrow--hint svg {
+  animation: sono-slide-nudge 2.4s ease-in-out 1.2s infinite;
+}
+
+@keyframes sono-slide-nudge {
+  0%,
+  60%,
+  100% {
+    translate: 0 0;
+  }
+
+  70% {
+    translate: 6px 0;
+  }
+
+  80% {
+    translate: 0 0;
+  }
+
+  90% {
+    translate: 4px 0;
+  }
+}
+
+/* Las slides van una encima de otra (las mueve useSonoBenchmarkSlides) y
+   comparten filas: encabezado, tarjetas y hallazgo quedan en el mismo lugar
+   en las tres aunque un título ocupe dos líneas */
+.sono-bench__stack {
+  @apply grid gap-y-5;
+  grid-template-rows: auto 1fr auto;
+}
+
+.sono-bench__slide {
+  @apply col-start-1 row-span-3 row-start-1 grid min-w-0;
+  grid-template-rows: subgrid;
+}
+
+.sono-bench__intro {
+  @apply flex items-end gap-6 self-end;
+}
+
+.sono-bench__number {
+  @apply flex items-baseline gap-1 leading-none;
+  font-family: var(--font-sono-condensed), sans-serif;
+}
+
+.sono-bench__number b {
+  @apply font-normal;
+  font-size: clamp(56px, 5.6vw, 88px);
+  line-height: 0.8;
+  color: var(--sono-orange);
+}
+
+.sono-bench__number span {
+  @apply text-2xl;
+  color: rgb(0 43 143 / 0.4);
+}
+
+.sono-bench__heading {
   @apply flex flex-col gap-2;
 }
 
-.sono-synthesis li:nth-child(2) .sono-display {
-  color: var(--sono-orange);
+.sono-bench__heading .sono-label {
+  color: rgb(0 43 143 / 0.7);
 }
 
-.sono-synthesis__direction {
-  @apply max-w-3xl;
+/* Una tarjeta por marca, del alto que deje la vista. La que inspira la
+   decisión lleva borde azul marino, sombra naranja y el sello "Lo tomamos" */
+.sono-bench__cards {
+  @apply grid grid-cols-3 gap-5;
 }
 
-/* Concepto: la foto ocupa todo, el título va girado a un lado y junto al
-   texto queda un espacio para una imagen del concepto */
-.sono-concept__photo {
-  @apply absolute inset-0 rounded-none opacity-90;
+.sono-bench__card {
+  @apply relative flex flex-col gap-3 rounded-3xl border-2 bg-white p-5;
+  border-color: rgb(0 43 143 / 0.2);
+  box-shadow: 6px 6px 0 rgb(0 43 143 / 0.08);
 }
 
-.sono-vertical {
-  @apply absolute top-28 bottom-14 left-14 z-10 rotate-180 uppercase;
-  writing-mode: vertical-rl;
-  font-family: var(--font-sono-display), sans-serif;
-  font-size: clamp(64px, 9vh, 120px);
-  line-height: 0.9;
-  color: var(--sono-orange);
+.sono-bench__card--taken {
+  border-color: var(--sono-navy);
+  box-shadow: 8px 8px 0 var(--sono-orange);
 }
 
-.sono-concept__image {
-  @apply absolute top-28 bottom-14 left-44 z-10 w-[22%] rounded-3xl;
-  box-shadow: 10px 10px 0 var(--sono-orange);
+.sono-bench__sticker {
+  @apply absolute -top-4 right-5 z-10 rotate-6 rounded-full border-2 border-white px-4 py-1.5 text-sm font-semibold tracking-[0.12em] uppercase;
+  background: var(--sono-orange);
+  color: var(--sono-white);
+  box-shadow: 3px 3px 0 var(--sono-navy);
 }
 
-.sono-concept__text {
-  @apply relative z-10 ml-auto flex w-[58%] max-w-[960px] flex-col gap-6 rounded-3xl p-10;
+.sono-bench__brand {
+  @apply flex items-center gap-3 border-b pb-3;
+  border-color: rgb(0 43 143 / 0.12);
+}
+
+/* Logo en un cuadro de fondo claro. Si el logo ya es una tarjeta (Papa
+   John's), la llena */
+.sono-bench__logo {
+  @apply grid size-11 shrink-0 place-items-center overflow-hidden rounded-xl p-1.5;
+  background: var(--sono-white);
+  box-shadow: inset 0 0 0 1px rgb(0 43 143 / 0.12);
+}
+
+.sono-bench__logo img {
+  @apply block size-full object-contain;
+}
+
+.sono-bench__logo--card {
+  @apply border-2 border-white p-0;
+}
+
+.sono-bench__logo--card img {
+  @apply object-cover;
+}
+
+.sono-bench__name {
+  @apply text-lg font-semibold;
+}
+
+/* Un bloque por aspecto, todos del mismo alto en las tres tarjetas: el
+   aspecto, lo que hace la marca y, abajo, el veredicto. El color del
+   veredicto tiñe el bloque y su raya izquierda (--block-*) y su etiqueta
+   (--verdict-*). La paleta va en un bloque sin veredicto */
+.sono-bench__block {
+  --block-bg: var(--sono-white);
+  --block-line: transparent;
+  @apply flex flex-1 flex-col gap-2 rounded-2xl border-l-4 px-4 py-3.5;
+  background: var(--block-bg);
+  border-color: var(--block-line);
+}
+
+.sono-bench__block--strength {
+  --block-bg: #fff1e6;
+  --block-line: var(--sono-orange);
+  --verdict-bg: var(--sono-orange);
+  --verdict-fg: var(--sono-white);
+  --verdict-line: var(--sono-orange);
+}
+
+.sono-bench__block--friction {
+  --block-bg: #e8edf7;
+  --block-line: var(--sono-navy);
+  --verdict-bg: var(--sono-navy);
+  --verdict-fg: var(--sono-white);
+  --verdict-line: var(--sono-navy);
+}
+
+.sono-bench__block--neutral {
+  --block-line: rgb(0 43 143 / 0.3);
+  --verdict-bg: #fff;
+  --verdict-fg: var(--sono-navy);
+  --verdict-line: rgb(0 43 143 / 0.3);
+}
+
+.sono-bench__aspect {
+  @apply text-xs font-semibold tracking-[0.16em] uppercase;
+  color: rgb(0 43 143 / 0.7);
+}
+
+.sono-bench__observation {
+  @apply flex items-center gap-3 text-lg leading-snug font-semibold;
+}
+
+/* Ícono de lo observado: blanco, con borde y sombra corrida */
+.sono-bench__badge {
+  @apply grid size-9 shrink-0 place-items-center rounded-full border-2 bg-white;
+  border-color: var(--sono-navy);
+  box-shadow: 2px 2px 0 var(--sono-navy);
+}
+
+.sono-bench__badge svg {
+  @apply size-4.5;
+}
+
+.sono-bench__verdict {
+  @apply mt-auto flex items-center gap-1.5 self-start rounded-full border px-3 py-1 text-sm font-semibold;
+  background: var(--verdict-bg);
+  border-color: var(--verdict-line);
+  color: var(--verdict-fg);
+}
+
+.sono-bench__verdict svg {
+  @apply size-4;
+}
+
+/* Los colores se centran en el alto que les deja el bloque */
+.sono-bench__palette {
+  @apply my-auto flex gap-4;
+}
+
+.sono-bench__swatch {
+  @apply flex flex-col items-center gap-1 text-xs font-semibold;
+}
+
+.sono-bench__swatch svg {
+  @apply size-9;
+}
+
+.sono-bench__swatch circle {
+  stroke: rgb(0 43 143 / 0.25);
+  stroke-width: 1.5;
+}
+
+/* Hallazgo: barra azul marino con un bombillo naranja */
+.sono-bench__finding {
+  @apply grid grid-cols-[auto_1fr_auto] items-center gap-6 rounded-3xl px-6 py-4;
   background: var(--sono-navy);
+  color: var(--sono-white);
+  box-shadow: 8px 8px 0 var(--sono-orange-soft);
+}
+
+.sono-bench__bulb {
+  @apply grid size-12 place-items-center rounded-full border-2 border-white;
+  background: var(--sono-orange);
+}
+
+.sono-bench__bulb svg {
+  @apply size-6;
+}
+
+.sono-bench__finding-text {
+  @apply flex flex-col gap-1;
+}
+
+.sono-bench__finding .sono-label {
+  color: var(--sono-orange-soft);
+}
+
+.sono-bench__finding-title {
+  @apply text-xl leading-snug font-semibold text-pretty;
+}
+
+.sono-bench__decision {
+  @apply flex max-w-88 flex-col gap-1 border-l pl-6 text-base leading-snug text-pretty;
+  border-color: rgb(244 244 244 / 0.25);
+}
+
+/* En computador el benchmark toma el alto de la vista (hasta un tope, para
+   que en pantallas muy altas las tarjetas no se estiren de más) */
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .sono-bench {
+    @apply flex-1;
+    max-height: 800px;
+  }
+
+  .sono-bench__stack {
+    @apply flex-1;
+  }
+}
+
+/* Pantallas altas: tarjetas más holgadas */
+@media (min-width: 900px) and (min-height: 960px) {
+  .sono-bench__card {
+    @apply gap-4 p-6;
+  }
+
+  .sono-bench__logo {
+    @apply size-14;
+  }
+
+  .sono-bench__name {
+    @apply text-xl;
+  }
+
+  .sono-bench__block {
+    @apply gap-3 px-5 py-4;
+  }
+
+  .sono-bench__observation {
+    @apply text-xl;
+  }
+
+  .sono-bench__badge {
+    @apply size-11;
+  }
+
+  .sono-bench__badge svg {
+    @apply size-5;
+  }
+
+  .sono-bench__verdict {
+    @apply px-3.5 py-1.5 text-base;
+  }
+
+  .sono-bench__verdict svg {
+    @apply size-5;
+  }
+
+  .sono-bench__palette {
+    @apply gap-6;
+  }
+
+  .sono-bench__swatch {
+    @apply gap-1.5 text-sm;
+  }
+
+  .sono-bench__swatch svg {
+    @apply size-12;
+  }
+}
+
+/* Pantallas de computador bajas: espacios, tarjetas e íconos más compactos
+   para que la slide entre completa */
+@media (min-width: 900px) and (max-height: 820px) {
+  .sono-bench {
+    @apply gap-2;
+  }
+
+  .sono-bench__stack {
+    @apply gap-3;
+  }
+
+  .sono-slide-nav__arrow {
+    @apply size-10;
+  }
+
+  .sono-slide-nav__arrow svg {
+    @apply size-5;
+  }
+
+  .sono-slide-nav__tab {
+    @apply py-0.5;
+  }
+
+  .sono-bench__intro .sono-display--md {
+    font-size: clamp(26px, 2.4vw, 36px);
+  }
+
+  .sono-bench__number b {
+    font-size: clamp(48px, 4.4vw, 64px);
+  }
+
+  .sono-bench__cards {
+    @apply gap-4;
+  }
+
+  .sono-bench__card {
+    @apply gap-2.5 p-4;
+  }
+
+  .sono-bench__brand {
+    @apply pb-2.5;
+  }
+
+  .sono-bench__logo {
+    @apply size-9 p-1;
+  }
+
+  .sono-bench__name {
+    @apply text-base;
+  }
+
+  .sono-bench__block {
+    @apply gap-1.5 px-3 py-2;
+  }
+
+  .sono-bench__observation {
+    @apply text-base;
+  }
+
+  .sono-bench__badge {
+    @apply size-8;
+  }
+
+  .sono-bench__badge svg {
+    @apply size-4;
+  }
+
+  .sono-bench__verdict {
+    @apply py-0.5 text-xs;
+  }
+
+  .sono-bench__verdict svg {
+    @apply size-3.5;
+  }
+
+  .sono-bench__swatch svg {
+    @apply size-7;
+  }
+
+  .sono-bench__finding {
+    @apply py-3;
+  }
+
+  .sono-bench__bulb {
+    @apply size-10;
+  }
+
+  .sono-bench__bulb svg {
+    @apply size-5;
+  }
+
+  .sono-bench__finding-title {
+    @apply text-lg;
+  }
+}
+
+/* En celular (o con "reducir movimiento") las slides van en columna, todas
+   visibles y sin controles */
+@media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  .sono-slide-nav {
+    @apply hidden;
+  }
+
+  .sono-bench__stack {
+    @apply flex flex-col gap-16;
+  }
+
+  .sono-bench__slide {
+    @apply flex flex-col gap-6;
+  }
+}
+
+@media (max-width: 899px) {
+  .sono-bench__intro {
+    @apply flex-col items-start gap-3;
+  }
+
+  .sono-bench__cards {
+    @apply grid-cols-1;
+  }
+
+  .sono-bench__finding {
+    @apply grid-cols-[auto_1fr];
+  }
+
+  .sono-bench__decision {
+    @apply col-span-2 max-w-none border-t border-l-0 pt-4 pl-0;
+  }
 }
 
 .sono-chips {
@@ -445,17 +981,6 @@
 .sono-chips li {
   @apply rounded-full border px-4 py-2 text-sm font-semibold;
   border-color: var(--sono-orange);
-}
-
-.sono-concept__text .sono-body {
-  @apply max-w-3xl;
-}
-
-.sono-concept__synthesis {
-  @apply flex flex-wrap gap-x-4 uppercase;
-  font-family: var(--font-sono-display), sans-serif;
-  font-size: clamp(24px, 2.4vw, 36px);
-  color: var(--sono-orange);
 }
 
 /* Persona: una tarjeta tipo equipo y sus datos al lado */
@@ -480,7 +1005,7 @@
 }
 
 .sono-persona__portrait {
-  @apply h-full rounded-none;
+  @apply block size-full object-cover object-center;
 }
 
 .sono-persona__develop {
@@ -495,6 +1020,30 @@
 
 .sono-persona__info {
   @apply flex flex-col gap-6;
+}
+
+/* Arriba de los datos: qué es John (el usuario de estudio, ficticio) */
+.sono-persona__header {
+  @apply flex flex-col gap-3;
+}
+
+/* Pantallas de computador bajas: el encabezado de la persona se compacta */
+@media (min-width: 900px) and (max-height: 820px) {
+  .sono-persona__info {
+    @apply gap-4;
+  }
+
+  .sono-persona__header {
+    @apply gap-2;
+  }
+
+  .sono-persona__header .sono-display {
+    font-size: clamp(24px, 2.2vw, 32px);
+  }
+
+  .sono-persona__header .sono-body {
+    @apply text-base;
+  }
 }
 
 /* Journey: la curva en zigzag se dibuja y las etapas aparecen encima */
@@ -559,28 +1108,38 @@
 
 /* Tarjeta de cada etapa: alineadas todas debajo de la curva, sin importar
    la altura de su pico (el track mide 176 px) */
+/* Todas miden igual: mismo alto mínimo y la oportunidad siempre abajo */
 .sono-journey__card {
-  @apply absolute inset-x-0 flex flex-col gap-1.5 rounded-2xl border p-3 text-left text-base font-normal;
+  @apply absolute inset-x-0 flex min-h-60 flex-col gap-3 rounded-2xl border p-4 text-left text-base font-normal;
   top: calc(236px - var(--peak) * 1.76px);
   background: rgb(255 255 255 / 0.14);
   border-color: rgb(255 255 255 / 0.35);
 }
 
 .sono-journey__row {
-  @apply flex flex-col gap-0.5;
+  @apply flex flex-col gap-1;
 }
 
+/* Piensa, Fricción y Oportunidad en negrita, para que cada fila se lea
+   de un vistazo */
 .sono-journey__key {
-  @apply text-sm font-semibold tracking-[0.14em] uppercase;
-  opacity: 0.85;
+  @apply text-xs font-bold tracking-[0.16em] uppercase;
 }
 
 .sono-journey__value {
-  @apply leading-tight;
+  @apply leading-snug font-normal;
 }
 
+/* Las etiquetas van en negrita y los textos en regular; lo que piensa,
+   además, en cursiva */
 .sono-journey__row--thought .sono-journey__value {
   @apply italic;
+}
+
+/* Una línea fina separa lo que piensa de lo que le cuesta */
+.sono-journey__row--friction {
+  @apply border-t pt-3;
+  border-color: rgb(255 255 255 / 0.3);
 }
 
 .sono-journey__row--friction .sono-journey__key::before {
@@ -590,9 +1149,39 @@
 
 /* La oportunidad resalta: es lo que el diseño resuelve */
 .sono-journey__row--opportunity {
-  @apply rounded-xl px-2.5 py-2;
+  @apply mt-auto rounded-xl px-3 py-2.5;
   background: var(--sono-white);
   color: var(--sono-navy);
+}
+
+/* Cada oportunidad ocupa dos líneas: el texto no pasa de 11rem aunque la
+   tarjeta sea más ancha */
+.sono-journey__row--opportunity .sono-journey__value {
+  @apply max-w-44 text-pretty;
+}
+
+/* Pantallas de computador bajas: tarjetas un poco más compactas para que
+   entren completas */
+@media (min-width: 900px) and (max-height: 820px) {
+  .sono-journey__card {
+    @apply gap-2 p-3;
+  }
+
+  .sono-journey__row--friction {
+    @apply pt-2.5;
+  }
+}
+
+/* Computadores angostos: un poco menos de margen interno para que las
+   oportunidades no bajen a una tercera línea */
+@media (min-width: 900px) and (max-width: 1279px) {
+  .sono-journey__card {
+    @apply p-3;
+  }
+
+  .sono-journey__row--opportunity {
+    @apply px-2;
+  }
 }
 
 .sono-journey__dot {
@@ -601,52 +1190,28 @@
   color: var(--sono-white);
 }
 
-/* Arquitectura como sitemap. El lienzo mantiene la proporción de 1400 × 600
+/* Arquitectura como sitemap. El lienzo mantiene la proporción de 1400 × 660
    (la misma del SVG de las líneas) y las pantallas se ubican en % de él */
 .sono-sitemap__head {
   @apply flex items-end justify-between gap-8;
 }
 
-.sono-sitemap__legend {
-  @apply flex flex-wrap gap-5 text-sm font-semibold;
-}
-
-.sono-sitemap__key {
-  @apply flex items-center gap-2;
-}
-
-.sono-sitemap__key::before {
-  @apply block h-4 w-7 rounded-md content-[''];
-}
-
-.sono-sitemap__key--nav::before {
-  background: var(--sono-navy);
-}
-
-.sono-sitemap__key--step::before {
-  @apply border-2 border-dashed;
-  border-color: var(--sono-navy);
-}
-
-.sono-sitemap__key--flow::before {
-  @apply h-1 rounded-full;
-  background: var(--sono-orange);
-}
-
 .sono-sitemap__canvas {
-  @apply relative mx-auto aspect-[1400/600] w-full;
-  max-width: calc((100svh - 320px) * 1400 / 600);
+  @apply relative mx-auto aspect-[1400/660] w-full;
+  max-width: calc((100svh - 250px) * 1400 / 660);
 }
 
 .sono-sitemap__lines {
   @apply absolute inset-0 size-full overflow-visible;
 }
 
+/* El árbol une cada pantalla con la de arriba: azul marino, firme */
 .sono-sitemap__tree {
   fill: none;
-  stroke: rgb(0 43 143 / 0.35);
-  stroke-width: 2;
-  stroke-dasharray: 1;
+  stroke: rgb(0 43 143 / 0.55);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .sono-sitemap__hop {
@@ -655,83 +1220,99 @@
   stroke-width: 4;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 1;
 }
 
 .sono-sitemap__lines marker path {
   fill: var(--sono-orange);
+  stroke: var(--sono-orange);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
 }
 
 .sono-sitemap__root {
   @apply absolute flex h-12 w-60 items-center justify-center rounded-full text-base font-semibold;
   left: calc(50% - 120px);
-  top: calc(7.333% - 24px);
+  top: calc(4.545% - 24px);
   background: var(--sono-dark);
   color: var(--sono-white);
 }
 
+/* Tarjetas con el estilo de la tarjeta "La meta": esquinas grandes, sombra
+   corrida sólida, título en seminegrita y los ítems como etiquetas con borde.
+   La navegación principal va en azul marino, las pantallas internas en
+   blanco con borde y la confirmación en naranja. Las medidas salen del
+   lienzo de 1400 × 600 (las mismas de las líneas) */
 .sono-sitemap__node {
-  @apply absolute flex flex-col justify-center gap-1.5 rounded-2xl px-4 py-3;
-  /* --lit lo sube la animación cuando el flujo llega a la pantalla */
-  --lit: 0;
-  transition: box-shadow 0.3s ease;
-}
-
-.sono-sitemap__node::after {
-  @apply pointer-events-none absolute -inset-1.5 rounded-[20px] border-[3px] content-[''];
-  border-color: var(--sono-orange);
-  opacity: var(--lit);
-}
-
-.sono-sitemap__node:hover {
-  box-shadow: 8px 8px 0 var(--sono-orange-soft);
+  @apply absolute flex flex-col justify-center gap-2.5 rounded-3xl px-4 py-3;
 }
 
 .sono-sitemap__node--nav {
-  width: 20%;
-  height: 25%;
-  top: 19.167%;
   background: var(--sono-navy);
   color: var(--sono-white);
+  box-shadow: 8px 8px 0 var(--sono-orange);
 }
 
 .sono-sitemap__node--step {
-  @apply border-2 border-dashed;
-  width: 18.571%;
-  height: 18.667%;
-  left: 40.714%;
-  background: var(--sono-white);
+  @apply border-2;
+  background: #fff;
   border-color: var(--sono-navy);
   color: var(--sono-navy);
+  box-shadow: 8px 8px 0 var(--sono-navy);
 }
 
 .sono-sitemap__node--end {
-  width: 20%;
-  height: 18.667%;
-  left: 72.857%;
-  top: 75.667%;
   background: var(--sono-orange);
   color: var(--sono-white);
+  box-shadow: 8px 8px 0 var(--sono-navy);
 }
 
-.sono-sitemap__node--0 {
-  left: 7.143%;
+/* Fila 1 (navegación principal): 300 × 150, arriba. Entre filas quedan 70
+   unidades para que las flechas tengan aire */
+.sono-sitemap__node--home,
+.sono-sitemap__node--menu,
+.sono-sitemap__node--cart {
+  top: 15.152%;
+  width: 21.429%;
+  height: 22.727%;
 }
-.sono-sitemap__node--1 {
+
+.sono-sitemap__node--home {
+  left: 5%;
+}
+
+.sono-sitemap__node--menu {
+  left: 39.286%;
+}
+
+.sono-sitemap__node--cart {
+  left: 73.571%;
+}
+
+/* Pantallas internas: 280 × 130, centradas bajo su pantalla madre */
+.sono-sitemap__node--detail,
+.sono-sitemap__node--custom,
+.sono-sitemap__node--confirm {
+  width: 20%;
+  height: 19.697%;
+}
+
+.sono-sitemap__node--detail {
   left: 40%;
+  top: 48.485%;
 }
-.sono-sitemap__node--2 {
-  top: 50.667%;
+
+.sono-sitemap__node--custom {
+  left: 40%;
+  top: 78.788%;
 }
-.sono-sitemap__node--3 {
-  top: 75.667%;
-}
-.sono-sitemap__node--4 {
-  left: 72.857%;
+
+.sono-sitemap__node--confirm {
+  left: 74.286%;
+  top: 48.485%;
 }
 
 .sono-sitemap__title {
-  @apply flex items-center gap-2 text-xl font-semibold;
+  @apply flex items-center gap-2 text-lg leading-tight font-semibold;
 }
 
 .sono-sitemap__order {
@@ -745,40 +1326,45 @@
   color: var(--sono-orange);
 }
 
-.sono-sitemap__items {
-  @apply text-base leading-snug;
-  opacity: 0.85;
+.sono-sitemap__chips {
+  @apply flex flex-wrap gap-1.5;
 }
 
-/* El punto que recorre el flujo de compra */
-.sono-sitemap__marker {
-  @apply pointer-events-none absolute z-10 -mt-2.5 -ml-2.5 size-5 rounded-full border-4;
-  background: var(--sono-white);
-  border-color: var(--sono-orange);
-  box-shadow: 0 0 0 6px rgb(255 90 0 / 0.25);
+.sono-sitemap__chip {
+  @apply rounded-full border px-2.5 py-0.5 text-sm font-semibold;
+  border-color: currentColor;
 }
 
-/* Flujos principales: un diagrama por flujo que crece con el scroll. El
-   lienzo mantiene la proporción de 1400 × 520 (la del SVG de los caminos) y
-   las pantallas se ubican en % de él */
+/* Pantallas de computador bajas: el lienzo es más chico, así que las
+   tarjetas se compactan para que nada se salga */
+@media (min-width: 900px) and (max-height: 820px) {
+  .sono-sitemap__node {
+    @apply gap-2 px-3.5 py-2.5;
+  }
+
+  .sono-sitemap__title {
+    @apply text-base;
+  }
+
+  .sono-sitemap__order {
+    @apply size-5 text-xs;
+  }
+
+  .sono-sitemap__chip {
+    @apply px-2 text-xs;
+  }
+}
+
+/* Flujos principales: un diagrama por flujo, que se pasan con las flechas.
+   El lienzo mantiene la proporción de 1400 × 520 (la del SVG de los caminos)
+   y las pantallas se ubican en % de él */
+/* El envoltorio del componente no cambia la maqueta de la escena */
+.sono-flowmaps__body {
+  @apply contents;
+}
+
 .sono-flowmaps__head {
   @apply flex items-end justify-between gap-8;
-}
-
-.sono-flowmaps__tabs {
-  @apply flex gap-2;
-}
-
-.sono-flowmaps__tab {
-  @apply flex h-10 w-14 items-center justify-center rounded-full border-2 text-base font-semibold;
-  /* --on lo sube la animación cuando el flujo está en pantalla */
-  --on: 0;
-  border-color: var(--sono-orange);
-  background: color-mix(
-    in srgb,
-    var(--sono-orange) calc(var(--on) * 100%),
-    transparent
-  );
 }
 
 .sono-flowmaps__stage {
@@ -823,7 +1409,6 @@
   stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 1;
 }
 
 /* Caminos alternos: en naranja suave y más finos */
@@ -832,8 +1417,18 @@
   stroke-width: 2.5;
 }
 
+/* Puntas de flecha con las esquinas redondeadas: blancas en el camino
+   principal y naranjas en los alternos */
 .sono-flowmap__lines marker path {
   fill: rgb(244 244 244 / 0.85);
+  stroke: rgb(244 244 244 / 0.85);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.sono-flowmap__lines .sono-flowmap__arrow--alt path {
+  fill: var(--sono-orange-soft);
+  stroke: var(--sono-orange-soft);
 }
 
 .sono-flowmap__edge-label {
@@ -904,132 +1499,22 @@
   color: var(--sono-white);
 }
 
-/* Exploración visual: personalidad en stickers y la mascota */
-.sono-stickers {
-  @apply flex max-w-3xl flex-wrap gap-3;
-}
+/* Pantallas de computador bajas: el lienzo de los flujos se achica, así
+   que el texto de cada pantalla también, para que quepa entero */
+@media (min-width: 900px) and (max-height: 820px) {
+  .sono-flowmap__node {
+    @apply gap-0 px-2;
+  }
 
-.sono-stickers li {
-  @apply rounded-full px-5 py-3 text-lg font-semibold;
-  background: var(--sono-white);
-  color: var(--sono-royal);
-}
+  /* Interlineado más junto: una pantalla con nombre y detalle en dos líneas
+     cada uno cabe en el alto del lienzo chico */
+  .sono-flowmap__label {
+    @apply text-sm leading-[1.15];
+  }
 
-.sono-stickers li:nth-child(even) {
-  @apply -rotate-2;
-  background: var(--sono-orange);
-  color: var(--sono-white);
-}
-
-.sono-stickers li:nth-child(3n) {
-  background: var(--sono-orange-soft);
-  color: var(--sono-white);
-}
-
-.sono-visual-intro__mascot {
-  @apply absolute right-[6%] bottom-[8%] w-[min(26vw,360px)] -rotate-6;
-}
-
-/* Paleta: columnas de color a toda altura */
-.sono-palette__swatches {
-  @apply grid min-h-0 flex-1 grid-cols-7 gap-3;
-}
-
-/* En el orden de la marca: navy, royal, electric, los dos naranjas, blanco
-   hueso y gris oscuro */
-.sono-palette__swatch {
-  @apply flex flex-col justify-end gap-1 rounded-3xl p-5;
-  color: var(--sono-white);
-}
-
-.sono-palette__swatch:nth-child(1) {
-  background: var(--sono-navy);
-}
-
-.sono-palette__swatch:nth-child(2) {
-  background: var(--sono-royal);
-}
-
-.sono-palette__swatch:nth-child(3) {
-  background: var(--sono-electric);
-}
-
-.sono-palette__swatch:nth-child(4) {
-  background: var(--sono-orange);
-}
-
-.sono-palette__swatch:nth-child(5) {
-  background: var(--sono-orange-soft);
-}
-
-/* El blanco hueso es el único con texto oscuro (blanco sobre blanco no se
-   lee) y lleva borde para separarse del fondo */
-.sono-palette__swatch:nth-child(6) {
-  background: var(--sono-white);
-  color: var(--sono-dark);
-  box-shadow: inset 0 0 0 2px var(--sono-navy);
-}
-
-.sono-palette__swatch:nth-child(7) {
-  background: var(--sono-dark);
-}
-
-.sono-palette__name {
-  @apply text-xl font-semibold;
-}
-
-.sono-palette__hex {
-  @apply text-sm tracking-[0.14em] uppercase opacity-80;
-}
-
-/* Tipografía: cada fuente con su muestra grande */
-.sono-type {
-  @apply flex flex-col gap-8;
-}
-
-.sono-type__item {
-  @apply grid grid-cols-[1fr_auto] items-end gap-x-8 border-b pb-6;
-  border-color: rgb(244 244 244 / 0.3);
-}
-
-.sono-type__sample {
-  @apply row-span-2 text-6xl font-semibold;
-}
-
-.sono-type__sample--logo {
-  font-family: var(--font-sono-logo), sans-serif;
-  @apply font-normal;
-  color: var(--sono-orange);
-}
-
-.sono-type__sample--display {
-  font-family: var(--font-sono-display), sans-serif;
-  @apply font-normal uppercase;
-}
-
-.sono-type__name {
-  @apply text-right text-lg font-semibold;
-}
-
-.sono-type__role {
-  @apply text-right text-sm opacity-75;
-}
-
-/* Logotipo, mascota y fotografía */
-.sono-brand__grid {
-  @apply grid min-h-0 flex-1 grid-cols-3 items-center gap-10;
-}
-
-.sono-brand__logo {
-  @apply h-full min-h-48;
-}
-
-.sono-brand__mascot {
-  @apply flex flex-col items-center gap-4 text-center;
-}
-
-.sono-brand__mascot .sono-sticker {
-  @apply w-[min(22vw,300px)] rotate-3;
+  .sono-flowmap__detail {
+    @apply text-xs leading-[1.15];
+  }
 }
 
 /* Celular o "reducir movimiento": las escenas en columna, todas visibles */
@@ -1043,20 +1528,17 @@
   }
 
   .sono-rail,
-  .sono-band {
+  .sono-band,
+  .sono-jump {
     @apply hidden;
   }
 
   .sono-columns,
   .sono-view.sono-columns,
-  .sono-persona,
-  .sono-brand__grid {
+  .sono-persona {
     @apply grid-cols-1 gap-8;
   }
 
-  .sono-palette__swatches {
-    @apply grid-cols-2;
-  }
 
   .sono-sitemap__head {
     @apply flex-col items-start gap-4;
@@ -1066,8 +1548,7 @@
     @apply flex aspect-auto max-w-none flex-col gap-3;
   }
 
-  .sono-sitemap__lines,
-  .sono-sitemap__marker {
+  .sono-sitemap__lines {
     @apply hidden;
   }
 
@@ -1080,17 +1561,16 @@
     @apply w-auto self-start px-6;
   }
 
-  .sono-concept__image {
-    @apply relative inset-auto aspect-[4/3] w-full;
+  /* En columna, cada pantalla separada de la siguiente (las sombras no se
+     montan) */
+  .sono-sitemap__nodes {
+    @apply flex flex-col gap-5;
   }
 
   .sono-persona__develop {
     @apply hidden;
   }
 
-  .sono-palette__swatch {
-    @apply min-h-40;
-  }
 
   .sono-journey__stages {
     @apply grid-cols-1;
@@ -1127,7 +1607,7 @@
     @apply relative top-auto left-auto h-80 max-h-none shrink-0 translate-0;
   }
 
-  .sono-phone[data-audit-slot='0'] {
+  .sono-phone[data-audit-main] {
     @apply order-first;
   }
 
@@ -1143,26 +1623,12 @@
     @apply grid-cols-1;
   }
 
-  .sono-cover__mascot,
-  .sono-visual-intro__mascot {
+  .sono-cover__mascot {
     @apply relative right-auto bottom-auto w-48;
   }
 
   .sono-cover__cut {
     @apply hidden;
-  }
-
-  .sono-vertical {
-    @apply relative inset-auto rotate-0;
-    writing-mode: horizontal-tb;
-  }
-
-  .sono-concept__photo {
-    @apply relative inset-auto aspect-square;
-  }
-
-  .sono-concept__text {
-    @apply ml-0 w-full p-6;
   }
 
   .sono-persona__card {
@@ -1417,11 +1883,27 @@
   box-shadow: 0 0 0 4px rgb(0 43 143 / 0.3);
 }
 
-/* 01 · Contexto y oportunidad a la izquierda; en el segundo paso el reto
-   entra desde la derecha como una tarjeta naranja que resalta, con su
-   objetivo y su alcance */
+/* 01 · Arriba el titular, a todo el ancho; debajo, contexto y oportunidad
+   a la izquierda. En el segundo paso el reto entra desde la derecha como una
+   tarjeta naranja que resalta, con su objetivo y su alcance */
 .sono-view.sono-challenge {
-  @apply grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-center gap-12;
+  @apply grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-center gap-x-12 gap-y-10;
+  /* Centrado, pero si no cabe empieza arriba */
+  align-content: safe center;
+}
+
+.sono-challenge__header {
+  @apply col-span-2 flex flex-col gap-4;
+}
+
+/* Un poco menor que los demás titulares para que quepa arriba de contexto y
+   oportunidad, en las dos líneas del contenido */
+.sono-challenge__title {
+  font-size: clamp(32px, 3.3vw, 56px);
+}
+
+.sono-challenge__line {
+  @apply block;
 }
 
 .sono-challenge__context {
@@ -1440,9 +1922,76 @@
   color: var(--sono-white);
 }
 
+/* La meta, siempre en dos líneas en computador */
+.sono-challenge__card .sono-statement--sm {
+  font-size: clamp(22px, 1.9vw, 30px);
+  text-wrap: balance;
+}
+
+/* El alcance en etiquetas compactas, con borde blanco sobre el naranja,
+   llenando dos filas */
+.sono-challenge__scope {
+  @apply max-w-64 gap-1.5;
+}
+
+.sono-challenge__scope li {
+  @apply px-2.5 py-1 text-xs;
+  border-color: var(--sono-white);
+}
+
+/* El texto de la tarjeta no deja una palabra sola en la última línea */
+.sono-challenge__card .sono-body {
+  @apply text-pretty;
+}
+
+/* En computador, el alcance toma solo el ancho de sus dos filas y el texto
+   se queda con el resto */
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .sono-challenge__card .sono-columns--tight {
+    @apply gap-6;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+/* Pantallas de computador bajas: titular, textos y tarjeta se compactan para
+   que todo quepa (van después de las reglas base para ganarles) */
+@media (min-width: 900px) and (max-height: 820px) {
+  .sono-view.sono-challenge {
+    @apply gap-y-8;
+  }
+
+  .sono-challenge__title {
+    font-size: clamp(28px, 2.6vw, 40px);
+  }
+
+  .sono-challenge__context {
+    @apply gap-6;
+  }
+
+  .sono-challenge .sono-body {
+    @apply text-base;
+  }
+
+  .sono-challenge .sono-statement--sm {
+    font-size: 22px;
+  }
+
+  .sono-challenge__card {
+    @apply gap-4 p-6;
+  }
+
+  .sono-challenge__card .sono-columns--tight {
+    @apply mt-0 gap-6;
+  }
+}
+
 @media (max-width: 899px), (prefers-reduced-motion: reduce) {
   .sono-view.sono-challenge {
     @apply grid-cols-1;
+  }
+
+  .sono-challenge__header {
+    @apply col-span-1;
   }
 
   .sono-challenge__card {
@@ -1454,44 +2003,52 @@
 /* Persona: sus datos como stickers de la marca (inclinados, con ícono, que
    flotan suave y se enderezan al pasar el cursor) y su contexto en un globo
    que sale de la polaroid, con las frases clave resaltadas */
+/* Los tres datos de John, quietos y alineados en una fila */
 .sono-persona__stickers {
-  @apply flex flex-wrap gap-5;
+  @apply grid grid-cols-3 gap-4;
 }
 
 .sono-persona__sticker {
-  @apply flex min-w-40 flex-col gap-1 rounded-2xl px-5 py-4;
+  @apply flex min-w-0 flex-col gap-1 rounded-2xl px-5 py-4;
   color: var(--sono-white);
   box-shadow: 6px 6px 0 var(--sono-navy);
-  animation: sono-chip-float 5s ease-in-out infinite;
-  transition:
-    rotate 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    scale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.sono-persona__sticker:hover {
-  rotate: 0deg;
-  scale: 1.06;
 }
 
 .sono-persona__sticker--0 {
   background: var(--sono-royal);
-  rotate: -4deg;
 }
 
 .sono-persona__sticker--1 {
   background: var(--sono-orange);
-  rotate: 3deg;
-  animation-delay: -1.6s;
 }
 
 .sono-persona__sticker--2 {
   background: var(--sono-electric);
-  rotate: -2deg;
-  animation-delay: -3.2s;
+}
+
+/* Ícono en un sello blanco con borde y sombra azul marino, del color de su
+   tarjeta */
+.sono-persona__badge {
+  @apply mb-2 grid size-11 place-items-center rounded-full border-2 bg-white;
+  border-color: var(--sono-navy);
+  box-shadow: 3px 3px 0 var(--sono-navy);
+}
+
+.sono-persona__sticker--0 .sono-persona__badge {
+  color: var(--sono-royal);
+}
+
+.sono-persona__sticker--1 .sono-persona__badge {
+  color: var(--sono-orange);
+}
+
+.sono-persona__sticker--2 .sono-persona__badge {
+  color: var(--sono-electric);
 }
 
 .sono-persona__icon {
-  @apply mb-1 size-6;
+  @apply size-6;
+  stroke-width: 2.25;
 }
 
 .sono-persona__fact-label {
@@ -1518,21 +2075,13 @@
   background: var(--sono-navy);
 }
 
+/* Las frases clave van sin resaltado de fondo */
 .sono-persona__mark {
   color: inherit;
-  background: linear-gradient(
-    transparent 62%,
-    rgb(255 122 26 / 0.85) 62%,
-    rgb(255 122 26 / 0.85) 92%,
-    transparent 92%
-  );
+  background: none;
 }
 
 @media (max-width: 899px), (prefers-reduced-motion: reduce) {
-  .sono-persona__sticker {
-    animation: none;
-  }
-
   .sono-persona__bubble::before {
     @apply hidden;
   }
@@ -1543,7 +2092,6 @@
     @apply flex-col items-start gap-4;
   }
 
-  .sono-flowmaps__tabs,
   .sono-flowmap__lines {
     @apply hidden;
   }
@@ -1573,83 +2121,9 @@
   }
 }
 
-/* 04 · Elementos de marca: seis espacios por diseñar, cada uno con su idea */
-.sono-elements__grid {
-  @apply grid grid-cols-3 gap-5;
-}
-
-.sono-elements__slot {
-  @apply flex min-h-44 flex-col justify-end gap-2 rounded-3xl border-2 border-dashed p-6;
-  border-color: rgb(0 43 143 / 0.4);
-  background:
-    radial-gradient(circle at 85% 20%, rgb(255 90 0 / 0.14) 0 18%, transparent 19%),
-    radial-gradient(circle at 70% 38%, rgb(13 71 201 / 0.12) 0 9%, transparent 10%),
-    var(--sono-white);
-  transition:
-    border-color 0.3s ease,
-    translate 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.sono-elements__slot:hover {
-  @apply -translate-y-1;
-  border-color: var(--sono-orange);
-}
-
-.sono-elements__pending {
-  @apply self-start rounded-full px-3 py-1 text-sm font-semibold;
-  background: var(--sono-orange);
-  color: var(--sono-white);
-}
-
-.sono-elements__name {
-  @apply text-2xl font-semibold;
-}
-
-.sono-elements__idea {
-  @apply text-base;
-  color: var(--sono-royal);
-}
-
-/* 04 · Sistema de diseño de Sonopizza: fundamentos, componentes y patrones
-   por construir */
-.sono-system__groups {
-  @apply grid grid-cols-[1fr_2fr_1fr] gap-6;
-}
-
-.sono-system__group {
-  @apply flex flex-col gap-4 rounded-3xl p-6;
-  background: rgb(244 244 244 / 0.08);
-}
-
-.sono-system__items {
-  @apply flex flex-col gap-2;
-}
-
-.sono-system__group:nth-child(2) .sono-system__items {
-  @apply grid grid-cols-2;
-}
-
-.sono-system__item {
-  @apply flex items-center justify-between gap-3 rounded-2xl border border-dashed px-4 py-3 text-base font-semibold;
-  border-color: rgb(244 244 244 / 0.35);
-}
-
-.sono-system__pending {
-  @apply shrink-0 text-sm font-normal;
-  color: var(--sono-orange-soft);
-}
-
-@media (max-width: 899px), (prefers-reduced-motion: reduce) {
-  .sono-elements__grid,
-  .sono-system__groups,
-  .sono-system__group:nth-child(2) .sono-system__items {
-    @apply grid-cols-1;
-  }
-}
-
-/* 04 · La exploración visual con scroll libre: la escena es un área que se
-   recorre como una página; cada bloque (paleta, tipografía, marca…) es un
-   panel de al menos una pantalla con su color */
+/* 04 · El sistema de diseño con scroll libre: la escena es un área que se
+   recorre como una página; cada bloque (portada, fundamentos, componentes y
+   elementos de marca) es un panel de al menos una pantalla con su color */
 .sono-view.sono-free {
   @apply p-0;
 }

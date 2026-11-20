@@ -160,6 +160,8 @@ export const siteContent = {
       },
       // Cuadrados de la línea de arriba para saltar entre secciones
       storyNavigation: 'Secciones del caso',
+      // Sticker del submenú sobre la sección en la que ya está la persona
+      currentSection: 'Estás aquí',
       prototype: {
         activate: 'Haz clic para probarlo',
         open: 'Abrir en pantalla completa',

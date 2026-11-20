@@ -16,6 +16,15 @@ import { STORY_JUMP_EVENT, announceSection } from '@/lib/case-story/motion';
 // cuadrados) puede saltar directo a una sección.
 
 const GESTURE_GAP_MS = 220;
+
+export type StepJump = {
+  // Sección a la que se salta y si va hacia adelante en el recorrido
+  section: number;
+  isForward: boolean;
+  // Deja el escenario en el paso nuevo; se llama cuando la pantalla está
+  // tapada
+  swap: () => void;
+};
 const NEXT_KEYS = new Set(['ArrowDown', 'PageDown', ' ']);
 const PREVIOUS_KEYS = new Set(['ArrowUp', 'PageUp']);
 
@@ -33,6 +42,9 @@ type StepNavigatorOptions = {
   // Si el paso tiene un área con scroll propio que todavía puede moverse en
   // esa dirección, la devuelve: el gesto la recorre en vez de cambiar de paso
   innerScroll?: (step: number, direction: 1 | -1) => HTMLElement | null;
+  // Cómo se ve el salto desde el submenú o el contador. Devuelve la línea de
+  // tiempo del efecto; sin ella, el escenario hace un fundido corto
+  jumpTransition?: (jump: StepJump) => gsap.core.Timeline;
 };
 
 export function createStepNavigator({
@@ -43,7 +55,8 @@ export function createStepNavigator({
   stepSection,
   sectionStep,
   onStep,
-  innerScroll
+  innerScroll,
+  jumpTransition
 }: StepNavigatorOptions) {
   const stepCount = labels.length;
   const stepLength = window.innerHeight * 0.6;
@@ -52,6 +65,7 @@ export function createStepNavigator({
   let isLocked = false;
   let lastEventTime = 0;
   let playing: gsap.core.Tween | null = null;
+  let jumping: gsap.core.Timeline | null = null;
 
   const lock = () => {
     if (isLocked) return;
@@ -111,9 +125,11 @@ export function createStepNavigator({
     const isGoingBack = from > step;
     let frame = 0;
     playing = timeline.tweenTo(labels[step], {
+      // A la velocidad real de la escena (un poco más rápido al devolverse),
+      // para que el paso fluya en vez de saltar
       duration: isGoingBack
-        ? gsap.utils.clamp(0.8, 1.3, distance * 0.5)
-        : gsap.utils.clamp(1.1, 2.6, distance * 0.9),
+        ? gsap.utils.clamp(1.1, 2, distance * 0.65)
+        : gsap.utils.clamp(1.5, 3.4, distance * 1.05),
       ease: 'none',
       onUpdate: () => {
         frame += 1;
@@ -126,11 +142,31 @@ export function createStepNavigator({
     });
   };
 
-  // Salto desde el contador: directo a la sección, con un fundido corto
+  // Salto desde el contador: directo a la sección, con la transición propia
+  // del caso o, si no tiene, con un fundido corto
   const jumpTo = (step: number) => {
     if (step === current && !isBusy) return;
+    // Mientras corre un salto no se empieza otro
+    if (jumping?.isActive()) return;
     playing?.kill();
     isBusy = true;
+    if (jumpTransition) {
+      jumping = jumpTransition({
+        section: stepSection[step],
+        isForward: step > current,
+        swap: () => {
+          settle(step);
+          timeline.seek(labels[step]);
+          notifySurface();
+        }
+      });
+      // Al final de su línea de tiempo (sin pisar el onComplete del caso)
+      jumping.call(() => {
+        isBusy = false;
+        jumping = null;
+      });
+      return;
+    }
     gsap.to(stage, {
       autoAlpha: 0,
       duration: 0.18,
@@ -243,6 +279,7 @@ export function createStepNavigator({
 
   return () => {
     playing?.kill();
+    jumping?.kill();
     gsap.killTweensOf(stage);
     gsap.set(stage, { clearProps: 'opacity,visibility' });
     window.clearTimeout(surfaceTimeout);

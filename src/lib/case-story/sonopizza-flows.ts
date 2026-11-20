@@ -1,129 +1,84 @@
 import { gsap } from 'gsap';
 
 import { queryAll } from '@/lib/case-story/motion';
+import type { SonoSlidesMotion } from '@/lib/case-story/slides-motion.types';
 
 // Movimiento propio de los flujos principales de Sonopizza (escena con
-// data-motion="flows"): un paso por flujo. El diagrama del flujo crece en el
-// orden de sus pantallas: las de un mismo orden saltan juntas (las ramas) y
-// luego se dibujan los caminos que salen de ellas. Al pasar al siguiente
-// flujo, el anterior sube y se desvanece.
+// data-motion="flows"). La escena es un solo paso del escenario: al entrar
+// se revela el diagrama del primer flujo y los demás se ven con las flechas
+// (FLOW_SLIDES_MOTION), sin frenar el scroll. Cada diagrama se revela
+// completo a la vez, igual que el resto del caso: el título, las pantallas y
+// los caminos con sus flechas y etiquetas suben y aparecen juntos, como un
+// solo bloque.
 
 const CANVAS_WIDTH = 1400;
 const CANVAS_HEIGHT = 520;
+const EASE_IN = 'power3.out';
+const DURATION = 1.1;
 
-function mapParts(view: HTMLElement, index: number) {
-  const map = view.querySelector<HTMLElement>(`[data-flow-map="${index}"]`);
-  const nodes = map ? queryAll(map, '[data-flow-node]') : [];
-  const groups = map ? queryAll<SVGGElement>(map, 'g[data-flow-order]') : [];
-  const orders = [...nodes, ...groups].map(item =>
-    Number(item.getAttribute('data-flow-order') ?? 0)
-  );
-  return {
+// El título del flujo, sus pantallas y el dibujo de los caminos
+function piecesOf(map: HTMLElement) {
+  return queryAll(
     map,
-    nodes,
-    groups,
-    maxOrder: Math.max(0, ...orders),
-    tab: view.querySelector(`[data-flow-tab="${index}"]`)
-  };
+    '[data-flow-intro], [data-flow-node], [data-flow-lines]'
+  );
 }
 
-// Ubica cada pantalla en el lienzo y deja todo listo para crecer
+// Todo el diagrama a la vez
+function revealFlowMap(
+  timeline: gsap.core.Timeline,
+  map: HTMLElement,
+  at: number
+) {
+  timeline.fromTo(
+    piecesOf(map),
+    { autoAlpha: 0, y: 40 },
+    { autoAlpha: 1, y: 0, duration: DURATION, ease: EASE_IN },
+    at
+  );
+}
+
+// Ubica y dimensiona cada pantalla en el lienzo y deja todo listo para
+// revelarse; solo el primer flujo queda a la vista
 export function prepareFlowsMotion(view: HTMLElement) {
   queryAll(view, '[data-flow-spot]').forEach(spot => {
     gsap.set(spot, {
       left: `${(Number(spot.dataset.x) / CANVAS_WIDTH) * 100}%`,
-      top: `${(Number(spot.dataset.y) / CANVAS_HEIGHT) * 100}%`
+      top: `${(Number(spot.dataset.y) / CANVAS_HEIGHT) * 100}%`,
+      width: `${(Number(spot.dataset.w) / CANVAS_WIDTH) * 100}%`
     });
   });
-  const count = queryAll(view, '[data-flow-map]').length;
-  for (let index = 0; index < count; index += 1) {
-    const parts = mapParts(view, index);
-    gsap.set(parts.nodes, { autoAlpha: 0, scale: 0.6 });
-    gsap.set(queryAll(view, `[data-flow-map="${index}"] [data-flow-edge]`), {
-      strokeDashoffset: 1,
-      // Escondido: así su punta de flecha no se ve antes de dibujarse
-      autoAlpha: 0
-    });
-    gsap.set(
-      queryAll(view, `[data-flow-map="${index}"] [data-flow-edge-label]`),
-      { autoAlpha: 0 }
-    );
-    if (index > 0) gsap.set(parts.map, { autoAlpha: 0 });
-  }
+  queryAll(view, '[data-flow-map]').forEach((map, index) => {
+    gsap.set(piecesOf(map), { autoAlpha: 0, y: 40 });
+    if (index > 0) gsap.set(map, { autoAlpha: 0 });
+  });
 }
 
+// Al entrar a la escena se revela el diagrama del primer flujo
 export function addFlowsMotion(
   timeline: gsap.core.Timeline,
-  view: HTMLElement,
-  step: number
+  view: HTMLElement
 ) {
-  const incoming = mapParts(view, step);
-  let at = step > 0 ? timeline.duration() : timeline.duration() - 0.2;
-
-  if (step > 0) {
-    const outgoing = mapParts(view, step - 1);
-    timeline
-      .to(
-        outgoing.map,
-        { autoAlpha: 0, y: -40, duration: 0.45, ease: 'power2.in' },
-        at
-      )
-      .to(outgoing.tab, { '--on': 0, duration: 0.3 }, at)
-      .fromTo(
-        incoming.map,
-        { autoAlpha: 0, y: 40 },
-        { autoAlpha: 1, y: 0, duration: 0.6, ease: 'expo.out' },
-        at + 0.35
-      );
-    at += 0.45;
-  }
-  timeline.fromTo(
-    incoming.tab,
-    { '--on': 0 },
-    { '--on': 1, duration: 0.3 },
-    at
-  );
-
-  // El diagrama crece por órdenes: pantallas y luego sus caminos
-  for (let order = 0; order <= incoming.maxOrder; order += 1) {
-    const nodes = incoming.nodes.filter(
-      node => Number(node.dataset.flowOrder) === order
-    );
-    const groups = incoming.groups.filter(
-      group => Number(group.getAttribute('data-flow-order')) === order
-    );
-    if (nodes.length)
-      timeline.to(
-        nodes,
-        {
-          autoAlpha: 1,
-          scale: 1,
-          duration: 0.45,
-          stagger: 0.08,
-          ease: 'back.out(2.2)'
-        },
-        at
-      );
-    at += nodes.length ? 0.3 : 0;
-    if (groups.length) {
-      const edges = groups.map(group =>
-        group.querySelector('[data-flow-edge]')
-      );
-      timeline
-        .set(edges, { autoAlpha: 1 }, at)
-        .to(
-          edges,
-          { strokeDashoffset: 0, duration: 0.45, ease: 'power2.inOut' },
-          at
-        )
-        .to(
-          groups
-            .map(group => group.querySelector('[data-flow-edge-label]'))
-            .filter(Boolean),
-          { autoAlpha: 1, duration: 0.3 },
-          at + 0.25
-        );
-      at += 0.4;
-    }
-  }
+  const map = view.querySelector<HTMLElement>('[data-flow-map="0"]');
+  if (map) revealFlowMap(timeline, map, timeline.duration() - 0.2);
 }
+
+// Cambio entre flujos con las flechas: el que sale se desvanece y el que
+// entra se revela completo a la vez
+export const FLOW_SLIDES_MOTION: SonoSlidesMotion = {
+  slide: '[data-flow-map]',
+  transition: (outgoing, incoming) => {
+    const timeline = gsap
+      .timeline()
+      .to(outgoing, {
+        autoAlpha: 0,
+        y: -20,
+        duration: 0.4,
+        ease: 'power3.in'
+      })
+      .set(incoming, { autoAlpha: 1, y: 0 });
+    revealFlowMap(timeline, incoming, timeline.duration());
+    return timeline;
+  },
+  settle: incoming => gsap.set(incoming, { y: 0 })
+};

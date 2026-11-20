@@ -1,0 +1,1194 @@
+/* Pantallas clave del prototipo de Sonopizza, en el orden de los flujos */
+
+/* ---------- 01 · Inicio ---------- */
+.sp-home {
+  @apply gap-4 pb-26;
+}
+
+.sp-home__top {
+  @apply flex items-center justify-between pt-2;
+}
+
+.sp-home__place {
+  @apply flex flex-col gap-0.5;
+}
+
+.sp-home__address {
+  @apply inline-flex items-center gap-1 text-base font-bold;
+}
+
+.sp-home__address svg {
+  @apply size-4;
+}
+
+.sp-home__address svg:first-child {
+  color: var(--sp-orange);
+}
+
+/* Notificaciones con un punto naranja de "hay algo nuevo" */
+.sp-home__bell {
+  @apply relative;
+  box-shadow: 3px 3px 0 var(--sp-navy);
+}
+
+.sp-home__bell-dot {
+  @apply absolute top-2 right-2.5 size-2.5 rounded-full border-2 border-white;
+  background: var(--sp-orange);
+}
+
+/* En una sola línea */
+.sp-home__title {
+  @apply text-2xl leading-7 whitespace-nowrap;
+}
+
+/* Accesos directos a las categorías del menú: un círculo con la ilustración
+   de la categoría vista desde arriba (recortada por el borde) sobre su color,
+   con el nombre debajo */
+.sp-shortcuts {
+  @apply grid grid-cols-4 gap-3;
+}
+
+.sp-shortcut {
+  @apply flex flex-col items-center gap-1.5 text-center;
+}
+
+.sp-shortcut__art {
+  @apply relative size-16 overflow-hidden rounded-full border-2;
+  border-color: var(--sp-navy);
+  box-shadow: 3px 3px 0 var(--sp-navy);
+}
+
+.sp-shortcut__art--orange {
+  background: var(--sp-orange);
+}
+
+.sp-shortcut__art--cream {
+  background: var(--sp-cream);
+}
+
+.sp-shortcut__art--mist {
+  background: var(--sp-mist);
+}
+
+.sp-shortcut__art--royal {
+  background: var(--sp-royal);
+}
+
+.sp-shortcut__image {
+  @apply absolute inset-0 size-full;
+}
+
+.sp-shortcut__name {
+  @apply text-xs leading-4 font-bold;
+}
+
+/* La más pedida como póster: tarjeta azul marino con sombra naranja, el
+   nombre corto gigante en contorno detrás y la pizza quieta, recortada por la
+   tarjeta. Abajo a la izquierda van el nombre, el precio y, debajo, el botón */
+.sp-hero {
+  @apply relative mt-1 flex h-52 shrink-0 rounded-[28px] p-5;
+  background: var(--sp-navy);
+  color: var(--sp-white);
+  box-shadow: var(--sp-shadow-highlight);
+}
+
+.sp-hero__media {
+  @apply pointer-events-none absolute inset-0 overflow-hidden rounded-[28px];
+}
+
+.sp-hero__word {
+  @apply absolute top-1 -left-1.5 text-[64px] leading-none whitespace-nowrap;
+  color: transparent;
+  /* Blanco translúcido: sobre el azul marino da un azul apagado que se queda
+     de fondo */
+  -webkit-text-stroke: 2px rgb(244 244 244 / 0.24);
+}
+
+.sp-hero__info {
+  @apply relative z-10 mt-auto flex w-44 flex-col items-start gap-1.5;
+}
+
+.sp-hero__name {
+  @apply text-2xl leading-6;
+}
+
+.sp-hero__price {
+  @apply flex items-baseline gap-1.5 text-lg leading-6 font-black;
+}
+
+.sp-hero__price span {
+  @apply text-sm font-semibold;
+  color: rgb(244 244 244 / 0.72);
+}
+
+/* El borde blanco despega el botón del azul de la tarjeta */
+.sp-hero .sp-button {
+  border-color: #fff;
+}
+
+.sp-hero__pizza {
+  @apply absolute top-1/2 -right-18 size-52 -translate-y-1/2;
+}
+
+.sp-home__promos {
+  @apply flex flex-col gap-3;
+}
+
+.sp-home__promos-title {
+  @apply text-xl leading-6;
+}
+
+/* Promo de la semana: tarjeta crema con la pizza recortada abajo a la
+   izquierda, un estallido con la oferta encima y, a la derecha, el día, qué
+   incluye, el precio normal tachado, el que se paga y lo que se ahorra */
+.sp-promo {
+  @apply relative h-36 shrink-0 overflow-hidden rounded-[20px] border-2;
+  background: var(--sp-cream);
+  border-color: var(--sp-navy);
+  box-shadow: 4px 4px 0 var(--sp-orange);
+}
+
+.sp-promo__pizza {
+  @apply absolute -bottom-12 -left-8 size-40;
+}
+
+/* Estallido de doce puntas, inclinado como un sticker */
+.sp-promo__burst {
+  @apply absolute top-3 left-3.5 z-10 grid size-18 -rotate-12 place-items-center text-xl leading-none;
+  background: var(--sp-navy);
+  color: #fff;
+  clip-path: polygon(
+    50% 0,
+    60.35% 11.36%,
+    75% 6.7%,
+    78.28% 21.72%,
+    93.3% 25%,
+    88.64% 39.65%,
+    100% 50%,
+    88.64% 60.35%,
+    93.3% 75%,
+    78.28% 78.28%,
+    75% 93.3%,
+    60.35% 88.64%,
+    50% 100%,
+    39.65% 88.64%,
+    25% 93.3%,
+    21.72% 78.28%,
+    6.7% 75%,
+    11.36% 60.35%,
+    0 50%,
+    11.36% 39.65%,
+    6.7% 25%,
+    21.72% 21.72%,
+    25% 6.7%,
+    39.65% 11.36%
+  );
+}
+
+.sp-promo__info {
+  @apply absolute inset-y-3 right-3.5 left-38 flex flex-col items-start;
+}
+
+.sp-promo__day {
+  @apply text-xs leading-4 font-bold tracking-[0.08em] uppercase;
+  color: var(--sp-muted);
+}
+
+.sp-promo__title {
+  @apply mt-0.5 text-base leading-5 font-bold;
+}
+
+.sp-promo__prices {
+  @apply mt-1 flex flex-col;
+}
+
+.sp-promo__regular {
+  @apply text-base leading-5 font-semibold;
+  color: rgb(0 43 143 / 0.5);
+}
+
+.sp-promo__price {
+  @apply text-[30px] leading-8;
+  color: var(--sp-orange);
+}
+
+.sp-promo__savings {
+  @apply mt-1 rounded-full px-2.5 py-1 text-xs leading-4 font-bold;
+  background: var(--sp-navy);
+  color: #fff;
+}
+
+/* ---------- 02 · Menú ---------- */
+.sp-menu {
+  @apply gap-4;
+}
+
+.sp-menu__top {
+  @apply flex items-center justify-between pt-2;
+}
+
+.sp-menu__title {
+  @apply text-[40px] leading-10;
+}
+
+.sp-menu__meta {
+  @apply flex items-center justify-between;
+}
+
+.sp-menu__count {
+  @apply text-sm font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-products {
+  @apply flex flex-col gap-4;
+}
+
+/* Tarjeta del menú: la pizza se sale por la izquierda hasta el borde */
+.sp-product {
+  @apply relative flex min-h-34 shrink-0 rounded-3xl border-2 bg-white pl-27;
+  border-color: var(--sp-navy);
+  box-shadow: 4px 4px 0 var(--sp-mist);
+}
+
+.sp-product--featured {
+  box-shadow: var(--sp-shadow-card);
+}
+
+.sp-product__pizza {
+  @apply absolute top-1/2 -left-10 size-34 -translate-y-1/2;
+}
+
+.sp-product__body {
+  @apply flex min-w-0 flex-1 flex-col gap-1 py-3 pr-3;
+}
+
+.sp-product__tag {
+  @apply self-start rounded-full px-2 py-0.5 text-xs font-bold tracking-[0.04em] uppercase;
+  background: var(--sp-tint);
+  color: var(--sp-orange);
+}
+
+.sp-product__name {
+  @apply text-base leading-5 font-bold;
+}
+
+.sp-product__text {
+  @apply line-clamp-2 text-xs leading-4;
+  color: var(--sp-muted);
+}
+
+.sp-product__foot {
+  @apply mt-auto flex items-center gap-2 pt-1.5;
+}
+
+.sp-product__price {
+  @apply ml-auto text-base font-bold;
+}
+
+.sp-product__add {
+  @apply size-10;
+}
+
+/* ---------- 02 · b Menú buscando ---------- */
+.sp-menu--search {
+  @apply gap-3;
+}
+
+.sp-menu__searchbar {
+  @apply flex items-center gap-3 pt-2;
+}
+
+.sp-menu__results-label {
+  @apply mt-1 text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--sp-muted);
+}
+
+.sp-results {
+  @apply flex flex-col gap-2;
+}
+
+.sp-result {
+  @apply flex items-center gap-3 rounded-2xl border-2 bg-white p-2 pr-3;
+  border-color: var(--sp-line);
+}
+
+/* El primer resultado es la mejor coincidencia */
+.sp-result:first-child {
+  border-color: var(--sp-navy);
+  box-shadow: 4px 4px 0 var(--sp-orange-soft);
+}
+
+.sp-result__thumb {
+  @apply grid size-16 shrink-0 place-items-center rounded-xl p-1;
+  background: var(--sp-tint);
+}
+
+.sp-result__thumb .sp-pizza {
+  @apply size-full;
+  filter: none;
+}
+
+.sp-result__body {
+  @apply flex min-w-0 flex-1 flex-col items-start gap-0.5;
+}
+
+.sp-result__name {
+  @apply max-w-full truncate text-base font-bold;
+}
+
+.sp-result__tag {
+  @apply rounded-full px-2 text-xs font-semibold;
+  background: var(--sp-mist);
+}
+
+.sp-result__price {
+  @apply text-sm;
+  color: var(--sp-muted);
+}
+
+.sp-result__go {
+  @apply size-5 shrink-0;
+}
+
+/* Teclado de muestra */
+.sp-keyboard {
+  @apply absolute inset-x-0 bottom-0 flex flex-col gap-2.5 px-1 pt-2 pb-9;
+  background: #d5dae4;
+  color: var(--sp-dark);
+}
+
+.sp-keyboard__row {
+  @apply flex justify-center gap-1.5;
+}
+
+.sp-keyboard__key {
+  @apply grid h-11 max-w-8.5 flex-1 place-items-center rounded-md bg-white text-xl;
+  box-shadow: 0 1px 0 rgb(0 0 0 / 0.3);
+}
+
+.sp-keyboard__key svg {
+  @apply size-5;
+}
+
+.sp-keyboard__key--wide {
+  @apply max-w-11;
+  background: #b4bccb;
+}
+
+.sp-keyboard__key--mode {
+  @apply max-w-22 text-base;
+  background: #b4bccb;
+}
+
+.sp-keyboard__key--space {
+  @apply max-w-none flex-[4] text-base;
+}
+
+.sp-keyboard__key--go {
+  @apply max-w-22 text-base font-bold;
+  background: var(--sp-orange);
+  color: #fff;
+}
+
+/* ---------- 03 · Detalle ---------- */
+.sp-detail {
+  @apply p-0;
+}
+
+/* Póster: azul marino con el nombre corto gigante en contorno y la pizza
+   girando al frente; sus ingredientes flotan alrededor */
+.sp-detail__poster {
+  @apply relative h-100 shrink-0 overflow-hidden;
+  background: radial-gradient(
+    circle at 50% 58%,
+    var(--sp-royal) 0,
+    var(--sp-navy) 62%
+  );
+}
+
+.sp-detail__actions {
+  @apply absolute inset-x-5 top-14 z-10 flex justify-between;
+}
+
+.sp-detail__word {
+  @apply absolute top-19 left-1/2 -translate-x-1/2 text-[132px] leading-none whitespace-nowrap;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--sp-orange-soft);
+}
+
+.sp-detail__pizza {
+  @apply absolute top-35 left-1/2 size-64 -translate-x-1/2;
+  filter: drop-shadow(0 18px 24px rgb(0 0 0 / 0.4));
+}
+
+.sp-detail__bubble {
+  @apply absolute grid size-12 place-items-center rounded-full border-2 bg-white;
+  border-color: var(--sp-navy);
+  color: var(--sp-navy);
+  box-shadow: 3px 3px 0 var(--sp-orange);
+}
+
+.sp-detail__bubble .sp-ingredient-icon {
+  @apply size-6;
+}
+
+.sp-detail__bubble--one {
+  @apply top-50 left-4;
+}
+
+.sp-detail__bubble--two {
+  @apply top-46 right-5;
+}
+
+.sp-detail__bubble--three {
+  @apply top-78 left-9;
+}
+
+.sp-detail__bubble--four {
+  @apply top-76 right-8;
+}
+
+.sp-detail__tag {
+  @apply absolute top-36 left-16 z-10 -rotate-6;
+}
+
+.sp-detail__sheet {
+  @apply relative z-10 -mt-8 flex flex-1 flex-col gap-2.5 px-5 pt-6 pb-28;
+}
+
+.sp-detail__name {
+  @apply text-[26px] leading-[28px];
+}
+
+.sp-detail__meta {
+  @apply flex gap-4;
+}
+
+.sp-detail__text {
+  @apply text-sm leading-5;
+  color: var(--sp-muted);
+}
+
+.sp-detail__label {
+  @apply mt-1;
+}
+
+.sp-detail__ingredients {
+  @apply -mx-5 overflow-hidden px-5;
+}
+
+.sp-detail__sizes {
+  @apply grid grid-cols-3 gap-2;
+}
+
+.sp-detail__size {
+  @apply flex flex-col rounded-2xl border-2 bg-white px-3 py-2;
+  border-color: var(--sp-line);
+}
+
+.sp-detail__size-name {
+  @apply text-sm font-bold;
+}
+
+.sp-detail__size-slices {
+  @apply text-xs;
+  color: var(--sp-muted);
+}
+
+.sp-detail__size-price {
+  @apply mt-0.5 text-sm font-bold;
+}
+
+/* ---------- 04 · Personalización ---------- */
+.sp-custom {
+  @apply gap-3.5 pb-32;
+}
+
+.sp-custom__top {
+  @apply flex items-center gap-3 pt-2;
+}
+
+.sp-custom__heading {
+  @apply flex flex-col;
+}
+
+.sp-custom__title {
+  @apply text-lg leading-6 font-bold;
+}
+
+.sp-custom__product {
+  @apply text-sm;
+  color: var(--sp-muted);
+}
+
+/* Tres anillos con los tamaños: la pizza llena el anillo elegido */
+.sp-custom__stage {
+  @apply relative h-49 w-full shrink-0;
+}
+
+.sp-custom__ring {
+  @apply absolute top-1/2 left-1/2 -translate-1/2 rounded-full border-2 border-dashed;
+  border-color: rgb(0 43 143 / 0.28);
+}
+
+.sp-custom__ring--family {
+  @apply size-48;
+}
+
+.sp-custom__ring--medium {
+  @apply size-40;
+}
+
+.sp-custom__ring--personal {
+  @apply size-32;
+}
+
+.sp-custom__ring--on {
+  @apply border-solid;
+  border-color: var(--sp-orange);
+}
+
+/* Nombre de cada anillo, encima de la pizza: Personal arriba (sobre el
+   anillo chico), Mediana a la izquierda y Familiar a la derecha */
+.sp-custom__ring-label {
+  @apply absolute z-10 rounded-full border-2 bg-white px-2 py-0.5 text-xs font-bold whitespace-nowrap;
+  border-color: var(--sp-line);
+  color: var(--sp-muted);
+}
+
+.sp-custom__ring-label--personal {
+  @apply top-6 left-1/2 -translate-x-1/2;
+}
+
+.sp-custom__ring-label--medium {
+  @apply top-1/2 right-[calc(50%+86px)] -translate-y-1/2;
+}
+
+.sp-custom__ring-label--family {
+  @apply top-1/2 left-[calc(50%+102px)] -translate-y-1/2;
+}
+
+.sp-custom__ring-label--on {
+  background: var(--sp-orange);
+  border-color: var(--sp-navy);
+  color: #fff;
+}
+
+.sp-custom__pizza {
+  @apply absolute top-1/2 left-1/2 -translate-1/2;
+}
+
+.sp-custom__pizza--personal {
+  @apply size-31;
+}
+
+.sp-custom__pizza--medium {
+  @apply size-39;
+}
+
+.sp-custom__pizza--family {
+  @apply size-47;
+}
+
+/* Sin tamaño: la pizza es una sombra y en el centro va la pregunta */
+.sp-custom__pizza--ghost {
+  opacity: 0.18;
+  filter: grayscale(1);
+}
+
+.sp-custom__question {
+  @apply absolute top-1/2 left-1/2 grid size-14 -translate-1/2 place-items-center rounded-full border-2 text-3xl;
+  background: var(--sp-orange);
+  border-color: var(--sp-navy);
+  color: #fff;
+  font-family: var(--font-sono-display), sans-serif;
+  box-shadow: 3px 3px 0 var(--sp-navy);
+}
+
+.sp-custom__group {
+  @apply flex flex-col gap-2;
+}
+
+.sp-custom__head {
+  @apply flex items-center justify-between gap-3;
+}
+
+.sp-custom__label {
+  @apply text-base font-bold;
+}
+
+.sp-custom__aside {
+  @apply text-xs font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-size-options {
+  @apply grid grid-cols-3 gap-2.5;
+}
+
+.sp-size-option {
+  @apply relative flex flex-col gap-0.5 rounded-2xl border-2 bg-white px-3 py-2.5;
+  border-color: rgb(0 43 143 / 0.3);
+}
+
+.sp-size-option--on {
+  background: var(--sp-tint);
+  border-color: var(--sp-orange);
+  box-shadow: 4px 4px 0 var(--sp-orange);
+}
+
+.sp-size-option__name {
+  @apply text-sm font-bold;
+}
+
+.sp-size-option__slices {
+  @apply text-xs;
+  color: var(--sp-muted);
+}
+
+.sp-size-option__price {
+  @apply mt-1 text-sm font-bold;
+}
+
+.sp-size-option__check {
+  @apply absolute -top-2.5 -right-2.5 grid size-6 place-items-center rounded-full border-2 border-white;
+  background: var(--sp-orange);
+  color: #fff;
+}
+
+.sp-size-option__check svg {
+  @apply size-3.5;
+  stroke-width: 3;
+}
+
+/* Falta el tamaño: las opciones en naranja punteado y el aviso debajo */
+.sp-custom--missing .sp-size-option {
+  @apply border-dashed;
+  border-color: var(--sp-orange);
+}
+
+.sp-custom__hint {
+  @apply flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold;
+  background: var(--sp-tint);
+  color: var(--sp-navy);
+}
+
+.sp-custom__hint svg {
+  @apply size-5 shrink-0;
+  color: var(--sp-orange);
+}
+
+.sp-extras {
+  @apply flex flex-col gap-2;
+}
+
+.sp-extra {
+  @apply flex h-11 items-center gap-3 rounded-2xl border-2 bg-white px-3;
+  border-color: var(--sp-line);
+}
+
+.sp-extra--on {
+  border-color: var(--sp-navy);
+}
+
+.sp-extra__box {
+  @apply grid size-5 shrink-0 place-items-center rounded-md border-2;
+  border-color: var(--sp-navy);
+}
+
+.sp-extra--on .sp-extra__box {
+  background: var(--sp-orange);
+  border-color: var(--sp-orange);
+  color: #fff;
+}
+
+.sp-extra__box svg {
+  @apply size-3.5;
+  stroke-width: 3;
+}
+
+.sp-extra__name {
+  @apply flex-1 text-sm font-semibold;
+}
+
+.sp-extra__price {
+  @apply text-sm font-bold;
+}
+
+.sp-custom__total {
+  @apply flex min-w-0 flex-1 flex-col gap-1.5;
+}
+
+.sp-custom__breakdown {
+  @apply text-center text-xs font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-custom__add {
+  @apply relative w-full px-4;
+}
+
+/* ---------- 05 · Agregado al carrito ---------- */
+.sp-added {
+  @apply p-0;
+}
+
+.sp-added__behind {
+  @apply absolute inset-0 z-0;
+}
+
+.sp-added__dim {
+  @apply absolute inset-0 z-10;
+  background: rgb(0 20 70 / 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.sp-added__sheet {
+  @apply absolute inset-x-0 bottom-0 z-20 flex flex-col gap-3 px-5 pt-3 pb-8;
+}
+
+/* El plato con la pizza asoma por encima de la hoja */
+.sp-added__plate {
+  @apply relative mx-auto -mt-20 grid size-32 place-items-center rounded-full border-2;
+  background: var(--sp-tint);
+  border-color: var(--sp-navy);
+  box-shadow: 6px 6px 0 var(--sp-orange);
+}
+
+.sp-added__pizza {
+  @apply size-28;
+}
+
+.sp-added__seal {
+  @apply absolute -top-1 -right-1 grid size-10 place-items-center rounded-full border-2 border-white;
+  background: var(--sp-navy);
+  color: #fff;
+}
+
+.sp-added__seal svg {
+  @apply size-5;
+  stroke-width: 3;
+}
+
+.sp-added__title {
+  @apply text-center text-[28px] leading-8;
+}
+
+.sp-added__item {
+  @apply flex items-start gap-3 rounded-2xl border-2 bg-white p-3;
+  border-color: var(--sp-navy);
+}
+
+.sp-added__item-text {
+  @apply flex min-w-0 flex-1 flex-col gap-1.5;
+}
+
+.sp-added__item-name {
+  @apply text-sm font-bold;
+}
+
+.sp-added__item-price {
+  @apply text-base font-bold;
+}
+
+.sp-added__cart {
+  @apply flex items-center justify-center gap-2 text-sm font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-added__cart svg {
+  @apply size-4;
+  color: var(--sp-orange);
+}
+
+.sp-added__pair-title {
+  @apply mt-1;
+}
+
+.sp-added__pair {
+  @apply grid grid-cols-2 gap-2.5;
+}
+
+.sp-side {
+  @apply flex items-center gap-2 rounded-2xl border-2 border-dashed bg-white py-2 pr-2 pl-3;
+  border-color: rgb(0 43 143 / 0.3);
+}
+
+.sp-side__text {
+  @apply flex min-w-0 flex-1 flex-col;
+}
+
+.sp-side__name {
+  @apply truncate text-sm font-semibold;
+}
+
+.sp-side__price {
+  @apply text-xs;
+  color: var(--sp-muted);
+}
+
+.sp-side__add {
+  @apply size-8;
+}
+
+.sp-side__add svg {
+  @apply size-4;
+}
+
+/* ---------- 06 · Carrito ---------- */
+.sp-cart {
+  @apply gap-3 pb-44;
+}
+
+.sp-cart__top {
+  @apply flex items-center gap-3 pt-2;
+}
+
+.sp-cart__title {
+  @apply text-[28px] leading-7;
+}
+
+.sp-cart__count {
+  @apply text-sm font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-address {
+  @apply flex items-center gap-3 rounded-2xl border-2 bg-white px-3 py-2;
+  border-color: var(--sp-line);
+}
+
+.sp-address__pin {
+  @apply grid size-10 shrink-0 place-items-center rounded-full;
+  background: var(--sp-tint);
+  color: var(--sp-orange);
+}
+
+.sp-address__pin svg {
+  @apply size-5;
+}
+
+.sp-address__text {
+  @apply flex min-w-0 flex-1 flex-col;
+}
+
+.sp-address__line {
+  @apply truncate text-sm font-bold;
+}
+
+.sp-lines {
+  @apply flex flex-col gap-3;
+}
+
+.sp-line {
+  @apply flex gap-3 rounded-3xl border-2 bg-white px-3 py-2.5;
+  border-color: var(--sp-navy);
+  box-shadow: 4px 4px 0 var(--sp-mist);
+}
+
+.sp-line__thumb {
+  @apply grid size-18 shrink-0 place-items-center rounded-2xl p-1;
+  background: var(--sp-tint);
+}
+
+.sp-line__thumb .sp-pizza {
+  @apply size-full;
+}
+
+.sp-line__body {
+  @apply flex min-w-0 flex-1 flex-col gap-1;
+}
+
+.sp-line__head {
+  @apply flex items-start justify-between gap-2;
+}
+
+.sp-line__name {
+  @apply text-base leading-5 font-bold;
+}
+
+.sp-line__actions {
+  @apply -mt-1 -mr-1 flex;
+}
+
+.sp-line__action {
+  @apply grid size-8 place-items-center rounded-full;
+  color: var(--sp-muted);
+}
+
+.sp-line__action svg {
+  @apply size-4.5;
+}
+
+.sp-line__foot {
+  @apply mt-auto flex items-center justify-between;
+}
+
+.sp-line__price {
+  @apply text-lg font-bold;
+}
+
+.sp-cart__cta {
+  @apply absolute inset-x-5 bottom-26 z-10;
+}
+
+/* ---------- 07 · Pedido confirmado ---------- */
+.sp-confirmed {
+  @apply items-center gap-3 px-5 pt-16 pb-8 text-center;
+  background: radial-gradient(
+    circle at 50% 22%,
+    var(--sp-royal) 0,
+    var(--sp-navy) 60%
+  );
+  color: var(--sp-white);
+}
+
+.sp-confirmed__confetti {
+  @apply pointer-events-none absolute inset-0;
+}
+
+.sp-confetti {
+  @apply absolute -top-4 block size-3 rounded-full;
+  background: var(--sp-orange);
+}
+
+.sp-confetti:nth-child(3n) {
+  background: var(--sp-orange-soft);
+}
+
+.sp-confetti:nth-child(4n) {
+  @apply size-2;
+  background: var(--sp-white);
+}
+
+.sp-confetti:nth-child(5n) {
+  @apply size-4 border-2;
+  background: #d9381e;
+  border-color: #b02a14;
+}
+
+.sp-confetti:nth-child(1) {
+  left: 8%;
+}
+.sp-confetti:nth-child(2) {
+  left: 18%;
+}
+.sp-confetti:nth-child(3) {
+  left: 27%;
+}
+.sp-confetti:nth-child(4) {
+  left: 36%;
+}
+.sp-confetti:nth-child(5) {
+  left: 45%;
+}
+.sp-confetti:nth-child(6) {
+  left: 54%;
+}
+.sp-confetti:nth-child(7) {
+  left: 63%;
+}
+.sp-confetti:nth-child(8) {
+  left: 72%;
+}
+.sp-confetti:nth-child(9) {
+  left: 81%;
+}
+.sp-confetti:nth-child(10) {
+  left: 90%;
+}
+.sp-confetti:nth-child(11) {
+  left: 12%;
+}
+.sp-confetti:nth-child(12) {
+  left: 86%;
+}
+
+.sp-confirmed__mascot {
+  @apply relative size-50 shrink-0 object-contain;
+  filter: drop-shadow(0 12px 18px rgb(0 0 0 / 0.35));
+}
+
+.sp-confirmed__title {
+  @apply relative text-[32px] leading-8;
+}
+
+.sp-confirmed__order {
+  @apply relative rounded-full px-4 py-1.5 text-sm font-semibold;
+  background: rgb(244 244 244 / 0.14);
+}
+
+.sp-eta {
+  @apply relative mt-4 flex w-full flex-col items-center gap-1 rounded-[28px] bg-white px-5 pt-5 pb-4;
+  color: var(--sp-navy);
+  box-shadow: var(--sp-shadow-highlight);
+}
+
+.sp-eta__time {
+  @apply text-[40px] leading-10;
+}
+
+/* Pasos del pedido con una línea que se llena hasta el actual */
+.sp-steps {
+  @apply relative mt-3 grid w-full grid-cols-4;
+}
+
+.sp-steps::before,
+.sp-steps::after {
+  @apply absolute top-5 left-[12.5%] h-1 rounded-full content-[''];
+}
+
+.sp-steps::before {
+  @apply right-[12.5%];
+  background: var(--sp-mist);
+}
+
+.sp-steps::after {
+  width: 25%;
+  background: var(--sp-navy);
+}
+
+.sp-steps__item {
+  @apply relative z-10 flex flex-col items-center gap-1.5;
+}
+
+.sp-steps__dot {
+  @apply grid size-11 place-items-center rounded-full border-2 bg-white;
+  border-color: var(--sp-mist);
+  color: var(--sp-muted);
+}
+
+.sp-steps__dot svg {
+  @apply size-5;
+}
+
+.sp-steps__item--done .sp-steps__dot {
+  background: var(--sp-navy);
+  border-color: var(--sp-navy);
+  color: #fff;
+}
+
+.sp-steps__item--done .sp-steps__dot svg {
+  stroke-width: 3;
+}
+
+.sp-steps__item--current .sp-steps__dot {
+  background: var(--sp-orange);
+  border-color: var(--sp-navy);
+  color: #fff;
+}
+
+.sp-steps__name {
+  @apply text-xs font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-steps__item--done .sp-steps__name,
+.sp-steps__item--current .sp-steps__name {
+  @apply font-bold;
+  color: var(--sp-navy);
+}
+
+.sp-eta__summary {
+  @apply mt-3 w-full border-t-2 border-dashed pt-3 text-sm;
+  border-color: var(--sp-line);
+  color: var(--sp-muted);
+}
+
+.sp-confirmed__actions {
+  @apply relative mt-auto flex w-full flex-col gap-2.5;
+}
+
+/* ---------- 08 · Carrito vacío ---------- */
+.sp-empty {
+  @apply gap-4 pb-26;
+}
+
+.sp-empty__hero {
+  @apply flex flex-1 flex-col items-center justify-center gap-3 text-center;
+}
+
+.sp-empty__box {
+  @apply mb-1 h-auto w-60;
+}
+
+.sp-empty__lid,
+.sp-empty__base,
+.sp-empty__front {
+  fill: var(--sp-cream);
+  stroke: var(--sp-navy);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+
+.sp-empty__inside {
+  fill: var(--sp-tint);
+  stroke: rgb(0 43 143 / 0.3);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.sp-empty__logo {
+  fill: var(--sp-orange);
+  stroke: var(--sp-navy);
+  stroke-width: 3;
+}
+
+.sp-empty__logo-mark {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.sp-empty__crumb {
+  fill: var(--sp-orange-soft);
+}
+
+.sp-empty__title {
+  @apply max-w-70 text-[28px] leading-8;
+}
+
+.sp-empty__text {
+  @apply max-w-65 text-sm leading-5;
+  color: var(--sp-muted);
+}
+
+.sp-empty__suggestions {
+  @apply flex flex-col gap-2.5;
+}
+
+.sp-minis {
+  @apply grid grid-cols-2 gap-3;
+}
+
+.sp-mini {
+  @apply relative flex min-h-36 flex-col justify-end gap-1 overflow-hidden rounded-3xl border-2 bg-white p-3;
+  border-color: var(--sp-navy);
+  box-shadow: 4px 4px 0 var(--sp-mist);
+}
+
+.sp-mini__pizza {
+  @apply absolute -top-12 -right-8 size-26;
+}
+
+.sp-mini__name {
+  @apply relative max-w-[78%] text-sm leading-5 font-bold;
+}
+
+.sp-mini__foot {
+  @apply relative flex items-center justify-between;
+}
+
+.sp-mini__price {
+  @apply text-sm font-bold;
+}
+
+.sp-mini__add {
+  @apply size-9;
+}
+
+.sp-mini__add svg {
+  @apply size-4.5;
+}

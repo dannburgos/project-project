@@ -1,0 +1,513 @@
+/* Piezas de la app de Sonopizza que se repiten entre pantallas: tipografía,
+   botones, chips, buscador, tarjetas, contador, ticket, hojas y avisos. Salen
+   de los tokens del sistema de diseño (sonopizza.css) */
+
+/* Pantalla: ocupa el celular, con el contenido debajo de la barra de estado */
+.sp-screen {
+  @apply absolute inset-0 flex flex-col overflow-hidden px-5 pt-14;
+}
+
+/* Tipografía */
+.sp-display {
+  @apply uppercase;
+  font-family: var(--font-sono-display), sans-serif;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+
+.sp-label {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--sp-muted);
+}
+
+.sp-link {
+  @apply shrink-0 text-sm font-bold underline decoration-2 underline-offset-4;
+  color: var(--sp-orange);
+}
+
+.sp-match {
+  @apply rounded px-0.5;
+  background: rgb(255 90 0 / 0.18);
+  color: var(--sp-orange);
+}
+
+/* Foto de pizza: giros de un cuarto para variar la misma foto */
+.sp-pizza {
+  @apply block aspect-square object-contain select-none;
+  filter: drop-shadow(0 10px 14px rgb(0 20 70 / 0.28));
+}
+
+.sp-pizza--turn-0 {
+  rotate: 0deg;
+}
+
+.sp-pizza--turn-1 {
+  rotate: 90deg;
+}
+
+.sp-pizza--turn-2 {
+  rotate: 180deg;
+}
+
+.sp-pizza--turn-3 {
+  rotate: 270deg;
+}
+
+.sp-ingredient-icon {
+  @apply size-5 shrink-0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Botones: píldoras con la sombra corrida de la marca */
+.sp-button {
+  @apply inline-flex h-13 items-center justify-center gap-2 rounded-full border-2 px-6 text-base font-bold whitespace-nowrap;
+  border-color: var(--sp-navy);
+}
+
+.sp-button svg {
+  @apply size-5;
+}
+
+.sp-button--primary {
+  background: var(--sp-orange);
+  color: #fff;
+  box-shadow: var(--sp-shadow-button);
+}
+
+.sp-button--ghost {
+  @apply border-transparent bg-transparent;
+  color: var(--sp-navy);
+}
+
+.sp-button--on-dark {
+  @apply bg-transparent;
+  border-color: rgb(244 244 244 / 0.5);
+  color: var(--sp-white);
+}
+
+.sp-button--small {
+  @apply h-11 px-5 text-sm;
+}
+
+.sp-button--block {
+  @apply w-full;
+}
+
+/* Sin poder avanzar: gris azulado, sin sombra */
+.sp-button--off {
+  background: var(--sp-mist);
+  border-color: rgb(0 43 143 / 0.25);
+  color: rgb(0 43 143 / 0.55);
+  box-shadow: none;
+}
+
+.sp-icon-button {
+  @apply grid size-11 shrink-0 place-items-center rounded-full border-2;
+}
+
+.sp-icon-button svg {
+  @apply size-5;
+}
+
+.sp-icon-button--light {
+  @apply bg-white;
+  border-color: var(--sp-navy);
+  color: var(--sp-navy);
+}
+
+.sp-icon-button--glass {
+  background: rgb(244 244 244 / 0.16);
+  border-color: rgb(244 244 244 / 0.35);
+  color: var(--sp-white);
+  backdrop-filter: blur(8px);
+}
+
+.sp-icon-button--orange {
+  background: var(--sp-orange);
+  border-color: var(--sp-navy);
+  color: #fff;
+  box-shadow: 3px 3px 0 var(--sp-navy);
+}
+
+/* Buscador */
+.sp-search {
+  @apply flex h-13 w-full items-center gap-3 rounded-full border-2 bg-white pr-1.5 pl-5 text-sm;
+  border-color: var(--sp-navy);
+}
+
+.sp-search > svg {
+  @apply size-5 shrink-0;
+}
+
+.sp-search__placeholder {
+  @apply flex-1 truncate;
+  color: var(--sp-muted);
+}
+
+/* Buscador de inicio: sombra corrida suave, lupa naranja y el filtro como
+   ícono suelto tras una línea divisoria */
+.sp-search--home {
+  @apply pr-1;
+  box-shadow: 4px 4px 0 var(--sp-mist);
+}
+
+.sp-search--home > svg {
+  color: var(--sp-orange);
+}
+
+.sp-search__divider {
+  @apply h-6 w-0.5 shrink-0 rounded-full;
+  background: var(--sp-line);
+}
+
+.sp-search__tool {
+  @apply grid size-11 shrink-0 place-items-center rounded-full;
+  color: var(--sp-navy);
+}
+
+.sp-search__tool svg {
+  @apply size-5;
+}
+
+/* Buscando: borde naranja y anillo de foco */
+.sp-search--active {
+  @apply pr-3 text-base font-semibold;
+  border-color: var(--sp-orange);
+  box-shadow: 0 0 0 4px rgb(255 90 0 / 0.16);
+}
+
+.sp-search__query {
+  @apply flex flex-1 items-center;
+}
+
+.sp-search__caret {
+  @apply ml-0.5 inline-block h-5 w-0.5 rounded-full;
+  background: var(--sp-orange);
+}
+
+.sp-search__clear {
+  @apply grid size-8 place-items-center;
+  color: var(--sp-muted);
+}
+
+.sp-search__clear svg {
+  @apply size-5;
+}
+
+/* Chips */
+.sp-chips {
+  @apply flex gap-2;
+}
+
+.sp-chips--wrap {
+  @apply flex-wrap;
+}
+
+.sp-chip {
+  @apply inline-flex h-10 shrink-0 items-center gap-2 rounded-full border-2 px-4 text-sm font-semibold whitespace-nowrap;
+  background: #fff;
+  border-color: var(--sp-line);
+  color: var(--sp-navy);
+}
+
+.sp-chip svg {
+  @apply size-4.5;
+}
+
+.sp-chip--on {
+  background: var(--sp-navy);
+  border-color: var(--sp-navy);
+  color: var(--sp-white);
+}
+
+.sp-chip--outline {
+  @apply h-9 gap-1 bg-transparent px-3;
+  border-color: var(--sp-navy);
+}
+
+.sp-chip--soft {
+  @apply h-9 px-3;
+  border-color: var(--sp-navy);
+}
+
+.sp-chip--mini {
+  @apply h-6 gap-1 border px-2.5 text-xs;
+  background: var(--sp-tint);
+  border-color: transparent;
+}
+
+/* Ingrediente quitado: borde punteado y gris, con una equis */
+.sp-chip--removed {
+  @apply border-dashed;
+  background: transparent;
+  border-color: rgb(0 43 143 / 0.35);
+  color: rgb(0 43 143 / 0.55);
+}
+
+/* Sticker inclinado de la marca */
+.sp-sticker {
+  @apply inline-flex items-center gap-1.5 rounded-full border-2 px-3 py-1 text-xs font-bold tracking-[0.06em] uppercase;
+  background: var(--sp-orange);
+  border-color: #fff;
+  color: #fff;
+  box-shadow: 3px 3px 0 var(--sp-navy);
+}
+
+.sp-sticker svg {
+  @apply size-3.5;
+}
+
+/* Etiquetas de estado de una sección */
+.sp-tag {
+  @apply inline-flex h-7 items-center gap-1 rounded-full px-3 text-xs font-bold tracking-[0.06em] uppercase;
+}
+
+.sp-tag svg {
+  @apply size-3.5;
+  stroke-width: 3;
+}
+
+.sp-tag--done {
+  background: var(--sp-navy);
+  color: var(--sp-white);
+}
+
+.sp-tag--alert {
+  background: var(--sp-orange);
+  color: #fff;
+}
+
+.sp-tag--soft {
+  background: var(--sp-mist);
+  color: var(--sp-navy);
+}
+
+/* Encabezado de una sección con su enlace */
+.sp-section-head {
+  @apply flex items-baseline justify-between gap-3;
+}
+
+.sp-section-head__title {
+  @apply text-lg font-bold;
+}
+
+/* Datos cortos con ícono (valoración, tiempo) */
+.sp-meta {
+  @apply inline-flex items-center gap-1.5 text-sm;
+  color: var(--sp-muted);
+}
+
+.sp-meta b {
+  color: var(--sp-navy);
+}
+
+.sp-meta svg {
+  @apply size-4;
+  color: var(--sp-orange);
+}
+
+/* Contador */
+.sp-stepper {
+  @apply inline-flex h-13 items-center gap-2 rounded-full border-2 bg-white p-1;
+  border-color: var(--sp-navy);
+}
+
+.sp-stepper__button {
+  @apply grid size-10 place-items-center rounded-full;
+  background: var(--sp-mist);
+  color: var(--sp-navy);
+}
+
+.sp-stepper__button:disabled {
+  color: rgb(0 43 143 / 0.35);
+}
+
+.sp-stepper__button--add {
+  background: var(--sp-navy);
+  color: var(--sp-white);
+}
+
+.sp-stepper__button svg {
+  @apply size-4.5;
+}
+
+.sp-stepper__count {
+  @apply min-w-5 text-center text-base font-bold;
+}
+
+.sp-stepper--small {
+  @apply h-9 gap-1.5 p-0.5;
+}
+
+.sp-stepper--small .sp-stepper__button {
+  @apply size-7;
+}
+
+.sp-stepper--small .sp-stepper__button svg {
+  @apply size-3.5;
+}
+
+.sp-stepper--small .sp-stepper__count {
+  @apply text-sm;
+}
+
+/* Pestañas de categoría */
+.sp-tabs {
+  @apply -mx-5 flex gap-2 overflow-hidden px-5;
+}
+
+.sp-tab {
+  @apply flex h-10 shrink-0 items-center rounded-full border-2 px-4 text-sm font-semibold;
+  border-color: var(--sp-navy);
+  color: var(--sp-navy);
+}
+
+.sp-tab--on {
+  background: var(--sp-navy);
+  color: var(--sp-white);
+  box-shadow: 3px 3px 0 var(--sp-orange);
+}
+
+/* Tamaño elegible en la tarjeta del menú (P, M, F) */
+.sp-sizes {
+  @apply flex gap-1 rounded-full p-0.5;
+  background: var(--sp-mist);
+}
+
+.sp-sizes__item {
+  @apply grid size-7 place-items-center rounded-full text-xs font-bold;
+  color: var(--sp-muted);
+}
+
+.sp-sizes__item--on {
+  background: var(--sp-navy);
+  color: var(--sp-white);
+}
+
+/* Hoja blanca hueso que sube desde abajo */
+.sp-sheet {
+  background: var(--sp-white);
+  border-radius: 32px 32px 0 0;
+  box-shadow: var(--sp-shadow-sheet);
+}
+
+.sp-sheet__handle {
+  @apply mx-auto mb-2 block h-1.5 w-12 rounded-full;
+  background: rgb(0 43 143 / 0.2);
+}
+
+/* Barra fija de abajo (precio y acción) */
+.sp-bar {
+  @apply absolute inset-x-0 bottom-0 z-10 flex items-center gap-4 bg-white px-5 pt-4 pb-8;
+  border-radius: 28px 28px 0 0;
+  box-shadow: var(--sp-shadow-sheet);
+}
+
+.sp-bar__price {
+  @apply flex flex-col text-2xl leading-7 font-bold;
+}
+
+.sp-bar__price span {
+  @apply text-xs font-semibold tracking-[0.12em] uppercase;
+  color: var(--sp-muted);
+}
+
+.sp-bar__cta {
+  @apply flex-1;
+}
+
+/* Ticket del pedido: papel con el borde de abajo dentado */
+.sp-ticket {
+  @apply relative flex flex-col gap-2 bg-white px-5 pt-4 pb-3;
+  border-radius: 20px 20px 0 0;
+  filter: drop-shadow(0 6px 10px rgb(0 43 143 / 0.12));
+}
+
+.sp-ticket::after {
+  @apply absolute inset-x-0 top-full h-2.5 content-[''];
+  background:
+    linear-gradient(135deg, #fff 33.33%, transparent 33.33%) 0 0 / 12px 10px,
+    linear-gradient(225deg, #fff 33.33%, transparent 33.33%) 0 0 / 12px 10px;
+}
+
+.sp-ticket__head {
+  @apply flex items-center justify-between gap-3;
+}
+
+.sp-ticket__rows {
+  @apply flex flex-col gap-1.5;
+}
+
+.sp-ticket__row {
+  @apply flex items-baseline justify-between text-sm;
+}
+
+.sp-ticket__row dd {
+  @apply font-semibold;
+}
+
+.sp-ticket__row--total {
+  @apply mt-1 items-center border-t-2 border-dashed pt-2.5 text-base font-bold;
+  border-color: rgb(0 43 143 / 0.25);
+}
+
+.sp-ticket__row--total dd {
+  @apply text-2xl;
+}
+
+.sp-ticket__note {
+  @apply flex items-center gap-1.5 text-xs font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-ticket__note svg {
+  @apply size-4;
+  color: var(--sp-orange);
+}
+
+/* Aviso flotante (deshacer) */
+.sp-toast {
+  @apply absolute inset-x-5 z-20 flex h-14 items-center gap-3 rounded-2xl pr-3 pl-4 text-sm;
+  bottom: 176px;
+  background: var(--sp-dark);
+  color: var(--sp-white);
+  box-shadow: var(--sp-shadow-float);
+}
+
+.sp-toast > svg {
+  @apply size-5 shrink-0;
+  color: var(--sp-orange-soft);
+}
+
+.sp-toast__text {
+  @apply min-w-0 flex-1 truncate;
+}
+
+.sp-toast__undo {
+  @apply flex items-center gap-2 font-bold;
+  color: var(--sp-orange-soft);
+}
+
+/* Anillo que cuenta los segundos para deshacer */
+.sp-toast__timer {
+  @apply size-5 -rotate-90;
+}
+
+.sp-toast__timer circle {
+  fill: none;
+  stroke: var(--sp-orange-soft);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+}
+
+/* Toque del dedo (cuando el botón se tocó sin poder avanzar) */
+.sp-tap {
+  @apply pointer-events-none absolute top-1/2 left-1/2 size-10 -translate-1/2 rounded-full border-2;
+  border-color: var(--sp-orange);
+  background: rgb(255 90 0 / 0.15);
+}

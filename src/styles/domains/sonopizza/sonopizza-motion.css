@@ -1,0 +1,219 @@
+/* Pequeñas animaciones de las pantallas clave de Sonopizza. Se repiten para
+   que se vean en el tablero; con "reducir movimiento" todo queda quieto */
+
+/* La pizza gira despacio, como en una vitrina (inicio y detalle) */
+.sp-pizza--spin {
+  animation: sp-spin 48s linear infinite;
+}
+
+@keyframes sp-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+/* Los ingredientes flotan alrededor de la pizza del detalle */
+.sp-detail__bubble {
+  animation: sp-float 3.2s ease-in-out infinite alternate;
+}
+
+.sp-detail__bubble--two {
+  animation-delay: -0.8s;
+}
+
+.sp-detail__bubble--three {
+  animation-delay: -1.6s;
+}
+
+.sp-detail__bubble--four {
+  animation-delay: -2.4s;
+}
+
+@keyframes sp-float {
+  from {
+    translate: 0 -5px;
+  }
+
+  to {
+    translate: 0 5px;
+  }
+}
+
+/* El cursor del buscador parpadea */
+.sp-search__caret {
+  animation: sp-blink 1s steps(1) infinite;
+}
+
+@keyframes sp-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Falta el tamaño: las opciones se sacuden y el dedo marca el toque */
+.sp-custom--missing .sp-size-options {
+  animation: sp-shake 3s ease-in-out infinite;
+}
+
+@keyframes sp-shake {
+  0%,
+  22%,
+  100% {
+    translate: 0 0;
+  }
+
+  4%,
+  12% {
+    translate: -6px 0;
+  }
+
+  8%,
+  16% {
+    translate: 6px 0;
+  }
+}
+
+.sp-tap {
+  animation: sp-tap 3s ease-out infinite;
+}
+
+@keyframes sp-tap {
+  0% {
+    opacity: 1;
+    scale: 0.6;
+  }
+
+  30%,
+  100% {
+    opacity: 0;
+    scale: 2.2;
+  }
+}
+
+/* Agregado: la pizza cae en el plato y el sello de listo rebota */
+.sp-added__pizza {
+  animation: sp-drop 3.6s var(--sp-ease-back) infinite;
+}
+
+@keyframes sp-drop {
+  0% {
+    opacity: 0;
+    translate: 0 -64px;
+    rotate: -40deg;
+  }
+
+  22%,
+  100% {
+    opacity: 1;
+    translate: 0 0;
+    rotate: 0deg;
+  }
+}
+
+.sp-added__seal {
+  animation: sp-pop 3.6s var(--sp-ease-back) infinite;
+}
+
+@keyframes sp-pop {
+  0%,
+  20% {
+    scale: 0;
+  }
+
+  32%,
+  100% {
+    scale: 1;
+  }
+}
+
+/* Deshacer: el anillo cuenta los cinco segundos */
+.sp-toast__timer circle {
+  animation: sp-countdown 5s linear infinite;
+}
+
+@keyframes sp-countdown {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: 1;
+  }
+}
+
+/* Confirmado: la mascota rebota, cae confeti y el paso actual late */
+.sp-confirmed__mascot {
+  animation: sp-bob 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes sp-bob {
+  from {
+    translate: 0 -4px;
+    rotate: -3deg;
+  }
+
+  to {
+    translate: 0 4px;
+    rotate: 3deg;
+  }
+}
+
+.sp-confetti {
+  animation: sp-fall 6s linear infinite;
+}
+
+.sp-confetti:nth-child(2n) {
+  animation-duration: 7.5s;
+  animation-delay: -2s;
+}
+
+.sp-confetti:nth-child(3n) {
+  animation-duration: 5.2s;
+  animation-delay: -3.5s;
+}
+
+.sp-confetti:nth-child(5n) {
+  animation-delay: -1s;
+}
+
+@keyframes sp-fall {
+  from {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+
+  to {
+    translate: 24px 880px;
+    rotate: 540deg;
+  }
+}
+
+.sp-steps__item--current .sp-steps__dot {
+  animation: sp-pulse 1.8s ease-out infinite;
+}
+
+@keyframes sp-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(255 90 0 / 0.45);
+  }
+
+  100% {
+    box-shadow: 0 0 0 12px rgb(255 90 0 / 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-pizza--spin,
+  .sp-detail__bubble,
+  .sp-search__caret,
+  .sp-custom--missing .sp-size-options,
+  .sp-tap,
+  .sp-added__pizza,
+  .sp-added__seal,
+  .sp-toast__timer circle,
+  .sp-confirmed__mascot,
+  .sp-confetti,
+  .sp-steps__item--current .sp-steps__dot {
+    animation: none;
+  }
+}

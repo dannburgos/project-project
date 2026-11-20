@@ -1,0 +1,230 @@
+/* Prototipo de Sonopizza: tokens de la app (los del sistema de diseño del
+   caso), el celular, la barra inferior y el tablero de revisión */
+.sp-board,
+.sp-device {
+  --sp-navy: #002b8f;
+  --sp-royal: #0d47c9;
+  --sp-electric: #2563eb;
+  --sp-orange: #ff5a00;
+  --sp-orange-soft: #ff7a1a;
+  --sp-white: #f4f4f4;
+  --sp-dark: #1e1e1e;
+  /* Tintes de apoyo */
+  --sp-cream: #fff4e2;
+  --sp-tint: #fff1e6;
+  --sp-mist: #e2e7f2;
+  --sp-muted: rgb(0 43 143 / 0.65);
+  --sp-line: rgb(0 43 143 / 0.14);
+  /* Bordes */
+  --sp-radius-s: 8px;
+  --sp-radius-m: 16px;
+  --sp-radius-l: 24px;
+  /* Sombras: corridas y sólidas; solo las hojas flotan con sombra suave */
+  --sp-shadow-button: 4px 4px 0 var(--sp-navy);
+  --sp-shadow-card: 6px 6px 0 var(--sp-orange-soft);
+  --sp-shadow-highlight: 8px 8px 0 var(--sp-orange);
+  --sp-shadow-sheet: 0 -8px 24px rgb(0 43 143 / 0.16);
+  --sp-shadow-float: 0 12px 32px rgb(0 43 143 / 0.24);
+  /* Movimiento */
+  --sp-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --sp-ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --sp-screen-width: 390px;
+  --sp-screen-height: 844px;
+  --sp-bezel: 12px;
+  font-family: var(--font-sono-text), sans-serif;
+}
+
+/* Celular */
+.sp-device {
+  @apply relative inline-block rounded-[64px];
+  padding: var(--sp-bezel);
+  background: var(--sp-dark);
+  box-shadow: 0 24px 48px rgb(0 20 70 / 0.18);
+}
+
+/* Sin marco: la pantalla sola */
+.sp-device--bare {
+  @apply block rounded-none p-0 shadow-none;
+}
+
+.sp-device--bare .sp-device__island {
+  @apply top-3;
+}
+
+.sp-device--bare .sp-app {
+  @apply rounded-none;
+}
+
+.sp-app {
+  @apply relative overflow-hidden rounded-[52px];
+  width: var(--sp-screen-width);
+  height: var(--sp-screen-height);
+  background: var(--sp-white);
+  color: var(--sp-navy);
+}
+
+.sp-device__island {
+  @apply absolute top-6 left-1/2 h-8 w-28 -translate-x-1/2 rounded-full;
+  background: var(--sp-dark);
+}
+
+.sp-device__status {
+  @apply pointer-events-none absolute inset-x-0 top-0 z-30 flex h-14 items-center justify-between px-9 pt-1 text-base font-semibold;
+  color: var(--sp-navy);
+}
+
+.sp-device__status--light {
+  color: var(--sp-white);
+}
+
+.sp-device__icons {
+  @apply flex items-center gap-1.5;
+}
+
+.sp-device__icons svg {
+  @apply size-4;
+}
+
+.sp-device__home {
+  @apply pointer-events-none absolute bottom-2 left-1/2 z-30 h-1.5 w-36 -translate-x-1/2 rounded-full;
+  background: var(--sp-navy);
+}
+
+.sp-device__home--light {
+  background: var(--sp-white);
+}
+
+/* Barra inferior tradicional, pegada al borde: tres pestañas con ícono y
+   nombre. Es clara: un degradado de blanco a blanco hueso azulado, con un
+   brillo arriba, una sombra suave adentro abajo y otra afuera que la separa
+   del contenido, le da relieve. La pestaña actual pinta su ícono y su nombre
+   de naranja */
+.sp-nav {
+  @apply absolute inset-x-0 bottom-0 z-20 grid h-22 grid-cols-3 px-4 pt-2 pb-6;
+  border-radius: 28px 28px 0 0;
+  background: linear-gradient(180deg, #fff 0%, #fbfbfd 45%, #eceff7 100%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -12px 20px rgb(0 43 143 / 0.06),
+    0 -1px 0 rgb(0 43 143 / 0.08),
+    0 -12px 28px rgb(0 43 143 / 0.14);
+}
+
+.sp-nav__tab {
+  @apply flex flex-col items-center justify-center gap-1 text-xs font-semibold;
+  color: rgb(0 43 143 / 0.55);
+}
+
+.sp-nav__icon {
+  @apply relative grid size-10 place-items-center rounded-full;
+}
+
+.sp-nav__icon svg {
+  @apply size-6;
+}
+
+.sp-nav__tab--on {
+  @apply font-bold;
+  color: var(--sp-orange);
+}
+
+.sp-nav__tab--on .sp-nav__icon svg {
+  stroke-width: 2.5;
+}
+
+.sp-nav__label {
+  @apply leading-none;
+}
+
+.sp-nav__badge {
+  @apply absolute -top-1 -right-1.5 grid size-5 place-items-center rounded-full border-2 border-white text-xs leading-none font-bold;
+  background: var(--sp-orange);
+  color: #fff;
+}
+
+.sp-nav__tab--on .sp-nav__badge {
+  background: var(--sp-navy);
+}
+
+/* Tablero: un grupo por flujo, con sus pantallas una al lado de la otra */
+.sp-board {
+  @apply min-h-svh px-12 py-12;
+  --board-scale: 0.64;
+  background: var(--sp-white);
+  color: var(--sp-navy);
+}
+
+.sp-board__head {
+  @apply mb-12 flex max-w-3xl flex-col gap-3;
+}
+
+.sp-board__eyebrow {
+  @apply text-sm font-semibold tracking-[0.18em] uppercase;
+  color: var(--sp-orange);
+}
+
+.sp-board__title {
+  @apply text-5xl leading-none uppercase;
+  font-family: var(--font-sono-display), sans-serif;
+}
+
+.sp-board__hint {
+  @apply max-w-2xl text-base leading-6;
+  color: var(--sp-muted);
+}
+
+.sp-board__group {
+  @apply mb-16;
+}
+
+.sp-board__group-title {
+  @apply mb-6 inline-flex rounded-full border-2 px-5 py-2 text-base font-bold;
+  background: #fff;
+  border-color: var(--sp-navy);
+  box-shadow: 4px 4px 0 var(--sp-orange);
+}
+
+.sp-board__frames {
+  @apply flex flex-wrap gap-x-12 gap-y-14;
+}
+
+.sp-board__frame {
+  @apply flex shrink-0 flex-col gap-1.5;
+  width: calc(
+    (var(--sp-screen-width) + 2 * var(--sp-bezel)) * var(--board-scale)
+  );
+}
+
+.sp-board__screen {
+  @apply relative mb-4;
+  height: calc(
+    (var(--sp-screen-height) + 2 * var(--sp-bezel)) * var(--board-scale)
+  );
+}
+
+.sp-board__screen .sp-device {
+  @apply absolute top-0 left-0;
+  transform: scale(var(--board-scale));
+  transform-origin: top left;
+}
+
+.sp-board__step {
+  @apply flex flex-wrap items-baseline gap-x-2 gap-y-1 text-base font-bold;
+}
+
+.sp-board__number {
+  @apply text-lg font-normal;
+  font-family: var(--font-sono-display), sans-serif;
+  color: var(--sp-orange);
+}
+
+.sp-board__state {
+  @apply rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-[0.08em] uppercase;
+  background: var(--sp-navy);
+  color: var(--sp-white);
+}
+
+.sp-board__note {
+  @apply text-sm leading-5;
+  color: var(--sp-muted);
+}

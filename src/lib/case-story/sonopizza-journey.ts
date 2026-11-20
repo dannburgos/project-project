@@ -127,3 +127,30 @@ export function addJourneyMotion(
     start + DRAW_DURATION - 0.1
   );
 }
+
+// Las cinco tarjetas del journey miden lo mismo: todas toman el alto de la
+// más alta (se recalcula al cargar las fuentes y al cambiar el tamaño de la
+// ventana). Devuelve la función que lo deshace.
+export function syncJourneyCardHeights(root: HTMLElement) {
+  const cards = queryAll(root, '[data-journey-card]');
+  const sync = () => {
+    cards.forEach(card => {
+      card.style.minHeight = '';
+    });
+    const tallest = Math.max(0, ...cards.map(card => card.offsetHeight));
+    cards.forEach(card => {
+      card.style.minHeight = `${tallest}px`;
+    });
+  };
+
+  sync();
+  void document.fonts?.ready.then(sync);
+  window.addEventListener('resize', sync);
+
+  return () => {
+    window.removeEventListener('resize', sync);
+    cards.forEach(card => {
+      card.style.minHeight = '';
+    });
+  };
+}

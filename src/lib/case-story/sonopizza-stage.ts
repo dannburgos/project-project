@@ -8,7 +8,11 @@ import {
   prepareFlowsMotion
 } from '@/lib/case-story/sonopizza-flows';
 import { setupFreeScroll } from '@/lib/case-story/sonopizza-free';
-import { addJourneyMotion } from '@/lib/case-story/sonopizza-journey';
+import {
+  addJourneyMotion,
+  syncJourneyCardHeights
+} from '@/lib/case-story/sonopizza-journey';
+import { setupSonopizzaJump } from '@/lib/case-story/sonopizza-jump';
 import {
   addProductMotion,
   prepareProductMotion
@@ -25,8 +29,10 @@ import { createStepNavigator } from '@/lib/case-story/step-navigator';
 // con el efecto de data-sono-fx (slide, up, pop o draw). Una escena con
 // data-motion lleva además su movimiento propio (la auditoría y el journey).
 
-const EASE_CUT = 'expo.inOut';
-const EASE_IN = 'expo.out';
+// Curvas suaves (power3) para que los cortes entre escenas fluyan; con expo
+// se sentían bruscos y rápidos
+const EASE_CUT = 'power3.inOut';
+const EASE_IN = 'power3.out';
 
 // Corte en diagonal: el borde entra inclinado desde la derecha y cubre todo
 const DIAGONAL_HIDDEN = 'polygon(160% 0%, 200% 0%, 200% 100%, 130% 100%)';
@@ -38,27 +44,30 @@ function addEnter(
   band: HTMLElement | null
 ) {
   const type = view.dataset.enter ?? 'diagonal';
-  timeline.set(view, { autoAlpha: 1 });
 
   if (type === 'band' && band) {
-    // Una franja naranja barre la pantalla y, al retirarse, deja la escena
+    // Una franja naranja barre la pantalla y, al retirarse, deja la escena.
+    // La escena sigue escondida hasta que la franja tapa todo (sin un
+    // "mostrar" previo: en el segundo cero de la línea de tiempo, volver a la
+    // portada lo dejaba aplicado y la escena quedaba encima)
     timeline
       .set(view, { autoAlpha: 0 })
       .fromTo(
         band,
         { scaleX: 0, transformOrigin: 'left center' },
-        { scaleX: 1, duration: 0.6, ease: EASE_CUT }
+        { scaleX: 1, duration: 0.85, ease: EASE_CUT }
       )
       .set(view, { autoAlpha: 1 })
       .set(band, { transformOrigin: 'right center' })
-      .to(band, { scaleX: 0, duration: 0.6, ease: EASE_CUT });
+      .to(band, { scaleX: 0, duration: 0.85, ease: EASE_CUT });
     return;
   }
+  timeline.set(view, { autoAlpha: 1 });
   if (type === 'wipe') {
     timeline.fromTo(
       view,
       { clipPath: 'inset(0% 0% 0% 100%)' },
-      { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: EASE_CUT }
+      { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: EASE_CUT }
     );
     return;
   }
@@ -66,30 +75,33 @@ function addEnter(
     timeline.fromTo(
       view,
       { yPercent: 100 },
-      { yPercent: 0, duration: 1.1, ease: EASE_CUT }
+      { yPercent: 0, duration: 1.5, ease: EASE_CUT }
     );
     return;
   }
   timeline.fromTo(
     view,
     { clipPath: DIAGONAL_HIDDEN },
-    { clipPath: DIAGONAL_SHOWN, duration: 1.2, ease: EASE_CUT }
+    { clipPath: DIAGONAL_SHOWN, duration: 1.6, ease: EASE_CUT }
   );
 }
 
+// Con isTogether (data-reveal="together" en la escena) todas las piezas
+// entran a la vez; si no, una tras otra
 function addReveal(
   timeline: gsap.core.Timeline,
   pieces: HTMLElement[],
-  position: gsap.Position
+  position: gsap.Position,
+  isTogether = false
 ) {
   pieces.forEach((piece, index) => {
-    const at = index === 0 ? position : '<0.12';
+    const at = index === 0 ? position : isTogether ? '<' : '<0.16';
     const fx = piece.dataset.sonoFx ?? 'up';
     if (fx === 'slide') {
       timeline.fromTo(
         piece,
         { xPercent: 140 },
-        { xPercent: 0, duration: 1, ease: EASE_IN },
+        { xPercent: 0, duration: 1.3, ease: EASE_IN },
         at
       );
     } else if (fx === 'pop') {
@@ -100,8 +112,8 @@ function addReveal(
           scale: 1,
           rotate: 0,
           autoAlpha: 1,
-          duration: 0.6,
-          ease: 'back.out(1.8)'
+          duration: 0.8,
+          ease: 'back.out(1.6)'
         },
         at
       );
@@ -124,7 +136,7 @@ function addReveal(
       timeline.fromTo(
         piece,
         { y: 40, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.8, ease: EASE_IN },
+        { y: 0, autoAlpha: 1, duration: 1.1, ease: EASE_IN },
         at
       );
     }
@@ -171,9 +183,14 @@ export function setupSonopizzaStage(root: HTMLElement) {
         if (step === 0) {
           addEnter(timeline, view, band);
           if (previous) timeline.set(previous, { autoAlpha: 0 });
-          addReveal(timeline, pieces, '-=0.45');
+          addReveal(
+            timeline,
+            pieces,
+            '-=0.45',
+            view.dataset.reveal === 'together'
+          );
         } else {
-          addReveal(timeline, pieces, '>');
+          addReveal(timeline, pieces, '>', view.dataset.reveal === 'together');
         }
         if (view.dataset.motion === 'audit')
           addAuditMotion(timeline, view, step);
@@ -181,8 +198,8 @@ export function setupSonopizzaStage(root: HTMLElement) {
           addJourneyMotion(timeline, view);
         if (view.dataset.motion === 'architecture' && step === 0)
           addArchitectureMotion(timeline, view);
-        if (view.dataset.motion === 'flows')
-          addFlowsMotion(timeline, view, step);
+        if (view.dataset.motion === 'flows' && step === 0)
+          addFlowsMotion(timeline, view);
         if (view.dataset.motion === 'product')
           addProductMotion(timeline, view, step);
       }
@@ -201,6 +218,8 @@ export function setupSonopizzaStage(root: HTMLElement) {
   );
 
   const free = setupFreeScroll(root, stepView);
+  const jump = setupSonopizzaJump(root);
+  const unsyncJourney = syncJourneyCardHeights(root);
 
   const teardown = createStepNavigator({
     root,
@@ -210,6 +229,7 @@ export function setupSonopizzaStage(root: HTMLElement) {
     stepSection,
     sectionStep,
     innerScroll: free.innerScroll,
+    jumpTransition: jump.transition,
     onStep: step => {
       // El contador de celular toma el color claro sobre las escenas oscuras
       root.dataset.world = stepSurface[step] === 'dark' ? 'green' : 'cream';
@@ -220,10 +240,12 @@ export function setupSonopizzaStage(root: HTMLElement) {
   return () => {
     teardown();
     free.teardown();
+    jump.teardown();
+    unsyncJourney();
     timeline.kill();
     const pieces = queryAll(
       root,
-      '[data-sono-in], [data-audit-slot], [data-audit-panel], [data-journey-line], [data-journey-marker], [data-journey-dot], [data-journey-label], [data-journey-card], [data-sitemap-node], [data-sitemap-tree], [data-sitemap-hop], [data-sitemap-marker], [data-flow-map], [data-flow-node], [data-flow-spot], [data-flow-edge], [data-flow-edge-label], [data-flow-tab], [data-free-in], [data-product-letter], [data-product-fade], [data-product-chip], [data-product-phone], [data-product-bg]'
+      '[data-sono-in], [data-audit-slot], [data-audit-panel], [data-journey-line], [data-journey-marker], [data-journey-dot], [data-journey-label], [data-journey-card], [data-sitemap-node], [data-sitemap-lines], [data-flow-map], [data-flow-node], [data-flow-spot], [data-flow-intro], [data-flow-lines], [data-free-in], [data-product-letter], [data-product-fade], [data-product-chip], [data-product-phone], [data-product-bg]'
     );
     gsap.set([...views, band, ...pieces], {
       clearProps: 'all'

@@ -44,6 +44,8 @@
 @import './components/organisms/case-chapters.css';
 @import './components/organisms/case-story.css';
 @import './components/organisms/sonopizza-story.css';
+/* Sistema de diseño de Sonopizza (módulo 04 del caso) */
+@import './components/organisms/sono-design-system.css';
 @import './components/organisms/petride-story.css';
 @import './components/organisms/pet-design-system.css';
 @import './components/organisms/work-carousel.css';

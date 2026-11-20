@@ -1,6 +1,8 @@
 // Contenido del caso de Sonopizza, contado como recorrido por pasos. Cada
 // módulo sigue el orden del documento maestro del proyecto.
 
+import type { SonoDesignSystem } from '@/content/sonopizza-design-system.types';
+
 export type SonoTextPart = {
   text: string;
   isStrong?: boolean;
@@ -20,16 +22,18 @@ export type SonoFlow = {
 };
 
 // Diagrama de un flujo sobre un lienzo de 1400 × 520. Cada pantalla y cada
-// camino tiene un orden: el diagrama crece en ese orden, así las ramas que
-// comparten orden salen a la vez
+// camino tiene su orden dentro del flujo (las ramas comparten orden)
 export type SonoFlowNodeKind = 'start' | 'step' | 'decision' | 'alt' | 'end';
 
 export type SonoFlowNode = {
   label: string;
   detail?: string;
   kind: SonoFlowNodeKind;
+  // Centro y ancho de la pantalla en el lienzo (las píldoras de inicio y fin
+  // son más angostas, así queda aire para las flechas)
   x: number;
   y: number;
+  width: number;
   order: number;
 };
 
@@ -47,33 +51,27 @@ export type SonoFlowMap = {
   edges: readonly SonoFlowEdge[];
 };
 
-export type SonoSwatch = {
-  name: string;
-  hex: string;
-};
-
-export type SonoTypeface = {
-  name: string;
-  role: string;
-  sample: string;
+// Imagen con su texto alternativo
+export type SonoImage = {
+  src: string;
+  alt: string;
 };
 
 export type SonopizzaStory = {
   // Nombres de las secciones, para la navegación con cuadrados
   sections: readonly string[];
   cover: {
-    eyebrow: string;
     wordmark: readonly string[];
     tagline: string;
     facts: readonly SonoLabeledText[];
-    disclaimer: string;
     photoLabel: string;
     mascotAlt: string;
   };
   challenge: {
     number: string;
     name: string;
-    title: string;
+    // El titular, una línea por elemento
+    titleLines: readonly string[];
     context: SonoLabeledText;
     opportunity: SonoLabeledText;
     challengeLabel: string;
@@ -86,55 +84,43 @@ export type SonopizzaStory = {
     number: string;
     name: string;
     title: string;
-    // Cinco capturas: la primera es la principal (la del centro)
-    captures: readonly string[];
+    // Capturas de la app actual en el orden de la fila; la última es la que
+    // queda junto a los hallazgos
+    captures: readonly SonoImage[];
     dimensions: readonly SonoLabeledText[];
-    note: string;
   };
+  // Benchmark y hallazgos en tres slides que se pasan con clic: cada una
+  // compara un par de aspectos en las tres marcas y cierra con su hallazgo
   benchmark: {
-    title: string;
-    lead: string;
-    captureLabel: string;
-    dimensionsTitle: string;
-    dimensions: readonly string[];
-    takeawayTitle: string;
-    // Lo que falta por documentar se muestra con este texto
-    pending: string;
-    apps: readonly SonoBenchmarkApp[];
-    note: string;
-  };
-  synthesis: {
-    title: string;
-    opportunities: readonly SonoLabeledText[];
-    direction: string;
-  };
-  concept: {
-    number: string;
-    name: string;
-    verticalTitle: string;
-    title: string;
-    text: string;
-    principlesTitle: string;
-    principles: readonly string[];
-    synthesis: readonly string[];
-    photoLabel: string;
-    // Espacio para una imagen del concepto, junto al texto
-    imageLabel: string;
+    eyebrow: string;
+    // Nombre de los botones de las slides (para lectores de pantalla)
+    navLabel: string;
+    previousLabel: string;
+    nextLabel: string;
+    signals: Record<SonoBenchmarkSignal, string>;
+    takeLabel: string;
+    findingLabel: string;
+    forSonopizzaLabel: string;
+    paletteLabel: string;
+    // Marcas en el orden de las tarjetas de cada slide
+    brands: readonly SonoBenchmarkBrand[];
+    slides: readonly SonoBenchmarkSlide[];
   };
   persona: {
     subtitle: string;
+    // Quién es y para qué sirve: el usuario de estudio, ficticio
+    title: string;
+    note: string;
     name: string;
-    portraitLabel: string;
+    portrait: SonoImage;
     facts: readonly SonoLabeledText[];
     context: readonly SonoTextPart[];
   };
   journey: {
     subtitle: string;
     title: string;
-    // Nombre de cada fila de las tarjetas: acción, piensa, fricción y
-    // oportunidad
+    // Nombre de cada fila de las tarjetas: piensa, fricción y oportunidad
     rowLabels: {
-      action: string;
       thought: string;
       friction: string;
       opportunity: string;
@@ -144,49 +130,18 @@ export type SonopizzaStory = {
   architecture: {
     title: string;
     root: string;
-    legend: {
-      nav: string;
-      step: string;
-      flow: string;
-    };
     sections: readonly SonoSiteNode[];
-    navigation: string;
   };
+  // Flujos principales: uno a la vista y los demás con las flechas
   flows: {
     title: string;
+    navLabel: string;
+    previousLabel: string;
+    nextLabel: string;
     items: readonly SonoFlow[];
-    note: string;
   };
-  visual: {
-    number: string;
-    name: string;
-    title: string;
-    personality: readonly string[];
-    paletteTitle: string;
-    palette: readonly SonoSwatch[];
-    paletteNote: string;
-    typeTitle: string;
-    typefaces: readonly SonoTypeface[];
-    brandTitle: string;
-    logoLabel: string;
-    mascotText: string;
-    photographyTitle: string;
-    photography: readonly string[];
-    // Elementos de marca hechos con partes de la pizza (por diseñar)
-    elements: {
-      title: string;
-      lead: string;
-      pending: string;
-      items: readonly SonoLabeledText[];
-    };
-    // Lo que tendría el sistema de diseño de Sonopizza (por construir)
-    system: {
-      title: string;
-      lead: string;
-      pending: string;
-      groups: readonly SonoListGroup[];
-    };
-  };
+  // 04 · Sistema de diseño: fundamentos, componentes y elementos de marca
+  designSystem: SonoDesignSystem;
   // 05 · El producto en acción: una escena por flujo (referencia:
   // motionin.design/gallery/marathon)
   product: {
@@ -206,19 +161,71 @@ export type SonoProductScene = {
   chips: readonly SonoLabeledText[];
 };
 
-// Un referente del benchmark: lo que se observó en cada dimensión (en el
-// mismo orden de dimensions) y lo que se toma de él. Vacío = por completar.
-export type SonoBenchmarkApp = {
-  name: string;
-  observations: readonly string[];
-  takeaway: string;
+// Logo de una marca del benchmark
+export type SonoBenchmarkLogo = {
+  src: string;
+  // El logo ya es una tarjeta con su propio fondo (Papa John's): llena el
+  // cuadro y lleva un borde blanco en vez del fondo claro
+  isCard?: boolean;
 };
 
-// Una etapa del journey. Las acciones salen de los flujos; las fricciones,
-// de la auditoría, y las oportunidades, de la síntesis y la arquitectura
+export type SonoBenchmarkBrand = {
+  name: string;
+  logo: SonoBenchmarkLogo;
+};
+
+// Cómo le va a la marca en un aspecto
+export type SonoBenchmarkSignal = 'strength' | 'friction' | 'neutral';
+
+// Ícono de cada observación (el componente lo traduce a un ícono de lucide)
+export type SonoBenchmarkIcon =
+  | 'layout-list'
+  | 'image'
+  | 'flame'
+  | 'id-card'
+  | 'search'
+  | 'ruler'
+  | 'store'
+  | 'lock'
+  | 'list-checks'
+  | 'receipt'
+  | 'chevrons-up-down'
+  | 'map-pin'
+  | 'camera'
+  | 'shapes'
+  | 'layout-grid';
+
+export type SonoBenchmarkRow = {
+  icon: SonoBenchmarkIcon;
+  text: string;
+  signal: SonoBenchmarkSignal;
+};
+
+// Tarjeta de una marca en una slide: sus observaciones (en el orden de
+// rowLabels) y, en la slide visual, su paleta
+export type SonoBenchmarkCard = {
+  palette?: readonly string[];
+  rows: readonly SonoBenchmarkRow[];
+};
+
+export type SonoBenchmarkSlide = {
+  aspects: string;
+  title: string;
+  // Nombre de cada fila de las tarjetas
+  rowLabels: readonly string[];
+  // Una tarjeta por marca, en el orden de brands
+  cards: readonly SonoBenchmarkCard[];
+  // Marca de la que se toma la idea (índice en brands)
+  takenFrom: number;
+  finding: string;
+  decision: string;
+};
+
+// Una etapa del journey. Las fricciones salen de la auditoría y las
+// oportunidades, de los hallazgos y la arquitectura. Textos cortos y de largo
+// parecido para que las tarjetas midan igual
 export type SonoJourneyStage = {
   name: string;
-  action: string;
   thought: string;
   friction: string;
   opportunity: string;
@@ -231,10 +238,5 @@ export type SonoSiteNodeKind = 'nav' | 'step' | 'end';
 export type SonoSiteNode = {
   title: string;
   kind: SonoSiteNodeKind;
-  items: readonly string[];
-};
-
-export type SonoListGroup = {
-  title: string;
   items: readonly string[];
 };
