@@ -1,13 +1,9 @@
 import { Minus, Plus } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
-
 type SonopizzaStepperProps = {
   count: number;
   decreaseLabel: string;
   increaseLabel: string;
-  // Más compacto, dentro de las tarjetas del carrito
-  isSmall?: boolean;
 };
 
 // Contador de cantidad de la app: restar, número y sumar. Con una unidad el
@@ -15,11 +11,10 @@ type SonopizzaStepperProps = {
 export function SonopizzaStepper({
   count,
   decreaseLabel,
-  increaseLabel,
-  isSmall = false
+  increaseLabel
 }: SonopizzaStepperProps) {
   return (
-    <span className={cn('sp-stepper', isSmall && 'sp-stepper--small')}>
+    <span className="sp-stepper">
       <button
         type="button"
         className="sp-stepper__button"

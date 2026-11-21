@@ -1,158 +1,110 @@
-import { ArrowRight, ChevronDown, CircleX, Search } from 'lucide-react';
+import { Search, SlidersHorizontal } from 'lucide-react';
 
 import { fillTemplate } from '@/lib/case-story/fill-template.util';
 import { cn } from '@/lib/utils';
-import { formatPrice } from '@/utils/price.util';
 
 import { SONOPIZZA_PRODUCTS } from '../../example-menu';
 import { sonopizzaMessages } from '../../messages';
-import {
-  hasSonopizzaMatch,
-  splitSonopizzaMatch
-} from '../../sonopizza-match.util';
 import type {
   SonopizzaIngredientKey,
-  SonopizzaMenuVariant
+  SonopizzaSizeKey
 } from '../../types/sonopizza.types';
-import { SonopizzaIconButton } from '../atoms/sonopizza-icon-button';
-import { SonopizzaIngredientIcon } from '../atoms/sonopizza-ingredient-icon';
-import { SonopizzaPizzaPhoto } from '../atoms/sonopizza-pizza-photo';
-import { SonopizzaKeyboard } from '../molecules/sonopizza-keyboard';
 import { SonopizzaProductCard } from '../molecules/sonopizza-product-card';
 
-// Ingredientes sugeridos para buscar mientras se escribe
-const SUGGESTED_INGREDIENTS: readonly SonopizzaIngredientKey[] = [
+// Ingredientes que se pueden filtrar en el panel
+const FILTER_INGREDIENTS: readonly SonopizzaIngredientKey[] = [
   'mushroom',
   'olive',
-  'pepper'
+  'pepper',
+  'pepperoni'
 ];
 
-type SonopizzaHighlightProps = {
-  text: string;
-  query: string;
-};
+const SIZE_KEYS: readonly SonopizzaSizeKey[] = ['personal', 'medium', 'family'];
 
-// Texto con la parte que coincide con la búsqueda resaltada
-function SonopizzaHighlight({ text, query }: SonopizzaHighlightProps) {
-  const [before, match, after] = splitSonopizzaMatch(text, query);
-  return (
-    <>
-      {before}
-      {match && <mark className="sp-match">{match}</mark>}
-      {after}
-    </>
-  );
-}
-
-// Menú buscando: el campo activo con lo escrito, resultados al instante (con
-// la coincidencia resaltada, también en la etiqueta), búsqueda por
-// ingrediente y el teclado
-function SonopizzaMenuSearch() {
-  const copy = sonopizzaMessages.search;
-  const results = SONOPIZZA_PRODUCTS.filter(
-    product =>
-      hasSonopizzaMatch(product.name, copy.query) ||
-      hasSonopizzaMatch(product.tag, copy.query)
-  );
-
-  return (
-    <div className="sp-screen sp-menu sp-menu--search">
-      <div className="sp-menu__searchbar">
-        <div className="sp-search sp-search--active">
-          <Search aria-hidden="true" />
-          <span className="sp-search__query">
-            {copy.query}
-            <span className="sp-search__caret" aria-hidden="true" />
-          </span>
-          <button
-            type="button"
-            className="sp-search__clear"
-            aria-label={copy.clearLabel}
-          >
-            <CircleX aria-hidden="true" />
-          </button>
-        </div>
-        <span className="sp-link">{copy.cancel}</span>
-      </div>
-
-      <p className="sp-menu__results-label">
-        {fillTemplate(copy.resultsTemplate, {
-          count: results.length,
-          query: copy.query
-        })}
-      </p>
-      <ul className="sp-results">
-        {results.map(product => (
-          <li key={product.id} className="sp-result">
-            <span className="sp-result__thumb">
-              <SonopizzaPizzaPhoto photo={product.photo} turn={product.turn} />
-            </span>
-            <span className="sp-result__body">
-              <span className="sp-result__name">
-                <SonopizzaHighlight text={product.name} query={copy.query} />
-              </span>
-              {product.tag && (
-                <span className="sp-result__tag">
-                  <SonopizzaHighlight text={product.tag} query={copy.query} />
-                </span>
-              )}
-              <span className="sp-result__price">
-                {sonopizzaMessages.common.from}{' '}
-                {formatPrice(product.prices.personal)}
-              </span>
-            </span>
-            <ArrowRight className="sp-result__go" aria-hidden="true" />
-          </li>
-        ))}
-      </ul>
-
-      <p className="sp-menu__results-label">{copy.byIngredient}</p>
-      <ul className="sp-chips sp-chips--wrap">
-        {SUGGESTED_INGREDIENTS.map(ingredient => (
-          <li key={ingredient} className="sp-chip sp-chip--soft">
-            <SonopizzaIngredientIcon ingredient={ingredient} />
-            {sonopizzaMessages.ingredients[ingredient]}
-          </li>
-        ))}
-      </ul>
-
-      <SonopizzaKeyboard />
-    </div>
-  );
-}
-
-type SonopizzaMenuScreenProps = {
-  variant?: SonopizzaMenuVariant;
-};
-
-// 02 · Menú por categorías: título, pestañas, cuántas hay y cómo se ordenan,
-// y las tarjetas con el tamaño elegible desde la tarjeta. Con la variante
-// "search", el mismo menú buscando
-export function SonopizzaMenuScreen({
-  variant = 'browse'
-}: SonopizzaMenuScreenProps) {
+// 02 · Menú: título, buscador como el del inicio con el botón de filtros,
+// cuántas hay y cómo se ordenan, y las tarjetas con el precio desde (el
+// tamaño se elige en la personalización). Una animación toca el botón de
+// filtros y despliega el panel (orden, preferencias, ingredientes y tamaño),
+// que se queda abierto un momento y se vuelve a cerrar
+export function SonopizzaMenuScreen() {
   const copy = sonopizzaMessages.menu;
-  if (variant === 'search') return <SonopizzaMenuSearch />;
 
   return (
     <div className="sp-screen sp-menu">
       <header className="sp-menu__top">
         <h1 className="sp-display sp-menu__title">{copy.title}</h1>
-        <SonopizzaIconButton icon={Search} label={copy.searchLabel} />
       </header>
 
-      <ul className="sp-tabs" role="tablist">
-        {copy.tabs.map((tab, index) => (
-          <li
-            key={tab}
-            role="tab"
-            aria-selected={index === 0}
-            className={cn('sp-tab', index === 0 && 'sp-tab--on')}
+      <div className="sp-menu__finder">
+        <div className="sp-search sp-search--home">
+          <Search aria-hidden="true" />
+          <span className="sp-search__placeholder">
+            {copy.searchPlaceholder}
+          </span>
+          <span className="sp-search__divider" aria-hidden="true" />
+          <button
+            type="button"
+            className="sp-search__tool sp-menu__filter-button"
+            aria-label={copy.filterLabel}
           >
-            {tab}
-          </li>
-        ))}
-      </ul>
+            <SlidersHorizontal aria-hidden="true" />
+            <span className="sp-tap sp-menu__filter-tap" aria-hidden="true" />
+          </button>
+        </div>
+
+        <section className="sp-filters" aria-label={copy.filters.title}>
+          <div className="sp-filters__group">
+            <span className="sp-label">{copy.filters.sortTitle}</span>
+            <ul className="sp-chips sp-chips--wrap">
+              {copy.filters.sort.map((option, index) => (
+                <li
+                  key={option}
+                  className={cn(
+                    'sp-chip sp-chip--soft',
+                    index === 0 && 'sp-chip--on'
+                  )}
+                >
+                  {option}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="sp-filters__group">
+            <ul className="sp-chips sp-chips--wrap">
+              {copy.filters.preferences.map(option => (
+                <li key={option} className="sp-chip sp-chip--soft">
+                  {option}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="sp-filters__group">
+            <span className="sp-label">{copy.filters.ingredientsTitle}</span>
+            <ul className="sp-chips sp-chips--wrap">
+              {FILTER_INGREDIENTS.map(ingredient => (
+                <li key={ingredient} className="sp-chip sp-chip--soft">
+                  {sonopizzaMessages.ingredients[ingredient]}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="sp-filters__group">
+            <span className="sp-label">{copy.filters.sizeTitle}</span>
+            <ul className="sp-chips sp-chips--wrap">
+              {SIZE_KEYS.map(size => (
+                <li key={size} className="sp-chip sp-chip--soft">
+                  {sonopizzaMessages.sizes[size]}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <span className="sp-button sp-button--primary sp-button--small sp-button--block">
+            {fillTemplate(copy.filters.applyTemplate, {
+              count: SONOPIZZA_PRODUCTS.length
+            })}
+          </span>
+        </section>
+      </div>
 
       <div className="sp-menu__meta">
         <span className="sp-menu__count">
@@ -160,20 +112,12 @@ export function SonopizzaMenuScreen({
             count: SONOPIZZA_PRODUCTS.length
           })}
         </span>
-        <span className="sp-chip sp-chip--outline">
-          {copy.sortLabel}
-          <ChevronDown aria-hidden="true" />
-        </span>
+        <span className="sp-menu__sorted">{copy.sortedLabel}</span>
       </div>
 
       <ul className="sp-products">
-        {SONOPIZZA_PRODUCTS.map((product, index) => (
-          <SonopizzaProductCard
-            key={product.id}
-            product={product}
-            size={index === 1 ? 'personal' : 'medium'}
-            isFeatured={index === 0}
-          />
+        {SONOPIZZA_PRODUCTS.map(product => (
+          <SonopizzaProductCard key={product.id} product={product} />
         ))}
       </ul>
     </div>

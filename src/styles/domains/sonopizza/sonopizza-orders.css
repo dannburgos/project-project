@@ -1,0 +1,245 @@
+/* ---------- 08 · Seguimiento y 09 · Mis pedidos ----------
+   Reusan el encabezado del carrito. El seguimiento es una cuenta regresiva
+   con la pizza como reloj; mis pedidos, una tarjeta azul para el pedido en
+   curso y tarjetas blancas para los anteriores */
+.sp-tracking,
+.sp-orders {
+  @apply pb-8;
+}
+
+/* Cuánto falta, en grande, y a qué hora llega */
+.sp-tracking__eta {
+  @apply flex shrink-0 flex-col items-center;
+}
+
+.sp-tracking__minutes {
+  @apply text-[56px] leading-[56px];
+  color: var(--sp-electric);
+}
+
+.sp-tracking__clock {
+  @apply text-sm leading-5 font-semibold;
+  color: var(--sp-muted);
+}
+
+/* La pizza, grande, sobre un halo claro */
+.sp-tracking__stage {
+  @apply relative flex shrink-0 justify-center;
+}
+
+.sp-tracking__stage::before {
+  @apply absolute top-1/2 left-1/2 size-80 -translate-x-1/2 -translate-y-1/2 rounded-full content-[''];
+  background: radial-gradient(
+    circle,
+    rgb(255 255 255 / 0.95) 0,
+    rgb(255 255 255 / 0) 70%
+  );
+}
+
+.sp-ring {
+  @apply relative size-60 shrink-0;
+}
+
+.sp-ring__svg {
+  @apply absolute inset-0 size-full;
+}
+
+.sp-ring__track,
+.sp-ring__progress {
+  fill: none;
+  stroke-width: 10;
+}
+
+.sp-ring__track {
+  stroke: var(--sp-mist);
+}
+
+.sp-ring__progress {
+  stroke: var(--sp-electric);
+  stroke-linecap: round;
+}
+
+.sp-ring__center {
+  @apply absolute inset-6 grid place-items-center rounded-full bg-white;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-tracking__pizza {
+  @apply size-44;
+  filter: drop-shadow(0 8px 10px rgb(0 20 70 / 0.25));
+}
+
+/* Código de entrega: cuatro dígitos para dárselos al repartidor */
+.sp-code {
+  @apply flex shrink-0 flex-col items-center gap-2 rounded-3xl bg-white p-4;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-code__digits {
+  @apply flex gap-2;
+}
+
+.sp-code__digit {
+  @apply grid h-12 w-11 place-items-center rounded-xl text-2xl;
+  background: rgb(37 99 235 / 0.12);
+  color: var(--sp-electric);
+}
+
+.sp-code__hint {
+  @apply text-sm leading-5;
+  color: var(--sp-muted);
+}
+
+/* Quién lleva el pedido y qué tan cerca va */
+.sp-courier {
+  @apply flex shrink-0 items-center gap-3 rounded-2xl bg-white p-3;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-courier__icon {
+  @apply grid size-11 shrink-0 place-items-center rounded-full;
+  background: var(--sp-tint);
+  color: var(--sp-orange);
+}
+
+.sp-courier__icon svg {
+  @apply size-5;
+}
+
+.sp-courier__text {
+  @apply flex min-w-0 flex-col;
+}
+
+.sp-courier__title {
+  @apply text-sm leading-5 font-bold;
+}
+
+.sp-courier__sub {
+  @apply text-sm leading-5;
+  color: var(--sp-muted);
+}
+
+.sp-tracking__help {
+  @apply mt-auto flex h-13 w-full shrink-0 items-center justify-center gap-2 rounded-full bg-white text-sm font-bold;
+  color: var(--sp-navy);
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-tracking__help svg {
+  @apply size-5;
+}
+
+.sp-orders__group {
+  @apply flex shrink-0 flex-col gap-2;
+}
+
+/* Pedido en curso: tarjeta azul medio con el paso en grande y una flecha */
+.sp-active {
+  @apply relative flex items-center justify-between gap-3 rounded-3xl p-4;
+  background: var(--sp-electric);
+  color: #fff;
+  box-shadow: 0 14px 28px rgb(37 99 235 / 0.3);
+}
+
+.sp-active__text {
+  @apply flex flex-col gap-0.5;
+}
+
+.sp-active__kicker {
+  @apply text-sm leading-5 font-semibold tracking-[0.14em] uppercase;
+  color: rgb(255 255 255 / 0.85);
+}
+
+.sp-active__status {
+  @apply text-[22px] leading-6;
+}
+
+.sp-active__eta {
+  @apply text-sm leading-5 font-semibold;
+  color: rgb(255 255 255 / 0.9);
+}
+
+.sp-active__go {
+  @apply grid size-11 shrink-0 place-items-center rounded-full bg-white;
+  color: var(--sp-electric);
+}
+
+.sp-active__go svg {
+  @apply size-5;
+}
+
+.sp-orders__list {
+  @apply flex flex-col gap-3;
+}
+
+.sp-past {
+  @apply flex flex-col gap-3 rounded-3xl bg-white p-4;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-past__top {
+  @apply flex items-start gap-3;
+}
+
+.sp-past__thumb {
+  @apply grid size-14 shrink-0 place-items-center rounded-full p-1;
+  background: var(--sp-tint);
+}
+
+.sp-past__thumb .sp-pizza {
+  @apply size-full;
+}
+
+.sp-past__text {
+  @apply flex min-w-0 flex-1 flex-col;
+}
+
+.sp-past__name {
+  @apply text-sm leading-5 font-bold;
+}
+
+.sp-past__detail {
+  @apply text-sm leading-5;
+  color: rgb(27 35 56 / 0.75);
+}
+
+.sp-past__more {
+  @apply ml-1.5 font-bold;
+  color: var(--sp-electric);
+}
+
+.sp-past__date {
+  @apply text-sm leading-5;
+  color: var(--sp-muted);
+}
+
+.sp-past__status {
+  @apply inline-flex h-6 shrink-0 items-center gap-1 rounded-full px-2 text-sm font-bold;
+  background: rgb(37 99 235 / 0.12);
+  color: var(--sp-electric);
+}
+
+.sp-past__status svg {
+  @apply size-3.5;
+  stroke-width: 3;
+}
+
+.sp-past__foot {
+  @apply flex items-center justify-between gap-3;
+}
+
+.sp-past__total {
+  @apply text-xl leading-6;
+  color: var(--sp-navy);
+}
+
+/* "Pedir de nuevo": botón azul medio, más discreto que el naranja principal */
+.sp-past__reorder {
+  @apply inline-flex h-10 items-center gap-2 rounded-full px-4 text-sm font-bold;
+  background: var(--sp-electric);
+  color: #fff;
+}
+
+.sp-past__reorder svg {
+  @apply size-4;
+}

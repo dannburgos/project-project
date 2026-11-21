@@ -1,13 +1,14 @@
 import type { sonopizzaMessages } from '../../messages';
 import type { SonopizzaNavKey } from '../../types/sonopizza.types';
-import { SonopizzaAddedScreen } from './sonopizza-added-screen';
 import { SonopizzaCartScreen } from './sonopizza-cart-screen';
+import { SonopizzaCheckoutScreen } from './sonopizza-checkout-screen';
 import { SonopizzaConfirmedScreen } from './sonopizza-confirmed-screen';
-import { SonopizzaCustomScreen } from './sonopizza-custom-screen';
-import { SonopizzaDetailScreen } from './sonopizza-detail-screen';
-import { SonopizzaEmptyCartScreen } from './sonopizza-empty-cart-screen';
 import { SonopizzaHomeScreen } from './sonopizza-home-screen';
+import { SonopizzaNotificationsScreen } from './sonopizza-notifications-screen';
+import { SonopizzaOrdersScreen } from './sonopizza-orders-screen';
 import { SonopizzaMenuScreen } from './sonopizza-menu-screen';
+import { SonopizzaProductScreen } from './sonopizza-product-screen';
+import { SonopizzaTrackingScreen } from './sonopizza-tracking-screen';
 
 export type SonopizzaScreenKey = keyof typeof sonopizzaMessages.board.frames;
 export type SonopizzaFlowKey = keyof typeof sonopizzaMessages.board.groups;
@@ -28,8 +29,8 @@ export type SonopizzaFlow = {
   screens: SonopizzaFlowScreen[];
 };
 
-// Productos en el carrito del recorrido (la vegetariana y dos pepperoni)
-const CART_COUNT = 3;
+// Productos en el carrito del recorrido: una sola pizza, la vegetariana
+const CART_COUNT = 1;
 
 // Las pantallas clave de los tres flujos, en orden, con sus estados al lado
 export const SONOPIZZA_FLOWS: SonopizzaFlow[] = [
@@ -49,30 +50,16 @@ export const SONOPIZZA_FLOWS: SonopizzaFlow[] = [
         screen: <SonopizzaMenuScreen />
       },
       {
-        key: 'search',
-        step: '02 · b',
-        isState: true,
-        screen: <SonopizzaMenuScreen variant="search" />
-      },
-      {
-        key: 'detail',
+        key: 'notifications',
         step: '03',
-        isStatusLight: true,
-        screen: <SonopizzaDetailScreen />
+        screen: <SonopizzaNotificationsScreen />
       }
     ]
   },
   {
     key: 'flowTwo',
     screens: [
-      { key: 'custom', step: '04', screen: <SonopizzaCustomScreen /> },
-      {
-        key: 'missingSize',
-        step: '04 · b',
-        isState: true,
-        screen: <SonopizzaCustomScreen variant="missingSize" />
-      },
-      { key: 'added', step: '05', screen: <SonopizzaAddedScreen /> }
+      { key: 'product', step: '04', screen: <SonopizzaProductScreen /> }
     ]
   },
   {
@@ -80,32 +67,20 @@ export const SONOPIZZA_FLOWS: SonopizzaFlow[] = [
     screens: [
       {
         key: 'cart',
-        step: '06',
+        step: '05',
         navActive: 'cart',
         cartCount: CART_COUNT,
         screen: <SonopizzaCartScreen />
       },
-      {
-        key: 'undo',
-        step: '06 · b',
-        isState: true,
-        navActive: 'cart',
-        cartCount: 1,
-        screen: <SonopizzaCartScreen variant="undo" />
-      },
+      { key: 'checkout', step: '06', screen: <SonopizzaCheckoutScreen /> },
       {
         key: 'confirmed',
         step: '07',
         isStatusLight: true,
         screen: <SonopizzaConfirmedScreen />
       },
-      {
-        key: 'emptyCart',
-        step: '08',
-        isState: true,
-        navActive: 'cart',
-        screen: <SonopizzaEmptyCartScreen />
-      }
+      { key: 'tracking', step: '08', screen: <SonopizzaTrackingScreen /> },
+      { key: 'orders', step: '09', screen: <SonopizzaOrdersScreen /> }
     ]
   }
 ];

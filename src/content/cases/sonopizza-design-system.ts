@@ -23,7 +23,7 @@ export const sonopizzaDesignSystem: SonoDesignSystem = {
         { name: 'Royal Blue', hex: '#0D47C9', role: 'Fondos de marca' },
         { name: 'Electric Blue', hex: '#2563EB', role: 'Enlaces y foco' },
         { name: 'Bright Orange', hex: '#FF5A00', role: 'Acción principal' },
-        { name: 'Soft Orange', hex: '#FF7A1A', role: 'Acentos y sombras' },
+        { name: 'Soft Orange', hex: '#FF7A1A', role: 'Acentos y degradados' },
         { name: 'Off White', hex: '#F4F4F4', role: 'Fondo de la app' },
         { name: 'Dark Gray', hex: '#1E1E1E', role: 'Superficies oscuras' }
       ]
@@ -109,25 +109,25 @@ export const sonopizzaDesignSystem: SonoDesignSystem = {
     },
     shadows: {
       title: 'Sombras',
-      note: 'Corridas y sólidas, como un sticker: sin difuminado. Solo las hojas flotantes llevan sombra suave.',
+      note: 'Suaves y difusas: las superficies flotan sin bordes gruesos. Los botones son planos, de un solo color, y lo elegido lleva un anillo naranja.',
       tokens: [
         {
           id: 'button',
           name: 'Botón',
-          value: '4 · 4 · Navy',
+          value: 'Color plano, sin sombra',
           use: 'Botones y controles'
         },
         {
           id: 'card',
-          name: 'Tarjeta',
-          value: '6 · 6 · Soft Orange',
-          use: 'Tarjetas de producto'
+          name: 'Suave',
+          value: '0 · 8 · 24 · Navy 8 %',
+          use: 'Tarjetas, buscador y opciones'
         },
         {
           id: 'highlight',
-          name: 'Destacado',
-          value: '8 · 8 · Bright Orange',
-          use: 'Lo recomendado o lo elegido'
+          name: 'Elegido',
+          value: 'Anillo 2 px · Bright Orange',
+          use: 'Tamaño, resultado o filtro elegido'
         },
         {
           id: 'sheet',
@@ -169,7 +169,7 @@ export const sonopizzaDesignSystem: SonoDesignSystem = {
     },
     icons: {
       title: 'Iconografía',
-      note: 'Trazo de 2 px y puntas redondas, dentro de un círculo con borde y sombra corrida.',
+      note: 'Trazo de 2 px y puntas redondas, sobre un círculo blanco que flota con sombra suave.',
       items: [
         { id: 'home', name: 'Inicio' },
         { id: 'pizza', name: 'Menú' },
@@ -197,7 +197,7 @@ export const sonopizzaDesignSystem: SonoDesignSystem = {
     },
     tabs: {
       title: 'Pestañas de categoría',
-      items: ['Pizzas', 'Mitad y mitad', 'Combos', 'Bebidas']
+      items: ['Pizzas', 'Dos sabores', 'Combos', 'Bebidas']
     },
     search: {
       title: 'Buscador',
@@ -223,7 +223,7 @@ export const sonopizzaDesignSystem: SonoDesignSystem = {
       ],
       ingredientsTitle: 'Ingredientes',
       removedTemplate: 'Sin {name}',
-      ingredients: ['Mozzarella', 'Pepperoni', 'Cebolla', 'Orégano'],
+      ingredients: ['Mozzarella', 'Pepperoni', 'Aceitunas', 'Orégano'],
       extrasTitle: 'Extras',
       optionalLabel: 'Opcional',
       extras: [
@@ -304,7 +304,7 @@ export const sonopizzaDesignSystem: SonoDesignSystem = {
     loaderLabel: 'Preparando tu pedido',
     toppings: [
       { name: 'Pepperoni', state: 'added' },
-      { name: 'Cebolla', state: 'removed' },
+      { name: 'Pimentón', state: 'removed' },
       { name: 'Doble queso', state: 'extra', price: 4000 },
       { name: 'Aceitunas', state: 'added' },
       { name: 'Champiñones', state: 'extra', price: 3000 }

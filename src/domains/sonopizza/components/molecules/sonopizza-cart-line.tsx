@@ -1,37 +1,49 @@
 import { Pencil, Trash2 } from 'lucide-react';
 
-import { fillTemplate } from '@/lib/case-story/fill-template.util';
 import { formatPrice } from '@/utils/price.util';
 
-import { SONOPIZZA_EXTRAS, findSonopizzaProduct } from '../../example-menu';
+import { findSonopizzaProduct } from '../../example-menu';
 import { sonopizzaMessages } from '../../messages';
+import { describeSonopizzaCartLine } from '../../sonopizza-order.util';
 import type { SonopizzaCartLine as SonopizzaCartLineData } from '../../types/sonopizza.types';
 import { SonopizzaPizzaPhoto } from '../atoms/sonopizza-pizza-photo';
-import { SonopizzaStepper } from '../atoms/sonopizza-stepper';
 
 type SonopizzaCartLineProps = {
   line: SonopizzaCartLineData;
+  // Versión compacta y solo de lectura (en el checkout): la foto, el nombre y
+  // el precio, sin detalles ni íconos de editar y eliminar
+  isCompact?: boolean;
 };
 
 // Un producto del carrito: la foto, el nombre, cómo se pidió (tamaño, lo que
-// se quitó y los extras), el precio de la línea, la cantidad y las acciones
-// de editar y eliminar a la vista
-export function SonopizzaCartLine({ line }: SonopizzaCartLineProps) {
+// se quitó y los extras), el precio de la línea y las acciones de editar y
+// eliminar a la vista. En el checkout va compacto: solo la foto, el nombre y
+// el precio
+export function SonopizzaCartLine({
+  line,
+  isCompact = false
+}: SonopizzaCartLineProps) {
   const copy = sonopizzaMessages;
   const product = findSonopizzaProduct(line.productId);
   if (!product) return null;
 
-  const details = [
-    copy.sizes[line.size],
-    ...line.removed.map(ingredient =>
-      fillTemplate(copy.custom.removedTemplate, {
-        name: copy.ingredients[ingredient].toLowerCase()
-      })
-    ),
-    ...SONOPIZZA_EXTRAS.filter(extra => line.extras.includes(extra.id)).map(
-      extra => `+ ${extra.name}`
-    )
-  ];
+  const price = formatPrice(line.unitPrice * line.quantity);
+
+  if (isCompact) {
+    return (
+      <li className="sp-line sp-line--compact">
+        <span className="sp-line__thumb">
+          <SonopizzaPizzaPhoto photo={product.photo} turn={product.turn} />
+        </span>
+        <p className="sp-line__name">{product.name}</p>
+        <span className="sp-display sp-display--figures sp-line__price">
+          {price}
+        </span>
+      </li>
+    );
+  }
+
+  const details = describeSonopizzaCartLine(line);
 
   return (
     <li className="sp-line">
@@ -66,15 +78,9 @@ export function SonopizzaCartLine({ line }: SonopizzaCartLineProps) {
           ))}
         </ul>
         <div className="sp-line__foot">
-          <span className="sp-line__price">
-            {formatPrice(line.unitPrice * line.quantity)}
+          <span className="sp-display sp-display--figures sp-line__price">
+            {price}
           </span>
-          <SonopizzaStepper
-            count={line.quantity}
-            decreaseLabel={copy.common.decrease}
-            increaseLabel={copy.common.increase}
-            isSmall
-          />
         </div>
       </div>
     </li>

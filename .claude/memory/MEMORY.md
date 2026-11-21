@@ -17,6 +17,7 @@
 - [Rama de Sonopizza](project-sonopizza-branch.md) — se sigue en feat/sonopizza (main + avance viejo del caso), en chat nuevo
 - [Paleta de Sonopizza](project-sonopizza-palette.md) — los 7 HEX del caso son los reales; no volver a preguntar
 - [Flujos de Sonopizza](project-sonopizza-flows-approach.md) — sin flujos completos: inventario de pantallas clave, disruptivas y con su porqué; recordárselo al llegar a flujos
-- [Prototipo Sonopizza](project-sonopizza-prototype.md) — tablero /prototypes/sonopizza/board con 11 pantallas clave; falta llevarlas al caso
+- [Prototipo Sonopizza](project-sonopizza-prototype.md) — tablero /prototypes/sonopizza/board con 9 pantallas, sin estados (incluye checkout, notificaciones, seguimiento y mis pedidos; sin «eliminar y deshacer» ni «carrito vacío»; 03 fusiona detalle y personalización; 1 sola pizza; sin pantalla de «agregado»); animar el precio en vivo; falta llevarlas al caso
 - [Mudanza al computador personal](project-move-to-personal-computer.md) — Dann deja el trabajo pronto; repo público; originales y memoria solo en este Mac
+- [Estilo moderno de Sonopizza](feedback-sonopizza-modern-style.md) — sin bordes gruesos ni sombras naranjas; botones planos de un solo color; texto en tinta oscura, azul solo en títulos
 - [Rutina de cada noche](feedback-nightly-backup-routine.md) — "guarda y sube" = memoria al repo + commit/push + zip liviano en el Escritorio; avisar qué agregar al zip de originales

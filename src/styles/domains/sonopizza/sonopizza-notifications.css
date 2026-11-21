@@ -1,0 +1,73 @@
+/* ---------- 03 · Notificaciones ----------
+   Reusa el encabezado del carrito. Los avisos van en grupos, cada uno en su
+   tarjeta blanca con el ícono de su tipo */
+.sp-notifications {
+  @apply pb-8;
+}
+
+/* "Notificaciones" es larga: más chica para que no toque el botón de volver */
+.sp-cart__title--long {
+  @apply text-[22px] leading-6;
+}
+
+.sp-notices {
+  @apply flex shrink-0 flex-col gap-2;
+}
+
+.sp-notices__head {
+  @apply flex items-center justify-between px-1;
+}
+
+.sp-notices__mark {
+  @apply text-sm font-bold;
+  color: var(--sp-electric);
+}
+
+.sp-notices__list {
+  @apply flex flex-col gap-2;
+}
+
+/* Todos los avisos miden lo mismo: el título en una línea, el texto en dos y la
+   hora */
+.sp-notice {
+  @apply relative flex h-24 items-center gap-3 rounded-2xl bg-white px-3 py-2;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+/* Todos los íconos van en el mismo círculo cálido, sin importar el tipo de aviso */
+.sp-notice__icon {
+  @apply grid size-11 shrink-0 place-items-center rounded-full;
+  background: var(--sp-tint);
+  color: var(--sp-orange);
+}
+
+.sp-notice__icon svg {
+  @apply size-5;
+}
+
+.sp-notice__body {
+  @apply flex min-w-0 flex-1 flex-col pr-4;
+}
+
+.sp-notice__title {
+  @apply truncate text-sm leading-5 font-semibold;
+}
+
+.sp-notice--new .sp-notice__title {
+  @apply font-bold;
+}
+
+.sp-notice__text {
+  @apply line-clamp-2 text-sm leading-5;
+  color: rgb(27 35 56 / 0.75);
+}
+
+.sp-notice__time {
+  @apply text-sm leading-5 font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-notice__dot {
+  @apply absolute top-3 right-3 size-2.5 rounded-full;
+  background: var(--sp-orange);
+}

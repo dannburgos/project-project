@@ -1,4 +1,4 @@
-import { Bike, Check, ChefHat, House, ReceiptText } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 import { fillTemplate } from '@/lib/case-story/fill-template.util';
 import { cn } from '@/lib/utils';
@@ -6,13 +6,10 @@ import { formatPrice } from '@/utils/price.util';
 
 import { SONOPIZZA_CART, SONOPIZZA_DELIVERY } from '../../example-menu';
 import { sonopizzaMessages } from '../../messages';
-
-// Ícono de cada paso del pedido, en orden
-const STEP_ICONS = [ReceiptText, ChefHat, Bike, House] as const;
-// Paso en el que va el pedido (0 = recibido)
-const CURRENT_STEP = 1;
-// Confeti de pepperonis y chispas sobre el azul
-const CONFETTI = Array.from({ length: 12 }, (_, index) => index);
+import {
+  SONOPIZZA_ORDER_CURRENT_STEP,
+  SONOPIZZA_ORDER_STEP_ICONS
+} from '../../sonopizza-order-steps.util';
 
 // 07 · Pedido confirmado: celebración en azul con la mascota, el número del
 // pedido y una tarjeta con lo que más importa: cuánto falta y en qué paso va
@@ -28,11 +25,6 @@ export function SonopizzaConfirmedScreen() {
 
   return (
     <div className="sp-screen sp-confirmed">
-      <div className="sp-confirmed__confetti" aria-hidden="true">
-        {CONFETTI.map(index => (
-          <span key={index} className="sp-confetti" />
-        ))}
-      </div>
       <img
         src="/sonopizza/mascot.webp"
         alt=""
@@ -46,12 +38,14 @@ export function SonopizzaConfirmedScreen() {
 
       <section className="sp-eta" aria-label={copy.etaLabel}>
         <p className="sp-label sp-eta__label">{copy.etaLabel}</p>
-        <p className="sp-display sp-eta__time">{copy.eta}</p>
+        <p className="sp-display sp-display--figures sp-eta__time">
+          {copy.eta}
+        </p>
         <ol className="sp-steps">
           {copy.steps.map((step, index) => {
-            const Icon = STEP_ICONS[index] ?? Check;
-            const isDone = index < CURRENT_STEP;
-            const isCurrent = index === CURRENT_STEP;
+            const Icon = SONOPIZZA_ORDER_STEP_ICONS[index] ?? Check;
+            const isDone = index < SONOPIZZA_ORDER_CURRENT_STEP;
+            const isCurrent = index === SONOPIZZA_ORDER_CURRENT_STEP;
             return (
               <li
                 key={step}
@@ -75,10 +69,14 @@ export function SonopizzaConfirmedScreen() {
           })}
         </ol>
         <p className="sp-eta__summary">
-          {fillTemplate(copy.summaryTemplate, {
-            count,
-            total: formatPrice(total)
-          })}
+          {count === 1
+            ? fillTemplate(copy.summaryOneTemplate, {
+                total: formatPrice(total)
+              })
+            : fillTemplate(copy.summaryTemplate, {
+                count,
+                total: formatPrice(total)
+              })}
         </p>
       </section>
 

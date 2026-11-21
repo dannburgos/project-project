@@ -1,7 +1,11 @@
 import type {
   SonopizzaCartLine,
   SonopizzaExtra,
+  SonopizzaPastOrder,
   SonopizzaProduct,
+  SonopizzaSauce,
+  SonopizzaSizeKey,
+  SonopizzaSliceCount,
   SonopizzaWeekPromo
 } from './types/sonopizza.types';
 
@@ -17,17 +21,18 @@ export const SONOPIZZA_PRODUCTS: readonly SonopizzaProduct[] = [
     turn: 0,
     prices: { personal: 28000, medium: 36000, family: 44000 },
     ingredients: ['tomato', 'cheese', 'pepperoni'],
-    tag: 'Más pedida'
+    tag: 'Más pedida',
+    isFavorite: true
   },
   {
     id: 'veggie',
     name: 'Vegetariana de la huerta',
     description:
-      'Tomate, cebolla morada, pimentón, champiñones y aceitunas negras.',
+      'Verduras frescas sobre salsa de tomate y mozzarella gratinada.',
     photo: 'veggie',
     turn: 0,
     prices: { personal: 26000, medium: 34000, family: 42000 },
-    ingredients: ['tomato', 'onion', 'pepper', 'mushroom', 'olive'],
+    ingredients: ['tomato', 'pepper', 'mushroom', 'olive'],
     tag: 'Nueva'
   },
   {
@@ -51,41 +56,113 @@ export const SONOPIZZA_PRODUCTS: readonly SonopizzaProduct[] = [
   }
 ];
 
-export const SONOPIZZA_EXTRAS: readonly SonopizzaExtra[] = [
-  { id: 'double-cheese', name: 'Doble queso', price: 4000 },
-  { id: 'cheese-crust', name: 'Borde de queso', price: 6000 },
-  { id: 'more-olives', name: 'Más aceitunas', price: 3000 }
+// Porciones de cada tamaño (las mismas que dicen los textos de tamaños)
+export const SONOPIZZA_SLICE_COUNT: Record<
+  SonopizzaSizeKey,
+  SonopizzaSliceCount
+> = { personal: 4, medium: 6, family: 8 };
+
+// Salsas: la de la receta (tomate) viene incluida. Cambiarla puede costar
+export const SONOPIZZA_SAUCES: readonly SonopizzaSauce[] = [
+  { id: 'tomato', name: 'Tomate', price: 0, tone: 'tomato' },
+  { id: 'white', name: 'Blanca', price: 0, tone: 'white' },
+  { id: 'bbq', name: 'BBQ', price: 1500, tone: 'bbq' },
+  { id: 'pesto', name: 'Pesto', price: 2000, tone: 'pesto' }
 ];
 
-// Para acompañar, en la hoja de "agregado al carrito"
-export const SONOPIZZA_SIDES: readonly SonopizzaExtra[] = [
-  { id: 'soda', name: 'Gaseosa 1,5 L', price: 6000 },
-  { id: 'garlic-bread', name: 'Palitos de ajo', price: 9000 }
+// Extras: el borde relleno (queso, o bocadillo con queso) y las adiciones
+export const SONOPIZZA_EXTRAS: readonly SonopizzaExtra[] = [
+  {
+    id: 'cheese-crust',
+    name: 'Borde de queso',
+    shortName: 'Queso',
+    price: 6000,
+    group: 'crust'
+  },
+  {
+    id: 'guava-crust',
+    name: 'Borde de bocadillo',
+    shortName: 'Bocadillo',
+    price: 6000,
+    group: 'crust'
+  },
+  { id: 'double-cheese', name: 'Doble queso', price: 4000, group: 'addition' },
+  { id: 'more-olives', name: 'Más aceitunas', price: 3000, group: 'addition' }
 ];
 
 // Envío a domicilio
 export const SONOPIZZA_DELIVERY = 5000;
 
-// El carrito del recorrido: la vegetariana que se personalizó y dos
-// pepperoni personales
+// El carrito del recorrido: para el prototipo, una sola pizza, la vegetariana
+// que se personalizó (mediana, con todos sus ingredientes y con doble queso)
 export const SONOPIZZA_CART: readonly SonopizzaCartLine[] = [
   {
     id: 'line-veggie',
     productId: 'veggie',
     size: 'medium',
     quantity: 1,
-    removed: ['onion'],
+    removed: [],
     extras: ['double-cheese'],
     unitPrice: 38000
+  }
+];
+
+// Pedidos anteriores de ejemplo (inventados), del más reciente al más viejo. El
+// último lleva dos productos
+export const SONOPIZZA_PAST_ORDERS: readonly SonopizzaPastOrder[] = [
+  {
+    id: 'SP-2310',
+    date: '15 nov · 8:12 p. m.',
+    lines: [
+      {
+        id: 'past-veggie',
+        productId: 'veggie',
+        size: 'medium',
+        quantity: 1,
+        removed: [],
+        extras: [],
+        unitPrice: 34000
+      }
+    ]
   },
   {
-    id: 'line-pepperoni',
-    productId: 'pepperoni',
-    size: 'personal',
-    quantity: 2,
-    removed: [],
-    extras: [],
-    unitPrice: 28000
+    id: 'SP-2155',
+    date: '7 nov · 7:40 p. m.',
+    lines: [
+      {
+        id: 'past-pepperoni',
+        productId: 'pepperoni',
+        size: 'family',
+        quantity: 1,
+        removed: [],
+        extras: [],
+        unitPrice: 44000
+      }
+    ]
+  },
+  {
+    id: 'SP-2040',
+    date: '29 oct · 6:55 p. m.',
+    lines: [
+      {
+        id: 'past-double-pepperoni',
+        productId: 'double-pepperoni',
+        size: 'medium',
+        quantity: 1,
+        removed: [],
+        extras: [],
+        unitPrice: 39000
+      },
+      {
+        id: 'past-garden',
+        productId: 'garden',
+        size: 'personal',
+        quantity: 1,
+        removed: [],
+        extras: [],
+        unitPrice: 27000
+      }
+    ]
   }
 ];
 
@@ -100,3 +177,6 @@ export const SONOPIZZA_WEEK_PROMO: SonopizzaWeekPromo = {
   price: 34000,
   savings: 34000
 };
+
+// Promos de la semana en el carrusel del Inicio (se muestra la primera)
+export const SONOPIZZA_WEEK_PROMOS_TOTAL = 3;

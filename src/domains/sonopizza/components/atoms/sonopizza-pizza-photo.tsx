@@ -20,8 +20,6 @@ const TURN_CLASS: Record<SonopizzaTurn, string> = {
 type SonopizzaPizzaPhotoProps = {
   photo: SonopizzaPhoto;
   turn?: SonopizzaTurn;
-  // Gira despacio, como en una vitrina (inicio y detalle)
-  isSpinning?: boolean;
   className?: string;
 };
 
@@ -30,19 +28,13 @@ type SonopizzaPizzaPhotoProps = {
 export function SonopizzaPizzaPhoto({
   photo,
   turn = 0,
-  isSpinning = false,
   className
 }: SonopizzaPizzaPhotoProps) {
   return (
     <img
       src={PHOTO_SRC[photo]}
       alt=""
-      className={cn(
-        'sp-pizza',
-        TURN_CLASS[turn],
-        isSpinning && 'sp-pizza--spin',
-        className
-      )}
+      className={cn('sp-pizza', TURN_CLASS[turn], className)}
       draggable={false}
     />
   );

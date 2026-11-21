@@ -9,30 +9,22 @@ import {
 import { cn } from '@/lib/utils';
 import { formatPrice } from '@/utils/price.util';
 
-import { SONOPIZZA_PRODUCTS, SONOPIZZA_WEEK_PROMO } from '../../example-menu';
+import {
+  SONOPIZZA_PRODUCTS,
+  SONOPIZZA_WEEK_PROMO,
+  SONOPIZZA_WEEK_PROMOS_TOTAL
+} from '../../example-menu';
 import { sonopizzaMessages } from '../../messages';
+import { SonopizzaCategorySticker } from '../atoms/sonopizza-category-sticker';
 import { SonopizzaPizzaPhoto } from '../atoms/sonopizza-pizza-photo';
 
-// Ilustración y color de fondo de cada acceso a una categoría, en el orden de
-// los textos: la margarita con una porción levantada, mitad pepperoni y mitad
-// vegetariana, pizza con gaseosa y la gaseosa sola, todo visto desde arriba
+// Sticker y color de fondo de cada acceso a una categoría, en el orden de los
+// textos: porción, pizza de dos sabores, caja con gaseosa y el vaso
 const CATEGORY_ART = [
-  {
-    image: '/sonopizza/app/category-pizzas.webp',
-    tone: 'sp-shortcut__art--orange'
-  },
-  {
-    image: '/sonopizza/app/category-two-flavors.webp',
-    tone: 'sp-shortcut__art--cream'
-  },
-  {
-    image: '/sonopizza/app/category-combos.webp',
-    tone: 'sp-shortcut__art--mist'
-  },
-  {
-    image: '/sonopizza/app/category-drinks.webp',
-    tone: 'sp-shortcut__art--royal'
-  }
+  { art: 'slice', tone: 'sp-shortcut__art--orange' },
+  { art: 'half', tone: 'sp-shortcut__art--cream' },
+  { art: 'combo', tone: 'sp-shortcut__art--electric' },
+  { art: 'drink', tone: 'sp-shortcut__art--royal' }
 ] as const;
 
 // 01 · Inicio: dónde se entrega y las notificaciones, la pregunta del día, el
@@ -88,11 +80,9 @@ export function SonopizzaHomeScreen() {
             <li key={name} className="sp-shortcut">
               <span className={cn('sp-shortcut__art', art?.tone)}>
                 {art && (
-                  <img
-                    src={art.image}
-                    alt=""
-                    className="sp-shortcut__image"
-                    draggable={false}
+                  <SonopizzaCategorySticker
+                    art={art.art}
+                    className="sp-shortcut__sticker"
                   />
                 )}
               </span>
@@ -121,10 +111,7 @@ export function SonopizzaHomeScreen() {
 
       <section className="sp-home__promos">
         <div className="sp-section-head">
-          <h2 className="sp-display sp-home__promos-title">
-            {copy.promosTitle}
-          </h2>
-          <span className="sp-link">{copy.seeAll}</span>
+          <h2 className="sp-home__promos-title">{copy.promosTitle}</h2>
         </div>
         <article className="sp-promo">
           <SonopizzaPizzaPhoto
@@ -141,7 +128,7 @@ export function SonopizzaHomeScreen() {
               <s className="sp-promo__regular">
                 {formatPrice(SONOPIZZA_WEEK_PROMO.regularPrice)}
               </s>
-              <span className="sp-display sp-promo__price">
+              <span className="sp-display sp-display--figures sp-promo__price">
                 {formatPrice(SONOPIZZA_WEEK_PROMO.price)}
               </span>
             </p>
@@ -153,6 +140,23 @@ export function SonopizzaHomeScreen() {
             </span>
           </div>
         </article>
+        <div className="sp-promos__dots">
+          <span className="sr-only">
+            {copy.promoPositionTemplate
+              .replace('{current}', '1')
+              .replace('{total}', String(SONOPIZZA_WEEK_PROMOS_TOTAL))}
+          </span>
+          {Array.from({ length: SONOPIZZA_WEEK_PROMOS_TOTAL }, (_, index) => (
+            <span
+              key={index}
+              className={cn(
+                'sp-promos__dot',
+                index === 0 && 'sp-promos__dot--on'
+              )}
+              aria-hidden="true"
+            />
+          ))}
+        </div>
       </section>
     </div>
   );

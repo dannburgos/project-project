@@ -1,0 +1,88 @@
+/* ---------- 06 · Checkout ----------
+   Reusa el encabezado del carrito. Dos tarjetas blancas: una con lo que se
+   paga (producto y domicilio) y otra con lo que se decide (dónde, cuándo y
+   cómo se paga), esta última en tres bloques separados por una línea fina */
+.sp-checkout__sheet {
+  @apply flex shrink-0 flex-col gap-3 rounded-3xl bg-white p-4;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-checkout__block {
+  @apply flex flex-col gap-2;
+}
+
+.sp-checkout__block + .sp-checkout__block {
+  @apply pt-4;
+  border-top: 1px solid rgb(0 43 143 / 0.08);
+}
+
+.sp-checkout__heading {
+  @apply flex items-baseline justify-between gap-3;
+}
+
+.sp-checkout__sub {
+  @apply text-sm leading-5 font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-checkout__address {
+  @apply flex items-center gap-2.5;
+}
+
+/* Lo que cuesta el domicilio, bajo el producto y una línea punteada */
+.sp-checkout__fee {
+  @apply flex items-center justify-between pt-3 text-sm leading-5;
+  border-top: 2px dashed rgb(0 43 143 / 0.14);
+}
+
+.sp-checkout__fee span {
+  color: rgb(27 35 56 / 0.75);
+}
+
+.sp-checkout__fee b {
+  @apply font-bold;
+}
+
+/* Botón pequeño para cambiar la dirección */
+.sp-checkout__change-button {
+  @apply inline-flex h-8 shrink-0 items-center rounded-full px-2.5 text-sm font-bold;
+  background: var(--sp-gray-light);
+  color: var(--sp-navy);
+}
+
+/* Selector segmentado: pocas opciones lado a lado, la elegida en azul */
+.sp-segment {
+  @apply flex rounded-full p-1;
+  background: var(--sp-gray-light);
+}
+
+.sp-segment__option {
+  @apply flex h-12 flex-1 items-center justify-center gap-2 rounded-full px-3 text-center;
+  color: var(--sp-ink);
+}
+
+.sp-segment__option--on {
+  background: var(--sp-electric);
+  color: #fff;
+}
+
+.sp-segment__option svg {
+  @apply size-5 shrink-0;
+}
+
+.sp-segment__text {
+  @apply flex flex-col items-center;
+}
+
+.sp-segment__label {
+  @apply text-sm leading-4 font-bold;
+}
+
+.sp-segment__note {
+  @apply text-sm leading-5;
+  color: var(--sp-muted);
+}
+
+.sp-segment__option--on .sp-segment__note {
+  color: rgb(255 255 255 / 0.88);
+}

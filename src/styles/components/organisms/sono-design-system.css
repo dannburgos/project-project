@@ -8,11 +8,22 @@
   --ds-radius-s: 8px;
   --ds-radius-m: 16px;
   --ds-radius-l: 24px;
-  /* Sombras: corridas y sólidas; solo la hoja lleva difuminado */
-  --ds-shadow-button: 4px 4px 0 var(--sono-navy);
-  --ds-shadow-card: 6px 6px 0 var(--sono-orange-soft);
-  --ds-shadow-highlight: 8px 8px 0 var(--sono-orange);
+  /* Sombras suaves y difusas: las superficies se separan del fondo por
+     elevación. Los botones son planos, de un solo color, sin relieve ni sombra. Lo elegido lleva un anillo
+     naranja */
+  --ds-shadow-soft:
+    0 2px 4px rgb(0 20 70 / 0.04), 0 8px 24px rgb(0 20 70 / 0.08);
+  --ds-shadow-lift:
+    0 2px 6px rgb(0 20 70 / 0.06), 0 16px 32px rgb(0 20 70 / 0.14);
+  --ds-shadow-button: none;
+  --ds-shadow-card: var(--ds-shadow-soft);
+  --ds-shadow-highlight: 0 0 0 2px var(--sono-orange), var(--ds-shadow-soft);
   --ds-shadow-sheet: 0 -8px 24px rgb(0 43 143 / 0.16);
+  --ds-fill-orange: var(--sono-orange);
+  --ds-fill-navy: var(--sono-navy);
+  /* Tinta para textos y descripciones: azul muy oscuro casi gris */
+  --ds-ink: #1b2338;
+  --ds-mist: #e2e7f2;
   /* Curvas de movimiento */
   --ds-ease-out: cubic-bezier(0, 0, 0.2, 1);
   --ds-ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -33,11 +44,9 @@
 }
 
 .sono-ds-intro__part {
-  @apply flex items-center gap-3 rounded-full border-2 px-5 py-3 text-lg font-semibold;
-  background: var(--sono-white);
-  border-color: var(--sono-navy);
+  @apply flex items-center gap-3 rounded-full bg-white px-5 py-3 text-lg font-semibold;
   color: var(--sono-navy);
-  box-shadow: 4px 4px 0 var(--sono-orange);
+  box-shadow: var(--ds-shadow-soft);
 }
 
 .sono-ds-intro__part b {
@@ -63,14 +72,13 @@
 }
 
 .sono-ds__sheet {
-  @apply flex min-w-0 flex-col gap-5 rounded-3xl border-2 bg-white p-6;
-  border-color: var(--sono-navy);
-  color: var(--sono-navy);
-  box-shadow: 6px 6px 0 var(--sono-orange-soft);
+  @apply flex min-w-0 flex-col gap-5 rounded-3xl bg-white p-6;
+  color: var(--ds-ink);
+  box-shadow: var(--ds-shadow-soft);
 }
 
 .sono-ds--dark .sono-ds__sheet {
-  box-shadow: 6px 6px 0 var(--sono-orange);
+  box-shadow: var(--ds-shadow-lift);
 }
 
 .sono-ds__sheet--wide {
@@ -91,7 +99,7 @@
 
 .sono-ds__sheet-note {
   @apply max-w-xl text-sm leading-5;
-  color: rgb(0 43 143 / 0.7);
+  color: rgb(27 35 56 / 0.62);
 }
 
 /* Fondo de la app (blanco hueso) donde se muestran los componentes */
@@ -112,8 +120,8 @@
 }
 
 .sono-ds-swatch {
-  @apply relative isolate flex min-h-44 flex-col justify-end gap-0.5 overflow-hidden rounded-2xl border-2 p-4;
-  border-color: rgb(0 43 143 / 0.15);
+  @apply relative isolate flex min-h-44 flex-col justify-end gap-0.5 overflow-hidden rounded-2xl p-4;
+  box-shadow: inset 0 0 0 2px rgb(0 43 143 / 0.08);
   color: var(--sono-white);
 }
 
@@ -143,8 +151,8 @@
 }
 
 .sono-ds-families__item {
-  @apply flex items-baseline gap-2 rounded-full border-2 px-4 py-2;
-  border-color: var(--sono-navy);
+  @apply flex items-baseline gap-2 rounded-full px-4 py-2;
+  background: var(--sono-white);
 }
 
 .sono-ds-families__name {
@@ -153,7 +161,7 @@
 
 .sono-ds-families__use {
   @apply text-sm;
-  color: rgb(0 43 143 / 0.7);
+  color: rgb(27 35 56 / 0.62);
 }
 
 .sono-ds-type {
@@ -205,12 +213,12 @@
 
 .sono-ds-type__spec {
   @apply flex flex-col items-end text-right text-sm;
-  color: rgb(0 43 143 / 0.7);
+  color: rgb(27 35 56 / 0.62);
 }
 
 .sono-ds-type__spec b {
   @apply font-bold;
-  color: var(--sono-navy);
+  color: var(--ds-ink);
 }
 
 /* Espaciado: cada valor con su barra a escala */
@@ -255,12 +263,12 @@
 }
 
 .sono-ds-token__shape {
-  @apply mb-3 block h-16 w-full border-2;
-  border-color: var(--sono-navy);
+  @apply mb-3 block h-16 w-full;
 }
 
 .sono-ds-token__shape--radius {
   background: var(--ds-orange-tint);
+  box-shadow: inset 0 0 0 2px rgb(255 90 0 / 0.28);
 }
 
 .sono-ds-token__shape--radius-s {
@@ -285,6 +293,8 @@
 }
 
 .sono-ds-token__shape--shadow-button {
+  @apply rounded-full;
+  background: var(--ds-fill-orange);
   box-shadow: var(--ds-shadow-button);
 }
 
@@ -297,7 +307,6 @@
 }
 
 .sono-ds-token__shape--shadow-sheet {
-  @apply border-transparent;
   box-shadow: var(--ds-shadow-sheet);
 }
 
@@ -313,7 +322,7 @@
 
 .sono-ds-token__use {
   @apply text-xs leading-4;
-  color: rgb(0 43 143 / 0.7);
+  color: rgb(27 35 56 / 0.62);
 }
 
 /* Movimiento: cada fila muestra su curva al pasar el cursor o el foco */
@@ -324,7 +333,7 @@
 .sono-ds-motion__row {
   @apply grid w-full cursor-pointer grid-cols-[88px_minmax(0,1fr)] items-center gap-4 rounded-2xl border-2 border-transparent p-2.5 text-left transition-colors duration-200;
   background: var(--sono-white);
-  color: var(--sono-navy);
+  color: var(--ds-ink);
 }
 
 .sono-ds-motion__row:hover,
@@ -338,8 +347,8 @@
 }
 
 .sono-ds-motion__stage {
-  @apply relative block h-12 overflow-hidden rounded-xl border-2 bg-white;
-  border-color: rgb(0 43 143 / 0.15);
+  @apply relative block h-12 overflow-hidden rounded-xl bg-white;
+  box-shadow: inset 0 0 0 2px rgb(0 43 143 / 0.08);
 }
 
 .sono-ds-motion__text {
@@ -347,9 +356,9 @@
 }
 
 .sono-ds-motion__actor {
-  @apply absolute top-1/2 left-3 -mt-3 block size-6 rounded-full border-2;
-  background: var(--sono-orange);
-  border-color: var(--sono-navy);
+  @apply absolute top-1/2 left-3 -mt-3 block size-6 rounded-full;
+  background: var(--ds-fill-orange);
+  box-shadow: var(--ds-shadow-button);
 }
 
 /* Entrar: sube y aparece */
@@ -372,7 +381,7 @@
 /* Presionar: el botón se hunde y su sombra se acorta */
 .sono-ds-motion__row--press .sono-ds-motion__actor {
   @apply left-1/2 -ml-7 w-14;
-  box-shadow: 3px 3px 0 var(--sono-navy);
+  box-shadow: var(--ds-shadow-button);
   transition:
     translate 120ms var(--ds-ease-in),
     box-shadow 120ms var(--ds-ease-in);
@@ -412,10 +421,9 @@
 }
 
 .sono-ds-icon-badge {
-  @apply grid size-12 place-items-center rounded-full border-2 bg-white;
-  border-color: var(--sono-navy);
+  @apply grid size-12 place-items-center rounded-full bg-white;
   color: var(--sono-navy);
-  box-shadow: 3px 3px 0 var(--sono-navy);
+  box-shadow: var(--ds-shadow-soft);
 }
 
 .sono-ds-icon-badge svg {
@@ -430,8 +438,7 @@
 }
 
 .sono-ds-button {
-  @apply inline-flex cursor-pointer items-center gap-2 rounded-full border-2 px-5 py-3 text-base font-semibold transition-[translate,box-shadow,background-color] duration-[120ms];
-  border-color: var(--sono-navy);
+  @apply inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-3 text-base font-semibold transition-[translate,box-shadow,background-color] duration-[120ms];
   transition-timing-function: var(--ds-ease-in);
 }
 
@@ -440,26 +447,25 @@
 }
 
 .sono-ds-button--primary {
-  background: var(--sono-orange);
+  background: var(--ds-fill-orange);
   color: var(--sono-white);
   box-shadow: var(--ds-shadow-button);
 }
 
 .sono-ds-button--secondary {
-  @apply bg-white;
-  color: var(--sono-navy);
-  box-shadow: var(--ds-shadow-button);
+  background: var(--ds-fill-navy);
+  color: var(--sono-white);
 }
 
 .sono-ds-button--primary:active:not(:disabled),
 .sono-ds-button--secondary:active:not(:disabled) {
-  translate: 2px 2px;
-  box-shadow: 2px 2px 0 var(--sono-navy);
+  translate: 0 2px;
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.24);
 }
 
 .sono-ds-button--text {
   @apply border-transparent bg-transparent px-3 py-2 text-sm;
-  color: var(--sono-navy);
+  color: var(--ds-ink);
 }
 
 .sono-ds-button--text:hover {
@@ -468,9 +474,8 @@
 
 .sono-ds-button:disabled {
   @apply cursor-default;
-  background: #e2e7f2;
-  border-color: rgb(0 43 143 / 0.2);
-  color: rgb(0 43 143 / 0.5);
+  background: var(--ds-mist);
+  color: rgb(27 35 56 / 0.45);
   box-shadow: none;
 }
 
@@ -504,21 +509,21 @@
 }
 
 .sono-ds-tab {
-  @apply cursor-pointer rounded-full border-2 bg-white px-4 py-2 text-sm font-semibold transition-colors duration-[250ms];
-  border-color: var(--sono-navy);
-  color: var(--sono-navy);
+  @apply cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-semibold transition-colors duration-[250ms];
+  color: rgb(27 35 56 / 0.7);
+  box-shadow: 0 2px 6px rgb(0 20 70 / 0.08);
   transition-timing-function: var(--ds-ease-in-out);
 }
 
 .sono-ds-tab--current {
-  background: var(--sono-navy);
+  background: var(--ds-fill-navy);
   color: var(--sono-white);
 }
 
 .sono-ds-search {
-  @apply flex min-w-40 flex-1 items-center gap-2 rounded-full border-2 bg-white px-4 py-2 text-sm;
-  border-color: var(--sono-navy);
-  color: rgb(0 43 143 / 0.6);
+  @apply flex min-w-40 flex-1 items-center gap-2 rounded-full bg-white px-4 py-2 text-sm;
+  color: rgb(27 35 56 / 0.62);
+  box-shadow: var(--ds-shadow-soft);
 }
 
 .sono-ds-search svg {
@@ -528,22 +533,27 @@
 
 /* Barra de navegación: tres pestañas y el número del carrito */
 .sono-ds-nav {
-  @apply flex w-full items-center justify-around rounded-3xl bg-white p-2;
-  box-shadow: var(--ds-shadow-sheet);
+  @apply flex w-full items-center justify-around rounded-3xl p-2;
+  background: linear-gradient(180deg, #fff 0%, #fbfbfd 45%, #eceff7 100%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 -1px 0 rgb(0 43 143 / 0.08),
+    var(--ds-shadow-soft);
 }
 
 .sono-ds-nav__item {
   @apply relative flex cursor-pointer flex-col items-center gap-1 rounded-2xl px-4 py-2 text-xs font-semibold transition-colors duration-[250ms];
-  color: rgb(0 43 143 / 0.6);
+  color: rgb(27 35 56 / 0.5);
 }
 
 .sono-ds-nav__item svg {
   @apply size-5;
 }
 
+/* Pestaña actual: ícono y nombre en naranja, sin fondo (como en la app) */
 .sono-ds-nav__item--current {
-  background: var(--sono-navy);
-  color: var(--sono-white);
+  @apply font-bold;
+  color: var(--sono-orange);
 }
 
 .sono-ds-nav__badge {
@@ -554,8 +564,7 @@
 
 /* Tarjeta de producto */
 .sono-ds-product {
-  @apply flex w-full flex-col overflow-hidden rounded-3xl border-2 bg-white;
-  border-color: var(--sono-navy);
+  @apply flex w-full flex-col overflow-hidden rounded-3xl bg-white;
   box-shadow: var(--ds-shadow-card);
 }
 
@@ -589,7 +598,7 @@
 
 .sono-ds-product__text {
   @apply text-sm leading-5;
-  color: rgb(0 43 143 / 0.7);
+  color: rgb(27 35 56 / 0.62);
 }
 
 .sono-ds-product__foot {
@@ -601,16 +610,15 @@
 }
 
 .sono-ds-icon-button {
-  @apply grid size-10 shrink-0 cursor-pointer place-items-center rounded-full border-2 transition-[translate,box-shadow] duration-[120ms];
-  background: var(--sono-orange);
-  border-color: var(--sono-navy);
+  @apply grid size-10 shrink-0 cursor-pointer place-items-center rounded-full transition-[translate,box-shadow] duration-[120ms];
+  background: var(--ds-fill-orange);
   color: var(--sono-white);
-  box-shadow: 3px 3px 0 var(--sono-navy);
+  box-shadow: var(--ds-shadow-button);
 }
 
 .sono-ds-icon-button:active {
-  translate: 2px 2px;
-  box-shadow: 1px 1px 0 var(--sono-navy);
+  translate: 0 2px;
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.24);
 }
 
 .sono-ds-icon-button svg {
@@ -619,8 +627,8 @@
 
 /* Producto en el carrito */
 .sono-ds-cart-item {
-  @apply flex w-full items-center gap-3 rounded-2xl border-2 bg-white p-3;
-  border-color: var(--sono-navy);
+  @apply flex w-full items-center gap-3 rounded-2xl bg-white p-3;
+  box-shadow: var(--ds-shadow-soft);
 }
 
 .sono-ds-cart-item__thumb {
@@ -642,7 +650,7 @@
 
 .sono-ds-cart-item__detail {
   @apply text-sm;
-  color: rgb(0 43 143 / 0.7);
+  color: rgb(27 35 56 / 0.62);
 }
 
 .sono-ds-cart-item__price {
@@ -659,13 +667,13 @@
 
 /* Contador de cantidad */
 .sono-ds-stepper {
-  @apply inline-flex items-center gap-2 rounded-full border-2 bg-white p-1;
-  border-color: var(--sono-navy);
+  @apply inline-flex items-center gap-2 rounded-full bg-white p-1;
+  box-shadow: var(--ds-shadow-soft);
 }
 
 .sono-ds-stepper__button {
   @apply grid size-8 cursor-pointer place-items-center rounded-full transition-[scale] duration-[400ms];
-  background: var(--sono-navy);
+  background: var(--ds-fill-navy);
   color: var(--sono-white);
   transition-timing-function: var(--ds-ease-back);
 }
@@ -695,9 +703,9 @@
 }
 
 .sono-ds-confirm__badge {
-  @apply mb-1 grid size-14 place-items-center rounded-full border-2 border-white transition-[scale] duration-[400ms];
-  background: var(--sono-orange);
-  box-shadow: 3px 3px 0 rgb(244 244 244 / 0.3);
+  @apply mb-1 grid size-14 place-items-center rounded-full transition-[scale] duration-[400ms];
+  background: var(--ds-fill-orange);
+  box-shadow: var(--ds-shadow-button);
   transition-timing-function: var(--ds-ease-back);
 }
 
@@ -761,7 +769,7 @@
 
 .sono-ds-tag--optional {
   background: rgb(0 43 143 / 0.1);
-  color: var(--sono-navy);
+  color: var(--ds-ink);
 }
 
 .sono-ds-sizes {
@@ -769,15 +777,14 @@
 }
 
 .sono-ds-size {
-  @apply flex cursor-pointer flex-col items-start gap-0.5 rounded-2xl border-2 bg-white p-3 text-left transition-[background-color,box-shadow,border-color] duration-[250ms];
-  border-color: var(--sono-navy);
+  @apply flex cursor-pointer flex-col items-start gap-0.5 rounded-2xl bg-white p-3 text-left transition-[background-color,box-shadow] duration-[250ms];
+  box-shadow: var(--ds-shadow-soft);
   transition-timing-function: var(--ds-ease-in-out);
 }
 
 .sono-ds-size--current {
   background: var(--ds-orange-tint);
-  border-color: var(--sono-orange);
-  box-shadow: 4px 4px 0 var(--sono-orange);
+  box-shadow: var(--ds-shadow-highlight);
 }
 
 .sono-ds-size__name {
@@ -786,7 +793,7 @@
 
 .sono-ds-size__detail {
   @apply text-xs;
-  color: rgb(0 43 143 / 0.7);
+  color: rgb(27 35 56 / 0.62);
 }
 
 .sono-ds-size__price {
@@ -798,9 +805,9 @@
 }
 
 .sono-ds-ingredient {
-  @apply inline-flex cursor-pointer items-center gap-1.5 rounded-full border-2 bg-white px-3 py-1.5 text-sm font-semibold;
-  border-color: var(--sono-navy);
-  color: var(--sono-navy);
+  @apply inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-sm font-semibold;
+  color: var(--ds-ink);
+  box-shadow: 0 2px 6px rgb(0 20 70 / 0.08);
 }
 
 .sono-ds-ingredient svg {
@@ -808,9 +815,11 @@
 }
 
 .sono-ds-ingredient--removed {
-  @apply border-dashed;
-  border-color: rgb(0 43 143 / 0.4);
-  color: rgb(0 43 143 / 0.55);
+  background: transparent;
+  color: rgb(27 35 56 / 0.5);
+  box-shadow: none;
+  outline: 2px dashed rgb(0 43 143 / 0.3);
+  outline-offset: -2px;
 }
 
 .sono-ds-extras {
@@ -818,17 +827,17 @@
 }
 
 .sono-ds-extra {
-  @apply flex w-full cursor-pointer items-center gap-3 rounded-2xl border-2 bg-white px-3 py-2.5 text-left transition-colors duration-[250ms];
-  border-color: rgb(0 43 143 / 0.2);
+  @apply flex w-full cursor-pointer items-center gap-3 rounded-2xl bg-white px-3 py-2.5 text-left transition-colors duration-[250ms];
+  box-shadow: var(--ds-shadow-soft);
 }
 
 .sono-ds-extra--checked {
-  border-color: var(--sono-navy);
+  background: var(--ds-orange-tint);
 }
 
 .sono-ds-extra__box {
   @apply grid size-5 shrink-0 place-items-center rounded-md border-2;
-  border-color: var(--sono-navy);
+  border-color: rgb(0 43 143 / 0.3);
 }
 
 .sono-ds-extra--checked .sono-ds-extra__box {
@@ -851,9 +860,8 @@
 }
 
 .sono-ds-config__summary {
-  @apply flex flex-col gap-4 rounded-3xl border-2 bg-white p-5;
-  border-color: var(--sono-navy);
-  box-shadow: var(--ds-shadow-card);
+  @apply flex flex-col gap-4 rounded-3xl bg-white p-5;
+  box-shadow: var(--ds-shadow-lift);
 }
 
 .sono-ds-bill {
@@ -889,13 +897,13 @@
 }
 
 .sono-ds-size-art__option {
-  @apply flex cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-transparent p-2 text-sm font-semibold transition-[background-color,border-color] duration-[250ms];
-  color: var(--sono-navy);
+  @apply flex cursor-pointer flex-col items-center gap-2 rounded-2xl p-2 text-sm font-semibold transition-[background-color,box-shadow] duration-[250ms];
+  color: var(--ds-ink);
 }
 
 .sono-ds-size-art__option--current {
   background: var(--ds-orange-tint);
-  border-color: var(--sono-orange);
+  box-shadow: 0 0 0 2px var(--sono-orange);
 }
 
 .sono-ds-size-art__pizza {
@@ -1004,7 +1012,7 @@
 }
 
 .sono-ds-topping {
-  @apply inline-flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 text-sm font-semibold;
+  @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold;
 }
 
 .sono-ds-topping svg {
@@ -1013,21 +1021,21 @@
 
 .sono-ds-topping--added {
   @apply bg-white;
-  border-color: var(--sono-navy);
-  color: var(--sono-navy);
+  color: var(--ds-ink);
+  box-shadow: 0 2px 6px rgb(0 20 70 / 0.08);
 }
 
 .sono-ds-topping--removed {
-  @apply border-dashed line-through;
-  border-color: rgb(0 43 143 / 0.4);
-  color: rgb(0 43 143 / 0.55);
+  @apply line-through;
+  color: rgb(27 35 56 / 0.5);
+  outline: 2px dashed rgb(0 43 143 / 0.3);
+  outline-offset: -2px;
 }
 
 .sono-ds-topping--extra {
-  background: var(--sono-orange);
-  border-color: var(--sono-navy);
+  background: var(--ds-fill-orange);
   color: var(--sono-white);
-  box-shadow: 3px 3px 0 var(--sono-navy);
+  box-shadow: var(--ds-shadow-button);
 }
 
 .sono-ds-topping__price {
@@ -1037,7 +1045,7 @@
 /* Ticket de pedido: papel blanco con el borde de abajo dentado */
 .sono-ds-ticket {
   @apply relative w-full max-w-64 bg-white px-5 pt-5 pb-4;
-  color: var(--sono-navy);
+  color: var(--ds-ink);
   filter: drop-shadow(0 6px 12px rgb(0 43 143 / 0.15));
 }
 

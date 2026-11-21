@@ -24,4 +24,8 @@
 @import './domains/sonopizza/sonopizza.css';
 @import './domains/sonopizza/sonopizza-parts.css';
 @import './domains/sonopizza/sonopizza-screens.css';
+@import './domains/sonopizza/sonopizza-product.css';
+@import './domains/sonopizza/sonopizza-checkout.css';
+@import './domains/sonopizza/sonopizza-notifications.css';
+@import './domains/sonopizza/sonopizza-orders.css';
 @import './domains/sonopizza/sonopizza-motion.css';
