@@ -23,3 +23,6 @@
 - [Rutina de cada noche](feedback-nightly-backup-routine.md) — "guarda y sube" = memoria al repo + commit/push + zip liviano en el Escritorio; avisar qué agregar al zip de originales
 - [Caso Toyota](project-toyota-case.md) — Beyond the Model en feat/toyota; trabajar desde el caso de estudio; nada es privado, todo va a git
 - [Referentes de a uno](feedback-references-one-by-one.md) — analizar y documentar cada link; no construir hasta que Dann diga que están todos; imágenes en cajas grises
+- [Pila unida a main](project-stacked-prs-main.md) — header→design-system→planti→sonopizza→toyota ya están en main (23 nov); ramas conservadas
+- [Siempre en español](feedback-always-spanish.md) — todo en español, prompts de imagen incluidos; solo código y commits en inglés
+- [Prompts de imagen luminosos](feedback-image-prompts-bright.md) — de día, autos con color llamativo, look publicitario; variar modelos Toyota
