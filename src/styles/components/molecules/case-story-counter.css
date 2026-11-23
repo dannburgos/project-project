@@ -114,8 +114,18 @@
 }
 
 @media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  /* En celular, una barra fija bajo la cabecera del sitio: siempre dice en qué
+     parte del caso vas (cuadrito, número y nombre) y una línea de pasos con lo
+     recorrido; al tocarla deja saltar a cualquier sección */
   .case-story__counter {
-    @apply top-auto bottom-4 left-8 translate-y-0 text-left;
+    @apply top-[68px] right-0 left-0 translate-y-0 px-4 pt-2 pb-2.5 pl-8 text-left;
+    background: var(--story-cream);
+    border-bottom: 1px solid var(--story-line);
+  }
+
+  .case-story[data-world='green'] .case-story__counter {
+    background: #23330e;
+    border-bottom-color: rgba(162, 201, 108, 0.3);
   }
 
   .case-story__nodes {
@@ -127,18 +137,44 @@
   }
 
   .case-story__counter-button {
-    @apply border px-3 py-2;
-    background: var(--story-cream);
-    border-color: var(--story-ink);
+    @apply flex w-full items-center gap-3 text-left;
   }
 
   .case-story[data-world='green'] .case-story__counter-button {
-    background: var(--story-ink);
-    border-color: var(--story-light);
     color: var(--story-light);
   }
 
+  .case-story__counter-mark {
+    @apply size-3 shrink-0;
+    background: var(--story-light);
+  }
+
+  .case-story__counter-label {
+    @apply shrink-0;
+  }
+
+  .case-story__counter-progress {
+    @apply flex h-px flex-1 gap-0.5;
+  }
+
+  .case-story__counter-step {
+    @apply h-px flex-1;
+    background: var(--story-line);
+  }
+
+  .case-story[data-world='green'] .case-story__counter-step {
+    background: rgba(162, 201, 108, 0.3);
+  }
+
+  .case-story .case-story__counter-step--reached {
+    background: var(--story-ink);
+  }
+
+  .case-story[data-world='green'] .case-story__counter-step--reached {
+    background: var(--story-light);
+  }
+
   .case-story__jump {
-    @apply absolute bottom-full left-0 mt-0 mb-2 w-[220px];
+    @apply absolute top-full left-0 mt-2 w-[220px];
   }
 }

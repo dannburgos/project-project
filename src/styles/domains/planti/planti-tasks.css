@@ -1,0 +1,325 @@
+/* Capítulo 3 · Completar un cuidado: los cuidados de hoy, el detalle con sus
+   pasos y la confirmación. */
+.planti-task-list-cards {
+  @apply flex flex-col gap-3;
+}
+
+/* Un cuidado del día: la hora a la izquierda y qué toca a la derecha */
+.planti-task-card {
+  @apply relative flex gap-3 rounded-2xl p-4;
+  background: var(--planti-fog);
+}
+
+.planti-task-card__clock {
+  @apply flex shrink-0 flex-col items-center justify-center border-r pr-3;
+  border-color: #dfe2e6;
+}
+
+.planti-task-card__hour {
+  @apply text-3xl leading-9 font-semibold;
+  color: var(--planti-leaf);
+}
+
+.planti-task-card__period {
+  @apply text-base leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-task-card__body {
+  @apply flex min-w-0 flex-1 flex-col items-start gap-0.5;
+}
+
+.planti-task-card__title {
+  @apply text-base leading-6 font-semibold;
+  color: var(--planti-ink);
+}
+
+.planti-task-card__plant {
+  @apply text-base leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-task-card__tag {
+  @apply mt-1 inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-base leading-6;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-task-card__tag svg {
+  @apply size-4;
+}
+
+/* Pantalla bloqueada: la foto de hojas, la fecha y la hora, y el aviso */
+.planti-lock {
+  @apply items-center pt-24;
+}
+
+.planti-lock__photo {
+  @apply absolute inset-0 size-full object-cover;
+}
+
+.planti-lock::before {
+  @apply absolute inset-0 content-[''];
+  background: rgb(11 22 6 / 0.45);
+}
+
+.planti-lock__date {
+  @apply relative text-lg leading-6 font-medium;
+  color: var(--planti-white);
+}
+
+.planti-lock__time {
+  @apply relative text-8xl leading-none font-light;
+  color: var(--planti-white);
+}
+
+.planti-lock__tools {
+  @apply absolute inset-x-8 bottom-14 flex justify-between;
+}
+
+.planti-lock__tool {
+  @apply flex size-12 items-center justify-center rounded-full;
+  background: rgb(255 255 255 / 0.2);
+  color: var(--planti-white);
+}
+
+.planti-lock__tool svg {
+  @apply size-5;
+}
+
+/* El aviso baja desde arriba, como en el celular */
+.planti-lock-notice {
+  @apply relative mt-16 flex w-full gap-3 rounded-2xl p-4;
+  background: rgb(255 255 255 / 0.9);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+  animation: planti-lock-notice-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s
+    both;
+}
+
+@keyframes planti-lock-notice-in {
+  from {
+    opacity: 0;
+    transform: translateY(-48px);
+  }
+}
+
+.planti-lock-notice__app {
+  @apply flex size-10 shrink-0 items-center justify-center rounded-xl;
+  background: var(--planti-grass);
+  color: var(--planti-white);
+}
+
+.planti-lock-notice__app svg {
+  @apply size-5;
+}
+
+.planti-lock-notice__body {
+  @apply flex min-w-0 flex-1 flex-col;
+}
+
+.planti-lock-notice__meta {
+  @apply flex justify-between text-base leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-lock-notice__title {
+  @apply text-base leading-6 font-semibold;
+  color: var(--planti-ink);
+}
+
+.planti-lock-notice__text {
+  @apply text-base leading-6;
+  color: var(--planti-charcoal);
+}
+
+/* Notificaciones: filtros arriba y una línea de tiempo por día */
+.planti-filter-chips {
+  @apply mb-4 flex gap-2;
+}
+
+.planti-filter-chips__chip {
+  @apply cursor-pointer rounded-full border px-3 py-1.5 text-base leading-6 whitespace-nowrap;
+  background: var(--planti-white);
+  border-color: #dcdcdc;
+  color: var(--planti-stone);
+  font: inherit;
+}
+
+.planti-filter-chips__chip--selected {
+  background: var(--planti-grass);
+  border-color: var(--planti-grass);
+  color: var(--planti-white);
+}
+
+.planti-notices-screen__scroll {
+  @apply pt-1 pb-0;
+  mask-image: none;
+}
+
+.planti-notices-timeline {
+  @apply relative flex flex-col gap-5 pb-28 pl-8;
+}
+
+.planti-notices-timeline::before {
+  @apply absolute top-0 bottom-0 left-2 border-l-2 border-dashed content-[''];
+  border-color: #c9ccc3;
+}
+
+.planti-notices-timeline__day {
+  @apply relative;
+}
+
+.planti-notices-timeline__day::before {
+  @apply absolute top-1.5 -left-8 size-3 rounded-full content-[''];
+  background: #c9ccc3;
+  margin-left: 2px;
+}
+
+.planti-notices-timeline__day[data-status='todo']::before {
+  background: var(--planti-grass);
+}
+
+.planti-notices-timeline__heading {
+  @apply mb-2 text-base leading-6 font-semibold;
+  color: var(--planti-stone);
+}
+
+.planti-notices-timeline__day[data-status='todo']
+  .planti-notices-timeline__heading {
+  color: var(--planti-forest);
+}
+
+/* El aviso de hoy, grande */
+.planti-notice-featured {
+  @apply flex flex-col gap-4 rounded-2xl p-4;
+  background: var(--planti-white);
+  box-shadow: 0 4px 14px rgb(35 51 14 / 0.12);
+}
+
+.planti-notice-featured__head {
+  @apply flex items-center gap-4;
+}
+
+.planti-notice-featured__photo {
+  @apply h-24 w-auto shrink-0;
+}
+
+.planti-notice-featured__body {
+  @apply flex min-w-0 flex-1 flex-col;
+}
+
+.planti-notice-featured__meta {
+  @apply flex items-center gap-2 text-base leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-notice-featured__dot {
+  @apply size-2.5 rounded-full;
+  background: var(--planti-grass);
+}
+
+.planti-notice-featured__title {
+  @apply text-lg leading-6 font-semibold;
+  color: var(--planti-forest);
+}
+
+.planti-notice-featured__text {
+  @apply text-base leading-6;
+  color: var(--planti-stone);
+}
+
+/* Un aviso de antes, ya hecho: tenue */
+.planti-notice-done {
+  @apply flex items-center gap-3 rounded-2xl p-3;
+  background: var(--planti-fog);
+}
+
+.planti-notice-done__check {
+  @apply flex size-8 shrink-0 items-center justify-center rounded-full;
+  background: var(--planti-dew);
+  color: var(--planti-grass);
+}
+
+.planti-notice-done__check svg {
+  @apply size-4;
+  stroke-width: 3;
+}
+
+.planti-notice-done__body {
+  @apply flex min-w-0 flex-1 flex-col;
+}
+
+.planti-notice-done__title {
+  @apply text-base leading-6 font-medium;
+  color: var(--planti-charcoal);
+}
+
+.planti-notice-done__text {
+  @apply text-base leading-6;
+  color: var(--planti-placeholder);
+}
+
+/* Detalle del cuidado: la planta arriba, la actividad en una cápsula grande y,
+   en la hoja, los pasos, todos a la vez */
+.planti-task-detail__hero {
+  @apply flex w-3/5 flex-col items-start gap-1 text-left;
+}
+
+.planti-task-detail__care {
+  @apply mt-3 mb-2 inline-flex items-center gap-2 rounded-full px-6 py-2 text-3xl leading-9 font-semibold;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-task-detail__care svg {
+  @apply size-7;
+}
+
+.planti-task-detail__when {
+  @apply text-base leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-task-detail__steps {
+  @apply flex flex-col gap-3;
+}
+
+.planti-task-detail__step {
+  @apply flex items-center gap-3 text-base leading-6;
+  color: var(--planti-charcoal);
+}
+
+.planti-task-detail__number {
+  @apply flex size-6 shrink-0 items-center justify-center rounded-full text-sm leading-5 font-semibold;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+/* Cuidado completado: el check arriba y el cuidado que queda debajo */
+.planti-task-done {
+  @apply pb-52;
+}
+
+.planti-task-done__pending {
+  @apply mt-8 w-full text-left;
+  animation: planti-rise 0.5s cubic-bezier(0.65, 0, 0.35, 1) both;
+  animation-delay: 0.9s;
+}
+
+.planti-task-done__pending-title {
+  @apply mb-3 text-lg leading-6 font-semibold;
+  color: var(--planti-forest);
+}
+
+/* La planta es alta: la hoja baja para que solo la maceta se asome sobre ella */
+.planti-task-detail .planti-needs__top {
+  @apply min-h-71.5;
+}
+
+.planti-task-detail .planti-needs__sheet {
+  @apply pb-20;
+}
+
+.planti-task-detail .planti-needs__plant {
+  @apply top-3.5;
+}

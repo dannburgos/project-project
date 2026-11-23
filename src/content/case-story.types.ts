@@ -33,11 +33,18 @@ export type CaseStoryFriction = {
   // Qué la provoca, en una línea
   text: string;
   // Cómo la vive el perfil, con su propia voz (llega como un mensaje)
-  voice: string;
+};
+
+// Imagen de apoyo del reto; sin la foto se muestra el espacio con su etiqueta
+export type CaseStoryReference = {
+  label: string;
+  src?: string;
 };
 
 export type CaseStoryApp = {
   name: string;
+  // Ícono de la app; sin él se muestra el espacio con su nombre
+  icon?: string;
   focus: string;
   strengths: readonly string[];
   gaps: readonly string[];
@@ -58,6 +65,8 @@ export type CaseStoryNavigationItem = {
 // Pantalla de la lluvia del prototipo: las principales van grandes y al frente
 export type CaseStoryScreen = {
   label: string;
+  // Captura de la pantalla; sin ella se muestra el espacio con su etiqueta
+  src?: string;
   isMain?: boolean;
 };
 
@@ -71,7 +80,6 @@ export type CaseStory = {
     text: string;
     facts: readonly CaseFact[];
   };
-  respiteLabel: string;
   problem: {
     headline: string;
     known: CaseStoryLabeledText;
@@ -79,18 +87,21 @@ export type CaseStory = {
     frictionsLabel: string;
     frictions: readonly CaseStoryFriction[];
     // Nombre de quien escribe en el chat de las fricciones
-    voiceName: string;
     challenge: string;
-    references: readonly string[];
+    references: readonly CaseStoryReference[];
   };
   user: {
     quote: string;
     name: string;
     details: string;
+    // Foto de la persona; sin ella, el círculo queda liso
+    photo?: string;
     traits: readonly CaseStoryLabeledText[];
     findingsLabel: string;
     findings: readonly CaseStoryNumberedText[];
     imageLabel: string;
+    // Foto de contexto; sin ella se muestra el espacio con su etiqueta
+    image?: string;
   };
   benchmark: {
     title: string;
@@ -101,10 +112,10 @@ export type CaseStory = {
     findings: readonly string[];
     closing: string;
   };
+  designSystem: {
+    title: string;
+  };
   concept: {
-    idea: string;
-    subtitle: string;
-    logoLabel: string;
     capabilitiesTitle: string;
     pillars: readonly CaseStoryPillar[];
     navigationTitle: string;
@@ -113,6 +124,8 @@ export type CaseStory = {
   flows: {
     title: string;
     imageLabel: string;
+    // Imagen de la izquierda; sin ella se muestra el espacio con su etiqueta
+    image?: string;
     items: readonly CaseStoryNumberedText[];
   };
   prototype: {
@@ -125,8 +138,6 @@ export type CaseStory = {
     headingAccent: string;
     // Párrafo con algunas frases resaltadas
     description: readonly CaseStoryTextPart[];
-    liveHint: string;
-    flowsLabel: string;
     soonLabel: string;
     // Un botón por flujo; solo los que ya tienen recorrido se pueden elegir
     flows: readonly CaseStoryPrototypeFlow[];

@@ -1,4 +1,3 @@
-import { CaseStoryImage } from '@/components/atoms/case-story-image';
 import { CaseStoryOpener } from '@/components/atoms/case-story-opener';
 import type { CaseStory } from '@/content/case-story.types';
 
@@ -7,9 +6,8 @@ type CaseStoryConceptProps = {
   sectionName: string;
 };
 
-// 05 · Concepto en el mundo verde: la idea en una placa troquelada (las letras
-// dejan ver la imagen de atrás) junto al logo; luego, lo que hace Planti y su
-// navegación, todo centrado
+// 05 · Concepto en el mundo verde: lo que hace Planti y su navegación, todo
+// centrado
 export function CaseStoryConcept({
   concept,
   sectionName
@@ -17,35 +15,11 @@ export function CaseStoryConcept({
   return (
     <>
       <div
-        className="story-view story-concept"
-        data-view="concept"
-        data-section="4"
-      >
-        <CaseStoryOpener number="05" name={sectionName} />
-        <CaseStoryImage
-          label={concept.logoLabel}
-          className="story-concept__logo"
-          data-part="logo"
-        />
-        <div className="story-concept__idea" data-part="idea">
-          <h2
-            className="story-title-xl story-plate"
-            data-part="plate"
-            data-ax-lines
-          >
-            {concept.idea}
-          </h2>
-          <p className="story-body story-concept__subtitle" data-ax>
-            {concept.subtitle}
-          </p>
-        </div>
-      </div>
-
-      <div
         className="story-view story-capabilities"
         data-view="capabilities"
         data-section="4"
       >
+        <CaseStoryOpener number="05" name={sectionName} />
         <p className="story-label story-capabilities__title" data-part="head">
           {concept.capabilitiesTitle}
         </p>

@@ -1,3 +1,7 @@
+'use client';
+
+import { useState } from 'react';
+
 import { cn } from '@/lib/utils';
 
 import { plantiMessages } from '../../messages';
@@ -11,6 +15,8 @@ type PlantiSearchMoreScreenProps = {
   hasColor?: boolean;
   // El botón se está pulsando (en el recorrido)
   isPressed?: boolean;
+  // Se puede elegir tamaño y color (en el tablero)
+  isInteractive?: boolean;
 };
 
 // Buscar, paso 2: "Cuéntanos más". El tamaño, con la planta que cambia y un
@@ -19,13 +25,22 @@ type PlantiSearchMoreScreenProps = {
 export function PlantiSearchMoreScreen({
   hasSize = false,
   hasColor = true,
-  isPressed = false
+  isPressed = false,
+  isInteractive = false
 }: PlantiSearchMoreScreenProps) {
   const { more } = plantiMessages.search;
+  const [sizeKey, setSizeKey] = useState<string>(
+    more.sizes.find(size => 'isSelected' in size)?.key ?? more.sizes[0].key
+  );
+  const [colorKey, setColorKey] = useState<string>(
+    more.colors.find(color => 'isSelected' in color)?.key ?? ''
+  );
   // La barra siempre parte de la primera parada; al elegir, llega a la elegida
-  const chosenSize = hasSize
-    ? more.sizes.find(size => 'isSelected' in size)
-    : more.sizes[0];
+  const chosenSize = isInteractive
+    ? more.sizes.find(size => size.key === sizeKey)
+    : hasSize
+      ? more.sizes.find(size => 'isSelected' in size)
+      : more.sizes[0];
 
   return (
     <div className="planti-screen">
@@ -35,6 +50,7 @@ export function PlantiSearchMoreScreen({
         <PlantiSizeSlider
           sizes={more.sizes}
           selectedKey={chosenSize?.key ?? null}
+          onSelect={isInteractive ? setSizeKey : undefined}
         />
       </section>
       <section className="planti-option-group">
@@ -45,7 +61,14 @@ export function PlantiSearchMoreScreen({
               key={color.key}
               tone={color.key}
               label={color.label}
-              isSelected={hasColor && 'isSelected' in color}
+              isSelected={
+                isInteractive
+                  ? color.key === colorKey
+                  : hasColor && 'isSelected' in color
+              }
+              onSelect={
+                isInteractive ? () => setColorKey(color.key) : undefined
+              }
             />
           ))}
         </ul>

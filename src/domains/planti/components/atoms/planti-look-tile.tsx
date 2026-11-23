@@ -7,6 +7,7 @@ type PlantiLookTileProps = {
   imageSrc?: string;
   label: string;
   isSelected?: boolean;
+  onSelect?: () => void;
 };
 
 // Una forma de ser de la planta, en palabras simples. Lleva su foto y, hasta
@@ -15,7 +16,8 @@ export function PlantiLookTile({
   icon: Icon,
   imageSrc,
   label,
-  isSelected = false
+  isSelected = false,
+  onSelect
 }: PlantiLookTileProps) {
   return (
     <li
@@ -24,6 +26,7 @@ export function PlantiLookTile({
         isSelected && 'planti-look-tile--selected'
       )}
       aria-current={isSelected ? 'true' : undefined}
+      onClick={onSelect}
     >
       <span className="planti-look-tile__icon" aria-hidden="true">
         {imageSrc ? <img src={imageSrc} alt="" /> : <Icon />}

@@ -4,22 +4,24 @@ import { getPlantiNavKey } from '../../planti-nav.util';
 import type { PlantiPrototypeScreen } from '../../prototype-screens';
 import { PlantiBoardFrame } from '../molecules/planti-board-frame';
 import { PlantiHomeScreen } from './planti-home-screen';
+import { PlantiLockScreen } from './planti-lock-screen';
 import { PlantiNeedsScreen } from './planti-needs-screen';
+import { PlantiNoticesScreen } from './planti-notices-screen';
 import { PlantiOnboardingScreen } from './planti-onboarding-screen';
 import { PlantiPersonalizeScreen } from './planti-personalize-screen';
 import { PlantiPrototype } from './planti-prototype';
 import { PlantiPlantDetailScreen } from './planti-plant-detail-screen';
 import { PlantiRegisteredScreen } from './planti-registered-screen';
-import { PlantiRoutineCaresScreen } from './planti-routine-cares-screen';
-import { PlantiRoutineCreatedScreen } from './planti-routine-created-screen';
-import { PlantiRoutineFrequencyScreen } from './planti-routine-frequency-screen';
-import { PlantiRoutineReviewScreen } from './planti-routine-review-screen';
+import { PlantiRoutineGeneratingScreen } from './planti-routine-generating-screen';
+import { PlantiRoutinePlanScreen } from './planti-routine-plan-screen';
 import { PlantiRoutineScreen } from './planti-routine-screen';
 import { PlantiSearchGalleryScreen } from './planti-search-gallery-screen';
 import { PlantiSearchLoadingScreen } from './planti-search-loading-screen';
 import { PlantiSearchLookScreen } from './planti-search-look-screen';
 import { PlantiSearchMoreScreen } from './planti-search-more-screen';
 import { PlantiSplashScreen } from './planti-splash-screen';
+import { PlantiTaskDetailScreen } from './planti-task-detail-screen';
+import { PlantiTaskDoneScreen } from './planti-task-done-screen';
 
 type PlantiBoardProps = {
   // Qué capítulo (flujo) se revisa
@@ -45,7 +47,7 @@ type PlantiBoardGroup = {
 // orden, para revisar la secuencia completa de un vistazo
 export function PlantiBoard({ chapterNumber = 1 }: PlantiBoardProps) {
   const { board, routine } = plantiMessages;
-  const { frames, framesTwo } = board;
+  const { frames, framesTwo, framesThree } = board;
 
   const chapterOneGroups: PlantiBoardGroup[] = [
     {
@@ -86,13 +88,13 @@ export function PlantiBoard({ chapterNumber = 1 }: PlantiBoardProps) {
           key: 'search-look',
           screenKey: 'search-look',
           frame: frames.searchLook,
-          screen: <PlantiSearchLookScreen />
+          screen: <PlantiSearchLookScreen isInteractive />
         },
         {
           key: 'search-more',
           screenKey: 'search-more',
           frame: frames.searchMore,
-          screen: <PlantiSearchMoreScreen />
+          screen: <PlantiSearchMoreScreen isInteractive />
         },
         {
           key: 'search-loading',
@@ -116,7 +118,7 @@ export function PlantiBoard({ chapterNumber = 1 }: PlantiBoardProps) {
           key: 'personalize',
           screenKey: 'personalize',
           frame: frames.personalize,
-          screen: <PlantiPersonalizeScreen />
+          screen: <PlantiPersonalizeScreen isInteractive />
         },
         {
           key: 'registered',
@@ -146,28 +148,16 @@ export function PlantiBoard({ chapterNumber = 1 }: PlantiBoardProps) {
           screen: <PlantiNeedsScreen actionLabel={routine.startAction} />
         },
         {
-          key: 'routine-cares',
-          screenKey: 'routine-cares',
-          frame: framesTwo.cares,
-          screen: <PlantiRoutineCaresScreen />
+          key: 'routine-generating',
+          screenKey: 'routine-generating',
+          frame: framesTwo.generating,
+          screen: <PlantiRoutineGeneratingScreen />
         },
         {
-          key: 'routine-frequency',
-          screenKey: 'routine-frequency',
-          frame: framesTwo.frequency,
-          screen: <PlantiRoutineFrequencyScreen />
-        },
-        {
-          key: 'routine-review',
-          screenKey: 'routine-review',
-          frame: framesTwo.review,
-          screen: <PlantiRoutineReviewScreen />
-        },
-        {
-          key: 'routine-created',
-          screenKey: 'routine-created',
-          frame: framesTwo.created,
-          screen: <PlantiRoutineCreatedScreen />
+          key: 'routine-plan',
+          screenKey: 'routine-plan',
+          frame: framesTwo.plan,
+          screen: <PlantiRoutinePlanScreen />
         },
         {
           key: 'routine-tab',
@@ -179,8 +169,51 @@ export function PlantiBoard({ chapterNumber = 1 }: PlantiBoardProps) {
     }
   ];
 
-  const groups = chapterNumber === 2 ? chapterTwoGroups : chapterOneGroups;
-  const title = chapterNumber === 2 ? board.titleTwo : board.title;
+  const chapterThreeGroups: PlantiBoardGroup[] = [
+    {
+      key: 'tasks',
+      title: board.chapterThree,
+      items: [
+        {
+          key: 'lock-screen',
+          screenKey: 'lock-screen',
+          frame: framesThree.lock,
+          screen: <PlantiLockScreen />
+        },
+        {
+          key: 'notices',
+          screenKey: 'notices',
+          frame: framesThree.notices,
+          screen: <PlantiNoticesScreen />
+        },
+        {
+          key: 'task-detail',
+          screenKey: 'task-detail',
+          frame: framesThree.detail,
+          screen: <PlantiTaskDetailScreen />
+        },
+        {
+          key: 'task-done',
+          screenKey: 'task-done',
+          frame: framesThree.done,
+          screen: <PlantiTaskDoneScreen />
+        }
+      ]
+    }
+  ];
+
+  const groups =
+    chapterNumber === 3
+      ? chapterThreeGroups
+      : chapterNumber === 2
+        ? chapterTwoGroups
+        : chapterOneGroups;
+  const title =
+    chapterNumber === 3
+      ? board.titleThree
+      : chapterNumber === 2
+        ? board.titleTwo
+        : board.title;
 
   let step = 0;
 

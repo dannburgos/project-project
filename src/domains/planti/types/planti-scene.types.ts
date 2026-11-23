@@ -33,15 +33,17 @@ export type PlantiScene = {
   isHighlighted?: boolean;
   // Detalle: ya se bajó para ver las recomendaciones
   hasScrolled?: boolean;
-  // Personalizar: cuántas letras del nombre ya se escribieron, y qué opciones
-  // ya se eligieron
+  // Personalizar: cuántas letras del nombre ya se escribieron, y si ya se eligió
+  // cuándo se regó
   nameChars?: number;
   hasPlace?: boolean;
   hasLight?: boolean;
-  // Personalizar: la lista de "¿Dónde vive?" está abierta
+  hasWatering?: boolean;
+  // Personalizar: la lista de "¿Dónde vive?" o la de "¿Cuándo la regaste?"
+  // está abierta
   isPlaceOpen?: boolean;
-  // Rutina · cuidados: cuántos ya se marcaron (por defecto, todos)
-  checkedCares?: number;
-  // Rutina · frecuencias: cuántas veces por semana se riega
-  waterTimes?: number;
+  isWateringOpen?: boolean;
+  // Pestaña Rutina: qué día está elegido y qué día se está tocando ahora
+  selectedDay?: string;
+  tappedDay?: string;
 };

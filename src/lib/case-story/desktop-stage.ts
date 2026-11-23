@@ -28,12 +28,12 @@ import { buildRain } from '@/lib/case-story/rain';
 // sigue la inercia del trackpad) no cuenta otro paso.
 
 // Paso → sección a la que pertenece (para el contador)
-const STEP_SECTION = [0, 0, 1, 1, 1, 2, 2, 3, 3, 4, 4, 5, 6, 6];
+const STEP_SECTION = [0, 1, 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 7];
 // Primer paso de cada sección (para saltar desde el contador)
-const SECTION_STEP = [0, 2, 5, 7, 9, 11, 12];
-const GREEN_STEP = 9;
-const FLOWS_STEP = 11;
-const RAIN_STEP = 12;
+const SECTION_STEP = [0, 1, 4, 6, 8, 9, 10, 11];
+const GREEN_STEP = 8;
+const FLOWS_STEP = 10;
+const RAIN_STEP = 11;
 
 const PARK = 48;
 const GESTURE_GAP_MS = 220;
@@ -181,18 +181,14 @@ export function setupDesktopStage(root: HTMLElement) {
   // 0 · Introducción, la más pausada
   axisIn('intro', { slow: 1.3 });
   mark();
-  // 1 · Respiro: la introducción rueda a la izquierda y el respiro llega
-  // rodando desde la derecha (la imagen no se agranda)
-  roll('intro', 'respite', '[data-respite-image]', PARK);
-  mark();
-  // 2 · Problema: la línea aparece en el borde derecho y cruza la pantalla
+  // 1 · Problema: la línea aparece en el borde derecho y cruza la pantalla
   // descubriendo la frase, que llega cubierta y se destapa; luego la brecha
   tl.set('[data-axis]', { autoAlpha: 0, x: parkRight }, '+=0.01').to(
     '[data-axis]',
     { autoAlpha: 1, duration: 0.3 }
   );
   axisX = parkRight;
-  sweep('problem', 'respite');
+  sweep('problem', 'intro');
   addBlockReveal(tl, one(`${view('problem')} [data-reveal]`), '-=0.2');
   tl.fromTo(
     `${view('problem')} [data-part="gap-side"]`,
@@ -231,20 +227,6 @@ export function setupDesktopStage(root: HTMLElement) {
       { y: 0, autoAlpha: 1, duration: 1.2, stagger: 0.08 },
       at
     );
-  });
-  // Laura escribe: en cada parada aparece "escribiendo…" y luego su mensaje
-  all(`${view('frictions')} [data-part="chat-item"]`).forEach((item, index) => {
-    const at = `frictions-path+=${0.45 + index * 0.6}`;
-    const typing = item.querySelector('[data-part="typing"]');
-    const bubble = item.querySelector('[data-part="bubble"]');
-    tl.fromTo(typing, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, at)
-      .to(typing, { autoAlpha: 0, duration: 0.15 }, `${at}+=0.7`)
-      .fromTo(
-        bubble,
-        { autoAlpha: 0, y: 12, scale: 0.96, transformOrigin: 'left top' },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-        `${at}+=0.8`
-      );
   });
 
   mark();
@@ -300,7 +282,8 @@ export function setupDesktopStage(root: HTMLElement) {
     '-=0.8'
   );
   mark();
-  // 9 · El verde sube rodando desde abajo y empuja todo hacia arriba
+  // 9 · El verde sube rodando desde abajo y empuja todo hacia arriba; llega ¿Qué
+  // hace Planti? y la navegación
   tl.set('[data-green-run]', { autoAlpha: 1, yPercent: 100 }, '+=0.01');
   tl.to('[data-green-run]', { yPercent: 0, duration: 2 })
     .to(view('benchmark-findings'), { y: -height, duration: 2 }, '<')
@@ -311,43 +294,26 @@ export function setupDesktopStage(root: HTMLElement) {
     )
     .to('[data-axis]', { backgroundColor: AXIS_ON_GREEN, duration: 1.2 }, '<');
   hide(view('benchmark-findings'));
-  show(view('concept'), '-=0.3');
+  show(view('capabilities'), '-=0.3');
   tl.fromTo(
-    `${view('concept')} [data-part="idea"]`,
-    { x: width * 0.5, yPercent: -50 },
-    { x: 0, yPercent: -50, duration: 2 },
-    '<'
-  ).fromTo(
-    `${view('concept')} [data-part="plate"]`,
-    { clipPath: CLIP_HIDDEN_RIGHT },
-    { clipPath: CLIP_SHOWN, duration: 1.6 },
-    '<0.1'
-  );
-  const idea = one(`${view('concept')} [data-part="idea"]`);
-  if (idea) {
-    tl.fromTo(
-      axisTargets(idea),
-      { clipPath: CLIP_HIDDEN_RIGHT },
-      { clipPath: CLIP_SHOWN, duration: 1.7, stagger: 0.14 },
-      '<0.2'
-    );
-  }
-  tl.fromTo(
-    `${view('concept')} [data-part="logo"]`,
-    { y: 120, autoAlpha: 0 },
-    { y: 0, autoAlpha: 1, duration: 1.6 },
-    '-=1.2'
+    `${view('capabilities')} [data-part="head"], ${view('capabilities')} [data-part="column"], ${view('capabilities')} [data-part="navigation"]`,
+    { y: 160, autoAlpha: 0 },
+    { y: 0, autoAlpha: 1, duration: 1.8, stagger: 0.1 },
+    '<0.2'
   );
   mark();
-  // 10 · Rueda hacia ¿Qué hace Planti? y la navegación
-  roll(
-    'concept',
-    'capabilities',
-    '[data-part="head"], [data-part="column"], [data-part="navigation"]'
+  // 10 · Sistema de diseño, justo antes de las pantallas
+  leave(view('capabilities'));
+  show(view('design-system'), '>0.05');
+  tl.fromTo(
+    `${view('design-system')} [data-part="title"]`,
+    { y: 160, autoAlpha: 0 },
+    { y: 0, autoAlpha: 1, duration: 1.8 },
+    '<'
   );
   mark();
   // 11 · Flujos
-  axisIn('flows', { out: 'capabilities' });
+  axisIn('flows', { out: 'design-system' });
   mark();
   // 12 · Lluvia: la mueve el scroll, desde el primer gesto
   show(view('rain'), '+=0.01');

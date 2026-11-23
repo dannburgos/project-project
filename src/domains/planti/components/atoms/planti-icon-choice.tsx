@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 type PlantiIconChoiceProps = {
   icon: LucideIcon;
   isSelected?: boolean;
+  onSelect?: () => void;
   children: React.ReactNode;
 };
 
@@ -14,6 +15,7 @@ type PlantiIconChoiceProps = {
 export function PlantiIconChoice({
   icon: Icon,
   isSelected = false,
+  onSelect,
   children
 }: PlantiIconChoiceProps) {
   return (
@@ -23,6 +25,7 @@ export function PlantiIconChoice({
         isSelected && 'planti-icon-choice--selected'
       )}
       aria-current={isSelected ? 'true' : undefined}
+      onClick={onSelect}
     >
       <Icon aria-hidden="true" />
       {children}

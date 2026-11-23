@@ -31,6 +31,15 @@
   @apply size-28;
 }
 
+/* Con foto: el fondo crema de la foto llena el panel */
+.planti-plant-hero--photo {
+  background: var(--planti-cream);
+}
+
+.planti-plant-hero__photo {
+  @apply size-full object-cover;
+}
+
 /* Rótulo con el nombre de la planta, sobre su foto */
 .planti-plant-hero__caption {
   @apply absolute bottom-3 left-3 rounded-full border px-3 py-1.5 text-base font-medium;
@@ -67,7 +76,7 @@
 }
 
 .planti-icon-choice {
-  @apply relative flex h-19 flex-col items-center justify-center gap-1 overflow-hidden rounded-2xl border-[1.5px] text-base leading-6 font-medium;
+  @apply relative flex h-22 flex-col items-center justify-center gap-1 overflow-hidden rounded-2xl border-[1.5px] text-base leading-6 font-medium;
   background: var(--planti-white);
   border-color: transparent;
   box-shadow: var(--planti-shadow);
@@ -160,6 +169,16 @@
 
 .planti-input__text {
   @apply flex flex-1 items-center;
+}
+
+.planti-input__control {
+  @apply w-full min-w-0 bg-transparent outline-none;
+  color: inherit;
+  font: inherit;
+}
+
+.planti-input__control::placeholder {
+  color: var(--planti-placeholder);
 }
 
 .planti-input--empty .planti-input__text {
@@ -278,8 +297,9 @@
   .planti-button--pressed,
   .planti-button--loading,
   .planti-icon-choice--selected,
-  .planti-care-option--checked,
-  .planti-frequency__step--tapped,
+  .planti-carousel__card--pressed,
+  .planti-day-strip__day--tapped,
+  .planti-lock-notice--pressed,
   .planti-look-tile--selected,
   .planti-match-tile--active,
   .planti-input--tapped,
@@ -299,8 +319,9 @@
   .planti-button--pressed,
   .planti-button--loading,
   .planti-icon-choice--selected,
-  .planti-care-option--checked,
-  .planti-frequency__step--tapped,
+  .planti-carousel__card--pressed,
+  .planti-day-strip__day--tapped,
+  .planti-lock-notice--pressed,
   .planti-look-tile--selected,
   .planti-match-tile--active,
   .planti-input--tapped,

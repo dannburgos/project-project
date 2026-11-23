@@ -132,31 +132,6 @@ export function setupMobileFlow(
         scrollTrigger: at(element)
       })
     );
-    // Chat de Laura: al aparecer en pantalla, escribe sus mensajes uno a uno
-    all('.story-chat').forEach(chat => {
-      const chatTimeline = gsap.timeline({
-        scrollTrigger: at(chat, 'top 75%')
-      });
-      queryAll(chat, '[data-part="chat-item"]').forEach((item, index) => {
-        const typing = item.querySelector('[data-part="typing"]');
-        const bubble = item.querySelector('[data-part="bubble"]');
-        const start = index * 1.1;
-        chatTimeline
-          .fromTo(
-            typing,
-            { autoAlpha: 0 },
-            { autoAlpha: 1, duration: 0.2 },
-            start
-          )
-          .to(typing, { autoAlpha: 0, duration: 0.15 }, start + 0.7)
-          .fromTo(
-            bubble,
-            { autoAlpha: 0, y: 12 },
-            { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' },
-            start + 0.8
-          );
-      });
-    });
     // Imágenes: se abren como cortina desde abajo
     all(
       '[data-axis-image], [data-part="reference"], [data-part="logo"], [data-part="plate"]'
@@ -172,24 +147,26 @@ export function setupMobileFlow(
         }
       )
     );
-    // Respiro: la foto se mueve más lento que la página
-    all('[data-respite-image]').forEach(image =>
-      gsap.fromTo(
-        image,
-        { yPercent: -6, scale: 1.1 },
-        {
-          yPercent: 6,
-          scale: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: image,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true
-          }
-        }
-      )
+    // Cada vista se queda quieta cuando se terminó de leer y la siguiente sube
+    // y la tapa, como en computador. La lluvia y el prototipo ya se fijan solos.
+    const stacked = views.filter(
+      view => !['rain', 'prototype'].includes(view.dataset.view ?? '')
     );
+    views.forEach((view, index) => {
+      view.style.zIndex = String(index + 1);
+    });
+    stacked.forEach(view => {
+      const next = views[views.indexOf(view) + 1];
+      if (!next) return;
+      ScrollTrigger.create({
+        trigger: view,
+        start: () =>
+          view.offsetHeight > window.innerHeight ? 'bottom bottom' : 'top top',
+        end: () => `+=${Math.min(next.offsetHeight, window.innerHeight)}`,
+        pin: true,
+        pinSpacing: false
+      });
+    });
     // Lluvia al revés: la pantalla se fija y el scroll sube las capas
     const rainView = root.querySelector('[data-view="rain"]');
     if (rainView) {

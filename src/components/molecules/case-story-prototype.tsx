@@ -1,4 +1,4 @@
-import { ArrowRight, Play } from 'lucide-react';
+import { Play } from 'lucide-react';
 import { useState } from 'react';
 
 import { CaseStoryImage } from '@/components/atoms/case-story-image';
@@ -32,14 +32,15 @@ export function CaseStoryPrototype({
 
   return (
     <>
-      <div className="story-view story-rain" data-view="rain" data-section="6">
-        <CaseStoryOpener number="07" name={sectionName} />
+      <div className="story-view story-rain" data-view="rain" data-section="7">
+        <CaseStoryOpener number="08" name={sectionName} />
         <div className="story-rain__stack">
           {prototype.screens.map(screen => (
             <CaseStoryImage
               key={screen.label}
               label={screen.label}
-              variant="paper"
+              src={screen.src}
+              variant={screen.src ? 'screen' : 'paper'}
               className={cn(
                 'story-rain__card',
                 screen.isMain && 'story-rain__card--main'
@@ -53,7 +54,7 @@ export function CaseStoryPrototype({
       <div
         className="story-view story-prototype"
         data-view="prototype"
-        data-section="6"
+        data-section="7"
       >
         <div className="story-prototype__copy" data-part="copy">
           <p className="story-prototype__eyebrow">{prototype.eyebrow}</p>
@@ -72,15 +73,7 @@ export function CaseStoryPrototype({
               )
             )}
           </p>
-          <p className="story-prototype__live">
-            <span className="story-prototype__dot" aria-hidden="true" />
-            {prototype.liveHint}
-            <ArrowRight aria-hidden="true" />
-          </p>
           <div className="story-prototype__flows">
-            <p className="story-prototype__flows-label">
-              {prototype.flowsLabel}
-            </p>
             <ul className="story-prototype__flow-list">
               {prototype.flows.map(flow => {
                 const isSelected = flow.number === selected;

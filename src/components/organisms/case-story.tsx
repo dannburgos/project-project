@@ -3,11 +3,11 @@
 import { CaseStoryBenchmark } from '@/components/molecules/case-story-benchmark';
 import { CaseStoryConcept } from '@/components/molecules/case-story-concept';
 import { CaseStoryCounter } from '@/components/molecules/case-story-counter';
+import { CaseStoryDesignSystem } from '@/components/molecules/case-story-design-system';
 import { CaseStoryFlows } from '@/components/molecules/case-story-flows';
 import { CaseStoryIntro } from '@/components/molecules/case-story-intro';
 import { CaseStoryProblem } from '@/components/molecules/case-story-problem';
 import { CaseStoryPrototype } from '@/components/molecules/case-story-prototype';
-import { CaseStoryRespite } from '@/components/molecules/case-story-respite';
 import { CaseStoryUser } from '@/components/molecules/case-story-user';
 import type { CaseStory as CaseStoryContent } from '@/content/case-story.types';
 import type { ProjectCover } from '@/content/site';
@@ -58,7 +58,6 @@ export function CaseStory({ story, cover }: CaseStoryProps) {
           cover={cover}
           sectionName={sections[0]}
         />
-        <CaseStoryRespite label={story.respiteLabel} section={0} />
         <CaseStoryProblem problem={story.problem} sectionName={sections[1]} />
         <CaseStoryUser user={story.user} sectionName={sections[2]} />
         <CaseStoryBenchmark
@@ -68,10 +67,14 @@ export function CaseStory({ story, cover }: CaseStoryProps) {
 
         <div className="case-story__green" data-green-run data-surface="dark">
           <CaseStoryConcept concept={story.concept} sectionName={sections[4]} />
-          <CaseStoryFlows flows={story.flows} sectionName={sections[5]} />
+          <CaseStoryDesignSystem
+            designSystem={story.designSystem}
+            sectionName={sections[5]}
+          />
+          <CaseStoryFlows flows={story.flows} sectionName={sections[6]} />
           <CaseStoryPrototype
             prototype={story.prototype}
-            sectionName={sections[6]}
+            sectionName={sections[7]}
           />
         </div>
 
