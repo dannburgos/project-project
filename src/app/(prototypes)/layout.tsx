@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Poppins } from 'next/font/google';
+import { Geist, Outfit, Poppins } from 'next/font/google';
 
 import { cn } from '@/lib/utils';
 import '@/styles/prototypes.css';
@@ -16,6 +16,13 @@ const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700', '800']
 });
 
+// Tipografía de PetRide (sistema de diseño de la app)
+const outfit = Outfit({
+  variable: '--font-outfit',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800']
+});
+
 export const metadata: Metadata = {
   robots: { index: false, follow: false }
 };
@@ -30,7 +37,14 @@ export default function PrototypesLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={cn(geistSans.variable, poppins.variable, 'antialiased')}>
+      <body
+        className={cn(
+          geistSans.variable,
+          poppins.variable,
+          outfit.variable,
+          'antialiased'
+        )}
+      >
         {children}
       </body>
     </html>

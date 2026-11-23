@@ -5,12 +5,14 @@ import { CaseChapters } from '@/components/organisms/case-chapters';
 import { CaseHero } from '@/components/organisms/case-hero';
 import { CaseMoreProjects } from '@/components/organisms/case-more-projects';
 import { CaseStory } from '@/components/organisms/case-story';
+import { DesignSystemStory } from '@/components/organisms/design-system-story';
 import { PetrideStory } from '@/components/organisms/petride-story';
 import { SonopizzaStory } from '@/components/organisms/sonopizza-story';
 import { ClosingContact } from '@/components/organisms/closing-contact';
 import { PageCurtain } from '@/components/organisms/page-curtain';
 import { getCaseStory } from '@/content/case-stories';
 import { getCaseStudy } from '@/content/case-studies';
+import { designSystemStory } from '@/content/cases/design-system-story';
 import { petrideStory } from '@/content/cases/petride-story';
 import { sonopizzaStory } from '@/content/cases/sonopizza-story';
 import { exampleProjects, type ExampleProject } from '@/content/site';
@@ -54,6 +56,8 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           <SonopizzaStory story={sonopizzaStory} />
         ) : project.slug === 'petride' ? (
           <PetrideStory story={petrideStory} />
+        ) : project.slug === 'design-system' ? (
+          <DesignSystemStory story={designSystemStory} />
         ) : story ? (
           <CaseStory story={story} cover={project.cover} />
         ) : (
