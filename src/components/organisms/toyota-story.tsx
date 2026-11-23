@@ -44,33 +44,22 @@ export function ToyotaStory({ story }: ToyotaStoryProps) {
       data-case-story
       data-world="dark"
     >
-      <ToyotaIndex sections={story.sections} labels={story.labels} />
+      <ToyotaIndex
+        sections={story.sections}
+        labels={story.labels}
+        car={story.progressCar}
+      />
 
       <ToyotaCover cover={story.cover} />
-      <ToyotaOverview
-        index={0}
-        label={name(0)}
-        overview={story.overview}
-        labels={story.labels}
-      />
+      <ToyotaOverview index={0} label={name(0)} overview={story.overview} />
       <ToyotaDiscovery
         index={1}
         label={name(1)}
         discovery={story.discovery}
         labels={story.labels}
       />
-      <ToyotaStrategy
-        index={2}
-        label={name(2)}
-        strategy={story.strategy}
-        labels={story.labels}
-      />
-      <ToyotaProduct
-        index={3}
-        label={name(3)}
-        product={story.product}
-        labels={story.labels}
-      />
+      <ToyotaStrategy index={2} label={name(2)} strategy={story.strategy} />
+      <ToyotaProduct index={3} label={name(3)} product={story.product} />
       <ToyotaExperience
         index={4}
         label={name(4)}

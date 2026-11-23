@@ -111,3 +111,47 @@ Dann sintió que había mucha información y demasiado scroll. Se redujo el caso
   - Pila de pilares más corta: tarjetas de 64svh con 8svh entre una y otra.
   - Portada con una pista de 160svh.
   - Espacio entre módulos: 80 px en computador.
+
+## Ajustes del 23 nov 2026 (tarde)
+
+- **Todo en español**, también el menú, las palabras gigantes y las etiquetas. Reemplaza la regla A.1.6 del caso de estudio («navegación en inglés»).
+  - Capítulos: Panorama, Descubrimiento, Estrategia, Definición de producto, Diseño de experiencia, Validación y aprendizajes.
+  - Las palabras largas, como DESCUBRIMIENTO, ajustan su tamaño al número de letras.
+- **Aperturas:**
+  - La celda del título muestra «Capítulo 0N» y la pregunta del capítulo.
+  - Se quitó «En este capítulo»; esa celda quedó como ventana al fondo.
+  - Sobre una foto de fondo, la palabra gigante va en blanco.
+- **Módulos:** sin etiquetas numeradas («01 — Overview»…); solo la etiqueta corta.
+- **Portada:**
+  - Indicador de scroll: el velocímetro, con el texto «Baja para acelerar».
+  - El texto es un solo párrafo.
+  - La ficha tiene 4 datos: tipo, enfoque, marca y mercado, y plataforma.
+- **Fotos:** los originales van en `public/toyota/originales/` (solo en este computador). Las copias WebP van en `public/toyota/fotos/`.
+  - Listas: fondo del 01, Yaris azul; celda del 01, Fortuner roja.
+  - Prompts: de día, luminosos, con autos de colores vivos, en español y sin repetir modelo.
+- **Menos texto (Dann, 23 nov 2026, noche):**
+  - Panorama: la gráfica de la solución (Descubrir → Recomendar → Explicar) lleva la explicación debajo de cada paso. Se quitó el cuadro que la repetía.
+  - Descubrimiento: se quitaron las notas «Nivel de evidencia» del contexto y del benchmark, y el cuadro «De aprendizaje a decisión».
+  - Pista del benchmark: las notas (fortaleza y oportunidad) quedan fijas en su panel. Solo la captura cambia de ritmo.
+  - Estrategia: se quitaron «Nivel de evidencia», «Qué no es» y el módulo «Modelo de datos».
+  - Propuesta de valor: el cuadro de dos columnas pasó a ser cinco cambios en una sola fila. Cada uno tiene un tema, la frase tradicional que se tacha en rojo y la nueva que se enciende con el scroll, una tras otra.
+  - Ya no queda ningún «Nivel de evidencia» en el caso. También se quitó la nota «En el prototipo, “Similar” y “Con ventajas” son pantallas de ejemplo». El único aviso con etiqueta que queda es «Por completar con evidencia real», en Validación.
+  - Panorama: se quitó la cita «Encontrar un vehículo adecuado no siempre es fácil…». En los tres pilares, las imágenes pasan por debajo de la palabra gigante.
+  - Aperturas con foto: la celda vacía de arriba es de vidrio esmerilado (desenfoque y velo blanco al 40 %). Si el navegador no desenfoca o la persona pide menos transparencia, queda sólida.
+  - Benchmark: quedan tres referentes, cada uno de un tipo distinto: Hyundai (herramientas: comparador y reserva), Renault (estilos de vida) y Autocosmos (multimarca). Se quitaron Kia y Volvo porque se cruzaban con Hyundai. El título ahora dice «Tres experiencias, siete criterios».
+  - Fotos listas del 02: el fondo es una vista aérea de Toyota de colores en filas (`02-fondo-vista-aerea.webp`, 1672 × 941 px). La celda muestra a un hombre que compara vehículos en su portátil, con una Hilux naranja afuera (`02-celda-hilux.webp`, 1254 × 1254 px).
+  - Tres pilares: una sola imagen larga (vertical, 1:3) en un marco fijo en el centro. La imagen baja por dentro más lento que el scroll: en computador, a poco más de un cuarto de la velocidad, mientras pasan los tres pilares; en celular, a casi la mitad, mientras el marco cruza la pantalla. Cada pilar muestra otra parte de la misma imagen. La imagen es el frente de una Land Cruiser Prado amarilla, del techo al asfalto (`01-pilares-land-cruiser.webp`, 724 × 2172 px). El pilar 01 muestra el cielo y el techo, el 02 el parabrisas y la parrilla, y el 03 el emblema, el faro y el asfalto.
+  - Imágenes del benchmark: hechas con IA, sin interfaces. Son autos en diagonal, en ángulo de tres cuartos de frente, mirando a la derecha (hacia donde avanza la pista): Hyundai Tucson azul en una calle moderna, Renault Duster naranja en la montaña y, para Autocosmos (multimarca), tres vehículos de distintos tipos sin logos. El letrero dice «Imagen de referencia».
+  - Fotos del benchmark listas: Hyundai (`02-ref-hyundai.webp`), Renault (`02-ref-renault.webp`) y multimarca para Autocosmos (`02-ref-multimarca.webp`), todas de 1254 × 1254 px.
+  - Apertura 03, fotos listas: de fondo, la RAV4 híbrida verde en un puente atirantado (`03-fondo-rav4.webp`, 1672 × 941 px); en la celda, el tablero con una ruta en la pantalla (`03-celda-tablero.webp`, 1254 × 1254 px).
+  - Apertura 04, pendiente: de fondo, una Corolla Cross cobriza en movimiento (toma en paneo con fondo barrido). La celda («resultado de la asesoría en el prototipo») será una captura del prototipo cuando exista, no una imagen de IA.
+  - Avance del caso: una GR Yaris blanca (`public/toyota/indice/gr-yaris.webp`, volteada para mirar a la derecha) recorre todo el borde de abajo de la pantalla, de izquierda a derecha, y deja detrás una línea roja sobre una línea fina. Sus llantas (`llanta.webp`, encima de las que trae dibujadas) giran con el scroll: una vuelta cada 600 px, hacia atrás al subir. Con «reducir movimiento», el auto avanza pero las llantas no giran. El botón del índice subió (48 px en celular, 56 px en computador) para quedar encima de su camino.
+  - Interacciones del auto (aprobadas por Dann):
+    1. Suspensión: la carrocería (`gr-yaris-carroceria.webp`, sin las llantas dibujadas) sube la trompa al acelerar con el scroll y, al frenar, cabecea y vuelve con un rebote. Solo con movimiento.
+    2. Luces: freno al detenerse y en reversa; faros con haz en el mundo oscuro.
+    3. Hitos: una marca por capítulo sobre la línea. Se pone roja al pasar, su nombre aparece un instante, al pasar el cursor muestra el capítulo y con un clic salta a él.
+    4. Control: el auto se arrastra para recorrer el caso (mouse o dedo). Con el teclado es un control deslizante: flechas, Inicio y Fin saltan de capítulo, y el foco se queda en el auto. Al pasar el cursor dice «Arrástrame para avanzar».
+    5. Meta: se quitó a pedido de Dann (23 nov 2026).
+    - Código: física y luces en `src/lib/case-story/toyota-progress-car.ts`; hitos, arrastre y teclado en `src/hooks/use-progress-car.ts`. El botón del índice subió a 72 px para quedar encima de los globos.
+  - Descubrimiento: el usuario volvió a tener su propio módulo, después de «Definición del problema». Lleva el eyebrow «Usuario», el título «Personas que necesitan orientación para elegir su próximo vehículo.», los cuatro segmentos como tarjetas con su necesidad principal (el cuarto marcado como complementario) y los seis puntos de dolor como hipótesis. El problema quedó solo con su modelo de cuatro pasos.
+  - Definición de producto, flujo de usuario como diagrama (`toyota-flow.tsx`): el camino de 8 pasos con su línea que se dibuja con el scroll; notas en «Asesoría» (9 preguntas, «Aún no lo sé» no bloquea) y en «Resultado» (siempre hay una respuesta); un arco «Editar perfil» que vuelve de «Tu perfil» a «Asesoría»; las salidas «Cotizador» y «Prueba de manejo» bajo el último paso; y un hilo rojo que baja de «Resultado» hasta sus tres variantes. El módulo «Variantes de resultado» se fusionó aquí. En celular todo va en una columna.

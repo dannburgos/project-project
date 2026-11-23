@@ -1,4 +1,5 @@
 import { ToyotaVisual } from '@/components/atoms/toyota-visual';
+import { ToyotaScrollGauge } from '@/components/molecules/toyota-scroll-gauge';
 import type { ToyotaCover as ToyotaCoverContent } from '@/content/toyota-story.types';
 
 type ToyotaCoverProps = {
@@ -36,19 +37,12 @@ export function ToyotaCover({ cover }: ToyotaCoverProps) {
             {project && <span className="ty-cover__project">{project}</span>}
           </h1>
 
-          <div className="ty-cover__intro">
-            <p className="ty-cover__lead">{cover.lead}</p>
-            <p className="ty-cover__body">{cover.body}</p>
-          </div>
-          {/* Indicador de scroll: una vía con su línea de carril en rojo que
-              avanza sin parar, como cuando se maneja; se va al empezar a
-              bajar */}
-          <div className="ty-cover__hint" aria-hidden="true" data-ty-hint>
-            <span className="ty-cover__hint-text">{cover.scrollHint}</span>
-            <span className="ty-cover__hint-road">
-              <span className="ty-cover__hint-lane" />
-            </span>
-          </div>
+          <p className="ty-cover__intro">{cover.intro}</p>
+          {/* Indicador de scroll: el velocímetro que sube con la captura */}
+          <ToyotaScrollGauge
+            label={cover.scrollHint}
+            className="ty-cover__hint"
+          />
         </div>
       </div>
 
@@ -64,7 +58,6 @@ export function ToyotaCover({ cover }: ToyotaCoverProps) {
             </div>
           ))}
         </dl>
-        <p className="ty-note">{cover.note}</p>
       </div>
     </header>
   );

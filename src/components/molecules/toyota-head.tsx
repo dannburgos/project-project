@@ -21,8 +21,8 @@ const ALIGN_CLASS: Record<ToyotaHeadAlign, string> = {
   center: 'ty-head--center'
 };
 
-// Encabezado de un módulo: índice del caso (01 — Overview), eyebrow, titular
-// que se destapa con una máscara y bajada
+// Encabezado de un módulo: eyebrow, titular que se destapa con una máscara y
+// bajada
 export function ToyotaHead({
   head,
   size = 'default',
@@ -33,12 +33,9 @@ export function ToyotaHead({
     <header
       className={cn('ty-head', SIZE_CLASS[size], ALIGN_CLASS[align], className)}
     >
-      {(head.index || head.eyebrow) && (
-        <p className="ty-head__meta" data-ty-rise>
-          {head.index && <span className="ty-head__index">{head.index}</span>}
-          {head.eyebrow && (
-            <span className="ty-head__eyebrow">{head.eyebrow}</span>
-          )}
+      {head.eyebrow && (
+        <p className="ty-head__eyebrow" data-ty-rise>
+          {head.eyebrow}
         </p>
       )}
       <h3 className="ty-head__title" data-ty-mask>

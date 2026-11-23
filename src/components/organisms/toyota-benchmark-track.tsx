@@ -28,8 +28,8 @@ function formatNumber(value: number) {
 // el módulo está completo en pantalla, la página se congela y el scroll
 // recorre la pista de izquierda a derecha: cada marca es un capítulo con su
 // nombre girado como lomo, su captura y sus dos hallazgos. Mientras la pista
-// avanza, la captura y las notas suben o bajan a su propio ritmo. Al final
-// suelta la página. En celular (o con «reducir movimiento») la pista se
+// avanza, la captura sube o baja a su propio ritmo; las notas van fijas en su
+// panel. Al final suelta la página. En celular (o con «reducir movimiento») la pista se
 // desliza con el dedo, sin congelar nada.
 export function ToyotaBenchmarkTrack({
   references,

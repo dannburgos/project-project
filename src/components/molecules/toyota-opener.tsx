@@ -1,5 +1,8 @@
+import type { CSSProperties } from 'react';
+
 import { ToyotaVisual } from '@/components/atoms/toyota-visual';
 import type { ToyotaOpener as ToyotaOpenerContent } from '@/content/toyota-story.types';
+import { cn } from '@/lib/utils';
 
 type ToyotaOpenerProps = {
   opener: ToyotaOpenerContent;
@@ -13,7 +16,9 @@ type ToyotaOpenerProps = {
 // pantalla.
 export function ToyotaOpener({ opener }: ToyotaOpenerProps) {
   return (
-    <div className="ty-opener">
+    <div
+      className={cn('ty-opener', opener.background.src && 'ty-opener--photo')}
+    >
       <div className="ty-opener__backdrop" data-ty-speed="0.12">
         <ToyotaVisual
           visual={opener.background}
@@ -21,7 +26,12 @@ export function ToyotaOpener({ opener }: ToyotaOpenerProps) {
         />
       </div>
 
-      <p className="ty-opener__word" aria-hidden="true">
+      {/* El largo de la palabra ajusta su tamaño para que quepa en el ancho */}
+      <p
+        className="ty-opener__word"
+        style={{ '--word-chars': opener.word.length } as CSSProperties}
+        aria-hidden="true"
+      >
         {opener.word}
       </p>
 
@@ -36,23 +46,19 @@ export function ToyotaOpener({ opener }: ToyotaOpenerProps) {
         </div>
 
         <div className="ty-opener__cell ty-opener__cell--solid ty-opener__cell--title">
+          {/* El nombre del capítulo ya está en la palabra gigante: aquí va
+              la pregunta que responde. El título real sigue diciendo el
+              nombre, para el lector de pantalla */}
           <h2 className="ty-opener__title" data-ty-focus tabIndex={-1}>
-            <span className="ty-opener__title-number">{opener.number}</span>
-            {opener.word}
+            {opener.kicker}
+            <span className="sr-only"> · {opener.word}</span>
           </h2>
           <p className="ty-opener__summary">{opener.summary}</p>
         </div>
         <div className="ty-opener__cell ty-opener__cell--media">
           <ToyotaVisual visual={opener.window} className="ty-opener__window" />
         </div>
-        <div className="ty-opener__cell ty-opener__cell--solid ty-opener__cell--list">
-          <p className="ty-opener__list-label">{opener.sectionsLabel}</p>
-          <ol className="ty-opener__list">
-            {opener.sections.map(section => (
-              <li key={section}>{section}</li>
-            ))}
-          </ol>
-        </div>
+        <span className="ty-opener__cell ty-opener__cell--window" />
       </div>
     </div>
   );

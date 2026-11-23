@@ -28,14 +28,26 @@ export type ToyotaTable = {
   rows: readonly (readonly string[])[];
 };
 
+// Un cambio de la experiencia tradicional a la propuesta, en pocas palabras
+export type ToyotaShift = {
+  topic: string;
+  before: string;
+  after: string;
+};
+
+export type ToyotaShiftSet = {
+  beforeLabel: string;
+  afterLabel: string;
+  items: readonly ToyotaShift[];
+};
+
 export type ToyotaFact = {
   label: string;
   value: string;
 };
 
-// Encabezado de un módulo: índice, eyebrow, titular y bajada
+// Encabezado de un módulo: eyebrow, titular y bajada
 export type ToyotaHead = {
-  index?: string;
   eyebrow?: string;
   title: string;
   lead?: string;
@@ -44,6 +56,8 @@ export type ToyotaHead = {
 // Paso de un recorrido que se dibuja de izquierda a derecha
 export type ToyotaStep = {
   label: string;
+  // Explicación corta bajo el paso, para no repetirla en otro bloque
+  text?: string;
   isHighlight?: boolean;
 };
 
@@ -51,10 +65,10 @@ export type ToyotaStep = {
 // que se mueve más lento
 export type ToyotaOpener = {
   number: string;
+  // Rótulo corto sobre la pregunta del capítulo, por ejemplo «Capítulo 01»
+  kicker: string;
   word: string;
   summary: string;
-  sectionsLabel: string;
-  sections: readonly string[];
   background: ToyotaVisual;
   window: ToyotaVisual;
 };
@@ -64,7 +78,6 @@ export type ToyotaStackCard = {
   number: string;
   title: string;
   text: string;
-  visual: ToyotaVisual;
 };
 
 export type ToyotaBenchmarkReference = {
@@ -105,22 +118,23 @@ export type ToyotaResultVariant = {
 export type ToyotaLabels = {
   navigation: string;
   menu: string;
-  evidence: string;
   hypothesis: string;
   trackHint: string;
   trackProgress: string;
   pending: string;
+  // El auto del avance: su nombre como control y la pista al pasarle el cursor
+  carControl: string;
+  carHint: string;
 };
 
 export type ToyotaCover = {
   eyebrow: string;
   title: string;
-  lead: string;
-  body: string;
+  // Un solo párrafo con lo esencial: la bajada y el reto, juntos
+  intro: string;
   visual: ToyotaVisual;
   factsTitle: string;
   facts: readonly ToyotaFact[];
-  note: string;
   scrollHint: string;
 };
 
@@ -131,13 +145,13 @@ export type ToyotaOverview = {
     head: ToyotaHead;
     statement: string;
     pillarsWord: string;
+    // Una sola imagen larga (vertical) para los tres pilares
+    pillarsVisual: ToyotaVisual;
     pillars: readonly ToyotaStackCard[];
   };
   problem: {
     problemEyebrow: string;
     problem: string;
-    quote: string;
-    note: string;
     opportunityEyebrow: string;
     opportunity: string;
     solutionLabel: string;
@@ -154,7 +168,6 @@ export type ToyotaDiscovery = {
     head: ToyotaHead;
     statement: string;
     stats: readonly ToyotaStat[];
-    note: string;
     currentLabel: string;
     currentSteps: readonly ToyotaStep[];
     proposedLabel: string;
@@ -169,18 +182,17 @@ export type ToyotaDiscovery = {
     strengthLabel: string;
     opportunityLabel: string;
     references: readonly ToyotaBenchmarkReference[];
-    decisionsTitle: string;
-    decisions: ToyotaTable;
-    note: string;
   };
   problem: {
     head: ToyotaHead;
     model: readonly ToyotaStep[];
-    segmentsLabel: string;
-    segments: readonly string[];
+  };
+  // Para quién: los segmentos con su necesidad principal y sus dolores
+  user: {
+    head: ToyotaHead;
+    segments: readonly ToyotaItem[];
     painsLabel: string;
     pains: readonly ToyotaItem[];
-    note: string;
   };
   hmw: {
     eyebrow: string;
@@ -200,8 +212,7 @@ export type ToyotaStrategy = {
   value: {
     head: ToyotaHead;
     promise: string;
-    comparison: ToyotaTable;
-    note: string;
+    shifts: ToyotaShiftSet;
     canvas: ToyotaVisual;
     fit: string;
   };
@@ -212,8 +223,6 @@ export type ToyotaStrategy = {
   };
   concept: {
     head: ToyotaHead;
-    notLabel: string;
-    not: readonly string[];
     stagesLabel: string;
     stages: readonly ToyotaStep[];
   };
@@ -224,12 +233,6 @@ export type ToyotaStrategy = {
     trustLabel: string;
     mechanisms: readonly string[];
     trustRule: string;
-  };
-  data: {
-    head: ToyotaHead;
-    entities: readonly ToyotaStep[];
-    decision: string;
-    rule: string;
   };
 };
 
@@ -251,19 +254,22 @@ export type ToyotaProduct = {
     matrixTitle: string;
     matrix: ToyotaTagMatrix;
     rules: readonly ToyotaItem[];
-    note: string;
   };
+  // El flujo como diagrama: el camino principal, un ciclo que vuelve atrás,
+  // las salidas hacia Toyota y el resultado abierto en sus variantes. El paso
+  // destacado (isHighlight) es el resultado
   flow: {
     head: ToyotaHead;
     statement: string;
     steps: readonly ToyotaStep[];
-    decision: string;
-  };
-  variants: {
-    head: ToyotaHead;
-    items: readonly ToyotaResultVariant[];
+    // Ciclo: desde el paso `from` se vuelve al paso `to` (posiciones desde 0)
+    loop: { label: string; text: string; from: number; to: number };
+    exitsLabel: string;
+    exits: readonly string[];
+    resultsLabel: string;
+    results: readonly ToyotaResultVariant[];
     exampleLabel: string;
-    note: string;
+    decision: string;
   };
 };
 
@@ -308,9 +314,17 @@ export type ToyotaSection = {
   name: string;
 };
 
+// El auto que recorre la línea de avance del índice: la carrocería y una
+// llanta (la misma para las dos ruedas), con fondo transparente
+export type ToyotaProgressCar = {
+  body: string;
+  wheel: string;
+};
+
 export type ToyotaStory = {
   sections: readonly ToyotaSection[];
   labels: ToyotaLabels;
+  progressCar: ToyotaProgressCar;
   cover: ToyotaCover;
   overview: ToyotaOverview;
   discovery: ToyotaDiscovery;

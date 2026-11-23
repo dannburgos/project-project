@@ -11,6 +11,7 @@ import {
   queryAll,
   watchCounterVisibility
 } from '@/lib/case-story/motion';
+import { driveProgressCar } from '@/lib/case-story/toyota-progress-car';
 
 // Movimiento del caso Toyota (scroll libre). Todo se arma desde el HTML con
 // data-ty-*, siguiendo los principios de movimiento del manual de Toyota:
@@ -118,8 +119,11 @@ function trackChapters(root: HTMLElement) {
     trigger: root,
     start: 'top top',
     end: 'bottom bottom',
-    onUpdate: self =>
-      root.style.setProperty('--ty-progress', self.progress.toFixed(3))
+    onUpdate: self => {
+      root.style.setProperty('--ty-progress', self.progress.toFixed(3));
+      // Las llantas del auto del índice dan una vuelta cada 600 px de scroll
+      root.style.setProperty('--ty-turn', (self.scroll() * 0.6).toFixed(1));
+    }
   });
   return [...coverTrigger, ...chapters, ...surfaces, overall];
 }
@@ -237,20 +241,25 @@ function growCover(root: HTMLElement) {
   const runway = root.querySelector<HTMLElement>('[data-ty-runway]');
   const frame = runway?.querySelector<HTMLElement>('[data-ty-grow]');
   if (!runway || !frame) return;
-  // El indicador de scroll sube y se desvanece apenas se empieza a bajar
+  // El velocímetro acompaña el crecimiento: la aguja sube de 0 al máximo
+  // durante la pista de la portada y, en el último tramo, el medidor se apaga
   const hint = runway.querySelector<HTMLElement>('[data-ty-hint]');
   if (hint) {
-    gsap.to(hint, {
-      autoAlpha: 0,
-      y: -24,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: runway,
-        start: 'top top',
-        end: '+=240',
-        scrub: true
-      }
-    });
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: runway,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: true
+        }
+      })
+      .fromTo(
+        hint,
+        { '--gauge': 0 },
+        { '--gauge': 1, ease: 'none', duration: 1 }
+      )
+      .to(hint, { autoAlpha: 0, ease: 'none', duration: 0.25 }, 0.75);
   }
   // Solo mueve --cover-grow: el CSS arma el recorte con los cuatro bordes a
   // la vez (y con la medida de la tarjeta de celular o de computador)
@@ -296,30 +305,63 @@ function revealCells(root: HTMLElement) {
   });
 }
 
-// Tres pilares: mientras la escena está quieta, la última tarjeta sube desde
-// abajo hasta su lugar. Solo en pantallas grandes, donde la escena se fija
-function riseLastPillar(root: HTMLElement) {
+// En la pila, el texto de cada tarjeta se va cuando la siguiente la cubre,
+// para que nunca se lean dos textos a la vez. Solo aplica donde la pila se
+// apila (pantallas grandes); en columna, todo queda visible.
+function fadeStackCaptions(root: HTMLElement) {
   const media = gsap.matchMedia();
   media.add('(min-width: 1024px)', () => {
-    queryAll(root, '[data-ty-stack]').forEach(stack => {
-      const last = stack.querySelector('[data-ty-stack-last]');
-      if (!last) return;
-      gsap.fromTo(
-        last,
-        { y: () => window.innerHeight * 0.7, autoAlpha: 0 },
-        {
-          y: 0,
-          autoAlpha: 1,
-          ease: 'power2.out',
+    queryAll(root, '.ty-stack__list').forEach(list => {
+      const cards = queryAll(list, '.ty-stack__card');
+      cards.slice(0, -1).forEach((card, index) => {
+        const caption = card.querySelector('.ty-stack__caption');
+        const next = cards[index + 1];
+        if (!caption || !next) return;
+        gsap.to(caption, {
+          autoAlpha: 0,
+          ease: 'none',
           scrollTrigger: {
-            trigger: stack,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: true,
-            invalidateOnRefresh: true
+            trigger: next,
+            start: 'top 70%',
+            end: 'top 40%',
+            scrub: true
           }
-        }
-      );
+        });
+      });
+    });
+  });
+  return media;
+}
+
+// La imagen larga de los pilares baja por dentro de su marco más lento que
+// el scroll. En computador recorre la imagen mientras el marco está fijo; en
+// columna, mientras el marco cruza la pantalla.
+function driftStackImage(root: HTMLElement) {
+  const media = gsap.matchMedia();
+  const drift = (
+    trigger: Element,
+    frame: Element,
+    start: string,
+    end: string
+  ) =>
+    gsap.fromTo(
+      frame,
+      { '--progress': 0 },
+      {
+        '--progress': 1,
+        ease: 'none',
+        scrollTrigger: { trigger, start, end, scrub: true }
+      }
+    );
+  queryAll(root, '.ty-stack').forEach(stack => {
+    const frame = stack.querySelector('.ty-stack__frame');
+    const list = stack.querySelector('.ty-stack__list');
+    if (!frame || !list) return;
+    media.add('(min-width: 1024px)', () => {
+      drift(list, frame, 'top 24%', 'bottom 96%');
+    });
+    media.add('(max-width: 1023px)', () => {
+      drift(frame, frame, 'top bottom', 'bottom top');
     });
   });
   return media;
@@ -350,7 +392,9 @@ export function setupToyotaStatic(root: HTMLElement) {
   const triggers = trackChapters(root);
   const counter = watchCounterVisibility(root);
   const stopJumps = listenJumps(root);
+  const stopCar = driveProgressCar(root, { hasPhysics: false });
   return () => {
+    stopCar();
     stopJumps();
     triggers.forEach(trigger => trigger.kill());
     counter.kill();
@@ -369,14 +413,18 @@ export function setupToyotaMotion(root: HTMLElement) {
   growBars(root);
   revealCells(root);
   parallax(root);
-  const stack = riseLastPillar(root);
+  const stack = fadeStackCaptions(root);
+  const stackImage = driftStackImage(root);
   const triggers = trackChapters(root);
   const counter = watchCounterVisibility(root);
   const stopJumps = listenJumps(root);
+  const stopCar = driveProgressCar(root, { hasPhysics: true });
   ScrollTrigger.refresh();
 
   return () => {
+    stopCar();
     stack.revert();
+    stackImage.revert();
     stopJumps();
     triggers.forEach(trigger => trigger.kill());
     counter.kill();

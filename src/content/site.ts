@@ -401,7 +401,7 @@ const projectTags: readonly (readonly string[] | undefined)[] = [
   ['App móvil', 'Investigación UX'],
   ['App móvil', 'Movilidad'],
   ['App móvil', 'Rediseño'],
-  ['Web desktop', 'Rediseño de experiencia'],
+  ['Web de escritorio', 'Rediseño de experiencia'],
   ['Sistema de diseño', 'Componentes']
 ];
 

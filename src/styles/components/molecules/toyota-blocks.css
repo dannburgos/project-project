@@ -33,15 +33,8 @@
   @apply mx-auto items-center text-center;
 }
 
-.ty-head__meta {
-  @apply flex flex-wrap items-baseline gap-x-4 gap-y-1 text-xs font-semibold tracking-[0.14em] uppercase;
-}
-
-.ty-head__index {
-  color: var(--ty-red);
-}
-
 .ty-head__eyebrow {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
   color: var(--ty-muted);
 }
 
@@ -310,6 +303,27 @@
   @apply text-base leading-[1.25] font-semibold;
 }
 
+/* En celular la explicación va debajo del nombre, alineada con él; desde
+   tableta, debajo del paso */
+.ty-steps__item:has(.ty-steps__description) {
+  @apply flex-wrap;
+}
+
+.ty-steps__description {
+  @apply block text-base leading-[1.45] font-normal;
+  flex-basis: 100%;
+  padding-left: calc(var(--step-node) + 16px);
+  color: var(--ty-muted);
+}
+
+@media (min-width: 768px) {
+  .ty-steps__description {
+    @apply -mt-2 max-w-xs;
+    flex-basis: auto;
+    padding-left: 0;
+  }
+}
+
 .ty-steps__item--highlight .ty-steps__node {
   @apply text-white;
   border-color: var(--ty-red);
@@ -507,9 +521,91 @@
   border-color: var(--ty-line);
 }
 
-.ty-chips--struck .ty-chips__item {
-  @apply line-through;
+/* ─── Cambios: lo tradicional tachado y lo nuevo encendido ────────── */
+
+/* Con el scroll, --draw va de 0 a 1 en toda la lista y cada cambio toma su
+   tramo: la línea roja tacha la frase vieja y, a la vez, la nueva pasa de
+   apagada a encendida. Sin movimiento, --draw vale 1 y todo se ve completo */
+.ty-shifts {
+  @apply flex flex-col gap-6;
+}
+
+.ty-shifts__legend {
+  @apply flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-semibold tracking-[0.14em] uppercase;
   color: var(--ty-muted);
+}
+
+.ty-shifts__key {
+  @apply flex items-center gap-2;
+}
+
+.ty-shifts__key::before {
+  @apply block h-0.5 w-6 content-[''];
+  background: var(--ty-muted);
+}
+
+.ty-shifts__key--after {
+  color: var(--ty-red);
+}
+
+.ty-shifts__key--after::before {
+  @apply size-2;
+  background: var(--ty-red);
+}
+
+.ty-shifts__list {
+  @apply grid grid-cols-1 gap-x-6;
+}
+
+.ty-shifts__item {
+  @apply flex flex-col gap-2 border-t py-5;
+  --shift-step: clamp(
+    0,
+    var(--draw, 1) * var(--shift-count) - var(--shift-index),
+    1
+  );
+  border-color: var(--ty-line);
+}
+
+.ty-shifts__topic {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-shifts__before {
+  @apply text-base;
+  color: var(--ty-muted);
+}
+
+/* La raya es un fondo del texto en línea: si la frase ocupa dos renglones,
+   tacha el primero y sigue en el segundo */
+.ty-shifts__struck {
+  background-image: linear-gradient(var(--ty-red), var(--ty-red));
+  background-repeat: no-repeat;
+  background-position: 0 56%;
+  background-size: calc(var(--shift-step) * 100%) 2px;
+}
+
+.ty-shifts__after {
+  @apply text-2xl leading-[1.15] font-semibold;
+  opacity: calc(0.24 + var(--shift-step) * 0.76);
+}
+
+@media (min-width: 768px) {
+  .ty-shifts__list {
+    @apply grid-cols-3 gap-y-2;
+  }
+}
+
+/* En computador los cinco cambios caben en una sola fila */
+@media (min-width: 1024px) {
+  .ty-shifts__list {
+    grid-template-columns: repeat(var(--shift-count), minmax(0, 1fr));
+  }
+
+  .ty-shifts__item {
+    @apply gap-3 pt-6;
+  }
 }
 
 /* ─── Avisos ──────────────────────────────────────────────────────── */
@@ -718,40 +814,235 @@
   }
 }
 
-/* ─── Variantes de resultado ──────────────────────────────────────── */
+/* ─── Flujo de usuario ────────────────────────────────────────────── */
 
-.ty-variants {
-  @apply grid gap-4 lg:grid-cols-3;
+/* En celular, una sola columna: el camino con su línea vertical, el ciclo
+   como nota, las salidas y el resultado con sus variantes. Desde 1024 px es
+   una retícula con una columna por paso */
+.ty-flow__grid {
+  @apply relative flex flex-col gap-8;
 }
 
-.ty-variants__item {
-  @apply flex flex-col gap-3 border p-6;
-  border-color: var(--ty-line);
+.ty-flow__track {
+  @apply relative;
 }
 
-.ty-variants__number {
-  @apply text-xs font-semibold tabular-nums;
+.ty-flow__path {
+  @apply flex flex-col gap-6;
+}
+
+.ty-flow__line {
+  @apply absolute top-4 bottom-4 left-4 w-0.5 origin-top;
+  background: var(--ty-fg);
+  transform: scaleY(var(--draw, 1));
+}
+
+.ty-flow__step {
+  @apply relative grid items-center gap-x-4;
+  grid-template-columns: 32px 1fr;
+}
+
+.ty-flow__node {
+  @apply z-10 flex size-8 items-center justify-center border text-xs font-semibold;
+  background: var(--ty-surface);
+  border-color: var(--ty-fg);
+}
+
+.ty-flow__step--highlight .ty-flow__node {
+  background: var(--ty-red);
+  border-color: var(--ty-red);
+  color: var(--ty-white);
+}
+
+.ty-flow__label {
+  @apply text-base font-semibold;
+}
+
+.ty-flow__step--highlight .ty-flow__label {
   color: var(--ty-red);
 }
 
-.ty-variants__name {
+.ty-flow__note {
+  @apply col-start-2 text-sm leading-[1.4];
+  color: var(--ty-muted);
+}
+
+/* Ciclo: en celular es una nota con su flecha; en computador, un arco */
+.ty-flow__loop {
+  @apply flex flex-col gap-2 border-l-2 pl-4;
+  border-color: var(--ty-red);
+}
+
+.ty-flow__loop-arc {
+  @apply hidden;
+}
+
+.ty-flow__loop-text {
+  @apply text-sm leading-[1.4];
+  color: var(--ty-muted);
+}
+
+.ty-flow__loop-text b {
+  @apply font-semibold;
+  color: var(--ty-fg);
+}
+
+.ty-flow__stem {
+  @apply hidden;
+}
+
+.ty-flow__exits {
+  @apply flex flex-col gap-2;
+}
+
+.ty-flow__exits-label,
+.ty-flow__results-label {
   @apply text-xs font-semibold tracking-[0.14em] uppercase;
   color: var(--ty-muted);
 }
 
-.ty-variants__title {
-  @apply text-2xl leading-[1.1] font-semibold;
+.ty-flow__exits-list {
+  @apply flex flex-wrap gap-2;
 }
 
-.ty-variants__example {
+.ty-flow__exit {
+  @apply border px-3.5 py-2 text-sm font-semibold;
+  border-color: var(--ty-fg);
+}
+
+/* Resultado: una línea roja lo une con el hilo que baja de «Resultado» */
+.ty-flow__results {
+  @apply flex flex-col gap-4 border-t-2 pt-5;
+  border-color: var(--ty-red);
+}
+
+.ty-flow__results-label {
+  color: var(--ty-red);
+}
+
+.ty-flow__variants {
+  @apply grid gap-4 lg:grid-cols-3;
+}
+
+.ty-flow__variant {
+  @apply flex flex-col gap-3 border p-6;
+  border-color: var(--ty-line);
+}
+
+.ty-flow__variant-number {
+  @apply text-xs font-semibold tabular-nums;
+  color: var(--ty-red);
+}
+
+.ty-flow__variant-name {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-flow__variant-title {
+  @apply text-xl leading-[1.15] font-semibold;
+}
+
+.ty-flow__variant-example {
   @apply mt-auto border-t pt-4 text-sm leading-[1.45];
   border-color: var(--ty-line);
   color: var(--ty-muted);
 }
 
-.ty-variants__example b {
+.ty-flow__variant-example b {
   @apply font-semibold;
   color: var(--ty-fg);
+}
+
+@media (min-width: 1024px) {
+  .ty-flow__grid {
+    @apply grid gap-y-0;
+    grid-template-columns: repeat(var(--flow-columns), minmax(0, 1fr));
+  }
+
+  /* Pista y camino se disuelven: los pasos son celdas de la retícula, en la
+     fila 1. La línea va del centro del primer paso al del último */
+  .ty-flow__track,
+  .ty-flow__path {
+    display: contents;
+  }
+
+  .ty-flow__line {
+    @apply top-4 right-auto bottom-auto left-auto h-0.5 w-auto origin-left;
+    left: calc(100% / (var(--flow-columns) * 2));
+    right: calc(100% / (var(--flow-columns) * 2));
+    transform: scaleX(var(--draw, 1));
+  }
+
+  .ty-flow__step {
+    @apply row-start-1 flex flex-col items-center gap-0 px-2 text-center;
+  }
+
+  .ty-flow__label {
+    @apply mt-3 text-sm;
+  }
+
+  .ty-flow__note {
+    @apply mt-1 text-xs;
+  }
+
+  /* Ciclo: un arco bajo «Tu perfil» y «Asesoría» que vuelve hacia atrás, con
+     la flecha apuntando a «Asesoría» */
+  .ty-flow__loop {
+    @apply row-start-2 gap-3 border-l-0 pt-3 pl-0;
+    grid-column: var(--loop-start) / span var(--loop-span);
+  }
+
+  .ty-flow__loop-arc {
+    @apply relative block h-8 border-x-2 border-b-2;
+    margin-inline: calc(100% / (var(--loop-span) * 2));
+    border-color: var(--ty-red);
+  }
+
+  .ty-flow__loop-arc::before {
+    @apply absolute -top-1 -left-[7px] block size-0 content-[''];
+    border-inline: 6px solid transparent;
+    border-bottom: 8px solid var(--ty-red);
+  }
+
+  .ty-flow__loop-text {
+    @apply px-4 text-center text-xs;
+  }
+
+  /* Hilo que baja de «Resultado» hasta la línea de sus variantes */
+  .ty-flow__stem {
+    @apply row-start-2 block w-0.5 justify-self-center;
+    grid-column: var(--result-col);
+    background: var(--ty-red);
+  }
+
+  /* Salidas, bajo el último paso */
+  .ty-flow__exits {
+    @apply relative row-start-2 items-stretch px-2 pt-6 text-center;
+    grid-column: -2 / -1;
+  }
+
+  .ty-flow__exits::before {
+    @apply absolute top-0 left-1/2 block h-4 w-0.5 content-[''];
+    background: var(--ty-fg);
+  }
+
+  /* En una sola columna no cabe la etiqueta en mayúsculas espaciadas */
+  .ty-flow__exits-label {
+    @apply text-xs leading-[1.3] font-medium tracking-normal normal-case;
+  }
+
+  .ty-flow__exits-list {
+    @apply flex-col;
+  }
+
+  .ty-flow__exit {
+    @apply text-xs;
+  }
+
+  .ty-flow__results {
+    @apply col-span-full row-start-3;
+  }
 }
 
 /* ─── Pantallas del prototipo y colores de la marca ───────────────── */

@@ -1,30 +1,22 @@
 import { ToyotaFillText } from '@/components/atoms/toyota-fill-text';
-import { ToyotaCallout } from '@/components/molecules/toyota-callout';
-import { ToyotaCells } from '@/components/molecules/toyota-cells';
 import { ToyotaChapter } from '@/components/molecules/toyota-chapter';
 import { ToyotaHead } from '@/components/molecules/toyota-head';
 import { ToyotaOpener } from '@/components/molecules/toyota-opener';
-import { ToyotaQuote } from '@/components/molecules/toyota-quote';
 import { ToyotaStack } from '@/components/molecules/toyota-stack';
 import { ToyotaSteps } from '@/components/molecules/toyota-steps';
-import type {
-  ToyotaLabels,
-  ToyotaOverview as ToyotaOverviewContent
-} from '@/content/toyota-story.types';
+import type { ToyotaOverview as ToyotaOverviewContent } from '@/content/toyota-story.types';
 
 type ToyotaOverviewProps = {
   index: number;
   label: string;
   overview: ToyotaOverviewContent;
-  labels: ToyotaLabels;
 };
 
 // 01 · Overview: qué es, sus tres pilares y del problema a la oportunidad
 export function ToyotaOverview({
   index,
   label,
-  overview,
-  labels
+  overview
 }: ToyotaOverviewProps) {
   const { description, problem } = overview;
 
@@ -38,10 +30,15 @@ export function ToyotaOverview({
         <ToyotaFillText text={description.statement} className="ty-lead-text" />
       </div>
 
-      <ToyotaStack word={description.pillarsWord} cards={description.pillars} />
+      <ToyotaStack
+        word={description.pillarsWord}
+        visual={description.pillarsVisual}
+        cards={description.pillars}
+      />
 
       {/* Del problema a la oportunidad: la frase que lo resume y las tres
-          capacidades de la solución, hacia adelante */}
+          capacidades de la solución en un solo recorrido, cada una con su
+          explicación */}
       <div className="ty-module">
         <div className="ty-columns">
           <div className="ty-text-block" data-ty-rise>
@@ -55,16 +52,14 @@ export function ToyotaOverview({
             <p className="ty-body ty-body--large">{problem.opportunity}</p>
           </div>
         </div>
-        <ToyotaQuote text={problem.quote} />
-        <ToyotaCallout text={problem.note} label={labels.evidence} />
         <ToyotaSteps
           steps={problem.capabilities.map(capability => ({
-            label: capability.title
+            label: capability.title,
+            text: capability.text
           }))}
           label={problem.solutionLabel}
           className="ty-steps--large"
         />
-        <ToyotaCells items={problem.capabilities} columns={3} />
         <p className="ty-statement" data-ty-mask>
           {problem.closing}
         </p>

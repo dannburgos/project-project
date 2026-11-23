@@ -58,6 +58,9 @@ export function ToyotaSteps({
                 {String(index + 1).padStart(2, '0')}
               </span>
               <span className="ty-steps__text">{step.label}</span>
+              {step.text && (
+                <span className="ty-steps__description">{step.text}</span>
+              )}
             </li>
           ))}
         </ol>

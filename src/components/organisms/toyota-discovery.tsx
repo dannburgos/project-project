@@ -1,5 +1,4 @@
 import { ToyotaFillText } from '@/components/atoms/toyota-fill-text';
-import { ToyotaCallout } from '@/components/molecules/toyota-callout';
 import { ToyotaCells } from '@/components/molecules/toyota-cells';
 import { ToyotaChapter } from '@/components/molecules/toyota-chapter';
 import { ToyotaChips } from '@/components/molecules/toyota-chips';
@@ -8,7 +7,6 @@ import { ToyotaOpener } from '@/components/molecules/toyota-opener';
 import { ToyotaQuote } from '@/components/molecules/toyota-quote';
 import { ToyotaStats } from '@/components/molecules/toyota-stats';
 import { ToyotaSteps } from '@/components/molecules/toyota-steps';
-import { ToyotaTable } from '@/components/molecules/toyota-table';
 import { ToyotaBenchmarkTrack } from '@/components/organisms/toyota-benchmark-track';
 import type {
   ToyotaDiscovery as ToyotaDiscoveryContent,
@@ -22,7 +20,7 @@ type ToyotaDiscoveryProps = {
   labels: ToyotaLabels;
 };
 
-// 02 · Discovery: contexto, benchmark, problema y usuario, la pregunta guía y
+// 02 · Discovery: contexto, benchmark, problema, usuario, la pregunta guía y
 // el trabajo central
 export function ToyotaDiscovery({
   index,
@@ -30,7 +28,7 @@ export function ToyotaDiscovery({
   discovery,
   labels
 }: ToyotaDiscoveryProps) {
-  const { context, benchmark, problem, hmw, jobs } = discovery;
+  const { context, benchmark, problem, user, hmw, jobs } = discovery;
   // Los dos recorridos comparten columnas para que sus pasos queden alineados
   const compareColumns = Math.max(
     context.currentSteps.length,
@@ -49,7 +47,6 @@ export function ToyotaDiscovery({
           {context.statement}
         </p>
         <ToyotaStats stats={context.stats} />
-        <ToyotaCallout text={context.note} label={labels.evidence} />
         <div className="ty-compare">
           <ToyotaSteps
             steps={context.currentSteps}
@@ -66,8 +63,7 @@ export function ToyotaDiscovery({
         <ToyotaQuote text={context.quote} />
       </div>
 
-      {/* Benchmark: cinco marcas contadas en una pista horizontal y lo que
-          se decidió a partir de ellas */}
+      {/* Benchmark: tres referentes contados en una pista horizontal */}
       <div className="ty-module ty-module--bleed">
         <div className="ty-module__inner">
           <ToyotaHead head={benchmark.head} size="large" />
@@ -86,28 +82,21 @@ export function ToyotaDiscovery({
           hint={labels.trackHint}
           progressLabel={labels.trackProgress}
         />
-        <div className="ty-module__inner">
-          <ToyotaTable
-            table={benchmark.decisions}
-            caption={benchmark.decisionsTitle}
-            accentColumn={1}
-          />
-          <ToyotaCallout text={benchmark.note} label={labels.evidence} />
-        </div>
       </div>
 
-      {/* Problema y usuario: la brecha en rojo, para quién y sus dolores */}
+      {/* Problema: la brecha de interpretación, en rojo */}
       <div className="ty-module">
         <ToyotaHead head={problem.head} />
         <ToyotaSteps steps={problem.model} className="ty-steps--large" />
-        <ToyotaChips items={problem.segments} label={problem.segmentsLabel} />
-        <h4 className="ty-subtitle">{problem.painsLabel}</h4>
-        <ToyotaCells
-          items={problem.pains}
-          columns={3}
-          badge={labels.hypothesis}
-        />
-        <ToyotaCallout text={problem.note} label={labels.evidence} />
+      </div>
+
+      {/* Usuario: para quién, con la necesidad de cada segmento, y sus
+          puntos de dolor */}
+      <div className="ty-module">
+        <ToyotaHead head={user.head} size="large" />
+        <ToyotaCells items={user.segments} columns={4} />
+        <h4 className="ty-subtitle">{user.painsLabel}</h4>
+        <ToyotaCells items={user.pains} columns={3} badge={labels.hypothesis} />
       </div>
 
       {/* La pregunta guía, como manifiesto que se enciende con el scroll */}

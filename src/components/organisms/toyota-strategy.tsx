@@ -5,42 +5,38 @@ import { ToyotaChips } from '@/components/molecules/toyota-chips';
 import { ToyotaHead } from '@/components/molecules/toyota-head';
 import { ToyotaLayers } from '@/components/molecules/toyota-layers';
 import { ToyotaOpener } from '@/components/molecules/toyota-opener';
+import { ToyotaShifts } from '@/components/molecules/toyota-shifts';
 import { ToyotaSteps } from '@/components/molecules/toyota-steps';
 import { ToyotaTable } from '@/components/molecules/toyota-table';
-import type {
-  ToyotaLabels,
-  ToyotaStrategy as ToyotaStrategyContent
-} from '@/content/toyota-story.types';
+import type { ToyotaStrategy as ToyotaStrategyContent } from '@/content/toyota-story.types';
 
 type ToyotaStrategyProps = {
   index: number;
   label: string;
   strategy: ToyotaStrategyContent;
-  labels: ToyotaLabels;
 };
 
 // 03 · Strategy, en el mundo oscuro (plano técnico): propuesta de valor,
-// objetivos, concepto, estrategia de IA y datos
+// objetivos, concepto y estrategia de IA
 export function ToyotaStrategy({
   index,
   label,
-  strategy,
-  labels
+  strategy
 }: ToyotaStrategyProps) {
-  const { value, goals, concept, ai, data } = strategy;
+  const { value, goals, concept, ai } = strategy;
 
   return (
     <ToyotaChapter index={index} world="dark" label={label}>
       <ToyotaOpener opener={strategy.opener} />
 
-      {/* Propuesta de valor: la promesa en grande, la comparación y el canvas */}
+      {/* Propuesta de valor: la promesa en grande, los cinco cambios frente a
+          la experiencia tradicional y el canvas */}
       <div className="ty-module">
         <ToyotaHead head={value.head} />
         <p className="ty-promise" data-ty-mask>
           {value.promise}
         </p>
-        <ToyotaTable table={value.comparison} accentColumn={1} />
-        <ToyotaCallout text={value.note} label={labels.evidence} />
+        <ToyotaShifts shifts={value.shifts} />
         <ToyotaVisual
           visual={value.canvas}
           className="ty-media ty-media--wide"
@@ -54,14 +50,9 @@ export function ToyotaStrategy({
         <ToyotaCallout text={goals.note} />
       </div>
 
-      {/* Concepto: lo que no es y las seis etapas del recorrido */}
+      {/* Concepto: las seis etapas del recorrido */}
       <div className="ty-module">
         <ToyotaHead head={concept.head} size="large" />
-        <ToyotaChips
-          items={concept.not}
-          label={concept.notLabel}
-          tone="struck"
-        />
         <ToyotaSteps steps={concept.stages} label={concept.stagesLabel} />
       </div>
 
@@ -73,14 +64,6 @@ export function ToyotaStrategy({
         <ToyotaCallout text={ai.rule} tone="rule" />
         <ToyotaChips items={ai.mechanisms} label={ai.trustLabel} />
         <ToyotaCallout text={ai.trustRule} tone="rule" />
-      </div>
-
-      {/* Datos: la cadena de siete entidades y sus dos reglas */}
-      <div className="ty-module ty-module--blueprint">
-        <ToyotaHead head={data.head} />
-        <ToyotaSteps steps={data.entities} className="ty-steps--dense" />
-        <ToyotaCallout text={data.decision} tone="rule" />
-        <ToyotaCallout text={data.rule} tone="rule" />
       </div>
     </ToyotaChapter>
   );
