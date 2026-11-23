@@ -7,8 +7,9 @@ type CaseStoryImageProps = ComponentProps<'div'> & {
   // La foto, cuando ya exista; mientras tanto se muestra la etiqueta
   src?: string;
   // tone: imagen de apoyo (tono plano) · paper: sobre el mundo verde ·
-  // leaf: imagen grande de respiro (con franjas de hojas)
-  variant?: 'tone' | 'paper' | 'leaf';
+  // leaf: imagen grande de respiro (con franjas de hojas) · screen: captura
+  // de una pantalla, sin fondo y completa
+  variant?: 'tone' | 'paper' | 'leaf' | 'screen';
 };
 
 // Espacio marcado para una imagen que llega después: dice qué foto va ahí
@@ -27,6 +28,7 @@ export function CaseStoryImage({
         'story-image',
         variant === 'paper' && 'story-image--paper',
         variant === 'leaf' && 'story-image--leaf',
+        variant === 'screen' && 'story-image--screen',
         className
       )}
       {...props}

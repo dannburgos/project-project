@@ -1,7 +1,7 @@
 /* 03 · Usuario: la frase de Laura, quién es, sus rasgos y sus hallazgos */
 .story-user__quote {
   @apply font-semibold;
-  font-size: 40px;
+  font-size: 36px;
   letter-spacing: -0.025em;
   line-height: 1.08;
 }
@@ -10,62 +10,41 @@
   @apply flex items-center gap-6;
 }
 
-/* Laura y sus 4 plantas girando lento a su alrededor */
+/* Los datos de Laura van en dos líneas */
+.story-user__who .story-body {
+  white-space: pre-line;
+}
+
+/* Laura dentro de un círculo punteado */
 .story-orbit {
   @apply relative size-24 shrink-0 rounded-full border border-dashed;
   border-color: var(--story-ink);
 }
 
 .story-orbit__avatar {
-  @apply absolute inset-6 rounded-full;
+  @apply absolute inset-2 overflow-hidden rounded-full;
   background: var(--story-ink);
 }
 
-.story-orbit__track {
-  @apply absolute inset-0;
-  animation: story-orbit 24s linear infinite;
+/* La foto va recortada (sin fondo) sobre el verde oscuro del círculo: llena el
+   círculo con la cabeza completa y los hombros recortados por el borde */
+.story-orbit__photo {
+  @apply size-full object-cover object-bottom;
 }
 
-.story-orbit__track[data-position='east'] {
-  animation-delay: -6s;
-}
-
-.story-orbit__track[data-position='south'] {
-  animation-delay: -12s;
-}
-
-.story-orbit__track[data-position='west'] {
-  animation-delay: -18s;
-}
-
-.story-orbit__plant {
-  @apply absolute -top-1.5 left-1/2 -ml-1.5 size-3;
-  background: var(--story-light);
-}
-
-@keyframes story-orbit {
-  to {
-    rotate: 360deg;
-  }
-}
-
+/* Los rasgos y los hallazgos se turnan en el mismo lugar: la caja toma el alto
+   del más alto, así los hallazgos nunca suben sobre el título de Laura */
 .story-user__swap {
-  @apply relative mt-auto;
-  min-height: 300px;
+  @apply mt-auto grid;
 }
 
 .story-user__list {
-  @apply absolute inset-0 flex flex-col justify-end;
+  @apply flex flex-col justify-end self-end;
+  grid-area: 1 / 1;
 }
 
 .story-user__findings-label {
   @apply mb-2;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .story-orbit__track {
-    animation: none;
-  }
 }
 
 @media (max-width: 899px), (prefers-reduced-motion: reduce) {
@@ -74,15 +53,34 @@
   }
 
   .story-user__swap {
-    @apply mt-6;
-    min-height: 0;
-  }
-
-  .story-user__list {
-    @apply relative inset-auto;
+    @apply mt-6 block;
   }
 
   .story-user__list + .story-user__list {
     @apply mt-14;
+  }
+}
+
+/* Pantallas bajas: la frase, los datos y las filas se compactan para que todo
+   quepa sin salirse por abajo */
+@media (min-width: 900px) and (max-height: 820px) {
+  .story-user__quote {
+    font-size: 26px;
+  }
+
+  .story-user__swap .story-row {
+    @apply py-1.5;
+  }
+
+  .story-user__swap .story-row__title {
+    @apply text-lg;
+  }
+
+  .story-user__swap .story-body {
+    @apply text-sm;
+  }
+
+  .story-user__findings-label {
+    @apply mb-1;
   }
 }

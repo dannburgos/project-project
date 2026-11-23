@@ -43,7 +43,7 @@ export function CaseStoryBenchmark({
         data-section="3"
       >
         <CaseStoryOpener number="04" name={sectionName} />
-        <h2 className="story-title-lg story-benchmark__title" data-reveal>
+        <h2 className="story-title-lg story-benchmark__title">
           {benchmark.title}
         </h2>
         <div className="story-columns">
@@ -56,6 +56,7 @@ export function CaseStoryBenchmark({
               <div className="story-benchmark__head">
                 <CaseStoryImage
                   label={app.name}
+                  src={app.icon}
                   className="story-benchmark__icon"
                 />
                 <div>
@@ -91,7 +92,7 @@ export function CaseStoryBenchmark({
         data-view="benchmark-findings"
         data-section="3"
       >
-        <p className="story-label" data-part="label">
+        <p className="story-label story-findings__label" data-part="label">
           {benchmark.findingsLabel}
         </p>
         <div className="story-columns story-findings">

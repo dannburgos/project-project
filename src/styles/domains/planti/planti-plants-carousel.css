@@ -1,0 +1,74 @@
+/* Mis plantas en carrusel: tarjetas de colores suaves que se deslizan hacia
+   el lado y dejan asomar la siguiente. */
+.planti-carousel {
+  @apply -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5;
+  scrollbar-width: none;
+  scroll-padding-inline: 20px;
+}
+
+.planti-carousel::-webkit-scrollbar {
+  @apply hidden;
+}
+
+.planti-carousel__card {
+  @apply relative flex shrink-0 snap-start overflow-hidden rounded-2xl;
+  flex-basis: calc(100% - 28px);
+  background: var(--planti-dew);
+}
+
+.planti-carousel__info {
+  @apply relative z-10 flex flex-col gap-2 p-5;
+}
+
+.planti-carousel__name {
+  @apply border-b pb-2 text-xl leading-7 font-normal;
+  color: var(--planti-charcoal);
+  border-color: rgb(77 77 77 / 0.15);
+}
+
+.planti-carousel__facts {
+  @apply flex flex-col gap-2;
+}
+
+.planti-carousel__facts dt {
+  @apply text-base leading-5 font-light;
+  color: var(--planti-charcoal);
+}
+
+.planti-carousel__facts dd {
+  @apply text-base leading-5 font-semibold;
+  color: var(--planti-charcoal);
+}
+
+/* La planta ocupa toda la altura y queda pegada a la derecha */
+.planti-carousel__photo {
+  @apply absolute top-0 right-0 h-full w-auto max-w-none;
+}
+
+/* Segunda tarjeta: fondo crema */
+.planti-carousel__card--cream {
+  background: #f9f5e6;
+}
+
+/* Hoja que ocupa el lugar de la planta hasta que llegue su foto */
+.planti-carousel__leaf {
+  @apply absolute right-5 bottom-5 size-20;
+  color: var(--planti-sprout);
+  opacity: 0.6;
+}
+
+.planti-carousel__card--add {
+  @apply flex-col items-center justify-center gap-2 text-base font-semibold;
+  flex-basis: calc(100% - 28px);
+  background: var(--planti-cream);
+  color: var(--planti-leaf);
+}
+
+.planti-carousel__card--add svg {
+  @apply size-10;
+}
+
+/* Al tocar la tarjeta, se hunde un momento, como un botón */
+.planti-carousel__card--pressed {
+  animation: planti-button-press 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+}

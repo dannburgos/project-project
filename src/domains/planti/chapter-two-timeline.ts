@@ -2,73 +2,61 @@ import { getBeatScene } from './planti-timeline.util';
 import type { PlantiBeat, PlantiChapter } from './types/planti-chapter.types';
 import type { PlantiScene } from './types/planti-scene.types';
 
-// Línea de tiempo del capítulo 2 (crear una rutina para la planta que se
-// acaba de registrar). Igual que el capítulo 1: un solo reloj recorre esta
-// lista; para ajustar un tiempo se cambia el número `at` de ese momento.
-const CARES = { screen: 'routine-cares' } as const;
-const FREQUENCY = { screen: 'routine-frequency' } as const;
-
+// Línea de tiempo del capítulo 2 (la app arma la rutina de la planta que se
+// acaba de registrar; la persona no elige nada). Igual que el capítulo 1: un
+// solo reloj recorre esta lista; para ajustar un tiempo se cambia el número
+// `at` de ese momento.
 export const CHAPTER_TWO_BEATS: readonly PlantiBeat[] = [
-  // Inicio, antes de la rutina: el Ficus ya está; se pulsa Crea su rutina
+  // Inicio, antes de la rutina: el Ficus ya está; se toca su tarjeta
   { at: 0, event: 'homeRoutine', scene: { screen: 'home-routine' } },
   {
     at: 1800,
     event: 'pressHomeRoutine',
     scene: { screen: 'home-routine', isPressed: true }
   },
-  // Iniciar rutina: la planta y sus necesidades; se pulsa Crea tu rutina
+  // Mis plantas · Ficus: la planta y sus datos; se pulsa Generar rutina
   { at: 2500, event: 'routineStart', scene: { screen: 'routine-start' } },
   {
     at: 4300,
     event: 'pressRoutineStart',
     scene: { screen: 'routine-start', isPressed: true }
   },
-  // Seleccionar cuidados: se marcan uno por uno
-  { at: 5000, event: 'cares', scene: { ...CARES, checkedCares: 0 } },
-  { at: 5800, event: 'checkWater', scene: { ...CARES, checkedCares: 1 } },
-  { at: 6400, event: 'checkFertilize', scene: { ...CARES, checkedCares: 2 } },
-  { at: 7000, event: 'checkLeaves', scene: { ...CARES, checkedCares: 3 } },
+  // Armando la rutina: tres frases que se marcan solas
   {
-    at: 7800,
-    event: 'pressCares',
-    scene: { ...CARES, checkedCares: 3, isPressed: true }
+    at: 5000,
+    event: 'routineGenerating',
+    scene: { screen: 'routine-generating' }
   },
-  // Configurar frecuencias: el riego sube de 1 a 2 veces por semana
-  { at: 8500, event: 'frequency', scene: { ...FREQUENCY, waterTimes: 1 } },
+  // Tu rutina, paso a paso; se pulsa Activar avisos
+  { at: 8600, event: 'routinePlan', scene: { screen: 'routine-plan' } },
   {
-    at: 9500,
-    event: 'raiseWater',
-    scene: { ...FREQUENCY, waterTimes: 2 }
+    at: 11600,
+    event: 'pressRoutinePlan',
+    scene: { screen: 'routine-plan', isPressed: true }
   },
+  // La pestaña Rutina: hoy es jueves y está elegido; los avisos ya están
+  // activos
+  { at: 12300, event: 'routineTab', scene: { screen: 'routine' } },
+  // La persona quiere ver qué toca el sábado: lo toca...
   {
-    at: 10700,
-    event: 'pressFrequency',
-    scene: { ...FREQUENCY, waterTimes: 2, isPressed: true }
+    at: 13800,
+    event: 'tapSaturday',
+    scene: { screen: 'routine', tappedDay: 'sat' }
   },
-  // Revisar rutina: el resumen, con la opción de editar
-  { at: 11400, event: 'review', scene: { screen: 'routine-review' } },
+  // ...y aparece lo que toca ese día
   {
-    at: 13400,
-    event: 'pressReview',
-    scene: { screen: 'routine-review', isPressed: true }
-  },
-  // Rutina creada: se dibuja el check y se pulsa Mira tus tareas
-  { at: 14100, event: 'routineCreated', scene: { screen: 'routine-created' } },
-  {
-    at: 15900,
-    event: 'pressRoutineCreated',
-    scene: { screen: 'routine-created', isPressed: true }
-  },
-  // Termina en la pestaña Rutina, con la semana ya programada
-  { at: 16600, event: 'routineTab', scene: { screen: 'routine' } }
+    at: 14500,
+    event: 'showSaturday',
+    scene: { screen: 'routine', selectedDay: 'sat' }
+  }
 ];
 
-export const CHAPTER_TWO_DURATION_MS = 19000;
+export const CHAPTER_TWO_DURATION_MS = 17500;
 
 // Antes de iniciar: Inicio con el Ficus, quieto
 export const CHAPTER_TWO_IDLE_SCENE: PlantiScene = { screen: 'home-routine' };
 
-// Capítulo 2 · Crear una rutina de cuidado
+// Capítulo 2 · Crear una rutina
 export const CHAPTER_TWO: PlantiChapter = {
   durationMs: CHAPTER_TWO_DURATION_MS,
   beats: CHAPTER_TWO_BEATS,

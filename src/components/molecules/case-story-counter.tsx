@@ -64,8 +64,22 @@ export function CaseStoryCounter({
           aria-expanded={isOpen}
           onClick={handleToggle}
         >
-          <b>{formatNumber(section)}</b> / {formatNumber(sections.length - 1)} ·{' '}
-          {sections[section]}
+          <i className="case-story__counter-mark" aria-hidden="true" />
+          <span className="case-story__counter-label">
+            <b>{formatNumber(section)}</b> / {formatNumber(sections.length - 1)}{' '}
+            · {sections[section]}
+          </span>
+          <span className="case-story__counter-progress" aria-hidden="true">
+            {sections.map((name, index) => (
+              <i
+                key={name}
+                className={cn(
+                  'case-story__counter-step',
+                  index <= section && 'case-story__counter-step--reached'
+                )}
+              />
+            ))}
+          </span>
         </button>
         {isOpen && (
           <div className="case-story__jump">

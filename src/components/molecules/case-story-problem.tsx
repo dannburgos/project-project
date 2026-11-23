@@ -80,37 +80,6 @@ export function CaseStoryProblem({
               </div>
             ))}
           </div>
-
-          {/* Laura escribe: cuando el camino pasa por cada fricción, aparece
-              "escribiendo…" y luego llega su mensaje */}
-          <aside className="story-chat" aria-label={problem.voiceName}>
-            <p className="story-chat__head">
-              <span className="story-chat__avatar" aria-hidden="true" />
-              {problem.voiceName}
-            </p>
-            <ul className="story-chat__list">
-              {problem.frictions.map(friction => (
-                <li
-                  key={friction.number}
-                  className="story-chat__item"
-                  data-part="chat-item"
-                >
-                  <span
-                    className="story-chat__typing"
-                    data-part="typing"
-                    aria-hidden="true"
-                  >
-                    <i />
-                    <i />
-                    <i />
-                  </span>
-                  <p className="story-chat__bubble" data-part="bubble">
-                    {friction.voice}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </aside>
         </div>
       </div>
 
@@ -119,14 +88,18 @@ export function CaseStoryProblem({
         data-view="challenge"
         data-section="1"
       >
-        <h2 className="story-title-xl story-stripes" data-reveal>
+        <h2
+          className="story-title-xl story-stripes story-title-ink"
+          data-reveal
+        >
           {problem.challenge}
         </h2>
         <div className="story-references">
           {problem.references.map(reference => (
             <CaseStoryImage
-              key={reference}
-              label={reference}
+              key={reference.label}
+              label={reference.label}
+              src={reference.src}
               data-part="reference"
             />
           ))}

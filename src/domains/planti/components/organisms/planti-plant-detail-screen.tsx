@@ -1,14 +1,17 @@
 'use client';
 
 import { gsap } from 'gsap';
+import { Award, House } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
 import { cn } from '@/lib/utils';
 
 import { plantiMessages } from '../../messages';
 import { PlantiButton } from '../atoms/planti-button';
-import { PlantiPlantHero } from '../molecules/planti-plant-hero';
 import { PlantiScreenHeader } from '../molecules/planti-screen-header';
+
+// Un ícono por cada rasgo de la planta, en el mismo orden
+const TRAIT_ICONS = [House, Award] as const;
 
 // Lo que dura el desplazamiento hacia la descripción
 const SCROLL_DURATION_S = 1.8;
@@ -20,14 +23,14 @@ type PlantiPlantDetailScreenProps = {
   isPressed?: boolean;
 };
 
-// Detalle de la planta que se está mirando: su foto, sus nombres y cómo es
-// (todavía no la eligió). El contenido se desliza y el botón para elegirla
-// queda fijo abajo.
+// Detalle de la planta que se está mirando (todavía no la eligió): igual que
+// Mis plantas, sus nombres y rasgos a la izquierda, su foto grande asomando
+// sobre la hoja con la descripción, y el botón para elegirla fijo abajo.
 export function PlantiPlantDetailScreen({
   hasScrolled = false,
   isPressed = false
 }: PlantiPlantDetailScreenProps) {
-  const { plant, detail } = plantiMessages;
+  const { plant, detail, needs } = plantiMessages;
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,20 +48,42 @@ export function PlantiPlantDetailScreen({
   }, [hasScrolled]);
 
   return (
-    <div className="planti-screen">
+    <div className="planti-screen planti-needs-screen planti-plant-detail">
       <PlantiScreenHeader />
       <div ref={scrollRef} className="planti-screen__scroll">
-        <PlantiPlantHero size="tall" />
-        <h2 className="planti-plant-detail__name">{plant.name}</h2>
-        <p className="planti-plant-detail__scientific">{plant.scientific}</p>
-        <ul className="planti-plant-detail__traits">
-          {plant.traits.map(trait => (
-            <li key={trait} className="planti-plant-detail__trait">
-              {trait}
-            </li>
-          ))}
-        </ul>
-        <p className="planti-plant-detail__description">{plant.description}</p>
+        <div className="planti-needs__top">
+          <div className="planti-needs__intro">
+            <h1 className="planti-needs__name">{plant.name}</h1>
+            <p className="planti-needs__tagline">{plant.scientific}</p>
+            <ul className="planti-needs__facts">
+              {plant.traits.map((trait, index) => {
+                const Icon = TRAIT_ICONS[index];
+
+                return (
+                  <li key={trait} className="planti-needs__fact">
+                    <span
+                      className="planti-needs__fact-icon"
+                      aria-hidden="true"
+                    >
+                      <Icon />
+                    </span>
+                    {trait}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <img
+            className="planti-needs__plant"
+            src={plant.cutoutImage}
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
+        <section className="planti-needs__sheet">
+          <h2 className="planti-needs__title">{needs.descriptionTitle}</h2>
+          <p className="planti-needs__description">{plant.description}</p>
+        </section>
       </div>
       <div className="planti-screen__footer">
         <PlantiButton className={cn(isPressed && 'planti-button--pressed')}>

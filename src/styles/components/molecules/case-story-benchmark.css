@@ -3,8 +3,18 @@
   @apply mb-10;
 }
 
-.story-benchmark__app {
-  @apply justify-start gap-0;
+/* Las tres apps comparten las mismas filas (cabecera, lo que resuelve y lo que
+   deja sin resolver): así cada módulo empieza a la misma altura en las tres
+   columnas */
+.story-benchmark .story-columns {
+  grid-template-rows: auto auto auto;
+}
+
+.story-benchmark .story-benchmark__app {
+  @apply grid justify-start gap-0;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  align-content: start;
 }
 
 .story-benchmark__head {
@@ -12,7 +22,9 @@
 }
 
 .story-benchmark__icon {
-  @apply size-14 shrink-0 p-0;
+  @apply size-14 shrink-0 rounded-xl border-2 p-0;
+  background: #fff;
+  border-color: #dae2a8;
 }
 
 .story-benchmark__icon .story-image__label {
@@ -34,8 +46,16 @@
   background: var(--story-light);
 }
 
+.story-marker-title--gaps {
+  @apply mt-17.5;
+}
+
 .story-marker-title--gaps::before {
   border: 1.5px solid var(--story-ink);
+}
+
+.story-findings__label {
+  @apply text-base;
 }
 
 .story-findings {
@@ -48,4 +68,20 @@
 
 .story-findings__item .story-number {
   @apply w-fit;
+}
+
+/* Pantallas bajas: menos aire entre el título y los módulos para que todo
+   quepa sin salirse por abajo */
+@media (min-width: 900px) and (max-height: 820px) {
+  .story-benchmark__title {
+    @apply mb-6;
+  }
+
+  .story-benchmark .story-marker-title {
+    @apply mt-3;
+  }
+
+  .story-benchmark .story-marker-title--gaps {
+    @apply mt-15.5;
+  }
 }

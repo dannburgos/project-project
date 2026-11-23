@@ -10,7 +10,7 @@
 
 .planti-icon-button--flat {
   @apply size-10 rounded-full border-0;
-  background: var(--planti-fog);
+  background: #ecedf1;
   color: var(--planti-leaf);
   box-shadow: none;
 }
@@ -23,6 +23,7 @@
    y lleva su propio espacio, para que la sombra de las tarjetas no se corte */
 .planti-home-screen {
   @apply px-0;
+  background: var(--planti-white);
 }
 
 .planti-home-header {
@@ -62,6 +63,11 @@
   mask-image: linear-gradient(to bottom, transparent, black 16px);
 }
 
+/* Inicio antes de la rutina: todo cabe, así que no hay nada que deslizar */
+.planti-home-screen__content--fits {
+  @apply pb-26;
+}
+
 .planti-home-screen__content > * {
   @apply shrink-0;
 }
@@ -73,7 +79,7 @@
 /* Desvanecido detrás de la barra, para que el contenido no se corte en seco */
 .planti-home-screen::after {
   @apply pointer-events-none absolute inset-x-0 bottom-0 h-32 content-[''];
-  background: linear-gradient(to top, var(--planti-canvas) 45%, transparent);
+  background: linear-gradient(to top, var(--planti-white) 45%, transparent);
 }
 
 /* Barra anclada abajo, con las esquinas de arriba redondeadas */

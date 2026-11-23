@@ -18,6 +18,8 @@ type PlantiSelectFieldProps = {
   selectedKey?: string;
   // La lista está abierta debajo del campo
   isOpen?: boolean;
+  onToggle?: () => void;
+  onSelect?: (key: string) => void;
 };
 
 // Campo desplegable: al tocarlo se abre una lista con las opciones y la elegida
@@ -27,7 +29,9 @@ export function PlantiSelectField({
   placeholder,
   options,
   selectedKey,
-  isOpen = false
+  isOpen = false,
+  onToggle,
+  onSelect
 }: PlantiSelectFieldProps) {
   const selected = options.find(option => option.key === selectedKey);
 
@@ -39,6 +43,7 @@ export function PlantiSelectField({
         value={selected?.label}
         hasChevron
         isTapped={isOpen}
+        onClick={onToggle}
       />
       {isOpen && (
         <ul className="planti-select__menu" role="listbox">
@@ -50,6 +55,7 @@ export function PlantiSelectField({
                 key={option.key}
                 role="option"
                 aria-selected={isPicked}
+                onClick={onSelect ? () => onSelect(option.key) : undefined}
                 className={cn(
                   'planti-select__option',
                   isPicked && 'planti-select__option--picked'

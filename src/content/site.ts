@@ -6,7 +6,7 @@
 // cierre de contacto sale del CV de Dann.
 
 export const siteContent = {
-  brand: 'Portfolio Lab',
+  brand: 'Daniela Burgos',
   prototypeNotice: 'Prototipo · contenido de ejemplo',
   // "description" solo se muestra en el menú móvil, para que quede claro a
   // dónde lleva cada opción.
@@ -338,7 +338,7 @@ const projectNames: readonly (string | undefined)[] = [
   'PetRide',
   'Sonopizza',
   undefined,
-  undefined,
+  'Sistema de diseño',
   'Nodus'
 ];
 const projectSlugs: readonly (string | undefined)[] = [
@@ -346,7 +346,7 @@ const projectSlugs: readonly (string | undefined)[] = [
   'petride',
   'sonopizza',
   undefined,
-  undefined,
+  'design-system',
   'nodus'
 ];
 
@@ -354,7 +354,9 @@ const projectSlugs: readonly (string | undefined)[] = [
 const projectIndustries: readonly (string | undefined)[] = [
   'App móvil para el cuidado de plantas',
   'App de transporte para viajar con mascotas',
-  'Rediseño de app móvil para pedir pizza'
+  'Rediseño de app móvil para pedir pizza',
+  undefined,
+  'Sistema de diseño de ejemplo para un producto digital'
 ];
 
 // Tono del fondo del banner de cada caso (degradado con profundidad). Los
@@ -379,14 +381,18 @@ export type ProjectCover = {
 const projectCovers: readonly (ProjectCover | undefined)[] = [
   { label: 'Imagen principal · mockup de una persona usando Planti' },
   { label: 'Imagen principal · persona viajando con su mascota en PetRide' },
-  { label: 'Imagen principal · pizza de Sonopizza con la mascota' }
+  { label: 'Imagen principal · pizza de Sonopizza con la mascota' },
+  undefined,
+  { label: 'Imagen principal · mosaico del sistema de diseño' }
 ];
 
 // Frase que resume cada proyecto (su idea central), en el carrusel de Work
 const projectSummaries: readonly (string | undefined)[] = [
   'Saber qué necesita tu planta es fácil. Recordarlo, no.',
   'Moverte con tu mascota sin preguntar si la aceptan.',
-  'Pedir pizza debería ser tan fácil como antojarse.'
+  'Pedir pizza debería ser tan fácil como antojarse.',
+  undefined,
+  'Una sola fuente de verdad para diseñar y construir.'
 ];
 
 // Dos palabras clave por proyecto, para las etiquetas de su tarjeta. Las de
@@ -394,7 +400,9 @@ const projectSummaries: readonly (string | undefined)[] = [
 const projectTags: readonly (readonly string[] | undefined)[] = [
   ['App móvil', 'Investigación UX'],
   ['App móvil', 'Movilidad'],
-  ['App móvil', 'Rediseño']
+  ['App móvil', 'Rediseño'],
+  undefined,
+  ['Sistema de diseño', 'Componentes']
 ];
 
 export const exampleProjects = Array.from(
