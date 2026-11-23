@@ -1,0 +1,932 @@
+/* Caso Toyota — Beyond the Model. Scroll libre con dos mundos: el claro
+   (entender a las personas) y el oscuro (el sistema: IA, datos y lógica).
+   Marca de Toyota: rojo #EB0A1E plano y solo para destacar; negro, blanco y
+   gris #58595B; esquinas rectas; nunca texto alineado a la derecha;
+   mayúsculas solo en frases de siete palabras o menos. Toyota Type se
+   reemplaza por Figtree mientras no haya acceso. Tamaños en múltiplos de 2. */
+.ty-story {
+  --ty-red: #eb0a1e;
+  --ty-black: #000000;
+  --ty-white: #ffffff;
+  --ty-gray: #58595b;
+  /* Retícula y márgenes: a la izquierda queda el índice en pantallas
+     grandes, así que el margen crece a los dos lados para no descentrar */
+  --ty-gutter: 24px;
+  --ty-content: 1200px;
+  --ty-module-space: 64px;
+  /* Escala tipográfica: palabra de capítulo, titulares, bajada y cuerpo */
+  --ty-display: clamp(64px, 14vw, 256px);
+  --ty-title-xl: clamp(36px, 4.2vw, 72px);
+  --ty-title: clamp(28px, 2.8vw, 48px);
+  --ty-subtitle: 24px;
+  --ty-lead: clamp(20px, 1.6vw, 24px);
+  --ty-body: 16px;
+  --ty-small: 14px;
+  --ty-eyebrow: 12px;
+  --ty-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  --ty-progress: 0;
+  @apply relative;
+  overflow-x: clip;
+  font-family: var(--font-toyota), sans-serif;
+  background: var(--ty-black);
+  color: var(--ty-white);
+}
+
+@media (min-width: 768px) {
+  .ty-story {
+    --ty-gutter: 48px;
+    --ty-module-space: 96px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .ty-story {
+    --ty-gutter: 96px;
+    --ty-module-space: 80px;
+  }
+}
+
+.ty-story :focus-visible {
+  outline: 2px solid var(--ty-red);
+  outline-offset: 4px;
+}
+
+/* Mundos: cada uno define sus tintas, líneas, superficies y cajas grises */
+.ty-chapter--light {
+  --ty-fg: var(--ty-black);
+  --ty-muted: var(--ty-gray);
+  --ty-line: rgb(0 0 0 / 0.16);
+  --ty-surface: var(--ty-white);
+  --ty-subtle: #f4f4f4;
+  --ty-placeholder: #e4e4e4;
+  --ty-placeholder-text: var(--ty-gray);
+  background: var(--ty-white);
+  color: var(--ty-fg);
+}
+
+.ty-chapter--dark,
+.ty-cover,
+.ty-closing {
+  --ty-fg: var(--ty-white);
+  --ty-muted: rgb(255 255 255 / 0.72);
+  --ty-line: rgb(255 255 255 / 0.2);
+  --ty-surface: var(--ty-black);
+  --ty-subtle: #111111;
+  --ty-placeholder: #2a2a2a;
+  --ty-placeholder-text: rgb(255 255 255 / 0.72);
+  background: var(--ty-black);
+  color: var(--ty-fg);
+}
+
+.ty-chapter {
+  @apply relative;
+}
+
+/* Módulo: el contenido va centrado en la retícula, con aire generoso entre
+   uno y otro (referencia: Lightship) */
+.ty-module {
+  @apply relative mx-auto flex flex-col gap-12;
+  width: min(100% - var(--ty-gutter) * 2, var(--ty-content));
+  padding-block: var(--ty-module-space);
+}
+
+.ty-module + .ty-module {
+  padding-top: 0;
+}
+
+.ty-module--center {
+  @apply items-center text-center;
+}
+
+/* Módulo a todo el ancho (la pista del benchmark); su texto sigue en la
+   retícula */
+.ty-module--bleed {
+  @apply w-full;
+}
+
+.ty-module__inner {
+  @apply mx-auto flex flex-col gap-12;
+  width: min(100% - var(--ty-gutter) * 2, var(--ty-content));
+}
+
+/* Plano técnico del mundo oscuro (referencia: S-2K): una retícula fina de
+   fondo, de borde a borde */
+.ty-module--blueprint::before {
+  @apply pointer-events-none absolute inset-y-0 z-0 content-[''];
+  left: calc(50% - 50vw);
+  right: calc(50% - 50vw);
+  background-image:
+    linear-gradient(var(--ty-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ty-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(transparent, #000 16%, #000 84%, transparent);
+  opacity: 0.4;
+}
+
+.ty-module--blueprint > * {
+  @apply relative;
+}
+
+/* ─── Índice del caso ─────────────────────────────────────────────── */
+
+.ty-index {
+  --idx-fg: var(--ty-white);
+  --idx-muted: rgb(255 255 255 / 0.6);
+  --idx-surface: var(--ty-black);
+  @apply transition-opacity duration-500;
+}
+
+.ty-story[data-world='light'] .ty-index {
+  --idx-fg: var(--ty-black);
+  --idx-muted: var(--ty-gray);
+  --idx-surface: var(--ty-white);
+}
+
+.ty-story[data-counter-hidden] .ty-index {
+  @apply pointer-events-none opacity-0;
+}
+
+.ty-index__number {
+  @apply font-semibold tabular-nums;
+}
+
+/* El índice va siempre abajo a la derecha, en todos los tamaños, para no
+   tapar los textos, que arrancan a la izquierda */
+.ty-index__compact {
+  @apply fixed right-4 bottom-4 z-40 md:right-6 md:bottom-6;
+}
+
+.ty-index__toggle {
+  @apply relative flex cursor-pointer items-baseline gap-2 border px-4 py-2.5 text-sm transition-colors duration-500;
+  background: var(--idx-surface);
+  border-color: var(--idx-fg);
+  color: var(--idx-fg);
+}
+
+/* Avance de todo el caso: una línea roja que se llena en el borde de abajo
+   del botón */
+.ty-index__progress {
+  @apply absolute inset-x-0 -bottom-px h-0.5 origin-left;
+  background: var(--ty-red);
+  transform: scaleX(var(--ty-progress));
+}
+
+.ty-index__toggle-number {
+  @apply font-bold;
+  color: var(--ty-red);
+}
+
+.ty-index__toggle-total {
+  color: var(--idx-muted);
+}
+
+/* Lista de capítulos sobre el botón. Recogida, no se ve ni recibe el foco;
+   se despliega hacia arriba (revelado con máscara, como pide el manual) al
+   pasar el cursor, al tocar el botón o al llegar con el teclado. El relleno
+   de abajo hace de puente para que el cursor no la cierre al subir */
+.ty-index__menu {
+  @apply invisible absolute right-0 bottom-full w-64 pb-2;
+  transition: visibility 0s linear 320ms;
+}
+
+.ty-index__menu-list {
+  @apply border;
+  background: var(--idx-surface);
+  border-color: var(--idx-fg);
+  clip-path: inset(100% 0% 0% 0%);
+  transition: clip-path 320ms var(--ty-ease);
+}
+
+.ty-index__menu-row {
+  @apply opacity-0;
+  translate: 0 8px;
+  transition:
+    opacity 240ms var(--ty-ease),
+    translate 240ms var(--ty-ease);
+}
+
+.ty-index__menu--open,
+.ty-index__compact:focus-within .ty-index__menu {
+  @apply visible;
+  transition-delay: 0s;
+}
+
+.ty-index__menu--open .ty-index__menu-list,
+.ty-index__compact:focus-within .ty-index__menu-list {
+  clip-path: inset(0% 0% 0% 0%);
+}
+
+.ty-index__menu--open .ty-index__menu-row,
+.ty-index__compact:focus-within .ty-index__menu-row {
+  @apply opacity-100;
+  translate: 0 0;
+  transition-delay: calc(var(--item-index, 0) * 32ms + 80ms);
+}
+
+@media (hover: hover) {
+  .ty-index__compact:hover .ty-index__menu {
+    @apply visible;
+    transition-delay: 0s;
+  }
+
+  .ty-index__compact:hover .ty-index__menu-list {
+    clip-path: inset(0% 0% 0% 0%);
+  }
+
+  .ty-index__compact:hover .ty-index__menu-row {
+    @apply opacity-100;
+    translate: 0 0;
+    transition-delay: calc(var(--item-index, 0) * 32ms + 80ms);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ty-index__menu,
+  .ty-index__menu-list,
+  .ty-index__menu-row {
+    transition: none;
+  }
+}
+
+.ty-index__menu-item {
+  @apply flex w-full cursor-pointer items-baseline gap-3 px-4 py-3 text-left text-sm;
+  color: var(--idx-fg);
+}
+
+.ty-index__menu-item:hover,
+.ty-index__menu-item--current {
+  background: color-mix(in oklab, var(--idx-fg) 8%, transparent);
+}
+
+.ty-index__menu-item--done {
+  color: var(--idx-muted);
+}
+
+/* El capítulo actual: tinta completa y su número en rojo */
+.ty-index__menu-item--current {
+  @apply font-semibold;
+  color: var(--idx-fg);
+}
+
+.ty-index__menu-item--current .ty-index__number {
+  color: var(--ty-red);
+}
+
+/* ─── Portada ─────────────────────────────────────────────────────── */
+
+/* La pista mide más de una pantalla: mientras se recorre, el escenario se
+   queda fijo y la captura crece de tarjeta a pantalla completa */
+.ty-cover__runway {
+  height: 160svh;
+}
+
+.ty-cover__stage {
+  @apply sticky top-0 grid h-svh overflow-hidden;
+  padding-inline: var(--ty-gutter);
+}
+
+.ty-cover__frame {
+  @apply absolute inset-0;
+}
+
+/* La tarjeta inicial y su crecimiento. --cover-grow va de 0 (tarjeta) a 1
+   (pantalla completa) con el scroll, y los cuatro bordes se abren a la vez
+   y en proporción. El recorte de la tarjeta es más ancho en celular para
+   que se lea su letrero */
+@media (prefers-reduced-motion: no-preference) {
+  .ty-cover__frame {
+    --cover-grow: 0;
+    --cover-top: 18%;
+    --cover-side: 10%;
+    --cover-bottom: 30%;
+    clip-path: inset(
+      calc(var(--cover-top) * (1 - var(--cover-grow)))
+        calc(var(--cover-side) * (1 - var(--cover-grow)))
+        calc(var(--cover-bottom) * (1 - var(--cover-grow)))
+        calc(var(--cover-side) * (1 - var(--cover-grow)))
+    );
+  }
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .ty-cover__frame {
+    --cover-top: 20%;
+    --cover-side: 32%;
+    --cover-bottom: 20%;
+  }
+}
+
+.ty-cover__visual {
+  @apply size-full;
+}
+
+/* El letrero de la caja gris va arriba del centro, dentro de lo que se ve
+   cuando la captura todavía es tarjeta (y lejos del titular) */
+.ty-cover__visual:not(.ty-visual--image) {
+  @apply items-start justify-center text-center;
+  padding-top: 24svh;
+  padding-inline: 14%;
+}
+
+.ty-cover__eyebrow {
+  @apply absolute z-10 text-xs font-semibold tracking-[0.14em] uppercase;
+  top: calc(var(--site-header-clearance) + 16px);
+  left: var(--ty-gutter);
+}
+
+/* Titular partido: la marca a la izquierda y el proyecto a la derecha, a
+   media altura (referencia: Lightship) */
+.ty-cover__title {
+  @apply absolute top-1/2 z-10 flex -translate-y-1/2 flex-col gap-2 font-bold uppercase md:flex-row md:items-end md:justify-between;
+  left: var(--ty-gutter);
+  right: var(--ty-gutter);
+  font-size: clamp(32px, 4.8vw, 88px);
+  line-height: 0.9;
+}
+
+.ty-cover__brand,
+.ty-cover__project {
+  @apply whitespace-nowrap;
+}
+
+.ty-cover__dash {
+  color: var(--ty-red);
+}
+
+.ty-cover__intro {
+  @apply absolute z-10 flex max-w-md flex-col gap-3;
+  bottom: 40px;
+  left: var(--ty-gutter);
+}
+
+.ty-cover__lead {
+  @apply text-xl font-semibold;
+}
+
+.ty-cover__body {
+  @apply text-base leading-[1.45];
+  color: var(--ty-muted);
+}
+
+/* Indicador de scroll: va a la derecha, encima del botón de capítulos, para
+   no cruzarse con el texto de la izquierda. El texto va de pie y, a su
+   lado, una vía con la línea de carril en rojo que avanza sin parar hacia
+   abajo, como cuando se maneja. En celular no va: el texto ocupa el ancho */
+.ty-cover__hint {
+  @apply absolute z-10 hidden items-end gap-3 md:flex;
+  right: calc(var(--ty-gutter) - 4px);
+  bottom: 104px;
+}
+
+.ty-cover__hint-text {
+  @apply text-xs font-semibold tracking-[0.2em] uppercase;
+  writing-mode: vertical-rl;
+  rotate: 180deg;
+  color: var(--ty-fg);
+}
+
+.ty-cover__hint-road {
+  @apply relative block h-32 w-1 overflow-hidden;
+  background: rgb(255 255 255 / 0.16);
+}
+
+/* El carril mide el doble de la vía y se desliza medio tramo: como el
+   patrón se repite cada 32 px, el salto al reiniciar no se ve */
+.ty-cover__hint-lane {
+  @apply absolute inset-x-0 top-0 h-[200%];
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--ty-red) 0 16px,
+    transparent 16px 32px
+  );
+  animation: ty-lane 1200ms linear infinite;
+}
+
+/* Al final de la vía, el cuadrado rojo de la marca (forma del logo de
+   plataforma de Toyota) */
+.ty-cover__hint-road::after {
+  @apply absolute bottom-0 left-1/2 size-2 -translate-x-1/2 content-[''];
+  background: var(--ty-red);
+}
+
+@keyframes ty-lane {
+  from {
+    transform: translateY(-50%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ty-cover__hint-lane {
+    animation: none;
+  }
+}
+
+.ty-cover__facts {
+  @apply mx-auto flex flex-col gap-10;
+  width: min(100% - var(--ty-gutter) * 2, var(--ty-content));
+  padding-block: var(--ty-module-space);
+}
+
+.ty-cover__facts-title {
+  font-size: var(--ty-title);
+  @apply leading-[0.92] font-semibold;
+}
+
+/* Ficha del proyecto en celdas de retícula con cruces en las esquinas
+   (referencia: Longbow) */
+.ty-facts {
+  @apply grid grid-cols-1 border-t border-l md:grid-cols-2 lg:grid-cols-4;
+  border-color: var(--ty-line);
+}
+
+.ty-facts__item {
+  @apply relative flex min-h-32 flex-col justify-between gap-6 border-r border-b p-6;
+  border-color: var(--ty-line);
+}
+
+.ty-facts__item::before {
+  @apply absolute -top-2 -left-[5px] text-xs leading-none content-['+'];
+  color: var(--ty-fg);
+}
+
+.ty-facts__label {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-facts__value {
+  @apply text-lg leading-[1.2] font-semibold;
+}
+
+/* ─── Apertura de capítulo ────────────────────────────────────────── */
+
+/* El fondo se queda (casi) quieto y la palabra gigante también; la
+   retícula sube encima: las celdas sólidas tapan la palabra y las vacías
+   son ventanas (referencias: Longbow y S-2K) */
+.ty-opener {
+  @apply relative;
+  /* El fondo y la palabra son fijos con margen negativo: sin recorte se
+     quedarían pegados una pantalla más, encima de lo que sigue. clip no crea
+     un contenedor de scroll, así que lo fijo sigue funcionando */
+  overflow: clip;
+}
+
+.ty-opener__backdrop {
+  @apply sticky top-0 z-0 h-svh overflow-hidden;
+  margin-bottom: -100svh;
+}
+
+.ty-opener__visual {
+  @apply size-full;
+}
+
+.ty-opener__word {
+  @apply sticky z-10 text-center font-black uppercase;
+  top: calc(50svh - var(--ty-display) * 0.45);
+  font-size: var(--ty-display);
+  line-height: 0.9;
+  margin-bottom: calc(var(--ty-display) * -0.9);
+}
+
+.ty-opener__grid {
+  @apply relative z-20 grid grid-cols-2 md:grid-cols-4;
+  margin-top: 24svh;
+  /* Celdas cuadradas; las de texto crecen si su contenido no cabe */
+  grid-auto-rows: minmax(50vw, auto);
+}
+
+@media (min-width: 768px) {
+  .ty-opener__grid {
+    grid-auto-rows: minmax(25vw, auto);
+  }
+}
+
+.ty-opener__cell {
+  @apply relative block border-t border-l;
+  border-color: var(--ty-line);
+}
+
+/* Cruz en la esquina de cada celda */
+.ty-opener__cell::after {
+  @apply absolute -top-2 -left-[5px] z-10 text-xs leading-none content-['+'];
+  color: var(--ty-fg);
+}
+
+.ty-opener__cell--solid {
+  background: var(--ty-surface);
+}
+
+.ty-opener__cell--media {
+  background: var(--ty-surface);
+}
+
+.ty-opener__window {
+  @apply size-full;
+}
+
+.ty-opener__cell--number {
+  @apply flex items-end p-6;
+}
+
+.ty-opener__number {
+  @apply leading-[0.8] font-black;
+  font-size: clamp(64px, 10vw, 192px);
+  color: var(--ty-red);
+}
+
+.ty-opener__cell--title {
+  @apply col-span-2 flex flex-col justify-end gap-4 p-6 md:p-10;
+}
+
+.ty-opener__title {
+  @apply flex items-baseline gap-4 font-bold uppercase outline-none;
+  font-size: var(--ty-title-xl);
+  line-height: 0.9;
+}
+
+.ty-opener__title-number {
+  @apply text-base font-semibold;
+  color: var(--ty-red);
+}
+
+.ty-opener__summary {
+  @apply max-w-md;
+  font-size: var(--ty-lead);
+  line-height: 1.3;
+  color: var(--ty-muted);
+}
+
+.ty-opener__cell--list {
+  @apply col-span-2 flex flex-col justify-end gap-4 p-6 md:col-span-1;
+}
+
+.ty-opener__list-label {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-red);
+}
+
+.ty-opener__list {
+  @apply flex flex-col gap-2 text-base font-semibold;
+  counter-reset: opener-section;
+}
+
+.ty-opener__list li {
+  counter-increment: opener-section;
+}
+
+.ty-opener__list li::before {
+  @apply mr-2 text-xs;
+  content: counter(opener-section, decimal-leading-zero);
+  color: var(--ty-muted);
+}
+
+/* En celular, menos celdas: se quitan las que solo son ventana o relleno y
+   el resto ocupa el ancho completo */
+@media (max-width: 767px) {
+  .ty-opener__cell--window,
+  .ty-opener__cell--edge {
+    @apply hidden;
+  }
+
+  .ty-opener__cell--number,
+  .ty-opener__cell--media {
+    @apply col-span-2;
+  }
+
+  /* Filas a la medida de su contenido; la imagen guarda su proporción */
+  .ty-opener__grid {
+    grid-auto-rows: auto;
+  }
+
+  .ty-opener__cell--media {
+    @apply aspect-[16/10];
+  }
+}
+
+/* ─── Tres pilares ─────────────────────────────────────────────────── */
+
+/* La palabra gigante arriba y las tarjetas apiladas al centro, montadas un
+   poco sobre ella, con el texto de cada una a su costado (referencia:
+   Lightship). En celular van en columna y todo se ve desde el inicio */
+.ty-stack {
+  @apply relative;
+  padding-block: var(--ty-module-space);
+}
+
+.ty-stack__stage {
+  @apply relative mx-auto flex flex-col;
+  width: min(100% - var(--ty-gutter) * 2, var(--ty-content));
+}
+
+.ty-stack__word {
+  @apply relative z-0 text-center font-black uppercase;
+  font-size: clamp(48px, 10vw, 176px);
+  line-height: 0.9;
+}
+
+.ty-stack__list {
+  @apply relative z-10 flex flex-col gap-10;
+  margin-top: calc(clamp(48px, 10vw, 176px) * -0.2);
+}
+
+.ty-stack__card {
+  @apply flex flex-col gap-5;
+}
+
+.ty-stack__visual {
+  @apply aspect-[4/5] w-full;
+}
+
+.ty-stack__caption {
+  @apply flex max-w-xs flex-col gap-2;
+}
+
+.ty-stack__number {
+  @apply text-xs font-semibold tracking-[0.14em];
+  color: var(--ty-red);
+}
+
+.ty-stack__title {
+  @apply text-2xl leading-[1.1] font-semibold;
+}
+
+.ty-stack__text {
+  @apply text-base leading-[1.45];
+  color: var(--ty-muted);
+}
+
+/* Desde computador, con movimiento: la escena queda fija. Las tarjetas se
+   apilan al centro, cada una corrida un poco (la 1 atrás, la 3 adelante),
+   y sus textos se reparten: la 1 arriba a la izquierda, la 2 al medio a la
+   derecha y la 3 abajo a la izquierda. Al llegar ya están la 1 y la 2; el
+   scroll solo sube la 3 (de abajo hacia arriba, como pide el manual) */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .ty-stack {
+    @apply py-0;
+    --stack-card-width: min(30vw, 440px);
+    --stack-offset: 32px;
+    --stack-side: calc(50% + var(--stack-card-width) / 2 + 48px);
+    height: 150svh;
+  }
+
+  .ty-stack__stage {
+    @apply sticky top-0 h-svh justify-center;
+    padding-top: var(--site-header-clearance);
+  }
+
+  .ty-stack__list {
+    @apply block;
+    height: 62svh;
+  }
+
+  .ty-stack__card {
+    @apply absolute inset-0 block;
+  }
+
+  /* Un filo del color del fondo separa cada tarjeta de la que tiene debajo */
+  .ty-stack__visual {
+    @apply absolute top-0 left-1/2 h-full aspect-auto;
+    width: var(--stack-card-width);
+    outline: 2px solid var(--ty-surface);
+  }
+
+  .ty-stack__caption {
+    @apply absolute;
+  }
+
+  .ty-stack__card--back .ty-stack__visual {
+    transform: translate(
+      calc(-50% - var(--stack-offset)),
+      calc(var(--stack-offset) * -1)
+    );
+  }
+
+  .ty-stack__card--middle .ty-stack__visual {
+    transform: translateX(-50%);
+  }
+
+  .ty-stack__card--front .ty-stack__visual {
+    transform: translate(
+      calc(-50% + var(--stack-offset)),
+      var(--stack-offset)
+    );
+  }
+
+  .ty-stack__card--back .ty-stack__caption {
+    @apply top-0 left-0 text-left;
+    right: var(--stack-side);
+    margin-left: auto;
+  }
+
+  .ty-stack__card--middle .ty-stack__caption {
+    @apply top-1/2 -translate-y-1/2;
+    left: var(--stack-side);
+  }
+
+  .ty-stack__card--front .ty-stack__caption {
+    @apply bottom-0 left-0;
+    right: var(--stack-side);
+    margin-left: auto;
+  }
+}
+
+/* ─── Pista horizontal del benchmark ──────────────────────────────── */
+
+/* En celular (y con «reducir movimiento») la pista se desliza con el dedo,
+   panel por panel */
+.ty-track {
+  @apply relative flex flex-col gap-6;
+}
+
+.ty-track__bar {
+  @apply mx-auto flex items-center justify-between gap-6;
+  width: min(100% - var(--ty-gutter) * 2, var(--ty-content));
+}
+
+.ty-track__hint {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-track__progress {
+  @apply relative hidden h-0.5 w-40 overflow-hidden;
+  background: var(--ty-line);
+}
+
+.ty-track__progress-fill {
+  @apply absolute inset-0 origin-left;
+  background: var(--ty-red);
+  transform: scaleX(var(--sequence-progress, 0));
+}
+
+.ty-track__viewport {
+  @apply overflow-x-auto;
+  scroll-snap-type: x mandatory;
+  padding-inline: var(--ty-gutter);
+}
+
+.ty-track__rail {
+  @apply flex w-max gap-6;
+}
+
+.ty-track__panel {
+  @apply relative flex w-[86vw] flex-none gap-4 border-t pt-6;
+  border-color: var(--ty-line);
+  scroll-snap-align: start;
+}
+
+/* Lomo: el nombre de la marca, gigante y girado (referencia: Later) */
+.ty-track__spine {
+  @apply flex-none font-black uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: clamp(48px, 12vw, 64px);
+  line-height: 0.85;
+}
+
+.ty-track__body {
+  @apply flex min-w-0 flex-1 flex-col gap-4;
+}
+
+.ty-track__count {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-red);
+}
+
+.ty-track__name {
+  @apply text-2xl font-semibold;
+}
+
+.ty-track__visual {
+  @apply aspect-[16/10] w-full;
+}
+
+.ty-track__notes {
+  @apply flex flex-col gap-4;
+}
+
+.ty-track__note {
+  @apply flex flex-col gap-2 border-l-2 pl-4;
+  border-color: var(--ty-line);
+}
+
+.ty-track__note--opportunity {
+  border-color: var(--ty-red);
+}
+
+.ty-track__note-label {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-track__note-text {
+  @apply text-lg leading-[1.3] font-semibold;
+}
+
+/* Desde tableta, con movimiento: el módulo cabe completo en pantalla, toma
+   el scroll y la pista avanza con --sequence-progress. La captura y las
+   notas suben o bajan a su propio ritmo mientras pasan (doble eje) */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .ty-track {
+    height: calc(100svh - var(--site-header-clearance) - 12rem);
+    min-height: 480px;
+  }
+
+  .ty-track__progress {
+    @apply block;
+  }
+
+  .ty-track__viewport {
+    @apply flex-1 overflow-hidden;
+    padding-inline: 0;
+    scroll-snap-type: none;
+  }
+
+  .ty-track__rail {
+    @apply h-full gap-0;
+    padding-inline: var(--ty-gutter);
+    transform: translateX(
+      calc(var(--sequence-progress, 0) * var(--track-shift, 0px) * -1)
+    );
+    transition: transform 160ms linear;
+  }
+
+  .ty-track__panel {
+    @apply h-full gap-8 border-t-0 border-l pt-0 pr-12 pl-8;
+    width: min(1040px, 78vw);
+    scroll-snap-align: none;
+  }
+
+  .ty-track__spine {
+    font-size: min(8vw, 8svh);
+  }
+
+  .ty-track__body {
+    @apply grid h-full gap-x-8 gap-y-3;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .ty-track__count,
+  .ty-track__name {
+    @apply col-span-2;
+  }
+
+  .ty-track__visual {
+    @apply aspect-auto h-full min-h-0;
+    translate: 0
+      calc((var(--sequence-progress, 0) - var(--panel-center, 0)) * 96px);
+    transition: translate 160ms linear;
+  }
+
+  .ty-track__notes {
+    @apply justify-between self-stretch;
+  }
+
+  .ty-track__note--strength {
+    translate: 0
+      calc((var(--sequence-progress, 0) - var(--panel-center, 0)) * -160px);
+    transition: translate 160ms linear;
+  }
+
+  .ty-track__note--opportunity {
+    translate: 0
+      calc((var(--sequence-progress, 0) - var(--panel-center, 0)) * 160px);
+    transition: translate 160ms linear;
+  }
+}
+
+
+/* ─── Cierre ──────────────────────────────────────────────────────── */
+
+.ty-closing {
+  @apply flex flex-col gap-8;
+  padding: var(--ty-module-space) var(--ty-gutter);
+}
+
+.ty-closing__title {
+  @apply font-black uppercase;
+  font-size: clamp(40px, 7vw, 128px);
+  line-height: 0.9;
+}
+
+.ty-closing__note {
+  @apply max-w-2xl text-sm leading-[1.45];
+  color: var(--ty-muted);
+}
+
+/* ─── Sin movimiento ──────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .ty-cover__runway {
+    @apply h-auto;
+  }
+
+  .ty-cover__stage {
+    @apply relative;
+  }
+}

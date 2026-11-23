@@ -1,0 +1,790 @@
+/* Piezas del caso Toyota: encabezados, textos, fichas, cifras, recorridos,
+   celdas, citas, etiquetas, avisos, matriz, barra MoSCoW, capas y cajas
+   grises. Toman las tintas del mundo en que están (--ty-fg, --ty-muted,
+   --ty-line…), definidas en toyota-story.css. */
+
+/* ─── Imagen o caja gris ──────────────────────────────────────────── */
+
+.ty-visual {
+  @apply relative flex items-end overflow-hidden p-4;
+  background: var(--ty-placeholder);
+}
+
+.ty-visual--image {
+  @apply block object-cover p-0;
+}
+
+.ty-visual__label {
+  @apply max-w-sm text-sm leading-[1.35] font-semibold;
+  color: var(--ty-placeholder-text);
+}
+
+.ty-media--wide {
+  @apply aspect-[21/9] w-full;
+}
+
+/* ─── Encabezados ─────────────────────────────────────────────────── */
+
+.ty-head {
+  @apply flex max-w-4xl flex-col gap-4;
+}
+
+.ty-head--center {
+  @apply mx-auto items-center text-center;
+}
+
+.ty-head__meta {
+  @apply flex flex-wrap items-baseline gap-x-4 gap-y-1 text-xs font-semibold tracking-[0.14em] uppercase;
+}
+
+.ty-head__index {
+  color: var(--ty-red);
+}
+
+.ty-head__eyebrow {
+  color: var(--ty-muted);
+}
+
+/* Titulares en oración y semibold, interlineado del 90 % (manual) */
+.ty-head__title {
+  @apply font-semibold;
+  font-size: var(--ty-title);
+  line-height: 0.96;
+}
+
+.ty-head--large .ty-head__title {
+  @apply font-bold;
+  font-size: var(--ty-title-xl);
+  line-height: 0.92;
+}
+
+.ty-head__lead {
+  @apply max-w-2xl;
+  font-size: var(--ty-lead);
+  line-height: 1.35;
+  color: var(--ty-muted);
+}
+
+/* ─── Textos ──────────────────────────────────────────────────────── */
+
+.ty-body {
+  @apply leading-[1.45];
+  font-size: var(--ty-body);
+}
+
+.ty-body--large {
+  @apply text-lg;
+}
+
+.ty-body--measure {
+  @apply max-w-3xl;
+}
+
+.ty-lead-text {
+  @apply max-w-4xl font-semibold;
+  font-size: clamp(24px, 2.4vw, 36px);
+  line-height: 1.2;
+}
+
+.ty-fill__word {
+  @apply inline;
+}
+
+.ty-subtitle {
+  @apply mb-4 text-2xl font-semibold;
+}
+
+.ty-subtitle--accent {
+  color: var(--ty-red);
+}
+
+.ty-note {
+  @apply max-w-2xl text-sm leading-[1.45];
+  color: var(--ty-muted);
+}
+
+.ty-columns {
+  @apply grid gap-10 md:grid-cols-2 md:gap-12;
+}
+
+.ty-columns--wide {
+  @apply lg:gap-16;
+}
+
+.ty-text-block {
+  @apply flex flex-col gap-3;
+}
+
+.ty-text-block__eyebrow {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-red);
+}
+
+/* Frase de cierre de un bloque, centrada */
+.ty-statement {
+  @apply mx-auto max-w-4xl text-center font-bold;
+  font-size: clamp(28px, 3.6vw, 56px);
+  line-height: 0.96;
+}
+
+/* Promesa de valor: la frase más grande del caso, en oración */
+.ty-promise {
+  @apply max-w-5xl font-black;
+  font-size: clamp(40px, 6vw, 104px);
+  line-height: 0.9;
+}
+
+
+/* Pregunta guía como manifiesto: se enciende palabra por palabra */
+.ty-manifesto {
+  @apply flex flex-col gap-6 border-t pt-10;
+  border-color: var(--ty-line);
+}
+
+.ty-manifesto__eyebrow {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-red);
+}
+
+.ty-manifesto__text {
+  @apply max-w-5xl font-semibold;
+  font-size: clamp(32px, 4.4vw, 72px);
+  line-height: 1.02;
+}
+
+/* Job Statement: una línea por parte, con su palabra clave en rojo */
+.ty-job {
+  @apply flex flex-col gap-6 border-t pt-10;
+  border-color: var(--ty-line);
+}
+
+.ty-job__label {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-job__text {
+  @apply flex max-w-4xl flex-col gap-3;
+  font-size: clamp(22px, 2.2vw, 32px);
+  line-height: 1.2;
+}
+
+.ty-job__part {
+  @apply block;
+}
+
+.ty-job__key {
+  @apply font-bold;
+  color: var(--ty-red);
+}
+
+/* ─── Ficha técnica ───────────────────────────────────────────────── */
+
+.ty-table {
+  @apply w-full overflow-x-auto overflow-y-hidden;
+}
+
+.ty-table__grid {
+  @apply w-full border-collapse text-left;
+  min-width: 560px;
+}
+
+.ty-table__caption {
+  @apply mb-4 text-left text-2xl font-semibold;
+}
+
+.ty-table__row {
+  @apply border-t;
+  border-color: var(--ty-line);
+}
+
+.ty-table__row:last-child {
+  @apply border-b;
+}
+
+.ty-table__heading {
+  @apply pt-0 pr-6 pb-3 text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-table__heading--accent {
+  color: var(--ty-red);
+}
+
+.ty-table__row--head {
+  @apply border-t-0;
+}
+
+.ty-table__label {
+  @apply py-4 pr-6 align-top text-base font-semibold;
+  width: 32%;
+}
+
+.ty-table__cell {
+  @apply py-4 pr-6 align-top text-base leading-[1.45];
+  color: var(--ty-muted);
+}
+
+/* La columna de la propuesta lleva tinta y una marca roja */
+.ty-table__cell--accent {
+  @apply relative pl-5 font-semibold;
+  color: var(--ty-fg);
+}
+
+.ty-table__cell--accent::before {
+  @apply absolute top-6 left-0 size-2 content-[''];
+  background: var(--ty-red);
+}
+
+/* ─── Cifras ──────────────────────────────────────────────────────── */
+
+.ty-stats {
+  @apply grid gap-8 lg:gap-6;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+/* Número grande y, a su lado, la etiqueta con la misma línea base */
+.ty-stats__item {
+  @apply flex items-end gap-4 border-t pt-6;
+  border-color: var(--ty-line);
+}
+
+.ty-stats__value {
+  @apply order-first font-black tabular-nums;
+  font-size: clamp(64px, 7vw, 128px);
+  line-height: 0.78;
+  color: var(--ty-red);
+}
+
+.ty-stats__label {
+  @apply max-w-44 text-base leading-[1.3] font-semibold;
+}
+
+/* ─── Recorrido de pasos ──────────────────────────────────────────── */
+
+/* En celular, en columna con la línea a la izquierda; desde tableta, de
+   izquierda a derecha. La línea crece con --draw */
+.ty-steps {
+  --step-node: 40px;
+  --step-gap: 24px;
+  --step-count: 1;
+  --step-columns: 1;
+  @apply flex flex-col gap-4;
+}
+
+.ty-steps__label {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-steps__track {
+  @apply relative;
+}
+
+.ty-steps__line {
+  @apply absolute w-px origin-top;
+  top: calc(var(--step-node) / 2);
+  bottom: calc(var(--step-node) / 2);
+  left: calc(var(--step-node) / 2);
+  background: var(--ty-fg);
+  transform: scaleY(var(--draw, 1));
+}
+
+.ty-steps__list {
+  @apply relative flex flex-col gap-6;
+}
+
+.ty-steps__item {
+  @apply flex items-center gap-4;
+}
+
+.ty-steps__node {
+  @apply flex flex-none items-center justify-center border text-xs font-semibold tabular-nums;
+  width: var(--step-node);
+  height: var(--step-node);
+  border-color: var(--ty-fg);
+  background: var(--ty-surface);
+}
+
+.ty-steps__text {
+  @apply text-base leading-[1.25] font-semibold;
+}
+
+.ty-steps__item--highlight .ty-steps__node {
+  @apply text-white;
+  border-color: var(--ty-red);
+  background: var(--ty-red);
+}
+
+.ty-steps__item--highlight .ty-steps__text {
+  color: var(--ty-red);
+}
+
+.ty-steps--muted .ty-steps__line {
+  background: var(--ty-muted);
+}
+
+.ty-steps--muted .ty-steps__node {
+  border-color: var(--ty-muted);
+  color: var(--ty-muted);
+}
+
+.ty-steps--muted .ty-steps__text {
+  color: var(--ty-muted);
+}
+
+.ty-steps--large .ty-steps__text {
+  @apply text-xl;
+}
+
+.ty-steps--dense {
+  --step-node: 32px;
+}
+
+@media (min-width: 768px) {
+  /* La línea va del centro del primer cuadro al centro del último: cada
+     paso arranca al inicio de su columna, así que el último centro queda a
+     (pasos − 1) columnas del primero */
+  .ty-steps__line {
+    --step-col: calc(
+      (100% - (var(--step-columns) - 1) * var(--step-gap)) /
+        var(--step-columns)
+    );
+    @apply h-px w-auto origin-left;
+    top: calc(var(--step-node) / 2);
+    bottom: auto;
+    left: calc(var(--step-node) / 2);
+    right: calc(
+      100% - (var(--step-count) - 1) * (var(--step-col) + var(--step-gap)) -
+        var(--step-node) / 2
+    );
+    transform: scaleX(var(--draw, 1));
+  }
+
+  .ty-steps__list {
+    @apply grid;
+    gap: var(--step-gap);
+    grid-template-columns: repeat(var(--step-columns), minmax(0, 1fr));
+  }
+
+  .ty-steps__item {
+    @apply flex-col items-start gap-4;
+  }
+
+  .ty-steps--large .ty-steps__text {
+    @apply text-2xl;
+  }
+
+  .ty-steps--dense .ty-steps__text {
+    @apply text-sm;
+  }
+}
+
+/* Recorrido actual frente al propuesto, uno sobre otro */
+.ty-compare {
+  @apply flex flex-col gap-12 border-t pt-10;
+  border-color: var(--ty-line);
+}
+
+/* ─── Celdas de retícula ──────────────────────────────────────────── */
+
+.ty-cells {
+  @apply grid grid-cols-1 border-t border-l;
+  border-color: var(--ty-line);
+}
+
+.ty-cells__item {
+  @apply relative flex min-h-36 flex-col gap-3 border-r border-b p-6;
+  border-color: var(--ty-line);
+}
+
+/* Cruz en la esquina de cada celda (referencia: Longbow) */
+.ty-cells__item::before {
+  @apply absolute -top-2 -left-[5px] text-xs leading-none content-['+'];
+  color: var(--ty-fg);
+}
+
+.ty-cells__mark {
+  @apply mb-2 self-start border px-2 py-0.5 text-xs font-semibold tabular-nums;
+  border-color: var(--ty-line);
+  color: var(--ty-fg);
+}
+
+.ty-cells--accent .ty-cells__mark {
+  border-color: var(--ty-red);
+  color: var(--ty-red);
+}
+
+.ty-cells__badge {
+  @apply absolute top-6 right-6 text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-cells__title {
+  @apply text-lg leading-[1.25] font-semibold;
+}
+
+.ty-cells__text {
+  @apply text-base leading-[1.45];
+  color: var(--ty-muted);
+}
+
+.ty-cells__item--muted .ty-cells__title {
+  color: var(--ty-muted);
+}
+
+@media (min-width: 768px) {
+  .ty-cells--two,
+  .ty-cells--three,
+  .ty-cells--four {
+    @apply grid-cols-2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ty-cells--three {
+    @apply grid-cols-3;
+  }
+
+  .ty-cells--four {
+    @apply grid-cols-4;
+  }
+}
+
+/* ─── Cita ────────────────────────────────────────────────────────── */
+
+.ty-quote {
+  @apply flex flex-col gap-4 py-4;
+}
+
+.ty-quote__eyebrow {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-red);
+}
+
+/* Comilla colgada a la izquierda del texto (manual de Toyota) */
+.ty-quote__text {
+  @apply relative max-w-4xl font-semibold;
+  font-size: clamp(28px, 3.4vw, 52px);
+  line-height: 1;
+}
+
+.ty-quote__mark {
+  @apply absolute top-0 font-black;
+  right: 100%;
+  margin-right: 0.08em;
+  color: var(--ty-red);
+}
+
+@media (max-width: 767px) {
+  .ty-quote__text {
+    @apply pl-6;
+  }
+
+  .ty-quote__mark {
+    @apply left-0;
+    right: auto;
+  }
+}
+
+/* ─── Etiquetas ───────────────────────────────────────────────────── */
+
+.ty-chips {
+  @apply flex flex-col gap-3;
+}
+
+.ty-chips__label {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-chips__list {
+  @apply flex flex-wrap gap-2;
+}
+
+.ty-chips__item {
+  @apply border px-3.5 py-2 text-sm font-semibold;
+  border-color: var(--ty-line);
+}
+
+.ty-chips--struck .ty-chips__item {
+  @apply line-through;
+  color: var(--ty-muted);
+}
+
+/* ─── Avisos ──────────────────────────────────────────────────────── */
+
+.ty-callout {
+  @apply flex max-w-3xl flex-col gap-2;
+}
+
+.ty-callout__label {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-callout__text {
+  @apply text-sm leading-[1.45];
+  color: var(--ty-muted);
+}
+
+/* Regla destacada: barra roja y texto con peso */
+.ty-callout--rule {
+  @apply border-l-4 pl-5;
+  border-color: var(--ty-red);
+}
+
+.ty-callout--rule .ty-callout__text {
+  @apply text-lg leading-[1.35] font-semibold;
+  color: var(--ty-fg);
+}
+
+/* Espacio por completar con evidencia real */
+.ty-callout--pending {
+  @apply max-w-none border border-dashed p-6;
+  border-color: var(--ty-muted);
+  background: var(--ty-subtle);
+}
+
+.ty-callout--pending .ty-callout__label {
+  color: var(--ty-red);
+}
+
+.ty-callout--pending .ty-callout__text {
+  @apply text-base;
+  color: var(--ty-fg);
+}
+
+
+/* ─── Matriz de etiquetas ─────────────────────────────────────────── */
+
+.ty-matrix {
+  @apply w-full overflow-x-auto overflow-y-hidden;
+}
+
+.ty-matrix__grid {
+  @apply w-full border-collapse text-left;
+  min-width: 880px;
+}
+
+.ty-matrix__caption {
+  @apply mb-4 text-left text-2xl font-semibold;
+}
+
+.ty-matrix__corner,
+.ty-matrix__tag {
+  @apply pb-3 text-xs font-semibold tracking-[0.08em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-matrix__tag {
+  @apply text-center;
+}
+
+.ty-matrix__row {
+  @apply border-t;
+  border-color: var(--ty-line);
+}
+
+.ty-matrix__row:last-child {
+  @apply border-b;
+}
+
+.ty-matrix__model {
+  @apply flex flex-col gap-1 py-4 pr-6;
+}
+
+.ty-matrix__name {
+  @apply text-base font-semibold;
+}
+
+.ty-matrix__price {
+  @apply text-xs;
+  color: var(--ty-muted);
+}
+
+.ty-matrix__cell {
+  @apply py-4 text-center;
+}
+
+/* Cuadrado (forma del logo de plataforma de Toyota): relleno en rojo si el
+   modelo tiene la etiqueta; solo el contorno si no */
+.ty-matrix__dot {
+  @apply inline-block size-3 border;
+  border-color: var(--ty-line);
+}
+
+.ty-matrix__dot--on {
+  border-color: var(--ty-red);
+  background: var(--ty-red);
+}
+
+/* ─── Barra MoSCoW ────────────────────────────────────────────────── */
+
+.ty-moscow {
+  @apply flex flex-col gap-4;
+}
+
+.ty-moscow__total {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-moscow__bar {
+  @apply flex h-12 w-full gap-1;
+}
+
+.ty-moscow__segment {
+  flex: var(--segment-weight) 1 0;
+  background: var(--ty-gray);
+}
+
+.ty-moscow__segment:first-child {
+  background: var(--ty-red);
+}
+
+.ty-moscow__segment:nth-child(2) {
+  background: var(--ty-fg);
+}
+
+.ty-moscow__legend {
+  @apply flex gap-1;
+}
+
+.ty-moscow__item {
+  @apply flex min-w-0 flex-col gap-1;
+  flex: var(--segment-weight) 1 0;
+}
+
+.ty-moscow__value {
+  @apply order-first font-black tabular-nums;
+  font-size: clamp(32px, 4vw, 64px);
+  line-height: 0.9;
+}
+
+.ty-moscow__label {
+  @apply text-sm font-semibold;
+  color: var(--ty-muted);
+}
+
+/* ─── Capas de la estrategia de IA ────────────────────────────────── */
+
+.ty-layers {
+  @apply relative;
+}
+
+.ty-layers__line {
+  @apply absolute top-0 bottom-0 left-6 w-px origin-top;
+  background: var(--ty-red);
+  transform: scaleY(var(--draw, 1));
+}
+
+.ty-layers__list {
+  @apply relative grid gap-4;
+}
+
+.ty-layers__item {
+  @apply ml-12 flex flex-col gap-2 border p-6;
+  border-color: var(--ty-line);
+  background: var(--ty-surface);
+}
+
+.ty-layers__number {
+  @apply text-xs font-semibold tabular-nums;
+  color: var(--ty-red);
+}
+
+.ty-layers__name {
+  @apply text-2xl font-semibold;
+}
+
+.ty-layers__text {
+  @apply text-base leading-[1.45];
+  color: var(--ty-muted);
+}
+
+@media (min-width: 1024px) {
+  .ty-layers__line {
+    @apply top-1/2 right-0 bottom-auto left-0 h-px w-auto origin-left;
+    transform: scaleX(var(--draw, 1));
+  }
+
+  .ty-layers__list {
+    @apply grid-cols-4 gap-8;
+  }
+
+  .ty-layers__item {
+    @apply ml-0 min-h-56;
+  }
+}
+
+/* ─── Variantes de resultado ──────────────────────────────────────── */
+
+.ty-variants {
+  @apply grid gap-4 lg:grid-cols-3;
+}
+
+.ty-variants__item {
+  @apply flex flex-col gap-3 border p-6;
+  border-color: var(--ty-line);
+}
+
+.ty-variants__number {
+  @apply text-xs font-semibold tabular-nums;
+  color: var(--ty-red);
+}
+
+.ty-variants__name {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-variants__title {
+  @apply text-2xl leading-[1.1] font-semibold;
+}
+
+.ty-variants__example {
+  @apply mt-auto border-t pt-4 text-sm leading-[1.45];
+  border-color: var(--ty-line);
+  color: var(--ty-muted);
+}
+
+.ty-variants__example b {
+  @apply font-semibold;
+  color: var(--ty-fg);
+}
+
+/* ─── Pantallas del prototipo y colores de la marca ───────────────── */
+
+.ty-screens {
+  @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.ty-screens__visual {
+  @apply aspect-[16/10] w-full;
+}
+
+.ty-swatches {
+  @apply flex flex-wrap gap-4;
+}
+
+.ty-swatches__item {
+  @apply size-24 border;
+  border-color: var(--ty-line);
+}
+
+.ty-swatches__item--red {
+  background: var(--ty-red);
+}
+
+.ty-swatches__item--black {
+  background: var(--ty-black);
+}
+
+.ty-swatches__item--white {
+  background: var(--ty-white);
+}
+
+.ty-swatches__item--gray {
+  background: var(--ty-gray);
+}

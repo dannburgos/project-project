@@ -335,7 +335,7 @@ const projectNames: readonly (string | undefined)[] = [
   'Planti',
   'PetRide',
   'Sonopizza',
-  undefined,
+  'Toyota',
   undefined,
   'Nodus'
 ];
@@ -343,7 +343,7 @@ const projectSlugs: readonly (string | undefined)[] = [
   'planti',
   'petride',
   'sonopizza',
-  undefined,
+  'toyota',
   undefined,
   'nodus'
 ];
@@ -352,17 +352,18 @@ const projectSlugs: readonly (string | undefined)[] = [
 const projectIndustries: readonly (string | undefined)[] = [
   'App móvil para el cuidado de plantas',
   'App de transporte para viajar con mascotas',
-  'Rediseño de app móvil para pedir pizza'
+  'Rediseño de app móvil para pedir pizza',
+  'Rediseño de experiencia web para descubrir vehículos'
 ];
 
 // Tono del fondo del banner de cada caso (degradado con profundidad). Los
 // proyectos sin tono usan el banner negro.
-export type ProjectTone = 'green' | 'purple' | 'blue' | 'indigo';
+export type ProjectTone = 'green' | 'purple' | 'blue' | 'indigo' | 'red';
 const projectTones: readonly (ProjectTone | undefined)[] = [
   'green',
   'indigo',
   'blue',
-  undefined,
+  'red',
   undefined,
   'purple'
 ];
@@ -377,14 +378,16 @@ export type ProjectCover = {
 const projectCovers: readonly (ProjectCover | undefined)[] = [
   { label: 'Imagen principal · mockup de una persona usando Planti' },
   { label: 'Imagen principal · persona viajando con su mascota en PetRide' },
-  { label: 'Imagen principal · pizza de Sonopizza con la mascota' }
+  { label: 'Imagen principal · pizza de Sonopizza con la mascota' },
+  { label: 'Imagen principal · módulo «Encuentra tu Toyota»' }
 ];
 
 // Frase que resume cada proyecto (su idea central), en el carrusel de Work
 const projectSummaries: readonly (string | undefined)[] = [
   'Saber qué necesita tu planta es fácil. Recordarlo, no.',
   'Moverte con tu mascota sin preguntar si la aceptan.',
-  'Pedir pizza debería ser tan fácil como antojarse.'
+  'Pedir pizza debería ser tan fácil como antojarse.',
+  'De elegir un modelo a descubrir el vehículo adecuado.'
 ];
 
 // Dos palabras clave por proyecto, para las etiquetas de su tarjeta. Las de
@@ -392,7 +395,8 @@ const projectSummaries: readonly (string | undefined)[] = [
 const projectTags: readonly (readonly string[] | undefined)[] = [
   ['App móvil', 'Investigación UX'],
   ['App móvil', 'Movilidad'],
-  ['App móvil', 'Rediseño']
+  ['App móvil', 'Rediseño'],
+  ['Web desktop', 'Rediseño de experiencia']
 ];
 
 export const exampleProjects = Array.from(

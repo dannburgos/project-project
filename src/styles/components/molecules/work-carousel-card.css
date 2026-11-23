@@ -32,6 +32,11 @@
   background: linear-gradient(160deg, #ddf344 0%, #4849e8 50%, #0b0c24 100%);
 }
 
+.work-card--red {
+  /* Toyota: rojo plano, sin degradado (manual de marca) */
+  background: #eb0a1e;
+}
+
 .work-card--neutral {
   background: linear-gradient(160deg, #6b7280 0%, #3f4652 45%, #23272f 100%);
 }
