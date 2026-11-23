@@ -1,0 +1,136 @@
+/* Pequeñas animaciones de las pantallas clave de Sonopizza. Se repiten para
+   que se vean en el tablero; con "reducir movimiento" todo queda quieto */
+
+.sp-tap {
+  animation: sp-tap 3s ease-out infinite;
+}
+
+@keyframes sp-tap {
+  0% {
+    opacity: 1;
+    scale: 0.6;
+  }
+
+  30%,
+  100% {
+    opacity: 0;
+    scale: 2.2;
+  }
+}
+
+/* Menú: un toque en el botón de filtros despliega el panel, que se queda
+   abierto un momento y se vuelve a cerrar */
+.sp-menu__filter-tap {
+  animation: sp-filter-tap 6s ease-out infinite;
+}
+
+.sp-menu .sp-filters {
+  animation: sp-filters 6s var(--sp-ease-out) infinite;
+}
+
+.sp-menu .sp-menu__filter-button {
+  animation: sp-filter-button 6s steps(1) infinite;
+}
+
+@keyframes sp-filter-tap {
+  0%,
+  10% {
+    opacity: 0;
+    scale: 0.6;
+  }
+
+  12% {
+    opacity: 1;
+    scale: 0.6;
+  }
+
+  22%,
+  100% {
+    opacity: 0;
+    scale: 2.2;
+  }
+}
+
+@keyframes sp-filters {
+  0%,
+  14% {
+    opacity: 0;
+    translate: 0 -10px;
+    scale: 1 0.92;
+  }
+
+  24%,
+  78% {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1 1;
+  }
+
+  88%,
+  100% {
+    opacity: 0;
+    translate: 0 -10px;
+    scale: 1 0.92;
+  }
+}
+
+@keyframes sp-filter-button {
+  0% {
+    background: transparent;
+    color: var(--sp-ink);
+    box-shadow: none;
+  }
+
+  14% {
+    background: var(--sp-fill-navy);
+    color: #fff;
+    box-shadow: var(--sp-shadow-button-navy);
+  }
+
+  86% {
+    background: transparent;
+    color: var(--sp-ink);
+    box-shadow: none;
+  }
+}
+
+/* Confirmado: la mascota rebota y el paso actual late */
+.sp-confirmed__mascot {
+  animation: sp-bob 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes sp-bob {
+  from {
+    translate: 0 -4px;
+    rotate: -3deg;
+  }
+
+  to {
+    translate: 0 4px;
+    rotate: 3deg;
+  }
+}
+
+.sp-steps__item--current .sp-steps__dot {
+  animation: sp-pulse 1.8s ease-out infinite;
+}
+
+@keyframes sp-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(255 90 0 / 0.45);
+  }
+
+  100% {
+    box-shadow: 0 0 0 12px rgb(255 90 0 / 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-tap,
+  .sp-menu .sp-filters,
+  .sp-menu .sp-menu__filter-button,
+  .sp-confirmed__mascot,
+  .sp-steps__item--current .sp-steps__dot {
+    animation: none;
+  }
+}

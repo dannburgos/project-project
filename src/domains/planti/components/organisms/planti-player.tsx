@@ -3,15 +3,15 @@ import type { PlantiScene } from '../../types/planti-scene.types';
 import { plantiMessages } from '../../messages';
 import { PlantiTimelineControls } from '../molecules/planti-timeline-controls';
 import { PlantiHomeScreen } from './planti-home-screen';
+import { PlantiLockScreen } from './planti-lock-screen';
 import { PlantiNeedsScreen } from './planti-needs-screen';
+import { PlantiNoticesScreen } from './planti-notices-screen';
 import { PlantiOnboardingScreen } from './planti-onboarding-screen';
 import { PlantiPersonalizeScreen } from './planti-personalize-screen';
 import { PlantiPlantDetailScreen } from './planti-plant-detail-screen';
 import { PlantiRegisteredScreen } from './planti-registered-screen';
-import { PlantiRoutineCaresScreen } from './planti-routine-cares-screen';
-import { PlantiRoutineCreatedScreen } from './planti-routine-created-screen';
-import { PlantiRoutineFrequencyScreen } from './planti-routine-frequency-screen';
-import { PlantiRoutineReviewScreen } from './planti-routine-review-screen';
+import { PlantiRoutineGeneratingScreen } from './planti-routine-generating-screen';
+import { PlantiRoutinePlanScreen } from './planti-routine-plan-screen';
 import { PlantiRoutineScreen } from './planti-routine-screen';
 import { PlantiSearchGalleryScreen } from './planti-search-gallery-screen';
 import { PlantiSearchLoadingScreen } from './planti-search-loading-screen';
@@ -19,6 +19,8 @@ import { PlantiSearchLookScreen } from './planti-search-look-screen';
 import { PlantiSearchMoreScreen } from './planti-search-more-screen';
 import { PlantiSearchScreen } from './planti-search-screen';
 import { PlantiSplashScreen } from './planti-splash-screen';
+import { PlantiTaskDetailScreen } from './planti-task-detail-screen';
+import { PlantiTaskDoneScreen } from './planti-task-done-screen';
 import { getPlantiNavKey } from '../../planti-nav.util';
 import { PlantiStage } from './planti-stage';
 
@@ -97,7 +99,9 @@ function renderScene(scene: PlantiScene) {
           nameChars={scene.nameChars}
           hasPlace={scene.hasPlace}
           hasLight={scene.hasLight}
+          hasWatering={scene.hasWatering}
           isPlaceOpen={scene.isPlaceOpen}
+          isWateringOpen={scene.isWateringOpen}
           isPressed={scene.isPressed}
         />
       );
@@ -105,8 +109,8 @@ function renderScene(scene: PlantiScene) {
       return <PlantiNeedsScreen isPressed={scene.isPressed} />;
     case 'registered':
       return <PlantiRegisteredScreen />;
-    case 'home-tasks':
-      return <PlantiHomeScreen variant="with-tasks" />;
+    case 'lock-screen':
+      return <PlantiLockScreen isPressed={scene.isPressed} />;
     case 'home-routine':
       return (
         <PlantiHomeScreen
@@ -121,26 +125,23 @@ function renderScene(scene: PlantiScene) {
           actionLabel={plantiMessages.routine.startAction}
         />
       );
-    case 'routine-cares':
-      return (
-        <PlantiRoutineCaresScreen
-          checkedCares={scene.checkedCares}
-          isPressed={scene.isPressed}
-        />
-      );
-    case 'routine-frequency':
-      return (
-        <PlantiRoutineFrequencyScreen
-          waterTimes={scene.waterTimes}
-          isPressed={scene.isPressed}
-        />
-      );
-    case 'routine-review':
-      return <PlantiRoutineReviewScreen isPressed={scene.isPressed} />;
-    case 'routine-created':
-      return <PlantiRoutineCreatedScreen isPressed={scene.isPressed} />;
+    case 'routine-generating':
+      return <PlantiRoutineGeneratingScreen />;
+    case 'routine-plan':
+      return <PlantiRoutinePlanScreen isPressed={scene.isPressed} />;
+    case 'notices':
+      return <PlantiNoticesScreen isPressed={scene.isPressed} />;
+    case 'task-detail':
+      return <PlantiTaskDetailScreen isPressed={scene.isPressed} />;
+    case 'task-done':
+      return <PlantiTaskDoneScreen />;
     case 'routine':
-      return <PlantiRoutineScreen />;
+      return (
+        <PlantiRoutineScreen
+          selectedDay={scene.selectedDay}
+          tappedDay={scene.tappedDay}
+        />
+      );
   }
 }
 

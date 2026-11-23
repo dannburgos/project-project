@@ -25,6 +25,7 @@ export function PlantiSearchGalleryScreen({
           <PlantiMatchTile
             key={item.key}
             name={item.name}
+            image={item.image}
             isActive={isHighlighted && 'isActive' in item}
           />
         ))}

@@ -13,14 +13,15 @@ export const PLANTI_PROTOTYPE_SCREENS = [
   'personalize',
   'needs',
   'registered',
-  'home-tasks',
+  'lock-screen',
   'home-routine',
   'routine-start',
-  'routine-cares',
-  'routine-frequency',
-  'routine-review',
-  'routine-created',
-  'routine'
+  'routine-generating',
+  'routine-plan',
+  'routine',
+  'notices',
+  'task-detail',
+  'task-done'
 ] as const;
 
 export type PlantiPrototypeScreen = (typeof PLANTI_PROTOTYPE_SCREENS)[number];

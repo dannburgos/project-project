@@ -1,0 +1,664 @@
+/* Pantallas clave del prototipo de Sonopizza, en el orden de los flujos */
+
+/* ---------- 01 · Inicio ---------- */
+.sp-home {
+  @apply gap-3.5 pb-26;
+}
+
+.sp-home__top {
+  @apply flex items-center justify-between pt-2;
+}
+
+.sp-home__place {
+  @apply flex flex-col gap-0.5;
+}
+
+.sp-home__address {
+  @apply inline-flex items-center gap-1 text-base font-bold;
+}
+
+.sp-home__address svg {
+  @apply size-4;
+}
+
+.sp-home__address svg:first-child {
+  color: var(--sp-orange);
+}
+
+/* Notificaciones con un punto naranja de "hay algo nuevo" */
+.sp-home__bell {
+  @apply relative;
+}
+
+.sp-home__bell-dot {
+  @apply absolute top-2 right-2.5 size-2.5 rounded-full border-2 border-white;
+  background: var(--sp-orange);
+}
+
+/* En una sola línea y un poco más angosto que la pantalla */
+.sp-home__title {
+  @apply text-[22px] leading-[26px] whitespace-nowrap;
+  color: var(--sp-navy);
+}
+
+/* Accesos directos a las categorías del menú: un círculo del color de la
+   categoría con su ilustración como sticker retro (troquel blanco, contorno
+   azul, un poco inclinado y con sombra), con el nombre debajo. El sticker
+   puede asomar por fuera del círculo */
+.sp-shortcuts {
+  @apply grid grid-cols-4 gap-2;
+}
+
+.sp-shortcut {
+  @apply flex flex-col items-center gap-1.5 text-center;
+}
+
+.sp-shortcut__art {
+  @apply relative size-16 rounded-full;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-shortcut__art--orange {
+  background: var(--sp-orange);
+}
+
+.sp-shortcut__art--cream {
+  background: var(--sp-cream);
+}
+
+.sp-shortcut__art--electric {
+  background: var(--sp-electric);
+}
+
+.sp-shortcut__art--royal {
+  background: var(--sp-royal);
+}
+
+.sp-shortcut__sticker {
+  @apply absolute inset-0 size-full;
+  rotate: -8deg;
+  filter: drop-shadow(0 4px 6px rgb(0 20 70 / 0.28));
+}
+
+.sp-shortcut__name {
+  @apply text-sm leading-5 font-bold whitespace-nowrap;
+}
+
+/* La más pedida como póster: tarjeta azul marino que flota con una sombra
+   azul difusa, el nombre corto gigante en contorno detrás y la pizza quieta, recortada por la
+   tarjeta. Abajo a la izquierda van el nombre, el precio y, debajo, el botón */
+.sp-hero {
+  @apply relative mt-1 flex h-52 shrink-0 rounded-[28px] p-5;
+  background: var(--sp-navy);
+  color: var(--sp-white);
+  box-shadow: var(--sp-shadow-highlight);
+}
+
+.sp-hero__media {
+  @apply pointer-events-none absolute inset-0 overflow-hidden rounded-[28px];
+}
+
+.sp-hero__word {
+  @apply absolute top-1 -left-1.5 text-[64px] leading-none whitespace-nowrap;
+  color: transparent;
+  /* Blanco translúcido: sobre el azul marino da un azul apagado que se queda
+     de fondo */
+  -webkit-text-stroke: 2px rgb(244 244 244 / 0.24);
+}
+
+.sp-hero__info {
+  @apply relative z-10 mt-auto flex w-44 flex-col items-start gap-1.5;
+}
+
+.sp-hero__name {
+  @apply text-2xl leading-6;
+}
+
+.sp-hero__price {
+  @apply flex items-baseline gap-1.5 text-lg leading-6 font-black;
+}
+
+.sp-hero__price span {
+  @apply text-sm font-semibold;
+  color: rgb(244 244 244 / 0.72);
+}
+
+.sp-hero__pizza {
+  @apply absolute top-1/2 -right-18 size-52 -translate-y-1/2;
+}
+
+.sp-home__promos {
+  @apply flex flex-col gap-3;
+}
+
+.sp-home__promos-title {
+  @apply text-lg leading-6 font-bold;
+  color: var(--sp-navy);
+}
+
+/* Promo de la semana: tarjeta naranja (contrasta con el fondo claro y con
+   el azul de la tarjeta de arriba) con la pizza recortada abajo a la
+   izquierda, un estallido con la oferta encima y, a la derecha, el día, qué
+   incluye, el precio normal tachado, el que se paga y lo que se ahorra */
+.sp-promo {
+  @apply relative h-36 shrink-0 overflow-hidden rounded-3xl;
+  background: var(--sp-orange);
+  color: #fff;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-promo__pizza {
+  @apply absolute -bottom-12 -left-8 size-40;
+}
+
+/* Estallido de doce puntas, inclinado como un sticker */
+.sp-promo__burst {
+  @apply absolute top-3 left-3.5 z-10 grid size-18 -rotate-12 place-items-center text-xl leading-none;
+  background: var(--sp-navy);
+  color: #fff;
+  clip-path: var(--sp-burst);
+}
+
+.sp-promo__info {
+  @apply absolute inset-y-3 right-3.5 left-38 flex flex-col items-start;
+}
+
+.sp-promo__day {
+  @apply text-sm leading-5 font-bold tracking-[0.08em] uppercase;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.sp-promo__title {
+  @apply mt-0.5 text-base leading-5 font-bold;
+}
+
+.sp-promo__prices {
+  @apply mt-1 flex flex-col;
+}
+
+.sp-promo__regular {
+  @apply text-base leading-5 font-semibold;
+  color: rgb(255 255 255 / 0.7);
+}
+
+.sp-promo__price {
+  @apply text-[30px] leading-8;
+  color: #fff;
+}
+
+.sp-promo__savings {
+  @apply mt-1 rounded-full px-2.5 py-1 text-sm leading-5 font-bold;
+  background: var(--sp-navy);
+  color: #fff;
+}
+
+/* Puntos de avance: dicen que las promos son un carrusel; la actual es una
+   píldora */
+.sp-promos__dots {
+  @apply flex shrink-0 justify-center gap-1.5;
+}
+
+.sp-promos__dot {
+  @apply size-1.5 rounded-full;
+  background: rgb(27 35 56 / 0.2);
+}
+
+.sp-promos__dot--on {
+  @apply w-5;
+  background: var(--sp-navy);
+}
+
+/* ---------- 02 · Menú ---------- */
+.sp-menu {
+  @apply gap-4;
+}
+
+.sp-menu__top {
+  @apply flex items-center justify-between pt-2;
+}
+
+.sp-menu__title {
+  @apply text-[40px] leading-10;
+  color: var(--sp-navy);
+}
+
+/* Buscador y, debajo, el panel de filtros que se despliega sobre la lista */
+.sp-menu__finder {
+  @apply relative z-30 shrink-0;
+}
+
+/* En reposo el panel está cerrado y el botón es un ícono suelto; la animación
+   los cambia */
+.sp-menu__filter-button {
+  @apply relative;
+}
+
+.sp-menu__filter-tap {
+  @apply opacity-0;
+}
+
+.sp-filters {
+  @apply pointer-events-none absolute inset-x-0 top-full mt-2 flex origin-top flex-col gap-3.5 rounded-3xl bg-white p-4 opacity-0;
+  box-shadow: var(--sp-shadow-lift);
+}
+
+.sp-filters__group {
+  @apply flex flex-col gap-2;
+}
+
+.sp-menu__meta {
+  @apply flex items-center justify-between;
+}
+
+.sp-menu__sorted {
+  @apply text-sm font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-menu__count {
+  @apply text-sm font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-products {
+  @apply flex flex-col gap-4;
+}
+
+/* Tarjeta del menú: blanca y sin borde. La pizza va dentro, sobre un plato
+   durazno a la izquierda, y la etiqueta (más pedida, nueva…) se pega abajo
+   de la foto para que todos los nombres queden a la misma altura. Abajo, el
+   precio desde y el botón para agregar */
+.sp-product {
+  @apply relative flex shrink-0 gap-3 rounded-3xl bg-white p-3;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-product__media {
+  @apply relative grid size-26 shrink-0 place-items-center rounded-2xl;
+  background: var(--sp-tint);
+}
+
+.sp-product__pizza {
+  @apply size-24;
+}
+
+.sp-product__tag {
+  @apply absolute -bottom-2 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-sm leading-5 font-bold tracking-[0.04em] whitespace-nowrap uppercase;
+  background: var(--sp-orange);
+  color: #fff;
+}
+
+.sp-product__body {
+  @apply flex min-w-0 flex-1 flex-col gap-1 py-1;
+}
+
+.sp-product__name {
+  @apply pr-8 text-base leading-5 font-bold;
+}
+
+/* Favorito: corazón vacío en gris; guardado, lleno de naranja */
+.sp-product__favorite {
+  @apply absolute top-2.5 right-2.5 z-10 grid size-8 place-items-center rounded-full;
+  color: rgb(27 35 56 / 0.35);
+}
+
+.sp-product__favorite svg {
+  @apply size-5;
+}
+
+.sp-product__favorite--on {
+  color: var(--sp-orange);
+}
+
+.sp-product__favorite--on svg {
+  fill: currentColor;
+}
+
+.sp-product__text {
+  @apply line-clamp-2 text-sm leading-5;
+  color: var(--sp-muted);
+}
+
+.sp-product__foot {
+  @apply mt-auto flex items-end justify-between gap-2;
+}
+
+.sp-product__price {
+  @apply flex flex-col text-base leading-5 font-bold;
+}
+
+.sp-product__price span {
+  @apply text-sm leading-5 font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-product__add {
+  @apply size-10;
+}
+
+/* ---------- 05 · Carrito ---------- */
+.sp-cart {
+  @apply gap-4 pb-44;
+}
+
+/* El carrito y el checkout comparten el fondo: un tinte cálido arriba que se
+   aclara hacia abajo */
+.sp-cart {
+  background: linear-gradient(180deg, var(--sp-tint) 0, var(--sp-white) 280px);
+}
+
+/* Encabezado del carrito y del checkout: el título y el texto de abajo van
+   centrados; el botón de volver se queda pegado a la izquierda */
+.sp-cart__top {
+  @apply relative flex min-h-11 items-center justify-center text-center;
+}
+
+.sp-cart__top > .sp-icon-button {
+  @apply absolute left-0;
+}
+
+.sp-cart__title {
+  @apply text-[28px] leading-7;
+  color: var(--sp-navy);
+}
+
+/* La dirección: el pin, "Entregar en" y la dirección (la usa el checkout) */
+.sp-address__pin {
+  @apply grid size-9 shrink-0 place-items-center rounded-full;
+  background: var(--sp-tint);
+  color: var(--sp-orange);
+}
+
+.sp-address__pin svg {
+  @apply size-5;
+}
+
+.sp-address__text {
+  @apply flex min-w-0 flex-1 flex-col;
+}
+
+.sp-address__line {
+  @apply truncate text-sm font-bold;
+}
+
+.sp-lines {
+  @apply flex shrink-0 flex-col gap-3;
+}
+
+/* El producto: la pizza a la izquierda, dentro de la tarjeta, y a la derecha el
+   nombre, cómo se pidió, el precio y la cantidad */
+.sp-line {
+  @apply flex gap-3 rounded-3xl bg-white p-3;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+/* La pizza se ve igual que en las tarjetas del menú: dentro de un cuadrado
+   redondeado de fondo cálido, un poco más chico para que el precio y el
+   contador quepan en la misma fila */
+.sp-line__thumb {
+  @apply grid size-22 shrink-0 place-items-center self-center rounded-2xl;
+  background: var(--sp-tint);
+}
+
+.sp-line__thumb .sp-pizza {
+  @apply size-20;
+}
+
+/* Compacta (checkout): foto chica, el nombre y el precio en una sola fila */
+.sp-line--compact {
+  @apply items-center;
+}
+
+/* Dentro de la tarjeta del checkout no lleva su propio fondo ni sombra */
+.sp-checkout__sheet .sp-line--compact {
+  @apply rounded-none bg-transparent p-0;
+  box-shadow: none;
+}
+
+.sp-line--compact .sp-line__thumb {
+  @apply size-16 rounded-xl;
+}
+
+.sp-line--compact .sp-line__thumb .sp-pizza {
+  @apply size-14;
+}
+
+.sp-line--compact .sp-line__name {
+  @apply min-w-0 flex-1;
+  text-wrap: balance;
+}
+
+.sp-line__body {
+  @apply flex min-w-0 flex-1 flex-col gap-1.5;
+}
+
+.sp-line__head {
+  @apply flex items-start justify-between gap-2;
+}
+
+/* El nombre se reparte parejo entre sus líneas: "Vegetariana" arriba y "de la
+   huerta" abajo, en vez de dejar "de la" colgando en la primera */
+.sp-line__name {
+  @apply text-base leading-5 font-bold;
+  text-wrap: balance;
+}
+
+.sp-line__actions {
+  @apply -mt-1 -mr-1 flex;
+}
+
+.sp-line__action {
+  @apply grid size-9 place-items-center rounded-full;
+  color: var(--sp-muted);
+}
+
+.sp-line__action svg {
+  @apply size-4.5;
+}
+
+.sp-line__foot {
+  @apply mt-auto flex items-center justify-between;
+}
+
+.sp-line__price {
+  @apply text-2xl leading-8;
+  color: var(--sp-navy);
+}
+
+/* Salida para seguir pidiendo: un espacio punteado para sumar algo más */
+.sp-cart__more {
+  @apply flex h-11 shrink-0 items-center justify-center gap-2 rounded-2xl text-sm font-bold;
+  color: var(--sp-navy);
+  outline: 2px dashed rgb(0 43 143 / 0.25);
+  outline-offset: -2px;
+}
+
+.sp-cart__more svg {
+  @apply size-4.5;
+}
+
+/* Cupón: campo blanco con la etiqueta, el texto de ejemplo y el botón para
+   aplicarlo */
+.sp-coupon {
+  @apply flex h-14 shrink-0 items-center gap-3 rounded-full bg-white pr-2 pl-4;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-coupon > svg {
+  @apply size-5 shrink-0;
+  color: var(--sp-orange);
+}
+
+.sp-coupon__placeholder {
+  @apply flex-1 truncate text-sm;
+  color: var(--sp-muted);
+}
+
+.sp-coupon__apply {
+  @apply inline-flex h-10 items-center rounded-full px-5 text-sm font-bold;
+  background: var(--sp-fill-navy);
+  color: #fff;
+}
+
+/* Resumen de compra: cada concepto con su valor, separados por líneas
+   punteadas, y el total en grande al final */
+.sp-summary {
+  @apply flex shrink-0 flex-col gap-1 rounded-3xl bg-white p-4;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-summary__title {
+  @apply text-base leading-5 font-bold;
+}
+
+.sp-summary__row {
+  @apply flex items-baseline justify-between py-2.5 text-sm;
+}
+
+.sp-summary__row + .sp-summary__row {
+  border-top: 2px dashed rgb(0 43 143 / 0.14);
+}
+
+.sp-summary__row dt {
+  color: rgb(27 35 56 / 0.75);
+}
+
+.sp-summary__row dd {
+  @apply font-bold;
+}
+
+.sp-summary__row--total {
+  @apply items-center pt-3 pb-0;
+}
+
+.sp-summary__row--total dt {
+  @apply text-base font-bold;
+  color: var(--sp-ink);
+}
+
+.sp-summary__row--total dd {
+  @apply text-2xl leading-8;
+  color: var(--sp-navy);
+}
+
+.sp-cart__cta {
+  @apply absolute inset-x-5 bottom-26 z-10;
+}
+
+/* ---------- 07 · Pedido confirmado ---------- */
+.sp-confirmed {
+  @apply items-center gap-3 px-5 pt-16 pb-8 text-center;
+  background: radial-gradient(
+    circle at 50% 22%,
+    var(--sp-royal) 0,
+    var(--sp-navy) 60%
+  );
+  color: var(--sp-white);
+}
+
+.sp-confirmed__mascot {
+  @apply relative size-50 shrink-0 object-contain;
+  filter: drop-shadow(0 12px 18px rgb(0 0 0 / 0.35));
+}
+
+.sp-confirmed__title {
+  @apply relative text-[32px] leading-8;
+}
+
+.sp-confirmed__order {
+  @apply relative rounded-full px-4 py-1.5 text-sm font-semibold;
+  background: rgb(244 244 244 / 0.14);
+}
+
+/* La tarjeta de llegada va en un azul medio, más claro que el fondo, y todo lo
+   de adentro en blanco o naranja para que contraste */
+.sp-eta {
+  @apply relative mt-4 flex w-full flex-col items-center gap-1 rounded-[28px] px-5 pt-5 pb-4;
+  background: var(--sp-electric);
+  color: #fff;
+  box-shadow:
+    0 18px 36px rgb(0 20 70 / 0.35),
+    inset 0 0 0 1px rgb(255 255 255 / 0.14);
+}
+
+.sp-eta__label {
+  color: rgb(255 255 255 / 0.85);
+}
+
+.sp-eta__time {
+  @apply text-[40px] leading-10;
+  color: #fff;
+}
+
+/* Pasos del pedido con una línea que se llena hasta el actual */
+.sp-steps {
+  @apply relative mt-3 grid w-full grid-cols-4;
+}
+
+.sp-steps::before,
+.sp-steps::after {
+  @apply absolute top-5 left-[12.5%] h-1 rounded-full content-[''];
+}
+
+.sp-steps::before {
+  @apply right-[12.5%];
+  background: rgb(255 255 255 / 0.3);
+}
+
+.sp-steps::after {
+  width: 25%;
+  background: #fff;
+}
+
+.sp-steps__item {
+  @apply relative z-10 flex flex-col items-center gap-1.5;
+}
+
+.sp-steps__dot {
+  @apply grid size-11 place-items-center rounded-full border-2;
+  background: var(--sp-electric);
+  border-color: rgb(255 255 255 / 0.45);
+  color: rgb(255 255 255 / 0.85);
+}
+
+.sp-steps__dot svg {
+  @apply size-5;
+}
+
+.sp-steps__item--done .sp-steps__dot {
+  background: #fff;
+  border-color: #fff;
+  color: var(--sp-navy);
+}
+
+.sp-steps__item--done .sp-steps__dot svg {
+  stroke-width: 3;
+}
+
+.sp-steps__item--current .sp-steps__dot {
+  background: var(--sp-fill-orange);
+  border-color: var(--sp-orange);
+  color: #fff;
+  box-shadow: var(--sp-shadow-button);
+}
+
+.sp-steps__name {
+  @apply text-sm font-semibold;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.sp-steps__item--done .sp-steps__name,
+.sp-steps__item--current .sp-steps__name {
+  @apply font-bold;
+  color: #fff;
+}
+
+.sp-eta__summary {
+  @apply mt-3 w-full border-t-2 border-dashed pt-3 text-sm;
+  border-color: rgb(255 255 255 / 0.35);
+  color: rgb(255 255 255 / 0.9);
+}
+
+.sp-confirmed__actions {
+  @apply relative mt-auto flex w-full flex-col gap-2.5;
+}

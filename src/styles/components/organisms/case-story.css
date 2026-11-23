@@ -4,12 +4,15 @@
    "reducir movimiento"), todo en columna. Primero el mundo claro de la
    investigación y, desde el concepto, el mundo de la marca. */
 
-/* Marca de Planti: crema clara y verdes (tonos por definir) */
+/* Marca de Planti: crema clara y verdes (tonos por definir) y su tipografía,
+   Poppins, la misma de la app */
 .case-story--planti {
+  font-family: var(--font-poppins), sans-serif;
   --story-cream: #fbf9f3;
   --story-ink: #23330e;
   --story-ink-soft: #3d5718;
   --story-mid: #678e35;
+  --story-heading: #749f3d;
   --story-light: #a2c96c;
   --story-mute: #5f6b4c;
   --story-tone: #efebdf;
@@ -168,34 +171,29 @@
   line-height: 0.8;
 }
 
+/* El relleno de arriba y de abajo se compensa con el margen negativo: la caja
+   que recorta la animación queda más alta que las letras y no las corta */
 .story-brand {
   @apply font-semibold;
   font-size: 120px;
   letter-spacing: -0.06em;
   line-height: 0.82;
+  padding-block: 0.16em 0.08em;
+  margin-block: -0.16em -0.08em;
 }
 
-/* Franjas de hojas: solo en los títulos grandes */
-.story-stripes,
-.story-stripes .story-line__text {
-  background: var(--story-stripes);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Títulos grandes y números en el verde de la marca, solo en el mundo claro: en
+   el mundo verde van claros para que se lean */
+.case-story--planti
+  :is(.story-title-xl, .story-title-lg, .story-number):not(
+    .case-story__green *
+  ) {
+  color: var(--story-heading);
 }
 
-/* Troquelado: placa sólida con las letras recortadas que dejan ver la imagen */
-.story-plate {
-  @apply px-10 pt-8 pb-9;
-  background: var(--story-cream);
+/* Este título se queda en el verde oscuro de la marca */
+.case-story--planti .story-title-xl.story-title-ink {
   color: var(--story-ink);
-}
-
-.story-plate .story-line__text {
-  background: var(--story-stripes);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 /* Líneas de un título: cada una llega cubierta por su bloque */
@@ -293,7 +291,17 @@
   }
 
   .story-view {
-    @apply relative inset-auto pt-14 pr-4 pb-10 pl-8;
+    @apply relative inset-auto pt-28 pr-4 pb-10 pl-8;
+  }
+
+  /* Cada vista lleva su propio fondo: la siguiente sube y tapa a la anterior
+     mientras esta se queda quieta */
+  .story-view {
+    background: var(--story-cream);
+  }
+
+  .case-story__green .story-view {
+    background: var(--story-world);
   }
 
   .story-view--centered {
@@ -321,7 +329,7 @@
   }
 
   .story-title-xl {
-    font-size: 40px;
+    font-size: 32px;
   }
 
   .story-title-lg {
@@ -334,10 +342,6 @@
 
   .story-brand {
     font-size: 80px;
-  }
-
-  .story-plate {
-    @apply px-5 pt-5 pb-6;
   }
 
   .story-columns {

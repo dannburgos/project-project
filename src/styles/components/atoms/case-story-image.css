@@ -38,6 +38,19 @@
   @apply hidden;
 }
 
+.story-image--screen {
+  @apply bg-transparent p-0;
+}
+
+.story-image--screen::before,
+.story-image--screen::after {
+  @apply hidden;
+}
+
+.story-image--screen .story-image__photo {
+  @apply object-contain;
+}
+
 .story-image__photo {
   @apply absolute inset-0 z-10 size-full object-cover;
 }

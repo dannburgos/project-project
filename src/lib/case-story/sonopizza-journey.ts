@@ -71,6 +71,10 @@ export function addJourneyMotion(
       y: 24,
       autoAlpha: 0
     });
+    gsap.set(stage.querySelector('[data-journey-card]'), {
+      y: 40,
+      autoAlpha: 0
+    });
   });
 
   const start = timeline.duration() - 0.3;
@@ -108,6 +112,11 @@ export function addJourneyMotion(
         stage.querySelector('[data-journey-label]'),
         { y: 0, autoAlpha: 1, duration: 0.7, ease: 'expo.out' },
         at + 0.08
+      )
+      .to(
+        stage.querySelector('[data-journey-card]'),
+        { y: 0, autoAlpha: 1, duration: 0.8, ease: 'expo.out' },
+        at + 0.18
       );
   });
 
@@ -117,4 +126,31 @@ export function addJourneyMotion(
     { scale: 0, autoAlpha: 0, duration: 0.4, ease: 'power2.in' },
     start + DRAW_DURATION - 0.1
   );
+}
+
+// Las cinco tarjetas del journey miden lo mismo: todas toman el alto de la
+// más alta (se recalcula al cargar las fuentes y al cambiar el tamaño de la
+// ventana). Devuelve la función que lo deshace.
+export function syncJourneyCardHeights(root: HTMLElement) {
+  const cards = queryAll(root, '[data-journey-card]');
+  const sync = () => {
+    cards.forEach(card => {
+      card.style.minHeight = '';
+    });
+    const tallest = Math.max(0, ...cards.map(card => card.offsetHeight));
+    cards.forEach(card => {
+      card.style.minHeight = `${tallest}px`;
+    });
+  };
+
+  sync();
+  void document.fonts?.ready.then(sync);
+  window.addEventListener('resize', sync);
+
+  return () => {
+    window.removeEventListener('resize', sync);
+    cards.forEach(card => {
+      card.style.minHeight = '';
+    });
+  };
 }

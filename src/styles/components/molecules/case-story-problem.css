@@ -30,7 +30,7 @@
 
 .story-frictions__track {
   @apply relative grid gap-12;
-  grid-template-columns: minmax(0, 1fr) 300px;
+  grid-template-columns: minmax(0, 1fr);
   height: calc(100% - 56px);
 }
 
@@ -65,69 +65,12 @@
   @apply mt-auto flex min-h-56 flex-col justify-start gap-3;
 }
 
+.story-frictions__body .story-body {
+  white-space: pre-line;
+}
+
 .story-frictions__question {
   @apply text-xl leading-snug font-semibold;
-}
-
-/* Chat de Laura: sus mensajes llegan uno a uno, como en una app de
-   mensajes, mientras el camino pasa por cada fricción */
-.story-chat {
-  @apply flex flex-col gap-4 self-end pt-8;
-}
-
-.story-chat__head {
-  @apply flex items-center gap-2.5 border-b pb-3 text-sm font-semibold;
-  border-color: var(--story-rule);
-}
-
-.story-chat__avatar {
-  @apply size-6 rounded-full;
-  background: var(--story-ink);
-}
-
-.story-chat__list {
-  @apply flex flex-col gap-3;
-}
-
-.story-chat__item {
-  @apply relative min-h-11;
-}
-
-.story-chat__bubble {
-  @apply w-fit max-w-full rounded-2xl rounded-tl-sm px-4 py-2.5 text-base leading-snug;
-  background: var(--story-tone);
-  color: var(--story-ink);
-}
-
-/* "Escribiendo…": tres puntos que saltan */
-.story-chat__typing {
-  @apply absolute top-0 left-0 flex h-10 items-center gap-1 rounded-2xl rounded-tl-sm px-4 opacity-0;
-  background: var(--story-tone);
-}
-
-.story-chat__typing i {
-  @apply size-1.5 rounded-full;
-  background: var(--story-mute);
-  animation: story-typing 1s ease-in-out infinite;
-}
-
-.story-chat__typing i:nth-child(2) {
-  animation-delay: 0.15s;
-}
-
-.story-chat__typing i:nth-child(3) {
-  animation-delay: 0.3s;
-}
-
-@keyframes story-typing {
-  0%,
-  60%,
-  100% {
-    translate: 0 0;
-  }
-  30% {
-    translate: 0 -4px;
-  }
 }
 
 .story-references {
@@ -141,6 +84,22 @@
     @apply grid-cols-1 gap-0;
   }
 
+  /* El título y las dos tarjetas quedan centrados en la pantalla, bajo la barra
+     fija de arriba */
+  .story-view[data-view='problem'] {
+    @apply flex flex-col justify-center pt-28;
+    min-height: 100svh;
+  }
+
+  .story-gap__side {
+    @apply p-4;
+    min-height: 0;
+  }
+
+  .story-gap__side .story-title-md {
+    font-size: 18px;
+  }
+
   .story-gap__line {
     @apply mx-auto h-10 w-px;
   }
@@ -152,10 +111,6 @@
 
   .story-frictions__track {
     @apply grid-cols-1;
-  }
-
-  .story-chat {
-    @apply self-auto pt-4;
   }
 
   .story-frictions__path {

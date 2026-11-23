@@ -78,29 +78,16 @@
 }
 
 /* Detalle de la planta elegida */
-.planti-plant-detail__name {
-  @apply mt-5 text-[22px] leading-7 font-bold;
-  color: var(--planti-forest);
+.planti-plant-detail .planti-needs__top {
+  @apply min-h-75;
 }
 
-.planti-plant-detail__scientific {
-  @apply text-base leading-6 italic;
-  color: var(--planti-stone);
+.planti-plant-detail .planti-needs__plant {
+  @apply right-3;
 }
 
-.planti-plant-detail__traits {
-  @apply mt-3 flex gap-2;
-}
-
-.planti-plant-detail__trait {
-  @apply rounded-lg px-2.5 py-1 text-base font-medium;
-  background: var(--planti-dew);
-  color: var(--planti-leaf);
-}
-
-.planti-plant-detail__description {
-  @apply mt-4 text-base leading-6;
-  color: var(--planti-stone);
+.planti-plant-detail .planti-needs__intro {
+  @apply mt-2.5;
 }
 
 /* Planta registrada */
@@ -112,7 +99,7 @@
 
 .planti-registered__check {
   @apply mb-6 flex size-20 items-center justify-center rounded-full;
-  background: var(--planti-leaf);
+  background: var(--planti-grass);
   color: var(--planti-white);
 }
 
@@ -178,6 +165,10 @@
 
 .planti-match-tile__photo svg {
   @apply size-12;
+}
+
+.planti-match-tile__image {
+  @apply size-full object-cover;
 }
 
 .planti-match-tile__info {
@@ -253,7 +244,7 @@
 }
 
 .planti-needs__top {
-  @apply relative z-0 flex h-80;
+  @apply relative flex pb-5;
 }
 
 .planti-needs__intro {
@@ -293,7 +284,7 @@
 }
 
 .planti-needs__fact-icon {
-  @apply flex size-9 shrink-0 items-center justify-center rounded-full border;
+  @apply flex size-10 shrink-0 items-center justify-center rounded-xl border;
   background: var(--planti-white);
   border-color: var(--planti-card-border);
   color: var(--planti-grass);
@@ -303,23 +294,40 @@
   @apply size-5;
 }
 
-/* La foto, grande y sin tarjeta; la hoja de abajo tapa su base */
+/* La foto, grande y sin tarjeta, a la derecha; la maceta baja y se asoma sobre
+   la hoja de abajo */
 .planti-needs__plant {
-  @apply absolute top-0 -right-2 flex h-full w-44 items-end justify-center;
-  color: var(--planti-grass);
+  @apply absolute top-2.25 -right-2 z-20 h-80 w-auto max-w-none;
   animation: planti-fade-in 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.1s both;
 }
 
-.planti-needs__plant svg {
-  @apply size-36;
-}
-
 .planti-needs__sheet {
-  @apply relative z-10 -mx-5 -mt-8 rounded-t-3xl border-t px-5 pt-6;
+  @apply relative z-10 -mx-5 mt-1.5 grow rounded-t-3xl px-5 pt-6 pb-32;
   background: var(--planti-white);
-  border-color: var(--planti-card-border);
   box-shadow: 0 -6px 18px rgb(35 51 14 / 0.08);
   animation: planti-rise 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.3s both;
+}
+
+/* El fondo de la planta: gris muy claro arriba que se oscurece un poco hacia la
+   hoja blanca, para que la planta se despegue */
+.planti-needs-screen {
+  background: linear-gradient(
+    to bottom,
+    #f9f9f9 0%,
+    #f6f6f6 38%,
+    #e9e9e9 52%,
+    #e9e9e9 100%
+  );
+}
+
+/* La hoja blanca baja hasta el fondo: el espacio de abajo lo lleva ella */
+.planti-needs-screen .planti-screen__scroll {
+  @apply pb-0;
+}
+
+.planti-needs__description {
+  @apply mb-6 text-base leading-6;
+  color: var(--planti-charcoal);
 }
 
 .planti-needs__title {
@@ -596,393 +604,338 @@
   animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* Buscando coincidencias: una planta brota (tallo, cuatro hojas y chispas),
-   tres frases se turnan y una barra se llena. Todo dura 2,4 s y queda en su
-   estado final. */
-.planti-loading {
-  @apply items-center justify-center gap-6 pb-24;
-}
-
-.planti-loading__sprout {
-  @apply relative h-44 w-44;
-}
-
-.planti-loading__soil {
-  @apply absolute bottom-2 left-1/2 h-2.5 w-24 -translate-x-1/2 rounded-full;
-  background: var(--planti-photo-warm);
-  animation: planti-loading-soil 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-.planti-loading__stem {
-  @apply absolute bottom-3 left-1/2 h-28 w-1 -translate-x-1/2 rounded-full;
-  background: var(--planti-grass);
-  transform-origin: bottom;
-  animation: planti-loading-stem 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s both;
-}
-
-/* Cada hoja nace del tallo: las de la izquierda van en espejo */
-.planti-loading__leaf {
-  @apply absolute left-1/2;
-  --flip: 1;
-  color: var(--planti-grass);
-  transform-origin: 0 100%;
-  animation: planti-loading-leaf 0.5s ease-out both;
-}
-
-.planti-loading__leaf--first {
-  @apply bottom-10 size-7;
-  animation-delay: 0.4s;
-}
-
-.planti-loading__leaf--second {
-  @apply bottom-16 size-8;
-  --flip: -1;
-  animation-delay: 0.8s;
-}
-
-.planti-loading__leaf--third {
-  @apply bottom-22 size-9;
-  animation-delay: 1.2s;
-}
-
-.planti-loading__leaf--fourth {
-  @apply bottom-28 size-10;
-  --flip: -1;
-  animation-delay: 1.6s;
-}
-
-/* Al final, seis chispas salen desde la punta en todas direcciones */
-.planti-loading__spark {
-  @apply absolute bottom-32 left-1/2 -ml-0.75 size-1.5 rounded-full opacity-0;
-  background: var(--planti-sprout);
-  animation: planti-loading-spark 0.9s ease-out 1.7s both;
-}
-
-.planti-loading__spark:nth-child(7) {
-  --x: 56px;
-  --y: -20px;
-}
-
-.planti-loading__spark:nth-child(8) {
-  --x: 36px;
-  --y: -52px;
-}
-
-.planti-loading__spark:nth-child(9) {
-  --x: 0px;
-  --y: -64px;
-  animation-delay: 1.74s;
-}
-
-.planti-loading__spark:nth-child(10) {
-  --x: -36px;
-  --y: -52px;
-  animation-delay: 1.78s;
-}
-
-.planti-loading__spark:nth-child(11) {
-  --x: -56px;
-  --y: -20px;
-  animation-delay: 1.82s;
-}
-
-.planti-loading__spark:nth-child(12) {
-  --x: 20px;
-  --y: -36px;
-  animation-delay: 1.86s;
-}
-
-/* Las tres frases ocupan el mismo lugar y se turnan cada 0,8 s; la última se
-   queda */
-.planti-loading__messages {
-  @apply relative h-6 w-full;
-}
-
-.planti-loading__message {
-  @apply absolute inset-x-0 text-center text-base leading-6 font-semibold opacity-0;
-  color: var(--planti-forest);
-  animation: planti-loading-message 2.4s ease-out both;
-}
-
-.planti-loading__message:nth-child(2) {
-  animation-delay: 0.8s;
-}
-
-.planti-loading__message:last-child {
-  animation: planti-loading-message-last 0.8s ease-out 1.6s both;
-}
-
-.planti-loading__bar {
-  @apply relative h-1 w-48 overflow-hidden rounded-full;
-  background: var(--planti-input-border);
-}
-
-.planti-loading__fill {
-  @apply absolute inset-y-0 left-0 rounded-full;
-  background: var(--planti-grass);
-  animation: planti-loading-fill 2.4s cubic-bezier(0.65, 0, 0.35, 1) both;
-}
-
-@keyframes planti-loading-soil {
-  from {
-    opacity: 0;
-    width: 0;
-  }
-}
-
-@keyframes planti-loading-stem {
-  from {
-    transform: translateX(-50%) scaleY(0);
-  }
-  to {
-    transform: translateX(-50%) scaleY(1);
-  }
-}
-
-@keyframes planti-loading-leaf {
-  from {
-    opacity: 0;
-    transform: scaleX(var(--flip)) scale(0) rotate(-40deg);
-  }
-  70% {
-    opacity: 1;
-    transform: scaleX(var(--flip)) scale(1.15) rotate(0deg);
-  }
-  to {
-    opacity: 1;
-    transform: scaleX(var(--flip)) scale(1) rotate(0deg);
-  }
-}
-
-@keyframes planti-loading-spark {
-  from {
-    opacity: 0;
-    transform: translate(0, 0);
-  }
-  40% {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    transform: translate(var(--x), var(--y));
-  }
-}
-
-@keyframes planti-loading-message {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  8%,
-  28% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  36%,
-  to {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-}
-
-@keyframes planti-loading-message-last {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes planti-loading-fill {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-/* Capítulo 2 · Crear una rutina. Las tarjetas siguen el mismo lenguaje de
-   selección de Buscar: blancas con sombra suave y, al elegirlas, contorno
-   verde de la marca y sombra gris */
+/* Capítulo 2 · Crear una rutina. La app arma la rutina: la persona no elige
+   cuidados ni frecuencias, solo sigue los pasos y recibe los avisos. */
 .planti-routine__hint {
   @apply -mt-1 mb-4 text-base leading-6;
   color: var(--planti-stone);
 }
 
-.planti-care-list,
-.planti-frequency-list {
-  @apply flex flex-col gap-3;
+/* Armando la rutina: el anillo se llena y la frase de abajo cambia según el
+   avance */
+.planti-generating {
+  @apply items-center justify-center pb-24 text-center;
 }
 
-.planti-care-option,
-.planti-frequency {
-  @apply relative flex items-center gap-3 overflow-hidden rounded-2xl border-[1.5px] p-4;
+.planti-generating__ring {
+  @apply relative mb-8 size-24;
+}
+
+.planti-generating__ring svg {
+  @apply absolute inset-0 size-full -rotate-90;
+}
+
+.planti-generating__track,
+.planti-generating__arc {
+  fill: none;
+  stroke-width: 8;
+}
+
+.planti-generating__track {
+  stroke: var(--planti-dew);
+}
+
+.planti-generating__arc {
+  stroke: var(--planti-grass);
+  stroke-linecap: round;
+  stroke-dasharray: 251.3;
+  stroke-dashoffset: 251.3;
+  animation: planti-ring-fill 3.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+}
+
+/* Buscando coincidencias: el mismo anillo, pero en 2,4 s */
+.planti-generating--quick .planti-generating__arc {
+  animation-duration: 2.1s;
+  animation-delay: 0.2s;
+}
+
+.planti-generating--quick .planti-generating__phrase {
+  animation-duration: 0.8s;
+  animation-delay: 0.2s;
+}
+
+.planti-generating--quick .planti-generating__phrase:nth-child(2) {
+  animation-delay: 0.9s;
+}
+
+.planti-generating--quick .planti-generating__phrase:nth-child(3) {
+  animation-duration: 0.8s;
+  animation-delay: 1.6s;
+}
+
+@keyframes planti-ring-fill {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.planti-generating__title {
+  @apply mb-3 text-2xl leading-8 font-bold text-balance;
+  color: var(--planti-forest);
+}
+
+.planti-generating__phrases {
+  @apply relative block h-6 w-full text-base leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-generating__phrase {
+  @apply absolute inset-x-0 opacity-0;
+  animation: planti-phrase 1.1s ease both;
+  animation-delay: 0.3s;
+}
+
+.planti-generating__phrase:nth-child(2) {
+  animation-delay: 1.2s;
+}
+
+.planti-generating__phrase:nth-child(3) {
+  animation-name: planti-phrase-last;
+  animation-delay: 2.3s;
+}
+
+@keyframes planti-phrase {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  20%,
+  80% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes planti-phrase-last {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  20%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Tu rutina: los pasos se reparten todo el alto que queda entre el texto y el
+   botón, sin scroll y sin espacio sobrante */
+.planti-plan-list {
+  @apply mb-40.5 flex flex-1 flex-col gap-3;
+}
+
+.planti-plan-step {
+  @apply relative flex flex-1 items-center gap-3 overflow-hidden rounded-2xl border p-4;
   background: var(--planti-white);
   border-color: transparent;
-  box-shadow: var(--planti-shadow);
-  transition:
-    border-color 0.35s,
-    box-shadow 0.35s;
+  box-shadow: 0 2px 8px rgb(35 51 14 / 0.06);
+  animation: planti-rise 0.4s cubic-bezier(0.65, 0, 0.35, 1) both;
 }
 
-.planti-care-option--checked {
-  border-color: var(--planti-grass);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.2);
-  animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+.planti-plan-step:nth-child(2) {
+  animation-delay: 0.12s;
 }
 
-.planti-care-option__icon,
-.planti-frequency__icon {
-  @apply flex size-12 shrink-0 items-center justify-center rounded-xl;
+.planti-plan-step:nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+.planti-plan-step__icon {
+  @apply flex size-14 shrink-0 items-center justify-center rounded-xl;
   background: var(--planti-dew);
   color: var(--planti-grass);
 }
 
-.planti-care-option__icon svg,
-.planti-frequency__icon svg {
-  @apply size-6;
-}
-
-.planti-care-option__text,
-.planti-frequency__text {
-  @apply flex min-w-0 flex-1 flex-col;
-}
-
-.planti-care-option__name,
-.planti-frequency__name {
-  @apply text-lg leading-6 font-semibold;
-  color: var(--planti-ink);
-}
-
-.planti-care-option__detail,
-.planti-frequency__next {
-  @apply text-base leading-6;
-  color: var(--planti-stone);
-}
-
-/* El cuadro se llena de verde y el check aparece con un pequeño rebote */
-.planti-care-option__box {
-  @apply flex size-6 shrink-0 items-center justify-center rounded-md border-2;
-  border-color: var(--planti-placeholder);
-  color: var(--planti-white);
-  transition:
-    background-color 0.3s,
-    border-color 0.3s;
-}
-
-.planti-care-option__box svg {
-  @apply size-4 scale-50 opacity-0;
-  stroke-width: 3;
-  transition:
-    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity 0.2s;
-}
-
-.planti-care-option--checked .planti-care-option__box {
-  background: var(--planti-grass);
-  border-color: var(--planti-grass);
-}
-
-.planti-care-option--checked .planti-care-option__box svg {
-  @apply scale-100 opacity-100;
-}
-
-/* Frecuencias: el valor sube al cambiar */
-.planti-frequency__value {
-  @apply text-base leading-6 font-medium;
-  color: var(--planti-leaf);
-  animation: planti-frequency-value 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-@keyframes planti-frequency-value {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-}
-
-.planti-frequency__stepper {
-  @apply flex shrink-0 items-center gap-2;
-}
-
-.planti-frequency__step {
-  @apply relative flex size-9 items-center justify-center overflow-hidden rounded-full border;
-  background: var(--planti-white);
-  border-color: var(--planti-card-border);
-  color: var(--planti-leaf);
-  transition:
-    background-color 0.3s,
-    color 0.3s;
-}
-
-.planti-frequency__step svg {
-  @apply size-4;
-}
-
-.planti-frequency__step--tapped {
-  background: var(--planti-grass);
-  border-color: var(--planti-grass);
-  color: var(--planti-white);
-  animation: planti-select 0.45s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-/* Revisar: la planta arriba y la lista de cuidados con un lápiz para editar */
-.planti-routine-review__plant {
-  @apply mb-4 flex items-center gap-3;
-}
-
-.planti-routine-review__photo {
-  @apply flex size-14 shrink-0 items-center justify-center rounded-2xl;
-  background: var(--planti-cream);
-  color: var(--planti-grass);
-}
-
-.planti-routine-review__photo svg {
+.planti-plan-step__icon svg {
   @apply size-7;
 }
 
-.planti-routine-review__name {
+.planti-plan-step__text {
+  @apply flex min-w-0 flex-1 flex-col;
+}
+
+.planti-plan-step__name {
   @apply text-lg leading-6 font-semibold;
   color: var(--planti-ink);
 }
 
-.planti-routine-review__detail {
+.planti-plan-step__when {
+  @apply text-base leading-6 font-medium;
+  color: var(--planti-leaf);
+}
+
+.planti-plan-step__how {
   @apply text-base leading-6;
   color: var(--planti-stone);
 }
 
-.planti-routine-review__list {
-  border-color: transparent;
-  box-shadow: 0 6px 18px rgb(0 0 0 / 0.08);
+/* Tus avisos: la semana arriba y una línea de tiempo con los avisos que llegarán */
+.planti-day-strip {
+  @apply mb-5 flex gap-1.5;
 }
 
-.planti-routine-review__list .planti-task__name {
-  @apply text-lg leading-6;
+.planti-day-strip__item {
+  @apply flex flex-1;
 }
 
-.planti-routine-review__edit {
-  @apply flex size-9 shrink-0 items-center justify-center rounded-full;
-  background: var(--planti-fog);
+.planti-day-strip__day {
+  @apply relative flex w-full cursor-pointer flex-col items-center justify-end rounded-full border py-2;
+  font: inherit;
+  height: 88px;
+  background: var(--planti-white);
+  border-color: #dcdcdc;
+  color: var(--planti-stone);
+}
+
+.planti-day-strip__care {
+  @apply mb-auto flex size-6 items-center justify-center;
+  color: var(--planti-grass);
+}
+
+.planti-day-strip__care svg {
+  @apply size-5 fill-current;
+}
+
+.planti-day-strip__label {
+  @apply text-base leading-6;
+}
+
+.planti-day-strip__number {
+  @apply text-base leading-6 font-normal;
+  color: var(--planti-charcoal);
+}
+
+/* El día elegido lleva un verde claro, para que el texto conserve el mismo
+   gris de los otros días */
+.planti-day-strip__day--selected {
+  background: #e6efd5;
+  border-color: var(--planti-grass);
+  box-shadow: 0 4px 10px rgb(35 51 14 / 0.12);
+}
+
+/* Hoy: borde verde y la letra y el número en verde oscuro, para que se vea
+   dónde se está aunque se elija otro día */
+.planti-day-strip__day--today {
+  border-color: var(--planti-grass);
+}
+
+.planti-day-strip__day--today .planti-day-strip__label,
+.planti-day-strip__day--today .planti-day-strip__number {
   color: var(--planti-leaf);
 }
 
-.planti-routine-review__edit svg {
+/* Los números van en regular y el de hoy en lo más grueso que tiene la
+   tipografía */
+.planti-day-strip__day--today .planti-day-strip__number {
+  @apply font-extrabold;
+}
+
+.planti-reminders__day {
+  @apply mb-3 text-lg leading-6 font-semibold;
+  color: var(--planti-forest);
+}
+
+/* Con pocas tarjetas no hace falta el desvanecido de arriba: se ven completas */
+.planti-reminders__scroll {
+  @apply pt-1 pb-0;
+  mask-image: none;
+}
+
+/* La línea baja hasta 16 px antes del botón */
+.planti-reminders {
+  @apply relative mb-40.5 flex grow flex-col gap-4 pl-8;
+}
+
+.planti-reminders::before {
+  @apply absolute top-0 bottom-0 left-2 border-l-2 border-dashed content-[''];
+  border-color: #c9ccc3;
+}
+
+.planti-reminder {
+  @apply relative flex gap-3 rounded-2xl p-4;
+  background: var(--planti-white);
+  box-shadow: 0 2px 8px rgb(35 51 14 / 0.06);
+  animation: planti-rise 0.5s cubic-bezier(0.65, 0, 0.35, 1) both;
+  animation-delay: 0.2s;
+}
+
+.planti-reminder::before {
+  @apply absolute top-8 -left-8 size-3 rounded-full content-[''];
+  background: var(--planti-grass);
+  margin-left: 2px;
+}
+
+/* La hora a la izquierda, en grande, separada del resto por una raya fina */
+.planti-reminder__clock {
+  @apply flex shrink-0 flex-col items-center justify-center border-r pr-3;
+  border-color: var(--planti-input-border);
+}
+
+.planti-reminder__hour {
+  @apply text-3xl leading-9 font-semibold;
+  color: var(--planti-leaf);
+}
+
+.planti-reminder__period {
+  @apply text-base leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-reminder__body {
+  @apply flex min-w-0 flex-1 flex-col gap-1;
+}
+
+.planti-reminder__title {
+  @apply text-base leading-6 font-semibold;
+  color: var(--planti-ink);
+}
+
+.planti-reminder__how {
+  @apply text-base leading-6;
+  color: var(--planti-stone);
+}
+
+.planti-reminder__tags {
+  @apply mt-1 flex flex-wrap gap-2;
+}
+
+.planti-reminder__tag {
+  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-base leading-6;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-reminder__tag svg {
   @apply size-4;
 }
 
-/* Rutina creada: lleva botón abajo, así que el centro deja su espacio */
-.planti-routine-created {
-  @apply pb-52;
-}
-
-/* Pestaña Rutina: título arriba, sin volver, y el contenido que se desliza */
 .planti-routine__title {
   @apply mb-1 text-[22px] leading-10 font-bold;
   color: var(--planti-forest);
+}
+
+.planti-routine__status {
+  @apply mb-4 flex w-fit items-center gap-2 rounded-full px-3 py-1 text-base leading-6 font-medium;
+  background: var(--planti-dew);
+  color: var(--planti-leaf);
+}
+
+.planti-routine__status svg {
+  @apply size-4;
+}
+
+.planti-routine__empty {
+  @apply text-base leading-6;
+  color: var(--planti-stone);
+}
+
+/* En la pestaña no hay botón abajo: la línea baja hasta 16 px antes de la barra */
+.planti-reminders--tab {
+  @apply mb-24;
 }
 
 .planti-routine__content {

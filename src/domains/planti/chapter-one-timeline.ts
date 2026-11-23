@@ -20,6 +20,17 @@ const NAME_CHAR_MS = 75;
 const SEARCH_MORE = { screen: 'search-more' } as const;
 const DETAIL = { screen: 'plant-detail' } as const;
 const PERSONALIZE = { screen: 'personalize' } as const;
+// Personalizar: nada elegido todavía, y con lugar y luz ya elegidos
+const EMPTY_CHOICES = {
+  hasPlace: false,
+  hasLight: false,
+  hasWatering: false
+} as const;
+const FILLED_CHOICES = {
+  hasPlace: true,
+  hasLight: true,
+  hasWatering: false
+} as const;
 
 export const CHAPTER_ONE_BEATS: readonly PlantiBeat[] = [
   // La carátula da paso a la portada entera, que se ve un momento
@@ -121,58 +132,80 @@ export const CHAPTER_ONE_BEATS: readonly PlantiBeat[] = [
     event: 'pressDetail',
     scene: { ...DETAIL, hasScrolled: true, isPressed: true }
   },
-  // Personalizar: se escribe el nombre y se eligen dónde vive y la luz
+  // Personalizar: se escribe el nombre y se eligen dónde vive, la luz y cuándo
+  // se regó por última vez
   {
     at: 23200,
     event: 'personalize',
-    scene: { ...PERSONALIZE, hasPlace: false, hasLight: false }
+    scene: { ...PERSONALIZE, ...EMPTY_CHOICES }
   },
   {
     at: NAME_TYPE_AT_MS,
     event: 'typeName',
-    scene: { ...PERSONALIZE, hasPlace: false, hasLight: false }
+    scene: { ...PERSONALIZE, ...EMPTY_CHOICES }
   },
   // "¿Dónde vive?": se abre la lista, se toca Sala y se cierra
   {
     at: 25100,
     event: 'openPlace',
-    scene: {
-      ...PERSONALIZE,
-      hasPlace: false,
-      hasLight: false,
-      isPlaceOpen: true
-    }
+    scene: { ...PERSONALIZE, ...EMPTY_CHOICES, isPlaceOpen: true }
   },
   {
     at: 25700,
     event: 'pickPlace',
     scene: {
       ...PERSONALIZE,
+      ...EMPTY_CHOICES,
       hasPlace: true,
-      hasLight: false,
       isPlaceOpen: true
     }
   },
   {
     at: 26000,
     event: 'fillPlace',
-    scene: { ...PERSONALIZE, hasPlace: true, hasLight: false }
+    scene: { ...PERSONALIZE, ...EMPTY_CHOICES, hasPlace: true }
   },
   {
     at: 26600,
     event: 'fillLight',
-    scene: { ...PERSONALIZE, hasPlace: true, hasLight: true }
+    scene: { ...PERSONALIZE, ...EMPTY_CHOICES, hasPlace: true, hasLight: true }
   },
+  // "¿Cuándo la regaste?": se abre la lista, se toca Hoy y se cierra
   {
     at: 27200,
+    event: 'openWatering',
+    scene: { ...PERSONALIZE, ...FILLED_CHOICES, isWateringOpen: true }
+  },
+  {
+    at: 27800,
+    event: 'pickWatering',
+    scene: {
+      ...PERSONALIZE,
+      ...FILLED_CHOICES,
+      hasWatering: true,
+      isWateringOpen: true
+    }
+  },
+  {
+    at: 28100,
+    event: 'fillWatering',
+    scene: { ...PERSONALIZE, ...FILLED_CHOICES, hasWatering: true }
+  },
+  {
+    at: 28800,
     event: 'pressPersonalize',
-    scene: { ...PERSONALIZE, hasPlace: true, hasLight: true, isPressed: true }
+    scene: {
+      ...PERSONALIZE,
+      ...FILLED_CHOICES,
+      hasWatering: true,
+      isPressed: true
+    }
   },
   // Planta registrada: cierre del capítulo 1
-  { at: 27900, event: 'registered', scene: { screen: 'registered' } }
+  { at: 29500, event: 'registered', scene: { screen: 'registered' } }
 ];
 
-export const CHAPTER_ONE_DURATION_MS = 30100;
+export const CHAPTER_ONE_DURATION_MS = 31700;
 
 // La carátula quieta, antes de dar inicio
 export const CHAPTER_ONE_IDLE_SCENE: PlantiScene = {

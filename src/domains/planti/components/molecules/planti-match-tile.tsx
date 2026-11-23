@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 
 type PlantiMatchTileProps = {
   name: string;
+  image?: string;
   isActive?: boolean;
 };
 
@@ -11,6 +12,7 @@ type PlantiMatchTileProps = {
 // nombre, para que la reconozca
 export function PlantiMatchTile({
   name,
+  image,
   isActive = false
 }: PlantiMatchTileProps) {
   return (
@@ -21,7 +23,11 @@ export function PlantiMatchTile({
       )}
     >
       <div className="planti-match-tile__photo" aria-hidden="true">
-        <Leaf />
+        {image ? (
+          <img src={image} alt="" className="planti-match-tile__image" />
+        ) : (
+          <Leaf />
+        )}
       </div>
       <div className="planti-match-tile__info">
         <p className="planti-match-tile__name">{name}</p>

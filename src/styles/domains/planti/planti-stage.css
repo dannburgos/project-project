@@ -40,6 +40,21 @@
   animation-name: planti-screen-in-right;
 }
 
+/* Al tocar el aviso de la pantalla bloqueada, la app se abre: crece desde donde
+   estaba el aviso, en vez de deslizar desde un lado */
+.planti-app > .planti-screen.planti-notices-screen:not(.planti-home-screen) {
+  transform-origin: 50% 38%;
+  animation-name: planti-app-open;
+  animation-duration: 0.55s;
+}
+
+@keyframes planti-app-open {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+}
+
 @keyframes planti-screen-in {
   from {
     opacity: 0;
@@ -56,6 +71,12 @@
 .planti-timeline-slider {
   @apply h-1.5 w-44 cursor-pointer;
   accent-color: var(--planti-leaf);
+}
+
+/* Dentro del caso: la línea de avance, más larga, sobre el fondo verde */
+.planti-timeline-slider--wide {
+  @apply w-56;
+  accent-color: var(--planti-grass);
 }
 
 /* Base de toda pantalla: espacio arriba para la cabecera y a los lados */
@@ -164,6 +185,41 @@
   width: calc(
     (var(--planti-screen-width) + 2 * var(--planti-bezel)) * var(--board-scale)
   );
+}
+
+.planti-board__screen
+  :is(
+    .planti-look-tile,
+    .planti-swatch,
+    .planti-icon-choice,
+    .planti-size__stop,
+    .planti-select__option,
+    .planti-input,
+    .planti-button,
+    .planti-banner__action,
+    .planti-day-strip__day,
+    .planti-lock-notice,
+    .planti-filter-chips__chip,
+    .planti-carousel__card:not(.planti-carousel__card--add),
+    .planti-screen-header button
+  ) {
+  @apply cursor-pointer;
+}
+
+.planti-board__frame[data-arrived] .planti-board__screen {
+  animation: planti-board-arrive 1.2s ease-out;
+}
+
+@keyframes planti-board-arrive {
+  0%,
+  60% {
+    filter: drop-shadow(0 0 0 transparent)
+      drop-shadow(0 0 16px var(--planti-grass));
+  }
+
+  100% {
+    filter: drop-shadow(0 0 0 transparent);
+  }
 }
 
 .planti-board__screen {
@@ -310,4 +366,46 @@
 
 .planti-timeline-step__go:hover {
   text-decoration: underline;
+}
+
+/* Selector de flujos de la página completa del prototipo */
+.planti-flow-switcher {
+  @apply fixed top-3 left-1/2 z-50 max-w-[calc(100%-24px)] -translate-x-1/2;
+}
+
+.planti-flow-switcher__list {
+  @apply flex gap-1 overflow-x-auto rounded-full border p-1;
+  background: rgb(255 255 255 / 0.92);
+  border-color: var(--planti-card-border);
+  box-shadow: 0 4px 14px rgb(35 51 14 / 0.1);
+  scrollbar-width: none;
+}
+
+.planti-flow-switcher__item {
+  @apply inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm leading-5 font-medium whitespace-nowrap;
+  color: var(--planti-leaf);
+}
+
+.planti-flow-switcher__item--active {
+  background: var(--planti-grass);
+  color: var(--planti-white);
+}
+
+.planti-flow-switcher__item--soon {
+  @apply cursor-default;
+  color: var(--planti-placeholder);
+}
+
+.planti-flow-switcher__number {
+  @apply font-semibold;
+}
+
+.planti-flow-switcher__soon {
+  @apply rounded-full px-2 py-0.5 text-xs;
+  background: var(--planti-fog);
+}
+
+/* Con el selector arriba, el celular se centra en el espacio que queda debajo */
+.planti-flow-switcher ~ .planti-stage {
+  @apply pt-16;
 }

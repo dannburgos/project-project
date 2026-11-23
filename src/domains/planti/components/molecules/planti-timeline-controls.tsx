@@ -16,7 +16,7 @@ type PlantiTimelineControlsProps = {
   onScrub: (ms: number) => void;
   onPreviousStep: () => void;
   onNextStep: () => void;
-  // Dentro del caso: un solo botón de reproducir y pausar, sin saltos ni barra
+  // Dentro del caso: reproducir y pausar con una línea de avance, sin saltos
   isMinimal?: boolean;
 };
 
@@ -39,18 +39,21 @@ export function PlantiTimelineControls({
   const { sequence } = plantiMessages;
   const isRunning = status !== 'idle';
 
-  // Dentro del caso: un solo botón redondo que alterna entre reproducir y
-  // pausar; al terminar, vuelve a reproducir desde el principio
+  // Dentro del caso: un botón que alterna entre reproducir y pausar; antes de
+  // empezar lleva el ícono y "Reproducir prototipo", después el ícono y una
+  // línea de avance que se puede arrastrar para adelantar o atrasar. Al
+  // terminar, vuelve a reproducir desde el principio
   if (isMinimal) {
     const isPlaying = status === 'playing';
     const kind = isPlaying ? 'pause' : status === 'paused' ? 'resume' : 'start';
+    const isIdle = status === 'idle';
     const label = isPlaying
       ? sequence.pause
       : status === 'paused'
         ? sequence.resume
         : status === 'done'
           ? sequence.replay
-          : sequence.start;
+          : sequence.playPrototype;
     const handleClick = isPlaying
       ? onPause
       : status === 'paused'
@@ -58,12 +61,26 @@ export function PlantiTimelineControls({
         : onStart;
 
     return (
-      <PlantiSequenceButton
-        kind={kind}
-        label={label}
-        onClick={handleClick}
-        isIconOnly
-      />
+      <>
+        <PlantiSequenceButton
+          kind={kind}
+          label={label}
+          onClick={handleClick}
+          isIconOnly={!isIdle}
+        />
+        {isRunning && (
+          <input
+            type="range"
+            className="planti-timeline-slider planti-timeline-slider--wide"
+            min={0}
+            max={durationMs}
+            step={50}
+            value={elapsedMs}
+            aria-label={sequence.progress}
+            onChange={event => onScrub(Number(event.target.value))}
+          />
+        )}
+      </>
     );
   }
 

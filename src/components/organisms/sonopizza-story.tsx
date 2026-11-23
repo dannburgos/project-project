@@ -1,15 +1,25 @@
 'use client';
 
+import { Briefcase, Cake, MapPin, type LucideIcon } from 'lucide-react';
 import {
+  Anton as antonFont,
   Bowlby_One_SC as bowlbyOneSc,
   DM_Sans as dmSansFont,
   Titan_One as titanOneFont
 } from 'next/font/google';
 
-import { SonoPlaceholder } from '@/components/atoms/sono-placeholder';
+import { SonoArrowMarker } from '@/components/atoms/sono-arrow-marker';
 import { CaseStoryCounter } from '@/components/molecules/case-story-counter';
+import { SonoBenchmarkSlides } from '@/components/molecules/sono-benchmark-slides';
+import { SonoFlowMaps } from '@/components/molecules/sono-flow-maps';
+import { SonoJumpBand } from '@/components/molecules/sono-jump-band';
 import { SonoRailNav } from '@/components/molecules/sono-rail-nav';
-import type { SonopizzaStory as SonopizzaStoryContent } from '@/content/sonopizza-story.types';
+import { SonoDesignSystem } from '@/components/organisms/sono-design-system';
+import { SonoProductShowcase } from '@/components/organisms/sono-product-showcase';
+import type {
+  SonoSiteNodeKind,
+  SonopizzaStory as SonopizzaStoryContent
+} from '@/content/sonopizza-story.types';
 import { useSonopizzaStory } from '@/hooks/use-sonopizza-story';
 import { cn } from '@/lib/utils';
 
@@ -25,15 +35,53 @@ const bowlbyOne = bowlbyOneSc({
   subsets: ['latin'],
   weight: '400'
 });
+// Anton, condensada y pesada, para los números que deben resaltar (hallazgos)
+const anton = antonFont({
+  variable: '--font-sono-condensed',
+  subsets: ['latin'],
+  weight: '400'
+});
 const dmSans = dmSansFont({
   variable: '--font-sono-text',
   subsets: ['latin'],
-  weight: ['400', '600']
+  weight: ['400', '600', '700']
 });
 
 const MASCOT_SRC = '/sonopizza/mascot.webp';
-// Lugar de las cuatro capturas que acompañan a la principal: dos a cada lado
-const AUDIT_SIDE_SLOTS = [-1, 1, -2, 2] as const;
+// Foto de la portada: la pizza cenital, cortada por el borde derecho
+const COVER_SRC = '/sonopizza/cover.webp';
+// Sitemap en un lienzo de 1400 × 660. Fila 1: la navegación principal
+// (Inicio, Menú y Carrito); debajo del menú, Detalle y Personalización, y
+// debajo del carrito, Confirmación. El árbol une la app con la navegación
+// principal; los saltos dibujan el flujo de compra (Inicio → Menú → Detalle →
+// Personalización → Carrito → Confirmación) y dejan aire de 12 unidades antes
+// y después de cada tarjeta, contando su sombra
+const SITEMAP_TREE = 'M700 30 V100 M220 100 V78 H1180 V100';
+const SITEMAP_HOPS = [
+  'M390 175 H534',
+  'M700 270 V303',
+  'M700 470 V503',
+  'M860 585 H926 Q940 585 940 571 V189 Q940 175 954 175 H1013',
+  'M1180 270 V303'
+] as const;
+// Lugar de cada pantalla en el lienzo, en el orden del flujo de compra
+const SITEMAP_SLOTS = [
+  'sono-sitemap__node--home',
+  'sono-sitemap__node--menu',
+  'sono-sitemap__node--detail',
+  'sono-sitemap__node--custom',
+  'sono-sitemap__node--cart',
+  'sono-sitemap__node--confirm'
+] as const;
+const SITEMAP_KIND_CLASS: Record<SonoSiteNodeKind, string> = {
+  nav: 'sono-sitemap__node--nav',
+  step: 'sono-sitemap__node--step',
+  end: 'sono-sitemap__node--end'
+};
+// Filas de cada etapa del journey, en orden
+const JOURNEY_ROWS = ['thought', 'friction', 'opportunity'] as const;
+// Ícono de cada dato de la persona: edad, ocupación y ubicación
+const PERSONA_FACT_ICONS: readonly LucideIcon[] = [Cake, Briefcase, MapPin];
 
 type SonopizzaStoryProps = {
   story: SonopizzaStoryContent;
@@ -57,7 +105,7 @@ function Opener({ number, name }: OpenerProps) {
 // monument.tv): escenas a pantalla completa que entran con cortes en
 // diagonal, franjas de color y barridos, con titulares gigantes. Un gesto de
 // scroll es un paso. Sigue el orden del documento maestro: el reto, lo que
-// encontramos, la experiencia propuesta y la exploración visual. El movimiento
+// encontramos, la experiencia propuesta y el sistema de diseño. El movimiento
 // lo arma useSonopizzaStory; aquí solo va el contenido.
 export function SonopizzaStory({ story }: SonopizzaStoryProps) {
   const ref = useSonopizzaStory<HTMLDivElement>();
@@ -66,13 +114,12 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
     challenge,
     audit,
     benchmark,
-    synthesis,
-    concept,
     persona,
     journey,
     architecture,
     flows,
-    visual
+    designSystem,
+    product
   } = story;
 
   return (
@@ -82,6 +129,7 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
         'case-story sono-story',
         titanOne.variable,
         bowlbyOne.variable,
+        anton.variable,
         dmSans.variable
       )}
       data-case-story
@@ -108,10 +156,18 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
           data-surface="dark"
         >
           <div className="sono-cover__cut">
-            <SonoPlaceholder label={cover.photoLabel} />
+            <span className="sono-cover__band" aria-hidden="true" />
+            <div className="sono-cover__panel">
+              <img
+                src={COVER_SRC}
+                alt={cover.photoLabel}
+                className="sono-cover__photo"
+                draggable={false}
+                fetchPriority="high"
+              />
+            </div>
           </div>
           <div className="sono-cover__text">
-            <p className="sono-eyebrow">{cover.eyebrow}</p>
             <h1 className="sono-cover__wordmark">
               {cover.wordmark.map(word => (
                 <span key={word}>{word}</span>
@@ -126,7 +182,6 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
                 </div>
               ))}
             </dl>
-            <p className="sono-note">{cover.disclaimer}</p>
           </div>
           <img
             src={MASCOT_SRC}
@@ -135,70 +190,67 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
           />
         </div>
 
-        {/* 01 · El reto: el titular entra en bloques */}
+        {/* 01 · El reto: arriba el titular (entra como un bloque), debajo
+            contexto y oportunidad, y enseguida, en el mismo paso, la tarjeta
+            naranja de la meta entra desde la derecha */}
         <div
-          className="sono-view sono-view--navy"
+          className="sono-view sono-view--white sono-challenge"
           data-sono-view
           data-enter="band"
           data-section="1"
-          data-surface="dark"
-        >
-          <Opener number={challenge.number} name={challenge.name} />
-          <h2 className="sono-display sono-display--xl sono-lines">
-            {challenge.title.split(' ').map(word => (
-              <span key={word} className="sono-lines__mask">
-                <span data-sono-in="0" data-sono-fx="slide">
-                  {word}
-                </span>
-              </span>
-            ))}
-          </h2>
-        </div>
-
-        {/* 01 · Contexto y oportunidad */}
-        <div
-          className="sono-view sono-view--white sono-columns"
-          data-sono-view
-          data-section="1"
           data-surface="light"
         >
-          {[challenge.context, challenge.opportunity].map(block => (
-            <article key={block.title} className="sono-block" data-sono-in="0">
-              <h3 className="sono-display sono-display--md">{block.title}</h3>
-              <p className="sono-body">{block.text}</p>
-            </article>
-          ))}
-        </div>
-
-        {/* 01 · El reto, objetivo y alcance */}
-        <div
-          className="sono-view sono-view--orange"
-          data-sono-view
-          data-enter="wipe"
-          data-steps="2"
-          data-section="1"
-          data-surface="dark"
-        >
-          <p className="sono-eyebrow" data-sono-in="0">
-            {challenge.challengeLabel}
-          </p>
-          <p className="sono-statement" data-sono-in="0">
-            {challenge.challenge}
-          </p>
-          <div className="sono-columns sono-columns--tight">
-            <article className="sono-block" data-sono-in="1">
-              <h3 className="sono-label">{challenge.goal.title}</h3>
-              <p className="sono-body">{challenge.goal.text}</p>
-            </article>
-            <article className="sono-block" data-sono-in="1">
-              <h3 className="sono-label">{challenge.scopeTitle}</h3>
-              <ul className="sono-list">
-                {challenge.scope.map(item => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </article>
+          <header className="sono-challenge__header">
+            <Opener number={challenge.number} name={challenge.name} />
+            {/* Las dos líneas entran juntas, como un solo bloque */}
+            <h2 className="sono-display sono-challenge__title">
+              <span className="sono-lines__mask">
+                <span data-sono-in="0" data-sono-fx="slide">
+                  {challenge.titleLines.map(line => (
+                    <span key={line} className="sono-challenge__line">
+                      {line}{' '}
+                    </span>
+                  ))}
+                </span>
+              </span>
+            </h2>
+          </header>
+          <div className="sono-challenge__context">
+            {[challenge.context, challenge.opportunity].map(block => (
+              <article
+                key={block.title}
+                className="sono-block"
+                data-sono-in="0"
+              >
+                <h3 className="sono-display sono-display--md">{block.title}</h3>
+                <p className="sono-body">{block.text}</p>
+              </article>
+            ))}
           </div>
+          <article
+            className="sono-challenge__card"
+            data-sono-in="0"
+            data-sono-fx="slide"
+          >
+            <p className="sono-eyebrow">{challenge.challengeLabel}</p>
+            <p className="sono-statement sono-statement--sm">
+              {challenge.challenge}
+            </p>
+            <div className="sono-columns sono-columns--tight">
+              <div className="sono-block">
+                <h3 className="sono-label">{challenge.goal.title}</h3>
+                <p className="sono-body">{challenge.goal.text}</p>
+              </div>
+              <div className="sono-block">
+                <h3 className="sono-label">{challenge.scopeTitle}</h3>
+                <ul className="sono-chips sono-challenge__scope">
+                  {challenge.scope.map(item => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </article>
         </div>
 
         {/* 02.1 · Auditoría: la captura principal sube, se abren otras
@@ -215,25 +267,30 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
         >
           <Opener number={audit.number} name={audit.name} />
           <h2 className="sono-display sono-display--lg" data-sono-in="0">
-            <span className="sono-sub">{audit.subtitle}</span> {audit.title}
+            {audit.title}
           </h2>
           <div className="sono-audit__board" data-audit-board>
             <div className="sono-audit__screens">
-              {/* La principal va al final para quedar encima de las demás */}
-              {[...audit.captures.slice(1), audit.captures[0]].map(
-                (capture, index) => (
-                  <SonoPlaceholder
-                    key={capture}
-                    label={capture}
-                    className="sono-phone"
-                    data-audit-slot={
-                      index === audit.captures.length - 1
-                        ? 0
-                        : AUDIT_SIDE_SLOTS[index]
-                    }
+              {/* En el orden de la fila, de izquierda a derecha (el lugar
+                  va centrado en 0). La última es la que queda al entrar los
+                  hallazgos; al ir al final, queda encima de las demás */}
+              {audit.captures.map((capture, index) => (
+                <figure
+                  key={capture.src}
+                  className="sono-phone"
+                  data-audit-slot={index - (audit.captures.length - 1) / 2}
+                  data-audit-main={
+                    index === audit.captures.length - 1 ? '' : undefined
+                  }
+                >
+                  <img
+                    src={capture.src}
+                    alt={capture.alt}
+                    className="sono-phone__screen"
+                    decoding="async"
                   />
-                )
-              )}
+                </figure>
+              ))}
             </div>
             <div className="sono-audit__panel" data-audit-panel>
               <ul className="sono-audit__seals">
@@ -247,121 +304,20 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
                   </li>
                 ))}
               </ul>
-              <p className="sono-note">{audit.note}</p>
             </div>
           </div>
         </div>
 
-        {/* 02.2 · Benchmark */}
+        {/* 02.2 · Benchmark y hallazgos, en fondo claro: tres slides que se
+            pasan con clic */}
         <div
-          className="sono-view sono-view--electric"
+          className="sono-view sono-view--white"
           data-sono-view
           data-enter="diagonal"
           data-section="2"
-          data-surface="dark"
+          data-surface="light"
         >
-          <h2 className="sono-display sono-display--lg" data-sono-in="0">
-            <span className="sono-sub">{benchmark.subtitle}</span>{' '}
-            {benchmark.title}
-          </h2>
-          <div className="sono-marquee" aria-hidden="true">
-            <div className="sono-marquee__track">
-              {[...benchmark.references, ...benchmark.references].map(
-                (reference, index) => (
-                  <span key={`${reference}-${index}`}>{reference}</span>
-                )
-              )}
-            </div>
-          </div>
-          <div className="sono-bench">
-            {benchmark.references.map(reference => (
-              <SonoPlaceholder
-                key={reference}
-                label={`${benchmark.captureLabel} ${reference}`}
-                className="sono-bench__capture"
-              />
-            ))}
-            <div className="sono-bench__dimensions" data-sono-in="0">
-              <h3 className="sono-label">{benchmark.dimensionsTitle}</h3>
-              <ul className="sono-list">
-                {benchmark.dimensions.map(dimension => (
-                  <li key={dimension}>{dimension}</li>
-                ))}
-              </ul>
-              <p className="sono-note">{benchmark.note}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* 02.3 · Síntesis: tres oportunidades en palabras gigantes */}
-        <div
-          className="sono-view sono-view--navy"
-          data-sono-view
-          data-enter="band"
-          data-section="2"
-          data-surface="dark"
-        >
-          <p className="sono-eyebrow" data-sono-in="0">
-            {synthesis.subtitle} · {synthesis.title}
-          </p>
-          <ol className="sono-synthesis">
-            {synthesis.opportunities.map((opportunity, index) => (
-              <li key={opportunity.title} className="sono-lines__mask">
-                <span
-                  className="sono-synthesis__item"
-                  data-sono-in="0"
-                  data-sono-fx="slide"
-                >
-                  <span className="sono-display sono-display--lg">
-                    {String(index + 1).padStart(2, '0')} {opportunity.title}
-                  </span>
-                  <span className="sono-body">{opportunity.text}</span>
-                </span>
-              </li>
-            ))}
-          </ol>
-          <p className="sono-body sono-synthesis__direction" data-sono-in="0">
-            {synthesis.direction}
-          </p>
-        </div>
-
-        {/* 03.1 · Concepto: título vertical junto a la foto */}
-        <div
-          className="sono-view sono-view--photo sono-concept"
-          data-sono-view
-          data-enter="diagonal"
-          data-steps="2"
-          data-section="3"
-          data-surface="dark"
-        >
-          <SonoPlaceholder
-            label={concept.photoLabel}
-            className="sono-concept__photo"
-          />
-          <p className="sono-vertical" data-sono-in="0">
-            {concept.verticalTitle}
-          </p>
-          <div className="sono-concept__text">
-            <Opener number={concept.number} name={concept.name} />
-            <h2 className="sono-display sono-display--lg" data-sono-in="0">
-              {concept.title}
-            </h2>
-            <p className="sono-body" data-sono-in="0">
-              {concept.text}
-            </p>
-            <ul className="sono-chips" data-sono-in="1">
-              {concept.principles.map(principle => (
-                <li key={principle}>{principle}</li>
-              ))}
-            </ul>
-            <p className="sono-concept__synthesis">
-              {concept.synthesis.map(word => (
-                <span key={word} data-sono-in="1">
-                  {word}
-                </span>
-              ))}
-            </p>
-          </div>
+          <SonoBenchmarkSlides benchmark={benchmark} />
         </div>
 
         {/* 03.2 · Persona */}
@@ -369,33 +325,76 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
           className="sono-view sono-view--white sono-persona"
           data-sono-view
           data-enter="rise"
+          data-reveal="together"
           data-section="3"
           data-surface="light"
         >
-          <article className="sono-persona__card" data-sono-in="0">
-            <SonoPlaceholder
-              label={persona.portraitLabel}
-              className="sono-persona__portrait"
-            />
-            <h3 className="sono-display sono-display--md">{persona.name}</h3>
-          </article>
+          {/* Foto de John como polaroid: cae como una instantánea recién
+              sacada y la imagen se revela poco a poco */}
+          <figure
+            className="sono-persona__card"
+            data-sono-in="0"
+            data-sono-fx="pop"
+          >
+            <span className="sono-persona__photo">
+              <img
+                src={persona.portrait.src}
+                alt={persona.portrait.alt}
+                className="sono-persona__portrait"
+                decoding="async"
+              />
+              <span
+                className="sono-persona__develop"
+                aria-hidden="true"
+                data-sono-in="0"
+                data-sono-fx="develop"
+              />
+            </span>
+            <figcaption className="sono-persona__caption">
+              {persona.name}
+            </figcaption>
+          </figure>
           <div className="sono-persona__info">
-            <p className="sono-eyebrow" data-sono-in="0">
-              {persona.subtitle}
-            </p>
-            <dl className="sono-facts sono-facts--dark" data-sono-in="0">
-              {persona.facts.map(fact => (
-                <div key={fact.title}>
-                  <dt>{fact.title}</dt>
-                  <dd>{fact.text}</dd>
-                </div>
-              ))}
+            <header className="sono-persona__header" data-sono-in="0">
+              <p className="sono-eyebrow">{persona.subtitle}</p>
+              <h2 className="sono-display sono-display--md">{persona.title}</h2>
+              <p className="sono-body">{persona.note}</p>
+            </header>
+            {/* Sus datos como stickers que saltan uno tras otro */}
+            <dl className="sono-persona__stickers">
+              {persona.facts.map((fact, index) => {
+                const Icon = PERSONA_FACT_ICONS[index] ?? MapPin;
+                return (
+                  <div
+                    key={fact.title}
+                    className={cn(
+                      'sono-persona__sticker',
+                      `sono-persona__sticker--${index}`
+                    )}
+                    data-sono-in="0"
+                    data-sono-fx="pop"
+                  >
+                    <span className="sono-persona__badge" aria-hidden="true">
+                      <Icon className="sono-persona__icon" />
+                    </span>
+                    <dt className="sono-persona__fact-label">{fact.title}</dt>
+                    <dd className="sono-persona__fact-text">{fact.text}</dd>
+                  </div>
+                );
+              })}
             </dl>
-            <p className="sono-statement sono-statement--sm" data-sono-in="0">
-              {persona.context}
-            </p>
-            <p className="sono-note" data-sono-in="0">
-              {persona.note}
+            {/* Su contexto, en un globo que sale de la polaroid, con las
+                frases clave resaltadas */}
+            <p className="sono-persona__bubble" data-sono-in="0">
+              {persona.context.map(part =>
+                part.isStrong ? (
+                  <mark key={part.text} className="sono-persona__mark">
+                    {part.text}
+                  </mark>
+                ) : (
+                  <span key={part.text}>{part.text}</span>
+                )
+              )}
             </p>
           </div>
         </div>
@@ -413,7 +412,7 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
           <p className="sono-eyebrow" data-sono-in="0">
             {journey.subtitle}
           </p>
-          <h2 className="sono-display sono-display--xl" data-sono-in="0">
+          <h2 className="sono-display sono-display--md" data-sono-in="0">
             {journey.title}
           </h2>
           <div className="sono-journey__track">
@@ -436,220 +435,154 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
             />
             <ol className="sono-journey__stages">
               {journey.stages.map((stage, index) => (
-                <li key={stage} data-journey-stage>
+                <li key={stage.name} data-journey-stage>
                   <span className="sono-journey__dot" data-journey-dot>
                     {index + 1}
                   </span>
-                  <span data-journey-label>{stage}</span>
+                  <span className="sono-journey__name" data-journey-label>
+                    {stage.name}
+                  </span>
+                  {/* Lo que piensa, lo que le cuesta y lo que el diseño
+                      puede resolver en esta etapa */}
+                  <dl className="sono-journey__card" data-journey-card>
+                    {JOURNEY_ROWS.map(row => (
+                      <div
+                        key={row}
+                        className={cn(
+                          'sono-journey__row',
+                          `sono-journey__row--${row}`
+                        )}
+                      >
+                        <dt className="sono-journey__key">
+                          {journey.rowLabels[row]}
+                        </dt>
+                        <dd className="sono-journey__value">{stage[row]}</dd>
+                      </div>
+                    ))}
+                  </dl>
                 </li>
               ))}
             </ol>
           </div>
-          <p className="sono-note" data-sono-in="0">
-            {journey.note}
-          </p>
         </div>
 
-        {/* 03.4 · Arquitectura de información */}
+        {/* 03.4 · Arquitectura de información como sitemap: de la app
+            cuelga la navegación principal; bajo el menú, el detalle y la
+            personalización, y bajo el carrito, la confirmación. La línea
+            naranja es el flujo de compra. Todo se revela a la vez */}
         <div
-          className="sono-view sono-view--white"
+          className="sono-view sono-view--white sono-sitemap"
           data-sono-view
           data-enter="diagonal"
           data-section="3"
           data-surface="light"
+          data-motion="architecture"
         >
-          <h2 className="sono-display sono-display--lg" data-sono-in="0">
-            <span className="sono-sub">{architecture.subtitle}</span>{' '}
-            {architecture.title}
-          </h2>
-          <ol className="sono-architecture">
-            {architecture.sections.map((section, index) => (
-              <li
-                key={section.title}
-                className="sono-architecture__block"
-                data-sono-in="0"
-                data-sono-fx="pop"
-              >
-                <span className="sono-architecture__number">{index + 1}</span>
-                <h3 className="sono-display sono-display--sm">
-                  {section.title}
-                </h3>
-                <ul>
-                  {section.items.map(item => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ol>
-          <p className="sono-note" data-sono-in="0">
-            {architecture.navigation}
-          </p>
-        </div>
-
-        {/* 03.5 · Flujos principales */}
-        <div
-          className="sono-view sono-view--dark"
-          data-sono-view
-          data-enter="wipe"
-          data-section="3"
-          data-surface="dark"
-        >
-          <h2 className="sono-display sono-display--lg" data-sono-in="0">
-            <span className="sono-sub">{flows.subtitle}</span> {flows.title}
-          </h2>
-          <ol className="sono-flows">
-            {flows.items.map(flow => (
-              <li key={flow.number} className="sono-flow" data-sono-in="0">
-                <span className="sono-flow__number">{flow.number}</span>
-                <h3 className="sono-display sono-display--sm">{flow.title}</h3>
-                <ol className="sono-flow__steps">
-                  {flow.steps.map(step => (
-                    <li key={step}>{step}</li>
-                  ))}
-                </ol>
-              </li>
-            ))}
-          </ol>
-          <p className="sono-note" data-sono-in="0">
-            {flows.note}
-          </p>
-        </div>
-
-        {/* 04 · Exploración visual: personalidad */}
-        <div
-          className="sono-view sono-view--blue sono-visual-intro"
-          data-sono-view
-          data-enter="band"
-          data-section="4"
-          data-surface="dark"
-        >
-          <Opener number={visual.number} name={visual.name} />
-          <h2 className="sono-display sono-display--xl sono-lines">
-            <span className="sono-lines__mask">
-              <span data-sono-in="0" data-sono-fx="slide">
-                {visual.title}
-              </span>
-            </span>
-          </h2>
-          <ul className="sono-stickers">
-            {visual.personality.map(trait => (
-              <li key={trait} data-sono-in="0" data-sono-fx="pop">
-                {trait}
-              </li>
-            ))}
-          </ul>
-          <img
-            src={MASCOT_SRC}
-            alt=""
-            className="sono-sticker sono-visual-intro__mascot"
-            data-sono-in="0"
-            data-sono-fx="pop"
-          />
-        </div>
-
-        {/* 04 · Paleta: cada color barre como una franja */}
-        <div
-          className="sono-view sono-view--white sono-palette"
-          data-sono-view
-          data-enter="diagonal"
-          data-section="4"
-          data-surface="light"
-        >
-          <h2 className="sono-display sono-display--lg" data-sono-in="0">
-            {visual.paletteTitle}
-          </h2>
-          <ul className="sono-palette__swatches">
-            {visual.palette.map(swatch => (
-              <li
-                key={swatch.hex}
-                className="sono-palette__swatch"
-                data-sono-in="0"
-              >
-                <span className="sono-palette__name">{swatch.name}</span>
-                <span className="sono-palette__hex">{swatch.hex}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="sono-note" data-sono-in="0">
-            {visual.paletteNote}
-          </p>
-        </div>
-
-        {/* 04 · Tipografía */}
-        <div
-          className="sono-view sono-view--navy"
-          data-sono-view
-          data-enter="wipe"
-          data-section="4"
-          data-surface="dark"
-        >
-          <h2 className="sono-display sono-display--lg" data-sono-in="0">
-            {visual.typeTitle}
-          </h2>
-          <ul className="sono-type">
-            {visual.typefaces.map(typeface => (
-              <li
-                key={typeface.name}
-                className="sono-type__item"
-                data-sono-in="0"
-              >
-                <span
-                  className={cn(
-                    'sono-type__sample',
-                    typeface.name === 'Titan One' && 'sono-type__sample--logo',
-                    typeface.name === 'Bowlby One SC' &&
-                      'sono-type__sample--display'
-                  )}
-                >
-                  {typeface.sample}
-                </span>
-                <span className="sono-type__name">{typeface.name}</span>
-                <span className="sono-type__role">{typeface.role}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* 04 · Logotipo, mascota y fotografía */}
-        <div
-          className="sono-view sono-view--orange sono-brand"
-          data-sono-view
-          data-enter="diagonal"
-          data-section="4"
-          data-surface="dark"
-        >
-          <h2 className="sono-display sono-display--lg" data-sono-in="0">
-            {visual.brandTitle}
-          </h2>
-          <div className="sono-brand__grid">
-            <SonoPlaceholder
-              label={visual.logoLabel}
-              className="sono-brand__logo"
-            />
-            <div className="sono-brand__mascot" data-sono-in="0">
-              <img
-                src={MASCOT_SRC}
-                alt={cover.mascotAlt}
-                className="sono-sticker"
-                data-sono-in="0"
-                data-sono-fx="pop"
-              />
-              <p className="sono-body">{visual.mascotText}</p>
-            </div>
-            <div className="sono-block" data-sono-in="0">
-              <h3 className="sono-label">{visual.photographyTitle}</h3>
-              <ul className="sono-list">
-                {visual.photography.map(item => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
+          <div className="sono-sitemap__head">
+            <h2 className="sono-display sono-display--md" data-sono-in="0">
+              {architecture.title}
+            </h2>
           </div>
+          <div className="sono-sitemap__canvas">
+            <svg
+              className="sono-sitemap__lines"
+              viewBox="0 0 1400 660"
+              aria-hidden="true"
+              data-sitemap-lines
+            >
+              <defs>
+                <SonoArrowMarker id="sono-sitemap-arrow" size={28} />
+              </defs>
+              <path className="sono-sitemap__tree" d={SITEMAP_TREE} />
+              {SITEMAP_HOPS.map(hop => (
+                <path
+                  key={hop}
+                  className="sono-sitemap__hop"
+                  d={hop}
+                  markerEnd="url(#sono-sitemap-arrow)"
+                />
+              ))}
+            </svg>
+            <p className="sono-sitemap__root" data-sitemap-node>
+              {architecture.root}
+            </p>
+            <ol className="sono-sitemap__nodes">
+              {architecture.sections.map((section, index) => (
+                <li
+                  key={section.title}
+                  className={cn(
+                    'sono-sitemap__node',
+                    SITEMAP_KIND_CLASS[section.kind],
+                    SITEMAP_SLOTS[index]
+                  )}
+                  data-sitemap-node
+                >
+                  <h3 className="sono-sitemap__title">
+                    <span className="sono-sitemap__order" aria-hidden="true">
+                      {index + 1}
+                    </span>
+                    {section.title}
+                  </h3>
+                  <ul className="sono-sitemap__chips">
+                    {section.items.map(item => (
+                      <li key={item} className="sono-sitemap__chip">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+
+        {/* 03.5 · Flujos principales: al entrar crece el primer diagrama y
+            los demás se ven con las flechas, sin frenar el scroll. Cada
+            diagrama crece en orden: las pantallas saltan, los caminos se
+            dibujan, las ramas se abren y se juntan, y los caminos alternos
+            van punteados */}
+        <div
+          className="sono-view sono-view--dark sono-flowmaps"
+          data-sono-view
+          data-enter="wipe"
+          data-section="3"
+          data-surface="dark"
+          data-motion="flows"
+        >
+          <SonoFlowMaps flows={flows} />
+        </div>
+
+        {/* 04 · Sistema de diseño: cuatro capítulos (portada, fundamentos,
+            componentes y elementos de marca) que entran de lado, como las
+            demás escenas; cada uno se lee hacia abajo como una página y, al
+            terminar el último, el siguiente gesto sigue al producto */}
+        <div
+          className="sono-view sono-free"
+          data-sono-view
+          data-enter="diagonal"
+          data-section="4"
+          data-surface="dark"
+          data-free-view
+        >
+          <SonoDesignSystem system={designSystem} />
+        </div>
+
+        {/* 05 · El producto en acción: una sola escena con las nueve pantallas
+            en un abanico de teléfonos */}
+        <div
+          className="sono-view sono-product"
+          data-sono-view
+          data-enter="rise"
+          data-section="5"
+          data-surface="dark"
+          data-motion="product"
+        >
+          <SonoProductShowcase product={product} />
         </div>
 
         <SonoRailNav sections={story.sections} />
         <span className="sono-band" data-sono-band aria-hidden="true" />
+        <SonoJumpBand sections={story.sections} />
       </section>
       <CaseStoryCounter sections={story.sections} firstNumber={0} />
     </div>

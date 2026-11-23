@@ -7,8 +7,6 @@ type CaseStoryUserProps = {
   sectionName: string;
 };
 
-const ORBIT_PLANTS = ['north', 'east', 'south', 'west'] as const;
-
 // 03 · Usuario con el eje invertido: la información a la izquierda (la frase
 // de Laura, quién es y sus rasgos) y la imagen a la derecha. Con el siguiente
 // gesto, los hallazgos reemplazan a los rasgos.
@@ -22,16 +20,11 @@ export function CaseStoryUser({ user, sectionName }: CaseStoryUserProps) {
         </p>
         <div className="story-user__who" data-ax>
           <div className="story-orbit" aria-hidden="true">
-            <span className="story-orbit__avatar" />
-            {ORBIT_PLANTS.map(position => (
-              <span
-                key={position}
-                className="story-orbit__track"
-                data-position={position}
-              >
-                <i className="story-orbit__plant" />
-              </span>
-            ))}
+            <span className="story-orbit__avatar">
+              {user.photo && (
+                <img src={user.photo} alt="" className="story-orbit__photo" />
+              )}
+            </span>
           </div>
           <div>
             <p className="story-title-md">{user.name}</p>
@@ -65,6 +58,7 @@ export function CaseStoryUser({ user, sectionName }: CaseStoryUserProps) {
       </div>
       <CaseStoryImage
         label={user.imageLabel}
+        src={user.image}
         className="story-axis-image story-axis-image--right"
         data-axis-image
       />

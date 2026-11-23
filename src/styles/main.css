@@ -30,6 +30,7 @@
 @import './components/molecules/case-story-user.css';
 @import './components/molecules/case-story-benchmark.css';
 @import './components/molecules/case-story-concept.css';
+@import './components/molecules/case-story-design-system.css';
 @import './components/molecules/case-story-flows.css';
 @import './components/molecules/case-story-prototype.css';
 @import './components/molecules/journey-year-counter.css';
@@ -44,9 +45,12 @@
 @import './components/organisms/case-chapters.css';
 @import './components/organisms/case-story.css';
 @import './components/organisms/sonopizza-story.css';
+/* Sistema de diseño de Sonopizza (módulo 04 del caso) */
+@import './components/organisms/sono-design-system.css';
 @import './components/organisms/petride-story.css';
 @import './components/organisms/toyota-story.css';
 @import './components/molecules/toyota-blocks.css';
+@import './components/organisms/design-system-story.css';
 @import './components/organisms/pet-design-system.css';
 @import './components/organisms/work-carousel.css';
 @import './components/organisms/closing-contact.css';

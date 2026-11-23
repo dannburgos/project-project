@@ -1,0 +1,417 @@
+/* ---------- 04 · Elige tu pizza ----------
+   El detalle y la personalización en una sola vista que se desplaza: arriba la
+   pizza y sus datos, luego lo obligatorio (el tamaño), después lo opcional
+   (salsa, qué quitamos y extras) y, siempre abajo, el total y el botón */
+
+/* La vista se desplaza por dentro: no lleva el padding de las demás pantallas */
+.sp-pick {
+  @apply p-0;
+}
+
+.sp-pick__scroll {
+  @apply absolute inset-0 overflow-x-hidden overflow-y-auto overscroll-contain;
+  scrollbar-width: none;
+}
+
+.sp-pick__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Encabezado fijo: el fondo durazno, la pizza grande que se sale por la
+   derecha y, a la izquierda, el nombre y los datos. Se queda quieto arriba y la
+   hoja blanca sube por encima y lo va tapando. Mientras tanto, lo de adentro se
+   mueve más lento que la hoja y se achica un poco, lo que da profundidad */
+.sp-pick__content {
+  @apply flex flex-col;
+}
+
+.sp-pick__hero {
+  @apply sticky top-0 z-0 h-65.5 shrink-0 overflow-hidden;
+  background: linear-gradient(180deg, var(--sp-tint) 0%, var(--sp-white) 100%);
+}
+
+.sp-pick__hero-inner {
+  @apply absolute inset-0;
+  transform-origin: 70% 20%;
+}
+
+.sp-pick__photo {
+  @apply pointer-events-none absolute top-10 left-56.5 size-52.5;
+  filter: drop-shadow(0 14px 18px rgb(0 20 70 / 0.28));
+}
+
+.sp-pick__intro {
+  @apply absolute top-28 left-5 z-10 flex w-56 flex-col items-start gap-2;
+}
+
+.sp-pick__pills {
+  @apply flex gap-1.5;
+}
+
+.sp-pick__name {
+  @apply mt-0.5 mb-1 text-2xl leading-7;
+  color: var(--sp-navy);
+}
+
+/* La hoja: blanca y opaca, con las esquinas de arriba redondeadas. Sube por
+   encima del encabezado. El aire de abajo deja ver lo último por encima de la
+   barra */
+.sp-pick__sheet {
+  @apply relative z-10 -mt-4 flex flex-col gap-4 rounded-t-[30px] px-5 pt-7 pb-48;
+  background: var(--sp-white);
+  box-shadow: 0 -8px 24px rgb(0 43 143 / 0.14);
+}
+
+/* Valoración y tiempo como píldoras blancas */
+.sp-pick__pill {
+  @apply inline-flex h-8 items-center gap-1.5 rounded-full bg-white px-2.5 text-sm font-semibold whitespace-nowrap;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-pick__pill svg {
+  @apply size-4;
+  color: var(--sp-orange);
+}
+
+.sp-pick__pill span {
+  color: var(--sp-muted);
+  font-weight: 500;
+}
+
+.sp-pick__text {
+  @apply text-sm leading-5;
+  color: var(--sp-muted);
+}
+
+/* Barra de arriba: volver y favorito flotan sobre el encabezado, sin fondo.
+   La hoja blanca sube sola y tapa casi todo el encabezado; cuando solo queda
+   una franja angosta, el fondo blanco de la barra sube desde la hoja hasta el
+   borde, como si la hoja terminara de subir (nada de transparencias ni de
+   deslizarse desde arriba). La sombra suave llega con él y el nombre sale un
+   instante después, dentro de un recuadro que lo recorta. Al volver arriba, al
+   revés */
+.sp-pick__top {
+  @apply absolute inset-x-0 top-0 z-30 flex items-center justify-between gap-3 px-5 pt-14 pb-3;
+}
+
+.sp-pick__top::before,
+.sp-pick__top::after {
+  @apply absolute inset-0 content-[''];
+}
+
+.sp-pick__top::before {
+  @apply -z-10;
+  background: var(--sp-white);
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 420ms cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+.sp-pick__top::after {
+  @apply -z-20;
+  box-shadow: var(--sp-shadow-soft);
+  opacity: 0;
+  transition: opacity 320ms ease-out;
+}
+
+.sp-pick__top-title {
+  @apply block h-6 min-w-0 flex-1 overflow-hidden text-center text-sm leading-6 font-bold;
+}
+
+.sp-pick__top-name {
+  @apply block truncate;
+  translate: 0 100%;
+  transition: translate 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sp-pick--solid .sp-pick__top::before {
+  clip-path: inset(0);
+}
+
+.sp-pick--solid .sp-pick__top::after {
+  opacity: 1;
+}
+
+.sp-pick--solid .sp-pick__top-name {
+  translate: 0 0;
+  transition-delay: 180ms;
+}
+
+/* Profundidad: el encabezado se mueve apenas más lento que la hoja y se achica
+   un poco, y termina justo cuando la hoja llega arriba (246 px de recorrido).
+   Lo mueve el propio desplazamiento, sin código. Sin soporte, se queda fijo */
+.sp-pick {
+  timeline-scope: --sp-pick-scroll;
+}
+
+.sp-pick__scroll {
+  scroll-timeline: --sp-pick-scroll block;
+}
+
+@keyframes sp-pick-hero-away {
+  to {
+    translate: 0 -36px;
+    scale: 0.95;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .sp-pick__hero-inner {
+    animation: sp-pick-hero-away linear both;
+    animation-timeline: --sp-pick-scroll;
+    animation-range: 0px 246px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-pick__hero-inner {
+    animation: none;
+  }
+
+  .sp-pick__top::before,
+  .sp-pick__top::after,
+  .sp-pick__top-name {
+    transition: none;
+  }
+}
+
+/* Casillas blancas, una por decisión */
+.sp-pick__tiles {
+  @apply flex flex-col gap-3;
+}
+
+.sp-tile {
+  @apply flex flex-col gap-3 rounded-3xl bg-white p-4;
+  box-shadow: var(--sp-shadow-soft);
+}
+
+.sp-tile__head {
+  @apply flex flex-col;
+}
+
+.sp-tile__title {
+  @apply text-base leading-5 font-bold;
+}
+
+.sp-tile__sub {
+  @apply text-sm leading-5;
+  color: var(--sp-muted);
+}
+
+/* Separa lo obligatorio de lo opcional */
+.sp-pick__section {
+  @apply px-1 pt-2;
+}
+
+.sp-pick__section-title {
+  @apply text-lg leading-6 font-bold;
+  color: var(--sp-navy);
+}
+
+/* Tamaño: la pizza dibujada y partida en sus porciones; crece de una a otra */
+.sp-pick__sizes {
+  @apply grid grid-cols-3 gap-2.5;
+}
+
+/* Opciones sin elegir: gris claro. La elegida se vuelve azul con texto blanco */
+.sp-size-card {
+  @apply relative flex h-36 flex-col items-center justify-end gap-px rounded-2xl px-1 pt-2.5 pb-3;
+  background: var(--sp-gray-light);
+}
+
+.sp-size-card--on {
+  background: var(--sp-navy);
+  color: #fff;
+}
+
+.sp-size-card__pizza {
+  @apply mb-1.5;
+  filter: drop-shadow(0 3px 4px rgb(0 20 70 / 0.18));
+}
+
+.sp-size-card__pizza--personal {
+  @apply size-10;
+}
+
+.sp-size-card__pizza--medium {
+  @apply size-12;
+}
+
+.sp-size-card__pizza--family {
+  @apply size-14;
+}
+
+.sp-size-card__name {
+  @apply text-sm font-bold;
+}
+
+.sp-size-card__slices {
+  @apply text-sm;
+  color: var(--sp-muted);
+}
+
+.sp-size-card--on .sp-size-card__slices {
+  color: rgb(255 255 255 / 0.75);
+}
+
+.sp-size-card__price {
+  @apply mt-0.5 text-sm font-bold;
+}
+
+.sp-size-card__check {
+  @apply absolute -top-2 -right-2 grid size-6 place-items-center rounded-full;
+  background: #fff;
+  color: var(--sp-navy);
+  box-shadow: 0 0 0 2px var(--sp-navy);
+}
+
+.sp-size-card__check svg {
+  @apply size-3.5;
+  stroke-width: 3;
+}
+
+/* Salsa: una cucharada con su textura, el nombre y lo que cuesta */
+.sp-pick__sauces {
+  @apply grid grid-cols-4 gap-2;
+}
+
+.sp-sauce {
+  @apply flex flex-col items-center gap-1 rounded-2xl px-1 pt-3 pb-2.5;
+  background: var(--sp-gray-light);
+}
+
+.sp-sauce--on {
+  background: var(--sp-navy);
+  color: #fff;
+}
+
+.sp-sauce__swatch {
+  @apply size-10;
+  filter: drop-shadow(0 2px 3px rgb(0 20 70 / 0.28));
+}
+
+.sp-sauce__name {
+  @apply text-sm font-bold;
+}
+
+.sp-sauce__note {
+  @apply text-sm;
+  color: var(--sp-muted);
+}
+
+.sp-sauce--on .sp-sauce__note {
+  color: rgb(255 255 255 / 0.75);
+}
+
+/* Qué quitamos: una fila por ingrediente, con su nombre y, al lado, un
+   selector "Con" / "Sin". "Con" es lo normal (azul); si elige "Sin", el
+   selector se pone naranja y el nombre se apaga y se tacha */
+.sp-pick__ingredients {
+  @apply flex flex-col;
+}
+
+.sp-ingredient {
+  @apply flex h-12 items-center justify-between gap-3;
+}
+
+.sp-ingredient + .sp-ingredient {
+  border-top: 1px solid rgb(0 43 143 / 0.08);
+}
+
+.sp-ingredient__name {
+  @apply text-sm font-semibold;
+}
+
+.sp-ingredient__name--off {
+  @apply line-through;
+  color: rgb(27 35 56 / 0.5);
+}
+
+.sp-ingredient__choice {
+  @apply inline-flex rounded-full p-0.5;
+  background: var(--sp-gray-light);
+}
+
+.sp-ingredient__option {
+  @apply inline-flex h-8 min-w-14 items-center justify-center rounded-full px-3 text-sm font-semibold;
+  color: var(--sp-muted);
+}
+
+.sp-ingredient__option--with {
+  background: var(--sp-fill-navy);
+  color: #fff;
+}
+
+.sp-ingredient__option--without {
+  background: var(--sp-fill-orange);
+  color: #fff;
+}
+
+/* Extras: el borde (se elige uno) y las adiciones (se pueden sumar varias) */
+.sp-pick__group {
+  @apply flex flex-col gap-2;
+}
+
+.sp-pick__crusts {
+  @apply grid grid-cols-3 gap-2;
+}
+
+.sp-choice {
+  @apply flex h-14 flex-col items-center justify-center rounded-2xl;
+  background: var(--sp-gray-light);
+}
+
+.sp-choice--on {
+  background: var(--sp-navy);
+  color: #fff;
+}
+
+.sp-choice__name {
+  @apply text-sm font-bold;
+}
+
+.sp-choice__note {
+  @apply text-sm;
+  color: var(--sp-muted);
+}
+
+.sp-choice--on .sp-choice__note {
+  color: rgb(255 255 255 / 0.75);
+}
+
+.sp-pick__additions {
+  @apply flex flex-col gap-2;
+}
+
+.sp-addition {
+  @apply flex h-12 items-center gap-3 rounded-2xl px-3;
+  background: var(--sp-gray-light);
+}
+
+.sp-addition--on {
+  background: var(--sp-navy);
+  color: #fff;
+}
+
+.sp-addition__box {
+  @apply grid size-5 shrink-0 place-items-center rounded-md border-2;
+  border-color: rgb(0 43 143 / 0.3);
+}
+
+.sp-addition--on .sp-addition__box {
+  background: #fff;
+  border-color: #fff;
+  color: var(--sp-navy);
+}
+
+.sp-addition__box svg {
+  @apply size-3.5;
+  stroke-width: 3;
+}
+
+.sp-addition__name {
+  @apply flex-1 text-sm font-semibold;
+}
+
+.sp-addition__price {
+  @apply text-sm font-bold;
+}

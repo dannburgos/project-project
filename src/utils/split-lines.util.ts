@@ -10,8 +10,10 @@ export function splitTextIntoLines(element: HTMLElement) {
   if (!element.dataset.text) {
     element.dataset.text = (element.textContent ?? '')
       .trim()
-      .replace(/\s+/g, ' ');
+      .replace(/[ \t\r\n]+/g, ' ');
   }
+  // Solo los espacios normales parten palabras: un espacio duro (\u00a0) deja
+  // dos palabras juntas en la misma línea
   const words = element.dataset.text.split(' ');
   element.replaceChildren(
     ...words.flatMap((word, index) => {

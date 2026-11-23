@@ -6,7 +6,7 @@
 // cierre de contacto sale del CV de Dann.
 
 export const siteContent = {
-  brand: 'Portfolio Lab',
+  brand: 'Daniela Burgos',
   prototypeNotice: 'Prototipo · contenido de ejemplo',
   // "description" solo se muestra en el menú móvil, para que quede claro a
   // dónde lleva cada opción.
@@ -160,6 +160,8 @@ export const siteContent = {
       },
       // Cuadrados de la línea de arriba para saltar entre secciones
       storyNavigation: 'Secciones del caso',
+      // Sticker del submenú sobre la sección en la que ya está la persona
+      currentSection: 'Estás aquí',
       prototype: {
         activate: 'Haz clic para probarlo',
         open: 'Abrir en pantalla completa',
@@ -336,7 +338,7 @@ const projectNames: readonly (string | undefined)[] = [
   'PetRide',
   'Sonopizza',
   'Toyota',
-  undefined,
+  'Sistema de diseño',
   'Nodus'
 ];
 const projectSlugs: readonly (string | undefined)[] = [
@@ -344,7 +346,7 @@ const projectSlugs: readonly (string | undefined)[] = [
   'petride',
   'sonopizza',
   'toyota',
-  undefined,
+  'design-system',
   'nodus'
 ];
 
@@ -353,7 +355,8 @@ const projectIndustries: readonly (string | undefined)[] = [
   'App móvil para el cuidado de plantas',
   'App de transporte para viajar con mascotas',
   'Rediseño de app móvil para pedir pizza',
-  'Rediseño de experiencia web para descubrir vehículos'
+  'Rediseño de experiencia web para descubrir vehículos',
+  'Sistema de diseño de ejemplo para un producto digital'
 ];
 
 // Tono del fondo del banner de cada caso (degradado con profundidad). Los
@@ -379,7 +382,8 @@ const projectCovers: readonly (ProjectCover | undefined)[] = [
   { label: 'Imagen principal · mockup de una persona usando Planti' },
   { label: 'Imagen principal · persona viajando con su mascota en PetRide' },
   { label: 'Imagen principal · pizza de Sonopizza con la mascota' },
-  { label: 'Imagen principal · módulo «Encuentra tu Toyota»' }
+  { label: 'Imagen principal · módulo «Encuentra tu Toyota»' },
+  { label: 'Imagen principal · mosaico del sistema de diseño' }
 ];
 
 // Frase que resume cada proyecto (su idea central), en el carrusel de Work
@@ -387,7 +391,8 @@ const projectSummaries: readonly (string | undefined)[] = [
   'Saber qué necesita tu planta es fácil. Recordarlo, no.',
   'Moverte con tu mascota sin preguntar si la aceptan.',
   'Pedir pizza debería ser tan fácil como antojarse.',
-  'De elegir un modelo a descubrir el vehículo adecuado.'
+  'De elegir un modelo a descubrir el vehículo adecuado.',
+  'Una sola fuente de verdad para diseñar y construir.'
 ];
 
 // Dos palabras clave por proyecto, para las etiquetas de su tarjeta. Las de
@@ -396,7 +401,8 @@ const projectTags: readonly (readonly string[] | undefined)[] = [
   ['App móvil', 'Investigación UX'],
   ['App móvil', 'Movilidad'],
   ['App móvil', 'Rediseño'],
-  ['Web desktop', 'Rediseño de experiencia']
+  ['Web desktop', 'Rediseño de experiencia'],
+  ['Sistema de diseño', 'Componentes']
 ];
 
 export const exampleProjects = Array.from(

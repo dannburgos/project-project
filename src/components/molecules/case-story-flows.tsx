@@ -11,11 +11,12 @@ type CaseStoryFlowsProps = {
 // momentos a la derecha
 export function CaseStoryFlows({ flows, sectionName }: CaseStoryFlowsProps) {
   return (
-    <div className="story-view story-flows" data-view="flows" data-section="5">
-      <CaseStoryOpener number="06" name={sectionName} />
+    <div className="story-view story-flows" data-view="flows" data-section="6">
+      <CaseStoryOpener number="07" name={sectionName} />
       <CaseStoryImage
         label={flows.imageLabel}
-        variant="paper"
+        src={flows.image}
+        variant={flows.image ? 'tone' : 'paper'}
         className="story-axis-image"
         data-axis-image
       />
