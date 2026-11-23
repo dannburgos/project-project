@@ -12,6 +12,21 @@
   --pet-cloud: #f5f9ff;
   --pet-mute: rgb(245 249 255 / 0.74);
   --pet-line: rgb(171 196 255 / 0.24);
+  /* Palabras gigantes de fondo de los títulos: apenas se insinúan */
+  /* Lo que separa un módulo del siguiente (y un capítulo del siguiente), en
+     computador y en celular */
+  --pet-module-gap: 200px;
+  /* Tres tamaños de texto para todo el caso: títulos (aperturas de capítulo
+     y de módulo), subtítulos y bajadas */
+  --pet-title-size: clamp(48px, 7vw, 112px);
+  --pet-subtitle-size: clamp(32px, 3vw, 40px);
+  --pet-lead-size: clamp(20px, 1.7vw, 24px);
+  /* Lo que separa el título de un módulo (o la apertura de un capítulo) de
+     su contenido. No cambia con el espacio entre módulos */
+  --pet-title-gap: 64px;
+  /* Cuánto se recorta del espacio entre módulos para dejar el título a su
+     distancia */
+  --pet-title-pull: calc((var(--pet-module-gap) - var(--pet-title-gap)) * -1);
   --pet-screen: #cfd2dc;
   --pet-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --pet-glide: cubic-bezier(0.22, 1, 0.36, 1);
@@ -30,27 +45,135 @@
 
 /* Capítulos: el espacio de la izquierda es para el submenú */
 .pet-chapter {
-  @apply relative flex flex-col gap-32 px-6 py-24 md:gap-48 md:py-40 md:pr-16 md:pl-32;
+  @apply relative flex flex-col px-6;
+  gap: var(--pet-module-gap);
+  /* Entre capítulos: el relleno de abajo + el de arriba + los 64 px de
+     arriba de la apertura = el mismo espacio que entre módulos */
+  padding-block: calc((var(--pet-module-gap) - var(--pet-title-gap)) / 2);
+}
+
+/* Márgenes laterales iguales a izquierda y derecha: 128 px en pantallas
+   grandes y proporcionales en las más chicas, para que el contenido respire */
+@media (min-width: 768px) {
+  .pet-chapter {
+    padding-inline: clamp(48px, 9vw, 128px);
+  }
+}
+
+.pet-chapter:last-of-type {
+  padding-bottom: var(--pet-module-gap);
 }
 
 .pet-chapter:first-of-type {
   @apply pt-0;
 }
 
-.pet-label {
-  @apply text-base font-medium tracking-wide uppercase;
-  color: var(--pet-lime);
+/* Desde Diseño empieza la ejecución: fondo azul oscuro con manchas
+   saturadas de índigo y azul repartidas a lo largo del capítulo, que es muy largo */
+.pet-chapter--execution {
+  @apply isolate;
+  /* Más aire entre los user flows y el arranque del sistema de diseño */
+  padding-top: calc((var(--pet-module-gap) - var(--pet-title-gap)) / 2 + 256px);
+  --pet-blob-indigo: color-mix(in srgb, var(--pet-indigo) 70%, transparent);
+  --pet-blob-blue: color-mix(in srgb, #2f3bff 45%, transparent);
+  background:
+    radial-gradient(
+      900px 720px at 8% 2%,
+      var(--pet-blob-blue),
+      transparent 70%
+    ),
+    radial-gradient(
+      1000px 800px at 96% 14%,
+      var(--pet-blob-indigo),
+      transparent 70%
+    ),
+    radial-gradient(
+      800px 640px at 4% 30%,
+      var(--pet-blob-indigo),
+      transparent 70%
+    ),
+    radial-gradient(
+      720px 600px at 92% 44%,
+      var(--pet-blob-blue),
+      transparent 70%
+    ),
+    radial-gradient(
+      960px 760px at 12% 58%,
+      var(--pet-blob-blue),
+      transparent 70%
+    ),
+    radial-gradient(
+      1000px 800px at 90% 72%,
+      var(--pet-blob-indigo),
+      transparent 70%
+    ),
+    radial-gradient(
+      880px 700px at 6% 86%,
+      var(--pet-blob-indigo),
+      transparent 70%
+    ),
+    radial-gradient(
+      900px 720px at 94% 98%,
+      var(--pet-blob-blue),
+      transparent 70%
+    ),
+    linear-gradient(180deg, var(--pet-deep), #10113a);
 }
 
-.pet-note {
-  @apply text-base;
-  color: var(--pet-mute);
+/* Paso de la investigación al diseño, sin línea: arriba el azul arranca en el
+   oscuro del capítulo anterior y, con el scroll, nace como un brillo abajo en
+   el centro y se abre como tinta hasta cubrir. --pet-seam va de 0 a 1 */
+.pet-seam {
+  @apply pointer-events-none absolute inset-x-0 top-0 -z-10 h-[1120px];
+  --pet-seam: 1;
+}
+
+.pet-seam__glow,
+.pet-seam__veil {
+  @apply absolute inset-0;
+}
+
+.pet-seam__glow {
+  background:
+    radial-gradient(
+      ellipse 36% 40% at 50% 100%,
+      color-mix(in srgb, #2f3bff 70%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 80% 90% at 50% 100%,
+      color-mix(in srgb, var(--pet-indigo) 85%, transparent),
+      transparent 72%
+    );
+  opacity: calc(0.4 + var(--pet-seam) * 0.6);
+}
+
+.pet-seam__veil {
+  background: var(--pet-night);
+  mask-image:
+    radial-gradient(
+      ellipse calc(24% + var(--pet-seam) * 176%)
+        calc(16% + var(--pet-seam) * 164%) at 50% 100%,
+      transparent 45%,
+      black 100%
+    ),
+    linear-gradient(black 25%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* Al final del recorrido el velo se va, pero el borde de arriba sigue
+   fundido con el capítulo anterior */
+.pet-seam::before {
+  @apply absolute inset-x-0 top-0 h-40 content-[''];
+  background: linear-gradient(var(--pet-night), transparent);
 }
 
 /* Títulos que suben letra por letra: cada palabra es una máscara */
 .pet-letters__word {
   @apply inline-block whitespace-nowrap;
-  overflow: clip;
+  /* Recorta solo arriba y abajo (las letras suben desde abajo); a los lados
+     queda libre para que la última letra no se corte */
+  overflow: visible clip;
   padding-block: 0.08em;
   margin-block: -0.08em;
   margin-inline-end: 0.24em;
@@ -69,13 +192,17 @@
   @apply inline;
 }
 
-/* ───────── Submenú lateral: la flor ─────────
+/* ───────── Submenú: la flor, abajo a la izquierda ─────────
    Cerrada es la flor de la marca con una semilla por capítulo (la actual en
    lima), un anillo que se llena con el avance y un giro por capítulo. Al
-   abrirse, los capítulos brotan en abanico desde la flor. */
+   pasar el cursor (o tocarla), los capítulos se apilan en una línea vertical
+   justo encima de la flor; elegir uno lleva directo a él. */
 .pet-nav {
-  @apply fixed top-1/2 left-3 z-40 size-16 -translate-y-1/2 md:left-6;
+  @apply fixed bottom-4 left-3 z-40 size-16 md:bottom-8 md:left-6;
   --pet-turn: 0deg;
+  /* Las opciones se alinean al borde izquierdo de la flor (su centro menos
+     su radio) */
+  --petal-x: -32px;
   transition: opacity 0.4s ease;
 }
 
@@ -102,7 +229,7 @@
 /* Zona que mantiene el abanico abierto mientras el cursor va de la flor a
    los capítulos */
 .pet-nav__pad {
-  @apply pointer-events-none absolute top-1/2 left-0 h-[360px] w-[320px] -translate-y-1/2;
+  @apply pointer-events-none absolute bottom-0 left-0 h-[380px] w-[240px];
 }
 
 .pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__pad {
@@ -135,7 +262,9 @@
   scale: 0.92;
 }
 
-.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__bloom .pet-flower__paw {
+.pet-nav:is(:hover, :focus-within, [data-open])
+  .pet-nav__bloom
+  .pet-flower__paw {
   rotate: calc((var(--pet-turn) + 90deg) * -1);
 }
 
@@ -162,55 +291,6 @@
 }
 
 /* Semillas: una por capítulo, alrededor de la flor */
-.pet-nav__seeds {
-  @apply absolute top-1/2 left-1/2;
-}
-
-.pet-nav__seed {
-  @apply absolute -top-1 -left-1 size-2 rounded-full;
-  background: rgb(171 196 255 / 0.55);
-  translate: var(--seed-x) var(--seed-y);
-  transition:
-    scale 0.5s var(--pet-spring),
-    background-color 0.3s ease,
-    opacity 0.3s ease;
-}
-
-.pet-nav__seed:nth-child(1) {
-  --seed-x: 22px;
-  --seed-y: -40px;
-}
-.pet-nav__seed:nth-child(2) {
-  --seed-x: 36px;
-  --seed-y: -26px;
-}
-.pet-nav__seed:nth-child(3) {
-  --seed-x: 44px;
-  --seed-y: -10px;
-}
-.pet-nav__seed:nth-child(4) {
-  --seed-x: 44px;
-  --seed-y: 10px;
-}
-.pet-nav__seed:nth-child(5) {
-  --seed-x: 36px;
-  --seed-y: 26px;
-}
-.pet-nav__seed:nth-child(6) {
-  --seed-x: 22px;
-  --seed-y: 40px;
-}
-
-.pet-nav__seed--current {
-  background: var(--pet-lime);
-  scale: 1.5;
-}
-
-.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__seed {
-  @apply opacity-0;
-  scale: 0;
-}
-
 /* Abanico de capítulos */
 .pet-nav__list {
   @apply absolute top-1/2 left-1/2;
@@ -221,36 +301,43 @@
   translate: 0 -50%;
   scale: 0.3;
   transform-origin: left center;
+  /* Al cerrar se recogen con el mismo movimiento con el que salieron, en el
+     orden contrario (la de arriba primero), y se desvanecen al final, ya
+     junto a la flor. --close-delay escalona cada opción */
+  --close-delay: 0ms;
   transition:
-    translate 0.45s var(--pet-glide),
-    scale 0.45s var(--pet-glide),
-    opacity 0.25s ease,
-    visibility 0s linear 0.45s;
+    translate 0.7s var(--pet-glide) var(--close-delay),
+    scale 0.7s var(--pet-glide) var(--close-delay),
+    opacity 0.35s ease calc(var(--close-delay) + 0.35s),
+    visibility 0s linear calc(var(--close-delay) + 0.7s);
 }
 
+/* Una columna recta sobre la flor: el 01 queda arriba y el 06 junto a ella.
+   --petal-y es la distancia del centro de cada opción al centro de la flor
+   (40 px de alto y 8 px entre una y otra) */
 .pet-nav__petal:nth-child(1) {
-  --petal-x: 56px;
-  --petal-y: -132px;
+  --close-delay: 0ms;
+  --petal-y: -304px;
 }
 .pet-nav__petal:nth-child(2) {
-  --petal-x: 88px;
-  --petal-y: -80px;
+  --close-delay: 40ms;
+  --petal-y: -256px;
 }
 .pet-nav__petal:nth-child(3) {
-  --petal-x: 104px;
-  --petal-y: -26px;
+  --close-delay: 80ms;
+  --petal-y: -208px;
 }
 .pet-nav__petal:nth-child(4) {
-  --petal-x: 104px;
-  --petal-y: 28px;
+  --close-delay: 120ms;
+  --petal-y: -160px;
 }
 .pet-nav__petal:nth-child(5) {
-  --petal-x: 88px;
-  --petal-y: 82px;
+  --close-delay: 160ms;
+  --petal-y: -112px;
 }
 .pet-nav__petal:nth-child(6) {
-  --petal-x: 56px;
-  --petal-y: 134px;
+  --close-delay: 200ms;
+  --petal-y: -64px;
 }
 
 .pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal {
@@ -264,20 +351,20 @@
     visibility 0s;
 }
 
-/* Brotan de arriba abajo y se recogen al revés */
-.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(2) {
+/* Brotan desde la flor hacia arriba (el 06 primero) y se recogen al revés */
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(5) {
   transition-delay: 40ms;
 }
-.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(3) {
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(4) {
   transition-delay: 80ms;
 }
-.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(4) {
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(3) {
   transition-delay: 120ms;
 }
-.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(5) {
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(2) {
   transition-delay: 160ms;
 }
-.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(6) {
+.pet-nav:is(:hover, :focus-within, [data-open]) .pet-nav__petal:nth-child(1) {
   transition-delay: 200ms;
 }
 
@@ -303,26 +390,18 @@
   scale: 0.96;
 }
 
-.pet-nav__number {
-  @apply text-base font-extrabold tabular-nums;
-  color: var(--pet-lime);
-  transition: color 0.3s ease;
-}
-
 .pet-nav__item--current,
 .pet-nav__item--current:hover {
+  @apply border-2;
   background: var(--pet-lime);
-  border-color: var(--pet-lime);
-  color: var(--pet-night);
-}
-
-.pet-nav__item--current .pet-nav__number {
+  border-color: var(--pet-deep);
   color: var(--pet-night);
 }
 
 @media (max-width: 767px) {
   .pet-nav {
-    @apply left-1 size-12;
+    @apply bottom-4 left-1 size-12;
+    --petal-x: -24px;
   }
 
   .pet-nav__flower {
@@ -337,7 +416,11 @@
 /* Cortina del salto entre capítulos */
 .pet-curtain {
   @apply invisible fixed inset-0 z-[60] flex items-center justify-center px-6;
-  background: var(--pet-lime);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pet-lime) 80%, white) 0%,
+    var(--pet-lime) 100%
+  );
   color: var(--pet-night);
 }
 
@@ -351,12 +434,9 @@
 
 /* ───────── 01 · Introducción ───────── */
 .pet-hero {
-  @apply relative flex min-h-svh flex-col justify-end gap-6 pt-32 pb-4 md:gap-8;
-}
-
-.pet-hero__eyebrow {
-  @apply text-lg font-medium;
-  color: var(--pet-peri);
+  /* Sin altura de pantalla completa: el nombre queda arriba, justo bajo la
+     barra, y la imagen principal ya asoma al entrar */
+  @apply relative flex flex-col gap-6 pt-28 pb-4 md:gap-8 md:pt-32;
 }
 
 .pet-hero__title {
@@ -371,35 +451,35 @@
   outline: none;
 }
 
-.pet-hero__flower {
-  @apply absolute top-28 right-0 size-28 md:top-32 md:size-56;
-  animation: pet-spin 24s linear infinite;
+.pet-hero__logo {
+  /* En celular va sobre el nombre, sin taparlo; desde 768 px, a su derecha */
+  @apply order-first h-[99px] w-auto self-start md:absolute md:top-32 md:right-0 md:order-none md:h-[231px];
 }
 
 .pet-hero__tagline {
   @apply max-w-3xl text-xl leading-snug md:text-3xl;
 }
 
-.pet-hero__facts {
-  @apply grid grid-cols-2 gap-6 border-t pt-6 md:grid-cols-4;
-  border-color: var(--pet-line);
-}
-
-.pet-hero__fact-label {
-  @apply text-base;
-  color: var(--pet-mute);
-}
-
-.pet-hero__fact-text {
-  @apply text-lg font-medium;
-}
-
 .pet-cover {
-  @apply aspect-[4/5] overflow-hidden rounded-[32px] md:aspect-video;
+  @apply aspect-[4/5] overflow-hidden md:aspect-video;
+  /* La animación compensa el radio mientras la imagen escala */
+  border-radius: var(--cover-radius, 32px);
+}
+
+/* La imagen queda a 64 px de los datos de la portada */
+.pet-hero + .pet-cover {
+  margin-top: var(--pet-title-pull);
 }
 
 .pet-cover__media {
   @apply h-full w-full;
+}
+
+/* La foto viene sin fondo: el cielo es el periwinkle de la marca y el carro
+   se apoya en el borde de abajo */
+.pet-cover__photo {
+  @apply object-cover object-[42%_bottom];
+  background: var(--pet-peri);
 }
 
 /* Espacio gris de imágenes y pantallas pendientes */
@@ -417,7 +497,7 @@
   @apply inline-flex items-center justify-center;
 }
 
-.pet-flower:not(.pet-hero__flower, .pet-process__logo) {
+.pet-flower {
   @apply relative;
 }
 
@@ -438,90 +518,128 @@
   color: var(--pet-indigo);
 }
 
-/* Franja de los tres flujos (neutomni) */
-.pet-marquee {
-  @apply -mx-6 flex overflow-hidden border-y py-6 md:-mr-16 md:-ml-32;
-  border-color: var(--pet-line);
-}
-
-.pet-marquee__track {
-  @apply flex shrink-0 items-center;
-  animation: pet-marquee 28s linear infinite;
-}
-
-.pet-marquee__item {
-  @apply flex items-center gap-8 pr-8 text-4xl font-extrabold whitespace-nowrap md:text-7xl;
-}
-
-.pet-marquee__item:nth-child(even) {
-  color: var(--pet-lime);
-}
-
-.pet-marquee__flower {
-  @apply size-10 md:size-16;
-  animation: pet-spin 10s linear infinite;
-}
-
-/* Proceso de diseño: arcos desde el logo */
+/* Proceso de diseño: seis etapas en columnas */
 .pet-process {
   @apply flex flex-col gap-6;
 }
 
-.pet-process__title,
 .pet-module__title {
-  @apply font-extrabold;
-  font-size: clamp(40px, 5.4vw, 88px);
-  line-height: 1;
-  letter-spacing: -0.03em;
+  @apply relative isolate font-extrabold;
+  font-size: var(--pet-title-size);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
 }
 
 .pet-process__lead,
 .pet-module__lead {
-  @apply max-w-2xl text-lg md:text-xl;
+  @apply max-w-2xl;
+  font-size: var(--pet-lead-size);
   color: var(--pet-mute);
 }
 
-.pet-process__map {
-  @apply relative mt-8 flex flex-col;
+/* Proceso de diseño: seis bloques del mismo tamaño con colores y formas de la
+   marca. Desde 1024 px, seis columnas; antes, una o dos */
+.pet-process__bento {
+  @apply mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2;
 }
 
-.pet-process__stages {
-  @apply order-first grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-6 lg:gap-4;
+.pet-process__tile {
+  @apply relative flex min-h-44 flex-col justify-end gap-1.5 overflow-hidden rounded-2xl border p-6;
+  /* Un borde fino del color del texto, muy tenue, como el de Wireframes */
+  border-color: color-mix(in srgb, currentColor 22%, transparent);
+  transition: translate 0.4s var(--pet-spring);
 }
 
-.pet-process__stage {
-  @apply flex flex-col gap-1 border-l pl-4;
+.pet-process__tile:hover {
+  translate: 0 -6px;
+}
+
+.pet-process__tile--0 {
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pet-lime) 80%, white) 0%,
+    var(--pet-lime) 100%
+  );
+  color: var(--pet-night);
+}
+
+.pet-process__tile--1 {
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pet-indigo) 82%, white) 0%,
+    var(--pet-indigo) 100%
+  );
+  color: var(--pet-cloud);
+}
+
+.pet-process__tile--2 {
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pet-peri) 78%, white) 0%,
+    var(--pet-peri) 100%
+  );
+  color: var(--pet-night);
+}
+
+.pet-process__tile--3 {
+  background: linear-gradient(
+    160deg,
+    #ffffff 0%,
+    color-mix(in srgb, var(--pet-cloud) 88%, var(--pet-peri)) 100%
+  );
+  color: var(--pet-night);
+}
+
+.pet-process__tile--4 {
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pet-deep) 82%, var(--pet-peri)) 0%,
+    var(--pet-deep) 100%
+  );
   border-color: var(--pet-line);
+  color: var(--pet-cloud);
 }
 
-.pet-process__stage-number {
-  @apply text-base font-medium;
+.pet-process__tile--5 {
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--pet-indigo) 82%, white) 0%,
+    var(--pet-indigo) 100%
+  );
   color: var(--pet-lime);
 }
 
 .pet-process__stage-title {
-  @apply text-xl font-medium;
+  @apply text-2xl font-extrabold;
+  letter-spacing: -0.02em;
 }
 
 .pet-process__stage-text {
   @apply text-base;
-  color: var(--pet-mute);
 }
 
-.pet-process__arcs {
-  @apply -mt-4 hidden w-full lg:block;
-}
+@media (min-width: 1024px) {
+  /* Las etapas del mismo tamaño: tres columnas desde 1024 px y seis desde 1200 px,
+     donde caben con su relleno de 16 px */
+  .pet-process__bento {
+    @apply grid-cols-3 min-[1200px]:grid-cols-6;
+    /* Todas las tarjetas miden lo mismo: el alto de la que lleva más texto */
+    grid-auto-rows: 1fr;
+  }
 
-.pet-process__arc {
-  fill: none;
-  stroke: var(--pet-peri);
-  stroke-opacity: 0.45;
-  stroke-width: 1.5;
-  stroke-dasharray: 1;
-}
+  /* El contenido va alineado arriba, no al fondo de la tarjeta */
+  .pet-process__tile {
+    @apply min-h-0 justify-start p-4;
+  }
 
-.pet-process__logo {
-  @apply absolute bottom-0 left-[12%] hidden size-40 -translate-x-1/2 translate-y-1/2 lg:inline-flex;
+  .pet-process__stage-title {
+    font-size: 20px;
+    letter-spacing: -0.03em;
+  }
+
+  .pet-process__stage-text {
+    @apply text-base;
+  }
 }
 
 /* ───────── Apertura de capítulo ───────── */
@@ -529,21 +647,9 @@
   @apply relative flex flex-col gap-4 pt-16;
 }
 
-.pet-head__ghost {
-  @apply pointer-events-none absolute -top-8 left-0 font-extrabold whitespace-nowrap select-none;
-  font-size: clamp(140px, 22vw, 360px);
-  line-height: 1;
-  color: rgb(171 196 255 / 0.07);
-}
-
-.pet-head__number {
-  @apply relative text-lg font-medium;
-  color: var(--pet-lime);
-}
-
 .pet-head__title {
   @apply relative max-w-5xl font-extrabold;
-  font-size: clamp(48px, 7vw, 112px);
+  font-size: var(--pet-title-size);
   line-height: 0.96;
   letter-spacing: -0.035em;
 }
@@ -553,16 +659,32 @@
 }
 
 .pet-head__lead {
-  @apply relative max-w-2xl text-xl md:text-2xl;
+  @apply relative max-w-2xl;
+  /* Respeta los saltos de línea del texto (\n) */
+  white-space: pre-line;
+  font-size: var(--pet-lead-size);
   color: var(--pet-mute);
+}
+
+/* La apertura del capítulo queda a 64 px de su contenido, como los títulos
+   de los módulos */
+.pet-chapter > .pet-head + * {
+  margin-top: var(--pet-title-pull);
 }
 
 .pet-module {
   @apply flex flex-col gap-6;
 }
 
+/* Más aire entre el título del módulo (o su introducción) y el contenido */
+.pet-module > .pet-module__title + :not(.pet-module__lead),
+.pet-module > .pet-module__lead + * {
+  @apply mt-10;
+}
+
 .pet-module__subtitle {
-  @apply text-2xl font-medium md:text-3xl;
+  @apply font-extrabold;
+  font-size: var(--pet-subtitle-size);
 }
 
 /* ───────── 02 · Investigación ───────── */
@@ -596,7 +718,7 @@
 }
 
 .pet-card__title {
-  @apply text-2xl font-medium;
+  @apply text-2xl font-extrabold;
 }
 
 .pet-card__text {
@@ -606,6 +728,9 @@
 /* Benchmark: tabla real, con desplazamiento lateral en pantallas chicas */
 .pet-bench {
   @apply overflow-x-auto rounded-[28px] border;
+  /* Un fondo un poco más claro que el de la página, para que la tabla se
+     distinga */
+  background: rgb(171 196 255 / 0.08);
   border-color: var(--pet-line);
 }
 
@@ -615,7 +740,7 @@
 
 .pet-bench__corner,
 .pet-bench__brand {
-  @apply border-b p-6 align-bottom text-lg font-medium;
+  @apply border-b px-6 py-4 align-bottom text-lg font-extrabold;
   border-color: var(--pet-line);
 }
 
@@ -624,21 +749,13 @@
   color: var(--pet-mute);
 }
 
-.pet-bench__row {
-  transition: background-color 0.3s ease;
-}
-
-.pet-bench__row:hover {
-  background: rgb(171 196 255 / 0.06);
-}
-
 .pet-bench__feature {
-  @apply border-b p-6 text-lg font-medium;
+  @apply border-b px-6 py-3 text-lg font-extrabold;
   border-color: var(--pet-line);
 }
 
 .pet-bench__cell {
-  @apply border-b p-6 align-top;
+  @apply border-b px-6 py-3 text-center align-top;
   border-color: var(--pet-line);
 }
 
@@ -646,34 +763,26 @@
   @apply border-b-0;
 }
 
+/* Estado de cada celda en una píldora: sí (lima), en parte (azul tenue), no y sin dato (borde) */
 .pet-bench__badge {
-  @apply inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-base font-medium;
+  @apply inline-flex items-center rounded-full px-4 py-1 text-base font-extrabold;
 }
 
 .pet-bench__badge--yes {
   background: var(--pet-lime);
-  border-color: var(--pet-lime);
   color: var(--pet-night);
 }
 
 .pet-bench__badge--partial {
-  background: var(--pet-peri);
-  border-color: var(--pet-peri);
-  color: var(--pet-night);
+  background: rgb(171 196 255 / 0.2);
+  color: var(--pet-peri);
 }
 
-.pet-bench__badge--no {
-  border-color: rgb(171 196 255 / 0.5);
-}
-
+.pet-bench__badge--no,
 .pet-bench__badge--unknown {
-  @apply border-dashed;
-  border-color: rgb(171 196 255 / 0.5);
+  @apply border;
+  border-color: var(--pet-line);
   color: var(--pet-mute);
-}
-
-.pet-bench__icon {
-  @apply size-4;
 }
 
 .pet-bench__note {
@@ -681,93 +790,138 @@
   color: var(--pet-mute);
 }
 
-/* Hallazgos en collage de formas (referencia: Quantitative Research) */
+/* Hallazgos en collage de formas (referencia: Quantitative Research): una
+   cuadrícula de 5 × 2 con círculos, arcos, píldoras y fotos de mascotas,
+   para que el módulo entero quepa en una pantalla. En celular, una columna */
 .pet-collage {
-  @apply grid grid-cols-1 gap-4 md:grid-cols-5 md:grid-rows-[280px_280px];
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:grid-rows-[repeat(2,minmax(0,1fr))];
+  /* El texto y los rellenos de las formas escalan con el ancho del collage,
+     para que todo quepa sin desbordar */
+  container-type: inline-size;
+}
+
+@media (min-width: 1024px) {
+  .pet-collage {
+    /* Celdas cuadradas: el alto de cada fila sigue al ancho de columna */
+    aspect-ratio: 5 / 2;
+  }
 }
 
 .pet-collage__item {
-  @apply flex flex-col justify-center gap-3 rounded-[32px] p-8 text-lg leading-snug font-medium;
+  @apply flex min-h-0 flex-col items-center justify-center gap-3 rounded-[32px] p-7 text-center text-lg leading-snug font-medium;
+  /* Las líneas se reparten parejas: nunca queda una palabra sola abajo */
+  text-wrap: balance;
+}
+
+@container (min-width: 1px) {
+  .pet-collage__item {
+    font-size: clamp(14px, round(down, 1.7cqw, 2px), 20px);
+    padding: clamp(12px, 2cqw, 28px);
+    gap: 0.5em;
+  }
+
+  .pet-collage__number {
+    font-size: 0.9em;
+  }
+
+  .pet-collage__item--finding-3 {
+    font-size: clamp(14px, round(down, 1.7cqw, 2px), 22px);
+  }
 }
 
 .pet-collage__number {
-  @apply text-base font-extrabold;
+  @apply flex items-center gap-2 text-base font-extrabold;
 }
 
-.pet-collage__item--circle {
+.pet-collage__item--finding-0,
+.pet-collage__item--finding-2 {
   background: var(--pet-indigo);
 }
 
-.pet-collage__item--arch {
+.pet-collage__item--finding-1 {
   background: var(--pet-peri);
   color: var(--pet-night);
 }
 
-.pet-collage__item--pill {
+.pet-collage__item--finding-3 {
   background: var(--pet-lime);
   color: var(--pet-night);
 }
 
-.pet-collage__item--leaf {
+.pet-collage__item--opportunity {
   background: var(--pet-cloud);
   color: var(--pet-night);
 }
 
-.pet-collage__item--square {
-  @apply border;
-  background: var(--pet-deep);
-  border-color: var(--pet-line);
+.pet-collage__photo {
+  @apply relative aspect-square overflow-hidden rounded-full lg:aspect-auto;
 }
 
-.pet-collage__deco {
-  @apply hidden items-center justify-center md:flex;
+.pet-collage__img {
+  @apply size-full object-cover;
 }
 
-.pet-burst {
-  @apply size-56;
-  fill: var(--pet-lime);
+.pet-collage__photo--0 .pet-collage__img {
+  object-position: 45% 50%;
 }
 
-.pet-collage__spin {
-  @apply inline-flex size-60;
+.pet-collage__photo--1 {
+  background: var(--pet-indigo);
 }
 
-.pet-collage__spin .pet-flower {
+/* Perro recortado: el color es el fondo y él se asoma desde abajo */
+.pet-collage__photo--1 .pet-collage__img {
+  @apply object-contain;
+  object-position: 50% 100%;
+  transform: scale(0.82);
+  transform-origin: 50% 100%;
+}
+
+.pet-collage__photo--portrait .pet-collage__img {
+  object-position: 52% 40%;
+}
+
+.pet-collage__media {
   @apply size-full;
+  background: #3a3d55;
 }
 
-@media (min-width: 768px) {
-  .pet-collage__item--circle {
-    @apply rounded-full px-10 text-center;
+@media (min-width: 1024px) {
+  .pet-collage__item--finding-0 {
+    @apply rounded-full text-center;
     grid-area: 1 / 1;
   }
 
-  .pet-collage__deco--burst {
+  .pet-collage__photo--0 {
     grid-area: 1 / 2;
   }
 
-  .pet-collage__item--arch {
-    @apply rounded-t-full rounded-b-[32px] px-8 pt-16;
-    grid-area: 1 / 3;
+  .pet-collage__item--finding-3 {
+    @apply rounded-full px-[10%] text-center;
+    grid-area: 1 / 3 / 2 / 5;
   }
 
-  .pet-collage__item--pill {
-    @apply rounded-full px-16;
-    grid-area: 1 / 4 / 2 / 6;
+  .pet-collage__item--finding-2 {
+    @apply rounded-t-full rounded-b-[32px] pt-[18%];
+    grid-area: 1 / 5;
   }
 
-  .pet-collage__item--leaf {
-    @apply rounded-tl-[140px] rounded-br-[140px] px-10;
+  .pet-collage__item--finding-1 {
+    @apply rounded-tl-full rounded-tr-full rounded-br-[32px] rounded-bl-full px-[12%];
     grid-area: 2 / 1;
   }
 
-  .pet-collage__deco--flower {
+  .pet-collage__item--opportunity {
+    @apply rounded-[32px];
+    grid-area: 2 / 4;
+  }
+
+  .pet-collage__photo--1 {
     grid-area: 2 / 2 / 3 / 4;
   }
 
-  .pet-collage__item--square {
-    @apply px-12;
-    grid-area: 2 / 4 / 3 / 6;
+  .pet-collage__photo--portrait {
+    grid-area: 2 / 5;
   }
 }
 
@@ -792,23 +946,22 @@
   color: var(--pet-cloud);
 }
 
-.pet-chip--indigo {
-  background: var(--pet-indigo);
-  color: var(--pet-cloud);
-}
-
 /* ───────── 03 · Usuario ───────── */
 .pet-persona {
   @apply grid items-center gap-12 md:grid-cols-[5fr_7fr] md:gap-16;
 }
 
 .pet-persona__photo {
-  @apply aspect-[4/5] overflow-hidden rounded-t-full rounded-b-[32px];
+  @apply relative aspect-[4/5] overflow-hidden rounded-t-full rounded-b-[32px];
   background: var(--pet-peri);
 }
 
 .pet-persona__media {
-  @apply h-full w-full;
+  @apply object-contain;
+  object-position: 50% 100%;
+  /* La mujer se asoma desde abajo del arco, sin que el arco le corte la cabeza */
+  transform: scale(0.88);
+  transform-origin: 50% 100%;
 }
 
 .pet-persona__body {
@@ -837,7 +990,7 @@
 }
 
 .pet-persona__block-title {
-  @apply mb-3 text-xl font-medium;
+  @apply mb-3 text-xl font-extrabold;
 }
 
 .pet-list {
@@ -856,24 +1009,37 @@
 
 /* Mapa de empatía: cuatro cuadrantes cruzados por dos diagonales */
 .pet-empathy {
-  @apply relative grid gap-10 md:grid-cols-[1fr_auto_1fr] md:grid-rows-[auto_auto_auto] md:gap-x-12 md:gap-y-8;
+  @apply relative grid gap-6 md:grid-cols-[1fr_auto_1fr] md:grid-rows-[auto_auto_auto] md:gap-x-10 md:gap-y-7;
 }
 
 .pet-empathy__line {
-  @apply absolute top-1/2 left-0 hidden h-px w-full md:block;
+  @apply absolute top-1/2 left-[15%] hidden h-px w-[70%] md:block;
+  /* Más cortas que el módulo: terminan antes de llegar al título de arriba */
   background: var(--pet-line);
 }
 
+.pet-empathy__fill {
+  @apply absolute inset-0;
+  background: var(--pet-lime);
+  opacity: 0.6;
+  /* Empieza sin largo; el scroll la hace crecer desde el centro */
+  transform: scaleX(0);
+}
+
 .pet-empathy__line--a {
-  rotate: 16deg;
+  rotate: 30deg;
 }
 
 .pet-empathy__line--b {
-  rotate: -16deg;
+  rotate: -30deg;
 }
 
 .pet-empathy__center {
-  @apply relative mx-auto size-40 md:col-start-2 md:row-start-2 md:size-56;
+  @apply relative mx-auto size-32 md:col-start-2 md:row-start-2 md:size-40;
+}
+
+.pet-empathy__spin {
+  @apply block size-full;
 }
 
 .pet-empathy__center .pet-flower {
@@ -881,8 +1047,7 @@
 }
 
 .pet-empathy__block {
-  @apply relative flex flex-col gap-3 rounded-[28px] p-6 text-center;
-  background: rgb(11 12 36 / 0.88);
+  @apply relative flex flex-col gap-3 p-4 text-center;
 }
 
 .pet-empathy__block--0 {
@@ -902,94 +1067,96 @@
 }
 
 .pet-empathy__title {
-  @apply text-2xl font-medium;
+  @apply text-xl font-extrabold;
   color: var(--pet-lime);
 }
 
 .pet-empathy__items {
-  @apply flex flex-col gap-1.5 text-base;
+  @apply flex flex-col gap-2 text-base;
   color: var(--pet-mute);
-}
-
-.pet-insight {
-  @apply flex flex-col gap-6;
-}
-
-.pet-insight__text {
-  @apply max-w-5xl;
 }
 
 /* Customer journey: en computador queda fijo y la etapa activa avanza */
 .pet-journey {
-  @apply flex flex-col gap-10;
+  @apply flex flex-col gap-16;
 }
 
 .pet-journey__head {
   @apply flex flex-col gap-4;
 }
 
-.pet-journey__board {
-  @apply relative;
+/* Customer journey como curva de emoción: la línea sube y baja según cómo se
+   siente la persona; debajo, cada etapa con su oportunidad */
+.pet-curve {
+  @apply flex flex-col gap-8;
 }
 
-.pet-journey__highlight {
-  @apply absolute top-0 left-0 hidden h-16 w-1/6 px-1.5 lg:block;
+.pet-curve__plot {
+  @apply relative mb-6 hidden h-44 lg:block;
 }
 
-.pet-journey__highlight::before {
-  @apply block h-full rounded-full content-[''];
-  background: var(--pet-peri);
+.pet-curve__svg {
+  @apply absolute inset-0 size-full overflow-visible;
 }
 
-.pet-journey__stages {
-  @apply relative grid gap-6 sm:grid-cols-2 lg:grid-cols-6 lg:gap-0;
+.pet-curve__axis {
+  stroke: var(--pet-line);
+  stroke-width: 1;
+  stroke-dasharray: 4 6;
 }
 
-.pet-journey__stage {
-  @apply flex flex-col gap-4 lg:px-1.5;
-  transition: opacity 0.5s ease;
+.pet-curve__path {
+  fill: none;
+  stroke: var(--pet-lime);
+  stroke-width: 3;
+  stroke-linecap: round;
 }
 
-.pet-journey__name {
-  @apply flex h-16 items-center gap-2 rounded-full px-5 text-base leading-tight font-medium;
-  background: var(--pet-deep);
-  transition: color 0.4s ease;
+.pet-curve__point {
+  @apply absolute flex size-0 items-center justify-center;
 }
 
-.pet-journey__number {
-  @apply text-base font-extrabold;
-  color: var(--pet-lime);
-  transition: color 0.4s ease;
+.pet-curve__dot {
+  @apply absolute size-4 rounded-full;
+  background: var(--pet-lime);
+  box-shadow: 0 0 0 6px var(--pet-night);
 }
 
-.pet-journey__card {
-  @apply flex flex-col gap-3 rounded-[28px] border p-5;
-  border-color: var(--pet-line);
-  transition:
-    border-color 0.4s ease,
-    translate 0.6s var(--pet-spring);
-}
-
-.pet-journey__action {
-  @apply text-base font-medium;
-}
-
-.pet-journey__key {
-  @apply text-base;
+.pet-curve__emotion {
+  @apply absolute bottom-full mb-4 text-center text-base leading-tight whitespace-nowrap;
   color: var(--pet-peri);
 }
 
-.pet-journey__thought {
-  @apply text-base italic;
-  color: var(--pet-mute);
+.pet-curve__emotion[data-below] {
+  @apply top-full bottom-auto mt-4 mb-0;
 }
 
-.pet-journey__emotion,
-.pet-journey__opportunity {
-  @apply text-base;
+.pet-curve__stages {
+  @apply grid gap-8 sm:grid-cols-2 lg:grid-cols-6 lg:gap-4;
 }
 
-.pet-journey__opportunity {
+.pet-curve__stage {
+  @apply flex flex-col items-start gap-3 lg:items-center lg:text-center;
+}
+
+.pet-curve__number {
+  @apply flex size-8 items-center justify-center rounded-full text-base font-extrabold;
+  background: var(--pet-lime);
+  color: var(--pet-night);
+}
+
+.pet-curve__name {
+  @apply text-xl leading-tight font-extrabold;
+}
+
+/* La emoción como etiqueta: solo en pantallas sin curva */
+.pet-curve__chip {
+  @apply rounded-full border px-3 py-1 text-base lg:hidden;
+  border-color: var(--pet-peri);
+}
+
+.pet-curve__opportunity {
+  @apply text-base leading-snug;
   color: var(--pet-lime);
 }
 
@@ -997,158 +1164,16 @@
   @apply max-w-3xl text-xl font-medium md:text-2xl;
 }
 
-@media (min-width: 1024px) and (min-height: 720px) {
-  .pet-journey {
-    @apply min-h-svh justify-center py-16;
-  }
-
-  .pet-journey__stage .pet-journey__name {
-    background: transparent;
-  }
-
-  .pet-journey:has([data-current]) .pet-journey__stage:not([data-current]) {
-    opacity: 0.55;
-  }
-
-  .pet-journey__stage[data-current] .pet-journey__name,
-  .pet-journey__stage[data-current] .pet-journey__number {
-    color: var(--pet-night);
-  }
-
-  .pet-journey__stage[data-current] .pet-journey__card {
-    @apply -translate-y-2;
-    border-color: var(--pet-peri);
-  }
-}
-
-/* ───────── 04 · Solución ───────── */
-.pet-solution {
-  @apply grid items-center gap-12 lg:grid-cols-[7fr_5fr];
-}
-
-.pet-solution__problems {
-  @apply flex flex-col gap-6;
-}
-
-.pet-solution__list {
-  @apply flex flex-col gap-3;
-}
-
-.pet-solution__row {
-  @apply flex flex-wrap items-center gap-x-4 gap-y-1 rounded-[32px] p-2 pr-6 text-lg;
-  background: var(--pet-deep);
-}
-
-.pet-solution__number {
-  @apply flex size-12 shrink-0 items-center justify-center rounded-full text-base font-extrabold;
-  background: var(--pet-peri);
-  color: var(--pet-night);
-}
-
-.pet-solution__problem {
-  color: var(--pet-mute);
-}
-
-.pet-solution__arrow {
-  @apply size-5;
-  color: var(--pet-lime);
-}
-
-.pet-solution__opportunity {
-  @apply font-medium;
-  color: var(--pet-lime);
-}
-
-.pet-solution__circle {
-  @apply mx-auto flex aspect-square w-full max-w-[520px] flex-col items-center justify-center gap-4 rounded-full p-12 text-center md:p-16;
-  background: var(--pet-indigo);
-}
-
-.pet-solution__label {
-  @apply text-5xl font-extrabold md:text-6xl;
-  color: var(--pet-lime);
-}
-
-.pet-solution__text {
-  @apply text-lg leading-relaxed md:text-xl;
-}
-
-/* Quién participa: formas de la marca que giran con el scroll */
-.pet-actors {
-  @apply grid gap-12 md:grid-cols-3;
-}
-
-.pet-actor {
-  @apply flex flex-col gap-3;
-}
-
-.pet-actor__shape {
-  @apply relative mb-4 block size-32 md:size-40;
-}
-
-.pet-actor__shape--0 {
-  @apply rounded-full border-[24px];
-  border-color: var(--pet-peri);
-}
-
-.pet-actor__shape--0::after {
-  @apply absolute -top-6 left-1/2 size-6 -translate-x-1/2 rounded-full content-[''];
-  background: var(--pet-lime);
-}
-
-.pet-actor__shape--1 {
-  @apply rounded-[40%];
-  background: var(--pet-lime);
-}
-
-.pet-actor__shape--2 {
-  @apply rounded-full;
-  background: var(--pet-indigo);
-  clip-path: inset(30% 0 30% 0 round 999px);
-}
-
-.pet-actor__name {
-  @apply text-3xl font-extrabold;
-}
-
-.pet-actor__role {
-  @apply max-w-xs text-lg;
-  color: var(--pet-mute);
-}
-
-.pet-goals {
-  @apply grid gap-16 lg:grid-cols-2;
-}
-
-.pet-goals__list {
-  @apply mt-6 flex flex-col;
-}
-
-.pet-goals__item {
-  @apply flex gap-4 border-b py-4 text-lg;
-  border-color: var(--pet-line);
-}
-
-.pet-goals__number {
-  @apply font-extrabold;
-  color: var(--pet-lime);
-}
-
-.pet-goals .pet-chips {
-  @apply mt-6;
-}
-
 /* ───────── 05 · Arquitectura ───────── */
+/* Site map: PetRide arriba y cuatro ramas hacia abajo. Cada rama lleva su
+   entrada y sus pantallas apiladas, unidas por una línea fina */
 .pet-sitemap {
-  @apply relative mt-6 grid gap-10 lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-2 lg:gap-x-0 lg:gap-y-16;
+  @apply relative flex flex-col items-center gap-8;
+  --pet-connector: rgb(171 196 255 / 0.45);
 }
 
-.pet-sitemap__center {
-  @apply mx-auto flex flex-col items-center gap-3 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center;
-}
-
-.pet-sitemap__center .pet-flower {
-  @apply size-36;
+.pet-sitemap__root {
+  @apply relative flex flex-col items-center;
 }
 
 .pet-sitemap__brand {
@@ -1156,270 +1181,343 @@
   color: var(--pet-lime);
 }
 
-.pet-sitemap__group {
-  @apply flex flex-col items-start gap-4 lg:flex-row lg:items-center;
+/* La línea vertical sale de PetRide y baja hasta las ramas; la flor de la
+   huella queda en medio de esa línea */
+.pet-sitemap__stem {
+  @apply relative flex flex-col items-center py-6;
 }
 
-.pet-sitemap__trunk {
-  @apply hidden h-px min-w-16 flex-1 lg:block;
-  background: var(--pet-peri);
+.pet-sitemap__stem::before {
+  @apply absolute top-0 bottom-0 left-1/2 w-px content-[''];
+  background: var(--pet-connector);
+}
+
+.pet-sitemap__stem .pet-flower {
+  @apply relative size-28;
+}
+
+.pet-sitemap__branches {
+  @apply relative grid w-full gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4;
+}
+
+.pet-sitemap__group {
+  @apply relative flex flex-col items-center gap-5;
 }
 
 .pet-sitemap__node {
-  @apply shrink-0 rounded-full px-6 py-3 text-lg font-medium;
+  @apply rounded-full px-6 py-3 text-center text-lg font-extrabold;
   background: var(--pet-indigo);
 }
 
 .pet-sitemap__screens {
-  @apply flex flex-col gap-2 border-l pl-4 lg:shrink-0;
-  border-color: var(--pet-line);
+  @apply relative flex flex-col items-center gap-2;
+}
+
+.pet-sitemap__screens::before {
+  @apply absolute top-[-20px] bottom-4 left-1/2 w-px content-[''];
+  background: var(--pet-line);
 }
 
 .pet-sitemap__screen {
-  @apply relative w-max rounded-full border px-4 py-1.5 text-base;
+  @apply relative rounded-full border px-4 py-1.5 text-center text-base;
   border-color: var(--pet-line);
+  background: var(--pet-night);
   color: var(--pet-mute);
-  transition:
-    border-color 0.3s ease,
-    color 0.3s ease;
 }
 
-.pet-sitemap__screen:hover {
-  border-color: var(--pet-peri);
-  color: var(--pet-cloud);
+/* Las uniones solo desde 1024 px, cuando las cuatro ramas van en fila: del
+   tronco sale una barra, y de ella baja cada rama con una flecha. Los extremos
+   se doblan redondeados y las uniones llegan siempre a su rama. */
+@media (min-width: 1024px) {
+  .pet-sitemap__group::before {
+    @apply absolute -top-8 -right-2 -left-2 h-8 content-[''];
+    border-top: 1px solid var(--pet-connector);
+  }
+
+  .pet-sitemap__group::after {
+    @apply absolute -top-8 left-1/2 h-8 w-px content-[''];
+    background: var(--pet-connector);
+  }
+
+  .pet-sitemap__group:first-child::before {
+    @apply left-1/2 rounded-tl-xl;
+    border-left: 1px solid var(--pet-connector);
+  }
+
+  .pet-sitemap__group:last-child::before {
+    @apply right-1/2 rounded-tr-xl;
+    border-right: 1px solid var(--pet-connector);
+  }
+
+  .pet-sitemap__group:first-child::after,
+  .pet-sitemap__group:last-child::after {
+    @apply hidden;
+  }
+
+  .pet-sitemap__node {
+    @apply relative;
+  }
+
+  .pet-sitemap__node::before {
+    @apply absolute -top-[5px] left-1/2 -translate-x-1/2 content-[''];
+    width: 0;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    border-top: 5px solid var(--pet-connector);
+  }
+}
+
+/* El site map crece al llegar: el tronco baja y la flor aparece en él, la barra
+   se abre hacia los lados, de ella caen las ramas con su flecha, y bajo cada
+   rama la línea de pantallas va creciendo mientras las píldoras nacen una
+   tras otra. Todo con retrasos encadenados, para que línea y píldoras avancen
+   a la vez. Solo se esconde cuando el movimiento lo prepara (data-pending). */
+.pet-sitemap {
+  --lines-end: 0.9s;
+}
+
+.pet-sitemap__group {
+  --g: 0;
+}
+
+.pet-sitemap__group:nth-child(2) {
+  --g: 1;
+}
+
+.pet-sitemap__group:nth-child(3) {
+  --g: 2;
+}
+
+.pet-sitemap__group:nth-child(4) {
+  --g: 3;
+}
+
+.pet-sitemap__screen {
+  --k: 0;
+}
+
+.pet-sitemap__screen:nth-child(2) {
+  --k: 1;
+}
+
+.pet-sitemap__screen:nth-child(3) {
+  --k: 2;
+}
+
+.pet-sitemap__screen:nth-child(4) {
+  --k: 3;
+}
+
+.pet-sitemap__screen:nth-child(5) {
+  --k: 4;
+}
+
+.pet-sitemap__brand {
+  transition: opacity 0.5s ease;
+}
+
+.pet-sitemap__stem::before {
+  transform-origin: top;
+  transition: transform 0.8s linear 0.1s;
+}
+
+.pet-sitemap__stem .pet-flower {
+  transition:
+    opacity 0.4s ease 0.45s,
+    scale 0.6s var(--pet-spring) 0.45s;
+}
+
+.pet-sitemap__node {
+  transition:
+    opacity 0.35s ease calc(var(--lines-end) + var(--g) * 0.08s),
+    scale 0.45s var(--pet-spring) calc(var(--lines-end) + var(--g) * 0.08s);
+}
+
+.pet-sitemap__screens::before {
+  transform-origin: top;
+  transition: transform 1s linear
+    calc(var(--lines-end) + 0.2s + var(--g) * 0.08s);
+}
+
+.pet-sitemap__screen {
+  transition:
+    opacity 0.35s ease
+      calc(var(--lines-end) + 0.3s + var(--g) * 0.08s + var(--k) * 0.15s),
+    translate 0.45s var(--pet-glide)
+      calc(var(--lines-end) + 0.3s + var(--g) * 0.08s + var(--k) * 0.15s);
 }
 
 @media (min-width: 1024px) {
-  .pet-sitemap__group--0,
-  .pet-sitemap__group--1 {
-    @apply col-start-1 flex-row-reverse justify-start;
+  .pet-sitemap {
+    --lines-end: 1.55s;
   }
 
-  .pet-sitemap__group--0 .pet-sitemap__trunk,
-  .pet-sitemap__group--1 .pet-sitemap__trunk {
-    @apply origin-right;
+  .pet-sitemap__group::before {
+    transition: transform 0.4s ease 1.25s;
   }
 
-  .pet-sitemap__group--0 .pet-sitemap__screens,
-  .pet-sitemap__group--1 .pet-sitemap__screens {
-    @apply items-end border-r border-l-0 pr-4 pl-0;
+  .pet-sitemap__group:nth-child(-n + 2)::before {
+    transform-origin: right center;
   }
 
-  .pet-sitemap__group--2,
-  .pet-sitemap__group--3 {
-    @apply col-start-3;
+  .pet-sitemap__group:nth-child(n + 3)::before {
+    transform-origin: left center;
   }
 
-  .pet-sitemap__group--2 .pet-sitemap__trunk,
-  .pet-sitemap__group--3 .pet-sitemap__trunk {
-    @apply origin-left;
+  .pet-sitemap__group:nth-child(2)::before,
+  .pet-sitemap__group:nth-child(3)::before {
+    transition-delay: 0.95s;
   }
 
-  .pet-sitemap__group--0,
-  .pet-sitemap__group--2 {
-    @apply row-start-1;
+  .pet-sitemap__group::after {
+    transform-origin: top;
+    transition: transform 0.3s ease 1.3s;
   }
 
-  .pet-sitemap__group--1,
-  .pet-sitemap__group--3 {
-    @apply row-start-2;
+  .pet-sitemap__node::before {
+    transition: opacity 0.2s ease 1.4s;
   }
 }
 
-/* User flows: pestañas, pasos que son botones y su detalle */
-.pet-flows {
-  @apply mt-4 flex flex-col gap-10;
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__brand {
+  opacity: 0;
 }
 
-.pet-flows__tabs {
-  @apply flex max-w-full flex-wrap gap-1.5 self-start rounded-[28px] p-1.5;
-  background: var(--pet-deep);
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__stem::before {
+  transform: scaleY(0);
 }
 
-.pet-flows__tab {
-  @apply flex cursor-pointer items-center gap-2 rounded-full px-5 py-3 text-base font-medium;
-  color: var(--pet-mute);
-  transition:
-    background-color 0.35s var(--pet-glide),
-    color 0.35s ease;
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__stem .pet-flower {
+  opacity: 0;
+  scale: 0.3;
 }
 
-.pet-flows__tab:hover {
-  color: var(--pet-cloud);
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__group::before {
+  transform: scaleX(0);
 }
 
-.pet-flows__tab--current {
-  background: var(--pet-lime);
-  color: var(--pet-night);
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__group::after {
+  transform: scaleY(0);
 }
 
-.pet-flows__tab--current:hover {
-  color: var(--pet-night);
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__node {
+  opacity: 0;
+  scale: 0.8;
 }
 
-.pet-flows__tab-number {
-  @apply font-extrabold;
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__node::before {
+  opacity: 0;
 }
 
-.pet-flows__panel {
-  @apply flex flex-col gap-8;
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__screens::before {
+  transform: scaleY(0);
 }
 
-.pet-flows__goal {
-  @apply max-w-3xl text-lg;
-  color: var(--pet-mute);
+.pet-sitemap[data-pending]:not([data-drawn]) .pet-sitemap__screen {
+  opacity: 0;
+  translate: 0 8px;
 }
 
-.pet-flows__track {
-  @apply flex flex-col items-start gap-6 md:flex-row md:flex-wrap md:gap-x-0 md:gap-y-10;
+/* User flows como diagramas de flujo verticales, uno junto al otro: cápsula de
+   inicio, rectángulos, rombos para las decisiones y flechas. Cada dibujo
+   escala con su columna, así que no hay scroll lateral. */
+.pet-flowchart {
+  @apply flex flex-col gap-14;
 }
 
-.pet-flows__step {
-  @apply relative flex flex-col items-start gap-3 md:pr-12;
-  animation: pet-node-in 0.6s var(--pet-spring) both;
+.pet-flowchart__flow {
+  @apply m-0 overflow-x-auto;
 }
 
-.pet-flows__step:not(:last-child)::after {
-  @apply absolute top-6 right-2 hidden h-0.5 w-8 origin-left content-[''] md:block;
-  background: var(--pet-line);
-  animation: pet-wire-in 0.5s var(--pet-glide) both;
-  animation-delay: inherit;
-}
-
-.pet-flows__step:nth-child(2) {
-  animation-delay: 60ms;
-}
-.pet-flows__step:nth-child(3) {
-  animation-delay: 120ms;
-}
-.pet-flows__step:nth-child(4) {
-  animation-delay: 180ms;
-}
-.pet-flows__step:nth-child(5) {
-  animation-delay: 240ms;
-}
-.pet-flows__step:nth-child(6) {
-  animation-delay: 300ms;
-}
-.pet-flows__step:nth-child(7) {
-  animation-delay: 360ms;
-}
-.pet-flows__step:nth-child(8) {
-  animation-delay: 420ms;
-}
-
-.pet-flows__node {
-  @apply inline-flex h-12 cursor-pointer items-center gap-2 rounded-full border px-5 text-base font-medium whitespace-nowrap;
-  border-color: rgb(171 196 255 / 0.4);
-  background: var(--pet-night);
-  transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    color 0.3s ease,
-    translate 0.4s var(--pet-spring),
-    scale 0.4s var(--pet-spring);
-}
-
-.pet-flows__node:hover {
-  @apply -translate-y-0.5;
-  border-color: var(--pet-peri);
-  background: var(--pet-deep);
-}
-
-.pet-flows__node--decision {
-  @apply rounded-2xl border-dashed;
-  border-color: rgb(221 243 68 / 0.6);
-}
-
-.pet-flows__node--end {
-  background: var(--pet-indigo);
-  border-color: var(--pet-indigo);
-}
-
-.pet-flows__node--current,
-.pet-flows__node--current:hover {
-  @apply scale-105 border-solid;
-  background: var(--pet-lime);
-  border-color: var(--pet-lime);
-  color: var(--pet-night);
-}
-
-.pet-flows__icon {
-  @apply size-4 shrink-0;
-}
-
-.pet-flows__branch {
-  @apply ml-4 inline-flex items-center gap-1.5 text-base;
-  color: var(--pet-peri);
-}
-
-.pet-flows__branch-icon {
-  @apply size-4;
-}
-
-.pet-flows__detail {
-  @apply max-w-3xl rounded-[28px] border p-8;
-  border-color: var(--pet-line);
-  background: var(--pet-deep);
-}
-
-.pet-flows__detail-body {
-  @apply flex flex-col gap-2;
-  animation: pet-detail-in 0.5s var(--pet-glide) both;
-}
-
-.pet-flows__detail-title {
-  @apply text-2xl font-medium;
+.pet-flowchart__name {
+  @apply mb-4 text-2xl font-extrabold;
   color: var(--pet-lime);
 }
 
-.pet-flows__detail-text {
-  @apply text-lg leading-relaxed;
+/* En pantallas chicas el diagrama conserva su tamaño y se desliza de lado */
+.pet-flowchart__svg {
+  @apply block h-auto w-full min-w-[760px];
+}
+
+.pet-flowchart__link,
+.pet-flowchart__alt {
+  fill: none;
+  stroke: var(--pet-peri);
+  stroke-width: 1.4;
+}
+
+.pet-flowchart__alt {
+  stroke-dasharray: 4 4;
+  stroke-opacity: 0.7;
+}
+
+.pet-flowchart__reveal {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 10;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.pet-flowchart__head {
+  fill: none;
+  stroke: var(--pet-peri);
+  stroke-width: 1.4;
+}
+
+.pet-flowchart__step {
+  fill: var(--pet-deep);
+  stroke: rgb(171 196 255 / 0.4);
+}
+
+.pet-flowchart__step--end {
+  fill: var(--pet-indigo);
+  stroke: var(--pet-indigo);
+}
+
+.pet-flowchart__decision {
+  fill: var(--pet-night);
+  stroke: var(--pet-lime);
+  stroke-width: 1.4;
+}
+
+.pet-flowchart__label {
+  @apply font-medium;
+  font-size: 11.5px;
+  text-anchor: middle;
+  fill: var(--pet-cloud);
+}
+
+.pet-flowchart__label--decision {
+  fill: var(--pet-lime);
+}
+
+.pet-flowchart__tag {
+  font-size: 10.5px;
+  fill: var(--pet-peri);
+}
+
+.pet-flowchart__tag--center {
+  text-anchor: start;
+}
+
+.pet-flowchart__leaf {
+  fill: var(--pet-night);
+  stroke: var(--pet-lime);
+  stroke-opacity: 0.7;
+  stroke-dasharray: 4 3;
+}
+
+.pet-flowchart__leaf-text {
+  font-size: 11px;
+  text-anchor: middle;
+  fill: var(--pet-lime);
 }
 
 /* ───────── 06 · Diseño ───────── */
-.pet-wall {
-  @apply relative flex flex-col gap-8;
-}
-
-.pet-wall__copy {
-  @apply flex flex-col gap-4;
-}
-
-.pet-wall__frame {
-  @apply relative h-[560px] overflow-hidden rounded-[32px] md:h-[720px];
-  background: var(--pet-deep);
-}
-
-.pet-wall__grid {
-  @apply absolute -inset-x-[20%] -inset-y-[30%] grid grid-cols-4 gap-6;
-  rotate: -14deg;
-}
-
-.pet-wall__column {
-  @apply flex flex-col gap-6;
-}
-
-.pet-wall__phone {
-  @apply block aspect-[9/19] rounded-[32px] border-[6px];
-  border-color: var(--pet-night);
-  background: var(--pet-screen);
-}
-
-.pet-wall__phone:nth-child(3n) {
-  background: #b9bdcb;
-}
-
 /* Flow: pantallas grises señaladas con un conector que se dibuja */
 .pet-flowshow {
-  @apply relative flex flex-col gap-16 pt-24;
-}
-
-.pet-flowshow__ghost {
-  @apply pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 font-extrabold whitespace-nowrap select-none;
-  font-size: clamp(140px, 20vw, 320px);
-  line-height: 1;
-  color: rgb(171 196 255 / 0.07);
+  @apply relative flex flex-col gap-16;
 }
 
 .pet-flowshow__intro {
@@ -1438,30 +1536,85 @@
   stroke-dasharray: 1;
 }
 
-.pet-flowshow__step {
-  @apply relative grid items-center gap-8 md:grid-cols-2 md:gap-16;
+.pet-flowshow__steps {
+  @apply relative flex flex-col gap-24 md:gap-32;
 }
 
-.pet-flowshow__step--1 .pet-flowshow__text {
-  @apply md:order-first md:justify-self-end md:text-right;
+/* Composición editorial: cada pantalla tiene su lugar en el ancho
+   disponible. El texto va pegado a su pantalla, al lado o debajo. En
+   pantallas angostas todo se apila centrado */
+.pet-flowshow__step {
+  --pet-flow-scale: 0.6;
+  @apply relative flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:gap-12;
 }
 
 .pet-flowshow__phone {
-  @apply aspect-[9/19] w-full max-w-[280px] justify-self-center overflow-hidden rounded-[40px] border-[8px];
+  @apply relative shrink-0 overflow-hidden rounded-[40px] border-[8px];
+  width: calc(390px * var(--pet-flow-scale) + 16px);
+  height: calc(844px * var(--pet-flow-scale) + 16px);
   border-color: var(--pet-deep);
+  background: var(--pet-deep);
   box-shadow: 0 0 0 2px var(--pet-indigo);
 }
 
+@media (min-width: 1024px) {
+  /* Todas del mismo tamaño; lo que cambia es su lugar en el ancho */
+  .pet-flowshow__step {
+    --pet-flow-scale: 0.72;
+  }
+
+  /* 01 Mis mascotas: a la izquierda */
+  .pet-flowshow__step:nth-child(1) {
+    padding-left: 6%;
+  }
+
+  /* 02 Cámara: a la derecha */
+  .pet-flowshow__step:nth-child(2) {
+    @apply flex-row-reverse;
+    padding-right: 10%;
+  }
+
+  /* 03 Paso 1: hacia el centro */
+  .pet-flowshow__step:nth-child(3) {
+    padding-left: 26%;
+  }
+
+  /* 04 Paso 2: contra el borde derecho */
+  .pet-flowshow__step:nth-child(4) {
+    @apply flex-row-reverse;
+    padding-right: 4%;
+  }
+
+  /* 05 Carné: a la izquierda, con el texto debajo */
+  .pet-flowshow__step:nth-child(5) {
+    @apply flex-col items-start gap-8;
+    padding-left: 10%;
+  }
+
+  /* 06 Póster: pasado el centro */
+  .pet-flowshow__step:nth-child(6) {
+    padding-left: 40%;
+  }
+
+  /* 07 Actualizada: a la derecha */
+  .pet-flowshow__step:nth-child(7) {
+    @apply flex-row-reverse;
+    padding-right: 14%;
+  }
+
+  .pet-flowshow__step:nth-child(2) .pet-flowshow__text,
+  .pet-flowshow__step:nth-child(4) .pet-flowshow__text,
+  .pet-flowshow__step:nth-child(7) .pet-flowshow__text {
+    @apply text-right;
+  }
+}
+
 .pet-flowshow__screen {
-  background: var(--pet-screen);
-}
-
-.pet-flowshow__screen .pet-placeholder__label {
-  color: #3a3d55;
-}
-
-.pet-flowshow__step--0 .pet-flowshow__text {
-  @apply self-start;
+  @apply pointer-events-none absolute top-0 left-0 block border-0;
+  width: 390px;
+  height: 844px;
+  transform: scale(var(--pet-flow-scale));
+  transform-origin: top left;
 }
 
 .pet-flowshow__text {
@@ -1469,54 +1622,18 @@
 }
 
 .pet-flowshow__title {
-  @apply text-3xl font-extrabold;
+  @apply text-3xl font-extrabold text-balance;
 }
 
 .pet-flowshow__body {
-  @apply text-lg leading-relaxed;
+  @apply text-lg leading-relaxed text-pretty;
   color: var(--pet-mute);
 }
 
 /* Sistema de diseño: espacio reservado */
-.pet-system {
-  @apply relative pt-24;
-}
-
-.pet-system__ghost {
-  @apply pointer-events-none absolute top-0 left-0 font-extrabold whitespace-nowrap select-none;
-  font-size: clamp(140px, 20vw, 320px);
-  line-height: 1;
-  color: rgb(171 196 255 / 0.07);
-}
-
-.pet-system__frame {
-  @apply relative flex min-h-[420px] flex-col items-center justify-center gap-4 rounded-[32px] border-2 border-dashed p-10 text-center;
-  border-color: rgb(171 196 255 / 0.4);
-}
-
-.pet-system__icon {
-  @apply size-12;
-  color: var(--pet-lime);
-}
-
-.pet-system__title {
-  @apply text-4xl font-extrabold md:text-5xl;
-}
-
-.pet-system__text {
-  @apply text-lg;
-  color: var(--pet-mute);
-}
-
 @keyframes pet-spin {
   to {
     rotate: 360deg;
-  }
-}
-
-@keyframes pet-marquee {
-  to {
-    translate: -100% 0;
   }
 }
 
@@ -1534,21 +1651,10 @@
   }
 }
 
-@keyframes pet-detail-in {
-  from {
-    opacity: 0;
-    translate: 0 12px;
-  }
-}
-
 /* Celular: el submenú queda más pegado al borde */
 @media (max-width: 767px) {
   .pet-chapter {
     @apply pl-16;
-  }
-
-  .pet-marquee {
-    @apply -ml-16;
   }
 }
 
@@ -1559,4 +1665,39 @@
     animation: none !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Las columnas de las apps van centradas y del mismo ancho; la de lo que se
+   revisó queda a la izquierda para leerse como lista */
+.pet-bench__brand {
+  @apply w-[22%] text-center;
+}
+
+/* Logo de cada app en una ficha del color de su marca */
+.pet-bench__brand {
+  @apply text-base;
+}
+
+.pet-bench__logo {
+  @apply mx-auto mb-2 flex h-20 w-20 items-center justify-center overflow-hidden rounded-[24px];
+}
+
+.pet-bench__logo-img {
+  @apply h-full w-full object-cover;
+}
+
+.pet-bench__logo--cabify {
+  background: #6c37ff;
+}
+
+.pet-bench__logo--indrive {
+  background: #a9ea33;
+}
+
+.pet-bench__logo--uber {
+  @apply bg-white p-2;
+}
+
+.pet-bench__logo--uber .pet-bench__logo-img {
+  @apply object-contain;
 }

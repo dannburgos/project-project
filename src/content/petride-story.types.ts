@@ -1,3 +1,5 @@
+import type { PetDesignSystem } from '@/content/pet-design-system.types';
+
 // Contenido del caso de PetRide, contado con scroll libre. Cada capítulo
 // sale del documento de definición del producto.
 
@@ -12,10 +14,29 @@ export type PetListBlock = {
 };
 
 export type PetChapterHead = {
-  number: string;
-  ghost: string;
   title: string;
-  lead: string;
+  // El título puede quedar solo para lectores de pantalla y para el salto del
+  // menú, sin verse en la página
+  hideTitle?: boolean;
+  // La bajada es opcional: hay capítulos que abren solo con el título
+  lead?: string;
+};
+
+export type PetImage = {
+  src: string;
+  alt: string;
+};
+
+export type PetCollagePhoto = {
+  // Etiqueta del espacio gris mientras la foto no llega
+  label: string;
+  image?: PetImage;
+};
+
+export type PetCompetitorLogo = {
+  src: string;
+  alt: string;
+  tone: 'cabify' | 'uber' | 'indrive';
 };
 
 export type PetBenchmarkState = 'yes' | 'partial' | 'no' | 'unknown';
@@ -32,20 +53,11 @@ export type PetBenchmarkRow = {
 
 export type PetJourneyStage = {
   name: string;
-  action: string;
-  thought: string;
   emotion: string;
+  // Qué tan positiva es la emoción, de 1 (muy baja) a 5 (muy alta): da la
+  // altura del punto en la curva de emoción
+  level: number;
   opportunity: string;
-};
-
-export type PetProblem = {
-  problem: string;
-  opportunity: string;
-};
-
-export type PetActor = {
-  name: string;
-  role: string;
 };
 
 export type PetSiteGroup = {
@@ -61,19 +73,28 @@ export type PetFlowNode = {
   detail: string;
   // Camino alterno que sale de una decisión
   branch?: string;
+  // Paso al que vuelve ese camino alterno (el nombre de otro paso del flujo)
+  returnTo?: string;
 };
 
 export type PetUserFlow = {
-  number: string;
   name: string;
   goal: string;
   nodes: readonly PetFlowNode[];
 };
 
 export type PetFlowScreen = {
+  // Ruta de la pantalla en el prototipo (/prototypes/petride/screens/<key>)
+  key: string;
   label: string;
   title: string;
   text: string;
+};
+
+// Un flujo del prototipo mostrado en el caso: título y sus pantallas en orden
+export type PetFlowShow = {
+  title: string;
+  screens: readonly PetFlowScreen[];
 };
 
 export type PetrideStory = {
@@ -86,94 +107,67 @@ export type PetrideStory = {
     placeholder: string;
   };
   intro: {
-    eyebrow: string;
     wordmark: string;
+    // Logo de PetRide, que acompaña al nombre en la portada
+    logo: PetImage;
     tagline: string;
-    facts: readonly PetLabeledText[];
-    coverLabel: string;
-    marquee: readonly string[];
+    cover: PetImage;
     processTitle: string;
-    processLead: string;
     process: readonly PetLabeledText[];
   };
   research: {
     head: PetChapterHead;
-    problemLabel: string;
     problem: string;
     opportunity: PetLabeledText;
     method: PetLabeledText;
     benchmarkTitle: string;
-    benchmarkLead: string;
     benchmarkFeatureLabel: string;
     competitors: readonly string[];
+    // Logo de cada app, en el mismo orden que las columnas del benchmark
+    competitorLogos: readonly PetCompetitorLogo[];
     benchmarkStates: Record<PetBenchmarkState, string>;
     benchmark: readonly PetBenchmarkRow[];
-    benchmarkNote: string;
     findingsTitle: string;
     findings: readonly string[];
-    opportunitiesTitle: string;
-    opportunities: readonly string[];
+    // Espacios para fotos de mascotas dentro del collage de hallazgos
+    findingsPhotos: readonly PetCollagePhoto[];
+    // Retrato que cierra el collage, en el lugar de la flor
+    findingsPortrait: PetImage;
+    // Versión corta de la oportunidad para la tarjeta del collage
+    findingsOpportunity: string;
   };
   user: {
     head: PetChapterHead;
-    personaLabel: string;
     personaName: string;
     personaTags: readonly string[];
     personaBio: string;
-    personaPhotoLabel: string;
+    personaPhoto: PetImage;
     personaBlocks: readonly PetListBlock[];
-    hypothesisNote: string;
     empathyTitle: string;
     empathy: readonly PetListBlock[];
-    insightLabel: string;
-    insight: string;
     journeyTitle: string;
-    journeyLead: string;
     journeyLabels: {
-      action: string;
-      thought: string;
       emotion: string;
       opportunity: string;
     };
     journey: readonly PetJourneyStage[];
-    journeyInsight: string;
-  };
-  solution: {
-    head: PetChapterHead;
-    problemsTitle: string;
-    problems: readonly PetProblem[];
-    solutionLabel: string;
-    solution: string;
-    actorsTitle: string;
-    actors: readonly PetActor[];
-    goalsTitle: string;
-    goals: readonly string[];
-    mvpTitle: string;
-    mvp: readonly string[];
   };
   architecture: {
     head: PetChapterHead;
     siteMapTitle: string;
-    siteMapLead: string;
     siteMapCenter: string;
     siteMap: readonly PetSiteGroup[];
     flowsTitle: string;
     flowsLead: string;
     flowsHint: string;
-    branchLabel: string;
+    // Rótulos de las flechas que salen de una decisión
+    flowYes: string;
+    flowNo: string;
     flows: readonly PetUserFlow[];
   };
   design: {
-    head: PetChapterHead;
-    wireframesTitle: string;
-    wireframesLead: string;
-    wireframeCount: number;
-    flowGhost: string;
-    flowTitle: string;
-    flowLead: string;
-    flowScreens: readonly PetFlowScreen[];
-    systemGhost: string;
-    systemTitle: string;
-    systemText: string;
+    // Un bloque por flujo, uno debajo del otro
+    flowShows: readonly PetFlowShow[];
+    system: PetDesignSystem;
   };
 };

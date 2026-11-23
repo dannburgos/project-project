@@ -1,0 +1,707 @@
+/* Piezas del prototipo de PetRide: botones, encabezado, barra inferior,
+   campos, filas de mascota, estados y avisos */
+.petride-button {
+  @apply inline-flex h-14 cursor-pointer items-center justify-center gap-2 rounded-full px-6 text-base font-semibold whitespace-nowrap;
+}
+
+.petride-button svg {
+  @apply size-5;
+}
+
+.petride-button--full {
+  @apply w-full;
+}
+
+.petride-button:disabled {
+  @apply cursor-not-allowed opacity-40;
+}
+
+.petride-button--primary {
+  @apply text-white;
+  background: var(--pr-indigo);
+}
+
+.petride-button--secondary {
+  @apply border bg-white;
+  border-color: var(--pr-peri);
+  color: var(--pr-indigo);
+}
+
+.petride-button--ghost {
+  @apply h-12;
+  color: var(--pr-indigo);
+}
+
+.petride-button--lime {
+  background: var(--pr-lime);
+  color: var(--pr-night);
+}
+
+.petride-button--ghost-light {
+  @apply h-12;
+  color: var(--pr-peri);
+}
+
+/* Encabezado */
+.petride-header {
+  @apply flex h-16 shrink-0 items-center gap-3 px-6;
+}
+
+.petride-header__back {
+  @apply flex size-11 shrink-0 items-center justify-center rounded-full border bg-white;
+  border-color: var(--pr-border);
+  color: var(--pr-night);
+}
+
+.petride-header__back svg {
+  @apply size-5;
+}
+
+.petride-header__title {
+  @apply text-xl font-semibold;
+}
+
+.petride-top {
+  @apply flex shrink-0 flex-col gap-1 px-6 pt-4 pb-5;
+}
+
+.petride-top__title {
+  @apply text-[32px] leading-9 font-extrabold;
+}
+
+/* Barra inferior: índigo, pegada al borde, con una muesca en el centro para
+   el botón lima de Pedir viaje */
+.petride-nav {
+  @apply absolute inset-x-0 bottom-0 z-20 flex h-[88px] items-start justify-between px-4 pt-2.5;
+  filter: drop-shadow(0 -6px 18px rgb(72 73 232 / 0.28));
+}
+
+.petride-nav__bar {
+  @apply absolute inset-0;
+  background:
+    radial-gradient(
+      90% 120% at 50% -30%,
+      rgb(171 196 255 / 0.4),
+      transparent 60%
+    ),
+    linear-gradient(135deg, #5b5cf2, var(--pr-indigo) 45%, #2f2ea6);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 88'%3E%3Cpath d='M0 24Q0 0 24 0H144C164 0 162 40 195 40S226 0 246 0H366Q390 0 390 24V88H0Z'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+}
+
+.petride-nav__side {
+  @apply relative flex w-[132px] justify-around;
+}
+
+.petride-nav__tab {
+  @apply flex w-16 flex-col items-center gap-1;
+  color: rgb(255 255 255 / 0.62);
+}
+
+.petride-nav__tab svg {
+  @apply size-6;
+}
+
+.petride-nav__label {
+  @apply text-xs font-medium whitespace-nowrap;
+}
+
+.petride-nav__tab--on {
+  color: var(--pr-lime);
+}
+
+.petride-nav__tab--on .petride-nav__label {
+  @apply font-semibold;
+}
+
+.petride-nav__request {
+  @apply absolute -top-5 left-1/2 flex size-14 -translate-x-1/2 items-center justify-center rounded-full;
+  background: var(--pr-lime);
+  color: var(--pr-night);
+  box-shadow:
+    0 10px 24px rgb(72 73 232 / 0.35),
+    inset 0 -3px 0 rgb(11 12 36 / 0.12);
+}
+
+.petride-nav__request svg {
+  @apply size-6;
+}
+
+/* Fila de mascota */
+.petride-pets {
+  @apply flex flex-col gap-3;
+}
+
+.petride-pet-row {
+  @apply relative flex h-34 overflow-hidden rounded-3xl border bg-white;
+  border-color: var(--pr-border);
+  box-shadow: var(--pr-shadow-card);
+}
+
+.petride-pet-row[data-new] {
+  border-color: var(--pr-indigo);
+  box-shadow:
+    0 0 0 1px var(--pr-indigo),
+    var(--pr-shadow-card);
+}
+
+.petride-pet-row__open {
+  @apply flex flex-1 items-stretch text-left;
+}
+
+.petride-pet-row__body {
+  @apply flex min-w-0 flex-1 flex-col items-start justify-center gap-1.5 px-4 py-3;
+}
+
+.petride-pet-row__media {
+  @apply relative flex w-32 shrink-0;
+}
+
+.petride-pet-row__ribbon {
+  @apply absolute inset-x-0 bottom-0 flex items-center justify-center gap-1.5 py-1.5 text-sm font-semibold;
+  background: var(--pr-indigo);
+  color: var(--pr-lime);
+}
+
+.petride-pet-row__ribbon svg {
+  @apply size-4;
+}
+
+.petride-pet-row__title {
+  @apply flex flex-col pr-8;
+}
+
+.petride-pet-row__breed {
+  @apply text-sm;
+  color: var(--pr-ink);
+}
+
+.petride-pet-row__chips {
+  @apply flex gap-1.5;
+}
+
+.petride-pet-row__name {
+  @apply text-lg leading-6 font-semibold;
+}
+
+.petride-pet-row__meta {
+  @apply text-sm;
+  color: var(--pr-ink);
+}
+
+.petride-pet-row__more {
+  @apply absolute top-2 right-2 flex size-10 items-center justify-center rounded-full;
+  color: var(--pr-ink);
+}
+
+.petride-pet-row__more svg {
+  @apply size-5;
+}
+
+.petride-tag {
+  @apply rounded-lg px-2.5 py-0.5 text-sm font-medium whitespace-nowrap;
+  background: var(--pr-lilac);
+  color: var(--pr-indigo-press);
+}
+
+.petride-tag--muted {
+  background: var(--pr-surface);
+  color: var(--pr-ink);
+}
+
+/* Agregar mascota: bloque lila de la marca al final de la lista */
+.petride-add-card {
+  @apply relative flex h-26 w-full items-center justify-center gap-3 overflow-hidden rounded-3xl px-5 text-lg font-semibold;
+  background: var(--pr-lilac);
+  color: var(--pr-indigo-press);
+}
+
+.petride-add-card__paw {
+  @apply absolute -right-3 -bottom-6 size-28 -rotate-12;
+  color: rgb(72 73 232 / 0.1);
+}
+
+.petride-add-card__icon {
+  @apply relative flex size-9 shrink-0 items-center justify-center rounded-full;
+  background: rgb(72 73 232 / 0.12);
+  color: var(--pr-indigo);
+}
+
+.petride-add-card__icon svg {
+  @apply size-5;
+}
+
+/* Fotos */
+.petride-photo {
+  @apply shrink-0 object-cover;
+}
+
+.petride-photo--tile {
+  @apply h-full w-full;
+}
+
+/* Campos */
+.petride-form {
+  @apply flex flex-col gap-5 pb-32;
+}
+
+.petride-form--identity {
+  @apply gap-3;
+}
+
+.petride-form--tight {
+  @apply gap-6;
+}
+
+.petride-field {
+  @apply flex flex-col gap-2;
+}
+
+.petride-field__label {
+  @apply flex items-baseline justify-between text-base font-semibold;
+}
+
+.petride-field__optional {
+  @apply text-sm font-medium;
+  color: var(--pr-hint);
+}
+
+.petride-field__box {
+  @apply relative flex h-14 items-center gap-1 rounded-2xl border-2 bg-white px-4 text-base;
+  border-color: var(--pr-border);
+}
+
+.petride-field__box--multiline {
+  @apply h-24 items-start py-3;
+}
+
+.petride-field__value {
+  @apply truncate;
+}
+
+.petride-field__suffix {
+  @apply ml-auto font-medium;
+  color: var(--pr-ink);
+}
+
+/* Interruptor */
+.petride-switch-field {
+  @apply flex items-center justify-between gap-4;
+}
+
+.petride-switch-field .petride-field__label {
+  @apply flex-col items-start gap-0.5;
+}
+
+.petride-switch {
+  @apply relative h-8 w-14 shrink-0 rounded-full;
+  background: var(--pr-border);
+}
+
+.petride-switch::after {
+  @apply absolute top-1 left-1 size-6 rounded-full bg-white content-[''];
+  box-shadow: 0 2px 4px rgb(11 12 36 / 0.2);
+}
+
+.petride-switch--on {
+  background: var(--pr-indigo);
+}
+
+.petride-switch--on::after {
+  translate: 24px 0;
+}
+
+/* Registro por pasos: barra de avance */
+.petride-progress {
+  @apply mx-1 flex flex-1 gap-1.5;
+}
+
+.petride-progress__bar {
+  @apply h-1.5 flex-1 rounded-full;
+  background: var(--pr-border);
+}
+
+.petride-progress__bar--on {
+  background: var(--pr-indigo);
+}
+
+.petride-progress__count {
+  @apply text-sm font-medium whitespace-nowrap;
+  color: var(--pr-hint);
+}
+
+.petride-step-title {
+  @apply flex flex-col gap-1 text-center;
+}
+
+.petride-step-title__main {
+  @apply text-[28px] leading-8 font-extrabold;
+}
+
+/* Foto de la mascota a lo ancho, con el botón para cambiarla */
+.petride-identity__photo {
+  @apply relative block h-45 w-full shrink-0 overflow-hidden rounded-[28px];
+}
+
+.petride-identity__photo img {
+  @apply size-full object-cover;
+  object-position: center 30%;
+}
+
+.petride-identity__camera {
+  @apply absolute right-3 bottom-3 flex items-center gap-1.5 rounded-full py-2 pr-3.5 pl-3 text-sm font-semibold;
+  background: var(--pr-indigo);
+  color: #fff;
+  box-shadow: 0 6px 14px rgb(11 12 36 / 0.25);
+}
+
+.petride-identity__camera svg {
+  @apply size-4;
+  color: var(--pr-lime);
+}
+
+/* Hembra o macho, debajo de la especie */
+.petride-sex__options {
+  @apply grid grid-cols-2 gap-2;
+}
+
+.petride-sex__option {
+  @apply flex h-12 items-center justify-center gap-2 rounded-2xl border-2 bg-white text-base font-semibold;
+  border-color: var(--pr-border);
+  color: var(--pr-ink);
+}
+
+.petride-sex__option svg {
+  @apply size-5;
+  color: var(--pr-hint);
+}
+
+.petride-sex__option--on {
+  @apply font-extrabold;
+  border-color: var(--pr-indigo);
+  background: var(--pr-lilac);
+  color: var(--pr-indigo-press);
+}
+
+.petride-sex__option--on svg {
+  color: var(--pr-indigo);
+}
+
+/* Buscador de raza */
+.petride-field__icon {
+  @apply size-5 shrink-0;
+  color: var(--pr-hint);
+}
+
+.petride-field__done {
+  @apply ml-auto size-5 shrink-0;
+  color: var(--pr-success);
+}
+
+.petride-field__box--focus {
+  border-color: var(--pr-indigo);
+  box-shadow: 0 0 0 4px rgb(72 73 232 / 0.12);
+}
+
+.petride-field__caret {
+  @apply h-5 w-0.5;
+  background: var(--pr-indigo);
+}
+
+.petride-breed {
+  @apply relative;
+}
+
+/* El campo queda cerca del borde de abajo: la lista se abre hacia arriba y
+   flota sobre lo anterior, como un menú desplegable */
+.petride-breed .petride-options {
+  @apply absolute inset-x-0 bottom-full z-20 mb-2;
+}
+
+.petride-options {
+  @apply overflow-hidden rounded-2xl border bg-white;
+  border-color: var(--pr-border);
+  box-shadow: var(--pr-shadow-float);
+}
+
+.petride-option {
+  @apply flex items-center gap-3 border-b px-4 py-3 text-base;
+  border-color: var(--pr-border);
+}
+
+.petride-option:last-child {
+  @apply border-b-0;
+}
+
+.petride-option svg {
+  @apply size-5 shrink-0;
+  color: var(--pr-indigo);
+}
+
+.petride-option--on {
+  @apply font-semibold;
+  background: var(--pr-lilac);
+  color: var(--pr-indigo-press);
+}
+
+.petride-option__check {
+  @apply ml-auto;
+}
+
+.petride-species {
+  @apply grid grid-cols-2 gap-2;
+}
+
+.petride-species__option {
+  @apply flex h-14 flex-row items-center justify-center gap-2.5 rounded-2xl border-2 bg-white text-base font-medium;
+  border-color: var(--pr-border);
+  transition:
+    border-color 0.2s var(--pr-ease),
+    background 0.2s var(--pr-ease);
+}
+
+.petride-species__icon {
+  @apply size-10;
+  color: var(--pr-hint);
+}
+
+.petride-species-icon {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.petride-species-icon__fill {
+  fill: var(--pr-surface);
+}
+
+.petride-species-icon__accent {
+  fill: currentColor;
+}
+
+.petride-species__option--on .petride-species-icon__fill {
+  fill: var(--pr-lime);
+}
+
+.petride-species__name {
+  @apply leading-none;
+}
+
+.petride-species__option--on {
+  @apply font-bold;
+  border-color: var(--pr-indigo);
+  background: var(--pr-lilac);
+  color: var(--pr-indigo-press);
+  box-shadow: none;
+}
+
+.petride-species__option--on .petride-species__icon {
+  color: var(--pr-indigo);
+}
+
+/* Contador: peso y edad */
+.petride-counter {
+  @apply flex items-center justify-between rounded-[20px] border-2 bg-white p-2;
+  border-color: var(--pr-border);
+}
+
+.petride-counter__step {
+  @apply flex size-11 items-center justify-center rounded-full;
+  background: var(--pr-lilac);
+  color: var(--pr-indigo);
+}
+
+.petride-counter__step--plus {
+  @apply text-white;
+  background: var(--pr-indigo);
+}
+
+.petride-counter__step svg {
+  @apply size-5;
+}
+
+.petride-counter__value {
+  @apply relative flex flex-col items-center;
+}
+
+/* Valor anterior del contador: solo lo usa la animación del caso */
+.petride-counter__previous {
+  @apply absolute inset-0 hidden flex-col items-center;
+}
+
+.petride-counter__number {
+  @apply flex items-baseline gap-1 text-[28px] leading-8 font-bold;
+}
+
+.petride-counter__unit {
+  @apply text-base font-normal;
+  color: var(--pr-ink);
+}
+
+.petride-counter__caption {
+  @apply text-sm font-semibold;
+  color: var(--pr-indigo-press);
+}
+
+/* Tamaño con siluetas */
+.petride-sizes {
+  @apply grid grid-cols-3 gap-2;
+}
+
+.petride-size {
+  @apply flex flex-col items-center justify-end gap-0.5 rounded-[20px] border-2 bg-white px-1 pt-2 pb-2.5;
+  border-color: var(--pr-border);
+}
+
+.petride-size__icon {
+  color: var(--pr-hint);
+}
+
+.petride-size__icon--0 {
+  @apply size-6;
+}
+
+.petride-size__icon--1 {
+  @apply size-8;
+}
+
+.petride-size__icon--2 {
+  @apply size-10;
+}
+
+.petride-size__name {
+  @apply text-base font-semibold;
+}
+
+.petride-size__range {
+  @apply text-sm whitespace-nowrap;
+  color: var(--pr-hint);
+}
+
+.petride-size--on {
+  border-color: var(--pr-indigo);
+  background: var(--pr-lilac);
+  color: var(--pr-indigo-press);
+}
+
+.petride-size--on .petride-size__icon,
+.petride-size--on .petride-size__range {
+  color: var(--pr-indigo-press);
+}
+
+.petride-size--on .petride-species-icon__fill {
+  fill: var(--pr-lime);
+}
+
+.petride-size--on .petride-size__name {
+  @apply font-extrabold;
+}
+
+.petride-switches {
+  @apply flex flex-col gap-4;
+}
+
+.petride-switch-field__label {
+  @apply flex items-center gap-2 text-base font-normal;
+}
+
+.petride-switch-field__label svg {
+  @apply size-7 shrink-0;
+  color: var(--pr-indigo);
+}
+
+.petride-notes {
+  @apply h-20 w-full resize-none py-3 font-[inherit] outline-none;
+  color: var(--pr-night);
+}
+
+.petride-notes::placeholder {
+  color: var(--pr-hint);
+}
+
+/* Carné de viaje sobre la foto, sutil */
+.petride-passport {
+  @apply flex flex-col gap-4 text-white;
+}
+
+.petride-passport__id {
+  @apply flex items-end justify-between gap-3;
+}
+
+.petride-passport__eyebrow {
+  @apply text-xs font-semibold tracking-[0.16em] uppercase;
+  color: var(--pr-lime);
+}
+
+.petride-passport__name {
+  @apply mt-1 text-[56px] leading-[0.95] font-black tracking-[-0.03em];
+}
+
+.petride-passport__breed {
+  @apply mt-2 flex items-center gap-1.5 text-base font-medium;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.petride-passport__stamp {
+  @apply mb-1 flex size-24 shrink-0 -rotate-12 flex-col items-center justify-center rounded-full border-2 border-dashed text-center text-[10px] leading-tight font-bold tracking-[0.08em] uppercase;
+  border-color: rgb(221 243 68 / 0.7);
+  color: var(--pr-lime);
+}
+
+.petride-passport__stamp svg {
+  @apply mb-0.5 size-7;
+}
+
+.petride-passport__stats {
+  @apply grid grid-cols-3 rounded-[22px] border;
+  border-color: rgb(255 255 255 / 0.14);
+  background: rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.petride-passport__stat {
+  @apply flex flex-col items-center gap-1 px-2 py-3 text-center;
+}
+
+.petride-passport__stat + .petride-passport__stat {
+  border-left: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.petride-passport__stat > svg {
+  @apply size-7;
+  color: var(--pr-lime);
+}
+
+.petride-passport__stat dd {
+  @apply flex flex-col;
+}
+
+.petride-passport__stat strong {
+  @apply text-base font-bold;
+}
+
+.petride-passport__stat span {
+  @apply text-sm;
+  color: rgb(255 255 255 / 0.7);
+}
+
+.petride-passport__note {
+  @apply flex items-center gap-3 rounded-[18px] border px-4 py-3 text-base;
+  border-color: rgb(255 255 255 / 0.12);
+  background: rgb(255 255 255 / 0.06);
+  color: rgb(255 255 255 / 0.9);
+}
+
+.petride-passport__note svg {
+  @apply size-7 shrink-0;
+  color: var(--pr-lime);
+}
+
+.petride-header__back--glass {
+  border-color: rgb(255 255 255 / 0.3);
+  background: rgb(255 255 255 / 0.16);
+  color: #fff;
+  backdrop-filter: blur(10px);
+}

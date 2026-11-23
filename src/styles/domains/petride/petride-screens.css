@@ -1,0 +1,330 @@
+/* Pantallas del prototipo de PetRide */
+.petride-screen {
+  @apply relative flex h-full flex-col pt-14;
+}
+
+.petride-screen__body {
+  @apply min-h-0 flex-1 overflow-hidden px-6;
+}
+
+.petride-screen__footer {
+  @apply absolute inset-x-0 bottom-0 z-10 flex flex-col gap-2 px-6 pt-4 pb-10;
+}
+
+.petride-screen__footer--raised {
+  background: linear-gradient(transparent, var(--pr-canvas) 24px);
+}
+
+/* Con barra inferior: el botón principal va encima de ella */
+.petride-screen--tabbed .petride-screen__footer {
+  @apply bottom-24 pb-4;
+}
+
+/* Revisar: la foto llena la pantalla y el carné va encima */
+.petride-review-photo {
+  @apply pt-0;
+  /* Arriba, el mismo gris del fondo de la foto, para que la foto baje sin
+     que se vea el corte */
+  background: linear-gradient(
+    var(--pr-photo-bg) 0 300px,
+    var(--pr-night) 300px
+  );
+  --pr-photo-bg: #d0c7be;
+}
+
+.petride-review-photo__image {
+  @apply absolute inset-x-0 top-24 h-[520px] w-full object-cover object-top;
+}
+
+.petride-review-photo::before {
+  @apply absolute inset-0 z-[1] content-[''];
+  background: linear-gradient(
+    180deg,
+    rgb(11 12 36 / 0.55) 0%,
+    rgb(11 12 36 / 0) 20%,
+    rgb(11 12 36 / 0) 36%,
+    rgb(11 12 36 / 0.75) 56%,
+    var(--pr-night) 66%
+  );
+}
+
+.petride-review-photo__header {
+  @apply relative z-10 mt-14;
+}
+
+.petride-review-photo__header .petride-header__title {
+  @apply text-white;
+}
+
+.petride-review-photo__content {
+  @apply absolute inset-x-6 bottom-44 z-10;
+}
+
+.petride-review-photo .petride-screen__footer {
+  @apply z-10;
+}
+
+/* Mascota registrada: póster nocturno con ruta */
+.petride-poster {
+  @apply overflow-hidden pt-0 text-white;
+  background: var(--pr-night);
+}
+
+.petride-poster__grid {
+  @apply absolute inset-0;
+  background-image:
+    linear-gradient(rgb(171 196 255 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(171 196 255 / 0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask: linear-gradient(180deg, #000 0, #000 58%, transparent 72%);
+}
+
+.petride-poster__glow {
+  @apply absolute top-[180px] left-[-45px] size-[480px] rounded-full;
+  background: radial-gradient(circle, rgb(72 73 232 / 0.7), transparent 64%);
+}
+
+.petride-poster__ring {
+  @apply absolute left-1/2 -translate-x-1/2 rounded-full border-[1.5px];
+  border-color: rgb(221 243 68 / 0.28);
+}
+
+.petride-poster__ring--inner {
+  @apply top-[240px] size-[330px];
+}
+
+.petride-poster__ring--outer {
+  @apply top-[200px] size-[420px] opacity-50;
+}
+
+.petride-poster__word {
+  @apply absolute inset-x-[-12px] top-[104px] text-center text-[150px] leading-[0.8] font-black tracking-[-0.05em] uppercase;
+  color: var(--pr-lime);
+}
+
+.petride-poster__route {
+  @apply absolute top-[78px] left-0 z-[1] h-[560px] w-[390px];
+}
+
+.petride-poster__route path {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.petride-poster__route-glow {
+  stroke: rgb(72 73 232 / 0.3);
+  stroke-width: 16;
+}
+
+.petride-poster__route-line {
+  stroke: var(--pr-peri);
+  stroke-width: 4;
+  stroke-dasharray: 2 11;
+}
+
+.petride-poster__arch {
+  @apply absolute top-[236px] left-[92px] z-[3] h-[254px] w-[206px] overflow-hidden rounded-t-[103px] rounded-b-[30px] border-4;
+  border-color: var(--pr-lime);
+  box-shadow: 0 22px 44px rgb(0 0 0 / 0.5);
+}
+
+.petride-poster__arch img {
+  @apply size-full object-cover;
+  object-position: 30% 18%;
+}
+
+.petride-poster__pin {
+  @apply absolute top-[478px] left-[179px] z-[2] size-8 rotate-45 rounded-[4px_50%_50%_50%];
+  background: var(--pr-lime);
+}
+
+.petride-poster__check {
+  @apply absolute top-[212px] left-[170px] z-[6] flex size-[50px] items-center justify-center rounded-full border-4;
+  border-color: var(--pr-night);
+  background: var(--pr-lime);
+  color: var(--pr-night);
+}
+
+.petride-poster__check svg {
+  @apply size-6;
+  stroke-width: 3;
+}
+
+.petride-poster__chip {
+  @apply absolute z-[5] flex h-9 items-center gap-1.5 rounded-full px-3 text-sm font-bold whitespace-nowrap;
+  box-shadow: 0 10px 20px rgb(0 0 0 / 0.3);
+}
+
+.petride-poster__chip svg {
+  @apply size-[18px];
+}
+
+.petride-poster__chip--size {
+  @apply top-[390px] left-[18px] -rotate-7;
+  background: var(--pr-lime);
+  color: var(--pr-night);
+}
+
+.petride-poster__chip--friendly {
+  @apply top-[308px] right-4 rotate-6 bg-white;
+  color: var(--pr-indigo-press);
+}
+
+.petride-poster__chip--stage {
+  @apply top-[442px] right-5 -rotate-4;
+  background: var(--pr-peri);
+  color: var(--pr-night);
+}
+
+.petride-poster__car {
+  @apply absolute top-[530px] left-[30px] z-[4] flex size-12 items-center justify-center rounded-full border-4;
+  border-color: var(--pr-night);
+  background: var(--pr-indigo);
+  box-shadow: 0 0 0 6px rgb(72 73 232 / 0.3);
+}
+
+.petride-poster__car svg {
+  @apply size-6;
+}
+
+.petride-poster__message {
+  @apply absolute inset-x-6 top-[592px] z-[3] text-center;
+}
+
+.petride-poster__eyebrow {
+  @apply inline-flex items-center gap-1.5 text-xs font-bold tracking-[0.16em] uppercase;
+  color: var(--pr-lime);
+}
+
+.petride-poster__eyebrow svg {
+  @apply size-4;
+}
+
+.petride-poster__title {
+  @apply mt-2 mb-1.5 text-[30px] leading-[1.05] font-black;
+  text-wrap: balance;
+}
+
+.petride-poster__close {
+  @apply absolute top-16 right-5 z-20 flex size-10 items-center justify-center;
+  color: rgb(255 255 255 / 0.6);
+}
+
+.petride-poster__close svg {
+  @apply size-6;
+}
+
+.petride-poster__footer {
+  @apply absolute inset-x-6 bottom-10 z-10 flex flex-col items-center gap-1.5;
+}
+
+.petride-poster__footer .petride-button--lime {
+  box-shadow: 0 12px 24px rgb(221 243 68 / 0.2);
+}
+
+/* Cámara: la imagen en vivo a pantalla completa con controles de cristal */
+.petride-camera {
+  @apply relative h-full overflow-hidden text-white;
+  background: var(--pr-night);
+}
+
+.petride-camera__live {
+  @apply absolute inset-0 size-full object-cover;
+  object-position: 18% center;
+}
+
+.petride-camera::before {
+  @apply absolute inset-x-0 top-0 z-[1] h-40 content-[''];
+  background: linear-gradient(rgb(11 12 36 / 0.55), transparent);
+}
+
+.petride-camera__top {
+  @apply absolute inset-x-5 top-16 z-10 flex items-center justify-between;
+}
+
+.petride-camera__title {
+  @apply rounded-full border px-4 py-2 text-base font-semibold;
+  border-color: rgb(255 255 255 / 0.2);
+  background: rgb(11 12 36 / 0.38);
+  backdrop-filter: blur(12px);
+}
+
+.petride-camera__round {
+  @apply flex size-12 items-center justify-center rounded-full border;
+  border-color: rgb(255 255 255 / 0.2);
+  background: rgb(11 12 36 / 0.38);
+  backdrop-filter: blur(12px);
+}
+
+.petride-camera__round svg {
+  @apply size-5;
+}
+
+.petride-camera__frame {
+  @apply absolute inset-x-11 top-44 z-10 h-[336px];
+}
+
+.petride-camera__corner {
+  @apply absolute size-10;
+  border-color: var(--pr-lime);
+  border-style: solid;
+  filter: drop-shadow(0 0 6px rgb(221 243 68 / 0.45));
+}
+
+.petride-camera__corner--tl {
+  @apply top-0 left-0 rounded-tl-[28px];
+  border-width: 4px 0 0 4px;
+}
+
+.petride-camera__corner--tr {
+  @apply top-0 right-0 rounded-tr-[28px];
+  border-width: 4px 4px 0 0;
+}
+
+.petride-camera__corner--bl {
+  @apply bottom-0 left-0 rounded-bl-[28px];
+  border-width: 0 0 4px 4px;
+}
+
+.petride-camera__corner--br {
+  @apply right-0 bottom-0 rounded-br-[28px];
+  border-width: 0 4px 4px 0;
+}
+
+.petride-camera__hint {
+  @apply absolute top-[540px] left-1/2 z-10 -translate-x-1/2 rounded-full px-4 py-2 text-base font-semibold whitespace-nowrap;
+  background: var(--pr-lime);
+  color: var(--pr-night);
+}
+
+.petride-camera__controls {
+  @apply absolute inset-x-0 bottom-0 z-10 flex flex-col items-center gap-4 pt-16 pb-10;
+  background: linear-gradient(transparent, rgb(11 12 36 / 0.85) 40%);
+}
+
+.petride-camera__row {
+  @apply flex w-72 items-center justify-between;
+}
+
+.petride-camera__gallery {
+  @apply size-12 overflow-hidden rounded-2xl border-2 border-white;
+}
+
+.petride-camera__gallery img {
+  @apply size-full object-cover;
+}
+
+.petride-camera__shutter {
+  @apply flex size-20 items-center justify-center rounded-full border-4 border-white;
+}
+
+.petride-camera__shutter span {
+  @apply size-16 rounded-full;
+  background: var(--pr-lime);
+  box-shadow: 0 0 20px rgb(221 243 68 / 0.45);
+}
+
+.petride-camera__skip {
+  @apply text-base font-semibold;
+  color: var(--pr-peri);
+}

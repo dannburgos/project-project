@@ -1,0 +1,163 @@
+/* Prototipo de PetRide: tokens de la app (modo claro, sistema de diseño del
+   caso), el celular y el tablero de revisión */
+.petride-board,
+.petride-device {
+  --pr-night: #0b0c24;
+  --pr-indigo: #4849e8;
+  --pr-indigo-press: #3536b8;
+  --pr-lime: #ddf344;
+  --pr-peri: #abc4ff;
+  --pr-cloud: #f5f9ff;
+  /* Fondo de las pantallas: casi blanco, para que el lila resalte */
+  --pr-canvas: #fcfdff;
+  --pr-ink: #4a4b6a;
+  --pr-hint: #8c8da6;
+  --pr-border: #e3e6f2;
+  --pr-surface: #eef1f8;
+  --pr-card: #ffffff;
+  --pr-lilac: #e9edff;
+  --pr-success: #16a36a;
+  --pr-success-bg: #e3f6ec;
+  --pr-error: #e5484d;
+  --pr-error-bg: #fde8e8;
+  --pr-error-text: #b42328;
+  --pr-shadow-card: 0 4px 16px rgb(11 12 36 / 0.06);
+  --pr-shadow-float: 0 12px 32px rgb(11 12 36 / 0.12);
+  --pr-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pr-screen-width: 390px;
+  --pr-screen-height: 844px;
+  --pr-bezel: 12px;
+  font-family: var(--font-outfit), sans-serif;
+}
+
+/* Celular */
+.petride-device {
+  @apply relative inline-block rounded-[64px];
+  padding: var(--pr-bezel);
+  background: var(--pr-night);
+  box-shadow: var(--pr-shadow-float);
+}
+
+/* Sin marco: la pantalla sola, del tamaño de la ventana del caso */
+.petride-device--bare {
+  @apply block rounded-none p-0 shadow-none;
+}
+
+.petride-device--bare .petride-device__island {
+  @apply top-3;
+}
+
+.petride-device--bare .petride-app {
+  @apply rounded-none;
+}
+
+.petride-app {
+  @apply relative overflow-hidden rounded-[52px];
+  width: var(--pr-screen-width);
+  height: var(--pr-screen-height);
+  background: var(--pr-canvas);
+  color: var(--pr-night);
+}
+
+.petride-device__island {
+  @apply absolute top-6 left-1/2 h-8 w-28 -translate-x-1/2 rounded-full;
+  background: var(--pr-night);
+}
+
+.petride-device__status {
+  @apply pointer-events-none absolute inset-x-0 top-0 z-30 flex h-14 items-center justify-between px-9 pt-1 text-base font-semibold;
+  color: var(--pr-night);
+}
+
+.petride-device__status--light {
+  @apply text-white;
+}
+
+.petride-device__icons {
+  @apply flex items-center gap-1.5;
+}
+
+.petride-device__icons svg {
+  @apply size-4;
+}
+
+.petride-device__home {
+  @apply pointer-events-none absolute bottom-2 left-1/2 z-30 h-1.5 w-36 -translate-x-1/2 rounded-full;
+  background: var(--pr-night);
+}
+
+.petride-device__home--light {
+  @apply bg-white;
+}
+
+/* Tablero */
+.petride-board {
+  @apply min-h-svh px-10 py-12;
+  --board-scale: 0.6;
+  background: var(--pr-surface);
+  color: var(--pr-night);
+}
+
+.petride-board__head {
+  @apply mb-12 flex max-w-2xl flex-col gap-2;
+}
+
+.petride-board__eyebrow {
+  @apply text-sm font-semibold tracking-widest uppercase;
+  color: var(--pr-indigo);
+}
+
+.petride-board__title {
+  @apply text-4xl font-extrabold;
+}
+
+.petride-board__hint {
+  @apply text-base;
+  color: var(--pr-ink);
+}
+
+.petride-board__group {
+  @apply mb-16;
+}
+
+.petride-board__group-title {
+  @apply mb-6 text-xl font-semibold;
+}
+
+.petride-board__frames {
+  @apply flex gap-10 overflow-x-auto pb-6;
+}
+
+.petride-board__frame {
+  @apply flex shrink-0 flex-col gap-1;
+  width: calc(
+    (var(--pr-screen-width) + 2 * var(--pr-bezel)) * var(--board-scale)
+  );
+}
+
+.petride-board__screen {
+  @apply relative mb-4;
+  height: calc(
+    (var(--pr-screen-height) + 2 * var(--pr-bezel)) * var(--board-scale)
+  );
+}
+
+.petride-board__screen .petride-device {
+  @apply absolute top-0 left-0;
+  transform: scale(var(--board-scale));
+  transform-origin: top left;
+}
+
+.petride-board__step {
+  @apply flex items-baseline gap-2 text-base font-semibold;
+}
+
+.petride-board__number {
+  @apply text-sm font-bold;
+  color: var(--pr-indigo);
+}
+
+.petride-board__note {
+  @apply text-sm;
+  color: var(--pr-ink);
+}

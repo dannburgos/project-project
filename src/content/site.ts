@@ -6,7 +6,7 @@
 // cierre de contacto sale del CV de Dann.
 
 export const siteContent = {
-  brand: 'Portfolio Lab',
+  brand: 'Daniela Burgos',
   prototypeNotice: 'Prototipo · contenido de ejemplo',
   // "description" solo se muestra en el menú móvil, para que quede claro a
   // dónde lleva cada opción.
