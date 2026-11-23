@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Encuentra tu Toyota · Prototipo</title>
+<!-- Toyota Type es la tipografía de marca (se descarga en brand.toyota.com con acceso).
+     Si está instalada se usa; si no, Figtree hace de reemplazo temporal. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Tokens · Manual de marca Toyota ─────────────────────────────
+   Rojo Toyota siempre a opacidad completa. Funcionales: blanco, negro, gris.
+   El negro puede usarse con opacidad para estados y superficies. */
+:root{
+  --red:#EB0A1E;
+  --black:#000000; --white:#FFFFFF; --gray:#58595B;
+  --k-90:#1A1A1A; --k-80:#333333; --k-12:#E0E0E0; --k-06:#F0F0F0; --k-04:#F5F5F5;
+  --on-dark-2:rgba(255,255,255,.72); --on-dark-line:rgba(255,255,255,.22); --on-dark-line-2:rgba(255,255,255,.12);
+  --line:rgba(0,0,0,.14); --line-2:rgba(0,0,0,.08);
+  --font:"Toyota Type","Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  --gutter:clamp(24px,4.4vw,72px);
+  --ease:cubic-bezier(.16,1,.3,1); --ease-2:cubic-bezier(.65,.05,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--white);color:var(--black);font-family:var(--font);font-weight:400;font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+img,svg{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.wrap{max-width:1440px;margin:0 auto;padding:0 var(--gutter)}
+
+/* ── Tipografía por rol ───────────────────────────────────────────
+   Titular en mayúsculas: 7 palabras o menos, Bold, interlineado 90 %, tracking 0.
+   Titular en oración: Semibold, interlineado ~95 %. Cuerpo: Book, 145 %. */
+.d-up{font-weight:700;text-transform:uppercase;line-height:.9;letter-spacing:0}
+.d-up .lt{display:block;font-weight:300;text-transform:none;font-size:.5em;line-height:1.1;margin-top:.35em}
+.h-s{font-weight:600;line-height:.98;letter-spacing:0;margin:0}
+.lbl{display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;line-height:1}
+.lead{font-size:18px;line-height:1.45;margin:0}
+.mute{color:var(--gray)}
+.small{font-size:14px}
+
+/* Índice de sección: número, regla y nombre */
+.ix{display:flex;align-items:center;gap:16px;margin-bottom:28px}
+.ix b{color:var(--red);font-weight:600}
+.ix i{display:block;width:72px;height:1px;background:currentColor;opacity:.35}
+
+/* ── Barra del prototipo (fuera del sitio) ─────────────────────── */
+.protobar{background:#2A2A2A;color:#EDEDED;font-size:13px}
+.protobar .wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-height:42px;padding-top:6px;padding-bottom:6px}
+.protobar strong{font-weight:600;margin-right:auto}
+.protobar button{border:1px solid #5A5A5A;padding:5px 12px;font-size:12px}
+.protobar button:hover{border-color:#BDBDBD}
+
+/* ── Header ─────────────────────────────────────────────────────── */
+.site-header{position:sticky;top:0;z-index:30;background:var(--white);border-bottom:1px solid var(--line-2)}
+.site-header .wrap{display:flex;align-items:center;gap:48px;height:72px}
+.wordmark{font-weight:800;letter-spacing:.2em;font-size:17px}
+.nav{display:flex;gap:32px}
+.nav a{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:26px 0 24px;border-bottom:2px solid transparent;transition:border-color .3s var(--ease)}
+.nav a:hover{border-bottom-color:var(--black)}
+.nav a.on{border-bottom-color:var(--red)}
+
+/* ── Botones: el relleno sube desde abajo ──────────────────────── */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 28px;overflow:hidden;
+  font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1;white-space:nowrap;
+  background-repeat:no-repeat;background-size:100% 0;background-position:50% 100%;
+  transition:background-size .5s var(--ease),color .2s var(--ease) .12s,border-color .4s var(--ease)}
+.btn:hover,.btn:focus-visible{background-size:100% 100%}
+.btn-p{background-color:var(--red);color:var(--white);background-image:linear-gradient(var(--black),var(--black))}
+.btn-o{border:1.5px solid var(--black);color:var(--black);background-image:linear-gradient(var(--black),var(--black))}
+.btn-o:hover,.btn-o:focus-visible{color:var(--white)}
+.dark .btn-o{border-color:var(--on-dark-line);color:var(--white);background-image:linear-gradient(var(--white),var(--white))}
+.dark .btn-o:hover,.dark .btn-o:focus-visible{color:var(--black);border-color:var(--white)}
+.dark .btn-p{background-image:linear-gradient(var(--white),var(--white))}
+.dark .btn-p:hover,.dark .btn-p:focus-visible{color:var(--black)}
+.btn:disabled{background-color:transparent;border:1.5px solid currentColor;opacity:.35;cursor:not-allowed;background-size:100% 0}
+.btn-t{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 0;border-bottom:1.5px solid currentColor}
+.btn-t:hover{color:var(--red)}
+.row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+
+/* ── Hero: banda negra ─────────────────────────────────────────── */
+.hero{background:var(--black);color:var(--white)}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding-top:72px;padding-bottom:72px}
+.hero h1{font-size:clamp(44px,5.6vw,92px);margin:0 0 28px}
+.hero p{color:var(--on-dark-2);max-width:44ch;margin:0 0 36px}
+.hero-art{position:relative;aspect-ratio:16/10;background:var(--k-90);display:flex;align-items:center;justify-content:center;padding:8%}
+.hero-art::before{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:var(--red)}
+.hero-art .cap{position:absolute;left:20px;bottom:16px;color:var(--on-dark-2);font-size:12px}
+
+/* Marquesina */
+.marq{background:var(--black);color:var(--on-dark-2);border-top:1px solid var(--on-dark-line-2);overflow:hidden;padding:16px 0}
+.marq__t{display:flex;width:max-content;animation:marq 38s linear infinite}
+.marq__t span{display:flex;align-items:center;gap:28px;padding-right:28px}
+.marq__t em{width:6px;height:6px;background:var(--red);flex:0 0 auto}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ── Sección del módulo ────────────────────────────────────────── */
+.msec{padding:96px 0 112px;background:var(--k-04)}
+.module{background:var(--white);border:1px solid var(--line-2);min-height:620px;position:relative}
+.light{padding:clamp(28px,4vw,56px)}
+
+/* ── Panel de asesoría (oscuro) ────────────────────────────────── */
+.dark{background:var(--black);color:var(--white)}
+.rad{position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);min-height:620px}
+.rad::before{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:var(--red);z-index:2}
+.rad__panel{padding:clamp(28px,4vw,56px);display:flex;flex-direction:column}
+.rad__vis{padding:24px 24px 24px 0;display:flex}
+.vis{position:relative;flex:1;background:var(--k-90);overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:360px}
+.vis__tag{position:absolute;left:24px;top:24px;right:24px;display:flex;justify-content:space-between;color:var(--on-dark-2)}
+.vis__big{position:absolute;left:24px;bottom:22px;font-size:clamp(48px,5vw,80px);font-weight:700;line-height:.9;color:var(--white)}
+.vis__big small{display:block;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--on-dark-2);margin-top:10px}
+.vis__car{position:relative;width:68%;max-width:420px}
+/* Escuadras rojas alrededor del vehículo */
+.hug{position:absolute;inset:-18px}
+.hug i{position:absolute;width:26px;height:26px;border:2px solid var(--red)}
+.hug i:nth-child(1){top:0;left:0;border-right:0;border-bottom:0}
+.hug i:nth-child(2){top:0;right:0;border-left:0;border-bottom:0}
+.hug i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}
+.hug i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
+/* Barrido de escaneo: línea roja sólida, sin transparencias del rojo */
+.sweep{position:absolute;top:0;bottom:0;left:0;width:2px;background:var(--red);animation:sweep 6s var(--ease-2) infinite}
+.sweep.fast{animation-duration:1.1s}
+@keyframes sweep{0%{left:0}50%{left:calc(100% - 2px)}100%{left:0}}
+
+.steps-rail{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:40px}
+.sr{display:flex;flex-direction:column;gap:10px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.45);min-width:0}
+.sr span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr i{display:block;height:2px;background:var(--on-dark-line)}
+.sr.done{color:var(--on-dark-2)} .sr.done i{background:var(--white)}
+.sr.cur{color:var(--white)} .sr.cur i{background:var(--red)}
+.qcount{color:var(--on-dark-2);margin:0 0 14px}
+.q-title{font-size:clamp(30px,2.8vw,44px);margin:0 0 12px}
+.q-help{color:var(--on-dark-2);margin:0 0 28px;min-height:1.45em}
+.note-opt{display:inline-block;border-left:2px solid var(--red);padding:4px 0 4px 12px;color:var(--on-dark-2);font-size:14px;margin-bottom:22px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:36px}
+.opt{position:relative;text-align:left;min-height:62px;padding:16px 18px 16px 50px;border:1px solid var(--on-dark-line);color:var(--white);font-size:16px;line-height:1.3;
+  background-image:linear-gradient(var(--red),var(--red));background-repeat:no-repeat;background-size:100% 0;background-position:50% 100%;
+  transition:background-size .45s var(--ease),border-color .3s var(--ease)}
+.opt:hover{border-color:var(--white)}
+.opt .mk{position:absolute;left:18px;top:50%;transform:translateY(-50%);width:18px;height:18px;border:1.5px solid var(--on-dark-2)}
+.opt.single .mk{border-radius:50%}
+.opt[aria-checked="true"]{background-size:100% 100%;border-color:var(--red)}
+.opt[aria-checked="true"] .mk{border-color:var(--white);background:var(--white)}
+.opt.multi[aria-checked="true"] .mk::after{content:"";position:absolute;left:4px;top:1px;width:5px;height:9px;border:solid var(--red);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.opt.single[aria-checked="true"] .mk::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--red)}
+.opt:disabled{opacity:.35;cursor:not-allowed}
+.opt:disabled:hover{border-color:var(--on-dark-line)}
+.qfoot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid var(--on-dark-line-2);padding-top:24px}
+
+/* Inicio */
+.intro h2{font-size:clamp(36px,3.6vw,58px);margin:24px 0 20px}
+.intro .lead{color:var(--on-dark-2);max-width:46ch;margin-bottom:28px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;height:32px;padding:0 12px;border:1px solid var(--line);font-size:13px;font-weight:600}
+.dark .chip{border-color:var(--on-dark-line);color:var(--on-dark-2)}
+.steps3{list-style:none;margin:auto 0 0;padding:28px 0 0;border-top:1px solid var(--on-dark-line-2);display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.steps3 b{display:block;color:var(--red);font-weight:600;margin-bottom:8px}
+.steps3 strong{display:block;font-weight:600;margin-bottom:4px}
+.steps3 span{color:var(--on-dark-2);font-size:14px}
+
+/* Perfil (oscuro) */
+.plist{margin:0 0 32px;border-top:1px solid var(--on-dark-line-2)}
+.prow{display:grid;grid-template-columns:180px 1fr auto;gap:16px;align-items:center;padding:13px 0;border-bottom:1px solid var(--on-dark-line-2)}
+.prow dt{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--on-dark-2)}
+.prow dd{margin:0;font-weight:600}
+.prow dd.empty{font-weight:400;color:rgba(255,255,255,.5)}
+.prow .btn-t{font-size:12px;border-bottom-width:1px}
+
+/* Análisis */
+.think{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:12px}
+.think li{display:flex;align-items:center;gap:12px;color:var(--on-dark-2);opacity:0;animation:rise .6s var(--ease) forwards}
+.think li:nth-child(2){animation-delay:.55s}
+.think li:nth-child(3){animation-delay:1.1s;color:var(--white)}
+.think li::before{content:"";width:8px;height:8px;background:var(--red);flex:0 0 auto}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── Resultados (claro) ────────────────────────────────────────── */
+.rhead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-bottom:28px;border-bottom:1px solid var(--line-2);margin-bottom:36px}
+.rhead h2{font-size:clamp(32px,3.2vw,52px);margin:0 0 18px}
+.media{position:relative;background:var(--black);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.media::before{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:var(--red);z-index:1}
+.media .cap{position:absolute;left:18px;bottom:14px;color:var(--on-dark-2);font-size:12px}
+.media .car{width:74%;max-width:440px;transition:transform 1.2s var(--ease)}
+.feat{display:grid;grid-template-columns:1.05fr .95fr;border:1px solid var(--black);margin-bottom:56px}
+.feat .media{min-height:420px}
+.feat:hover .media .car{transform:scale(1.04)}
+.feat .body{padding:clamp(24px,3vw,44px)}
+.tag{display:inline-flex;align-items:center;height:30px;padding:0 12px;background:var(--red);color:var(--white);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.tag.k{background:var(--black)}
+.mname{font-size:clamp(34px,3vw,52px);font-weight:700;text-transform:uppercase;line-height:.9;margin:18px 0 8px}
+.mmeta{color:var(--gray);margin:0 0 18px}
+.price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+.price b{font-size:26px;font-weight:700}
+.price span{font-size:13px;color:var(--gray)}
+.match{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;background:var(--k-04);border-left:2px solid var(--red);font-size:14px;font-weight:600;margin-bottom:22px}
+.rs-title{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin:0 0 12px}
+.reasons{list-style:none;margin:0 0 28px;padding:0;display:grid;gap:12px}
+.reasons li{display:grid;grid-template-columns:20px 1fr;gap:12px;align-items:start}
+.reasons svg{margin-top:2px}
+.cmp{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;user-select:none}
+.cmp input{appearance:none;width:20px;height:20px;border:1.5px solid var(--black);margin:0;display:grid;place-content:center;cursor:pointer}
+.cmp input:checked{background:var(--red);border-color:var(--red)}
+.cmp input:checked::after{content:"";width:5px;height:10px;border:solid var(--white);border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.cmp input:disabled{opacity:.35;cursor:not-allowed}
+.alts-h{font-size:24px;margin:0 0 20px}
+.alts{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{border:1px solid var(--line);display:flex;flex-direction:column;transition:border-color .3s var(--ease)}
+.card:hover{border-color:var(--black)}
+.card .media{aspect-ratio:16/9}
+.card:hover .media .car{transform:scale(1.05)}
+.card .body{padding:24px;display:flex;flex-direction:column;flex:1}
+.card .mname{font-size:30px;margin-top:4px}
+.card .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-top:8px}
+.legal{font-size:13px;color:var(--gray);margin:32px 0 0}
+.cmpbar{position:sticky;bottom:0;z-index:5;margin:40px calc(-1 * clamp(28px,4vw,56px)) calc(-1 * clamp(28px,4vw,56px));background:var(--black);color:var(--white);padding:16px clamp(28px,4vw,56px);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.cmpbar .btn:disabled{color:var(--white)}
+
+/* Detalle */
+.back{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:28px}
+.back:hover{color:var(--red)}
+.dtop{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(24px,3vw,48px);align-items:stretch;margin-bottom:56px}
+.dtop .media{min-height:380px}
+.dtop .mname{font-size:clamp(44px,4.4vw,76px);margin-top:0}
+.sec-t{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin:0 0 16px;display:flex;align-items:center;gap:14px}
+.sec-t::after{content:"";flex:1;height:1px;background:var(--line)}
+table{width:100%;border-collapse:collapse}
+.vt{margin-bottom:48px;overflow-x:auto}
+.vt th,.vt td{text-align:left;padding:14px 16px 14px 0;border-bottom:1px solid var(--line-2);font-size:15px}
+.vt th{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);border-bottom:1px solid var(--black)}
+.vt td.num{text-align:left;font-weight:700;white-space:nowrap}
+.specs{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--black);margin:0 0 16px}
+.spec{padding:18px 18px 18px 0;border-bottom:1px solid var(--line-2)}
+.spec dt{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);margin:0 0 6px}
+.spec dd{margin:0;font-weight:600}
+.spec dd.na{font-weight:400;color:var(--gray)}
+.pending{border-left:2px solid var(--red);padding:6px 0 6px 12px;color:var(--gray);font-size:14px;margin:0 0 40px}
+.band{background:var(--black);color:var(--white);padding:clamp(24px,3vw,40px);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;margin-top:40px}
+.band h3{font-size:clamp(24px,2.2vw,34px);margin:0 0 6px}
+.band p{margin:0;color:var(--on-dark-2)}
+
+/* Comparación */
+.ct{overflow-x:auto}
+.ct th,.ct td{text-align:left;vertical-align:top;padding:16px 20px 16px 0;border-bottom:1px solid var(--line-2);font-size:15px}
+.ct thead th{border-bottom:1px solid var(--black);padding-bottom:20px}
+.ct tbody th{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);width:200px}
+.ct .na{color:var(--gray)}
+.ct .media{aspect-ratio:16/9;margin-bottom:14px}
+.ct .mname{font-size:26px;margin:0 0 8px}
+
+/* Variantes */
+.trade{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.diff{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:10px}
+.diff li{display:grid;grid-template-columns:20px 1fr;gap:12px}
+
+/* Catálogo y footer */
+.cat{padding:96px 0}
+.cat .top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+.cat h2{font-size:clamp(32px,3vw,48px);margin:0}
+.cgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.ccard .media{aspect-ratio:4/3;margin-bottom:14px}
+.ccard:hover .media .car{transform:scale(1.06)}
+.ccard strong{display:block;font-weight:700;text-transform:uppercase}
+.ccard span{font-size:14px;color:var(--gray)}
+footer{background:var(--black);color:var(--on-dark-2);font-size:13px}
+footer .wrap{padding-top:32px;padding-bottom:32px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer b{color:var(--white);letter-spacing:.2em;font-weight:800}
+
+/* Siluetas de referencia */
+.car{width:100%;height:auto}
+.light .btn:disabled{color:var(--black)}
+.car .b{fill:#D9D9D9}.car .w{fill:#000}.car .h{fill:#7A7A7A}
+.car.line .b{fill:none;stroke:rgba(255,255,255,.75);stroke-width:1.5}
+.car.line .w{fill:var(--k-90);stroke:rgba(255,255,255,.75);stroke-width:1.5}
+.car.line .h{fill:none;stroke:rgba(255,255,255,.45);stroke-width:1.5}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .think li{opacity:1}
+}
+@media (max-width:1080px){
+  .hero .wrap,.rad,.feat,.dtop,.alts,.trade{grid-template-columns:1fr}
+  .rad__vis{padding:0 24px 24px;order:-1}
+  .vis{min-height:240px}
+  .cgrid{grid-template-columns:repeat(3,1fr)}
+  .specs{grid-template-columns:repeat(2,1fr)}
+  .nav{display:none}
+  .steps3{grid-template-columns:1fr}
+}
+@media (max-width:620px){
+  .sr span{display:none}
+  .sr.cur span{display:block}
+  .opts{grid-template-columns:1fr}
+  .cgrid{grid-template-columns:repeat(2,1fr)}
+  .prow{grid-template-columns:1fr auto}
+  .prow dd{grid-column:1}
+  .specs{grid-template-columns:1fr}
+  .hero-art{display:none}
+  .qfoot .btn{padding:0 18px}
+}
+</style>
+</head>
+<body>
+
+<div class="protobar" role="region" aria-label="Controles del prototipo">
+  <div class="wrap">
+    <strong>Prototipo de portafolio · Encuentra tu Toyota</strong>
+    <button type="button" data-proto="reset">Reiniciar flujo</button>
+    <button type="button" data-proto="similar">Pantalla suelta: similar</button>
+    <button type="button" data-proto="ventajas">Pantalla suelta: con ventajas</button>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="#top" aria-label="Inicio">TOYOTA</a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#catalogo">Vehículos</a>
+      <a href="#encuentra" class="on">Encuentra tu Toyota</a>
+      <a href="https://www.toyota.com.co/cotiza-tu-toyota/vehiculos-nuevos" target="_blank" rel="noopener">Cotizador</a>
+      <a href="https://www.toyota.com.co/concesionarios" target="_blank" rel="noopener">Concesionarios</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-label="Destacado">
+    <div class="wrap">
+      <div>
+        <h1 class="d-up">Vehículos nuevos<span class="lt">Toyota en Colombia</span></h1>
+        <p class="lead">Autos, camionetas, pick-ups e híbridos para cada forma de moverte.</p>
+        <div class="row dark" style="background:none">
+          <a class="btn btn-p" href="#catalogo">Ver catálogo</a>
+          <a class="btn btn-o" href="#encuentra">Encuentra tu Toyota</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div id="hero-car" style="width:100%"></div><span class="cap">Imagen de campaña</span></div>
+    </div>
+  </section>
+  <div class="marq" aria-hidden="true"><div class="marq__t" id="marq"></div></div>
+
+  <section class="msec" id="encuentra" aria-label="Encuentra tu Toyota">
+    <div class="wrap">
+      <div class="ix lbl"><b>01</b><i></i><span>Encuentra tu Toyota</span></div>
+      <div class="module" id="module" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="cat" id="catalogo" aria-labelledby="cat-title">
+    <div class="wrap">
+      <div class="ix lbl"><b>02</b><i></i><span>Catálogo</span></div>
+      <div class="top">
+        <h2 id="cat-title" class="h-s">Explora los modelos</h2>
+        <a class="btn-t" href="https://www.toyota.com.co/cotiza-tu-toyota/vehiculos-nuevos" target="_blank" rel="noopener">Ver catálogo completo</a>
+      </div>
+      <div class="cgrid" id="catalog-row"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <b>TOYOTA</b>
+    <span>Concepto de diseño para portafolio. No es un sitio oficial de Toyota. Datos y precios sugeridos tomados de toyota.com.co, vigentes del 1 al 30 de noviembre de 2026. Siluetas e imágenes de referencia.</span>
+  </div>
+</footer>
+
+<script>
+/* ---------- Datos (ficha-datos-prototipo.md) ---------- */
+const NA = 'No disponible en la ficha oficial';
+const MODELS = [
+  { id:'yaris', name:'Yaris HB', body:'hatch', cat:'Automóvil', catLabel:'Automóvil · Hatchback', desde:89900000,
+    url:'https://www.toyota.com.co/vehiculos/hibridos/yaris-hb',
+    tags:['ciudad','ahorro','comodidad','automovil','hibrido'],
+    reasons:{ ciudad:'Mide 3.955 mm de largo: el más compacto del catálogo', ahorro:'Motor híbrido de 1.5 L', hibrido:'Motor híbrido de 1.5 L', comodidad:'Transmisión automática en todas sus versiones', automovil:'Automóvil hatchback para 5 personas', seguridad:'7 bolsas de aire y sistema de pre-colisión' },
+    specs:{ puestos:'5', motor:'Híbrido 1.5 L', potencia:'116 hp combinada', trans:'Automática E-CVT', traccion:'Delantera (4x2)', largo:'3.955 mm', ancho:'1.745 mm', alto:'1.520 mm', piso:'135 mm', airbags:'7', carga:'450 kg', baul:NA },
+    versions:[['XL 1.5 HEV','Híbrido 1.5 L · E-CVT · 4x2',89900000],['XS 1.5 HEV','Híbrido 1.5 L · E-CVT · 4x2',96900000]] },
+  { id:'corolla', name:'Corolla', body:'sedan', cat:'Automóvil', catLabel:'Automóvil · Sedán', desde:109900000,
+    url:'https://www.toyota.com.co/vehiculos/hibridos/corolla',
+    tags:['ciudad','ahorro','comodidad','tecnologia','automovil','hibrido'],
+    reasons:{ ciudad:'Sedán de 4.630 mm de largo con tracción delantera', ahorro:'Motor híbrido de 1.8 L', hibrido:'Motor híbrido de 1.8 L', comodidad:'Transmisión automática en todas sus versiones', tecnologia:'Pantalla de 10" con CarPlay y Android Auto inalámbricos, según versión', automovil:'Sedán para 5 personas', seguridad:'7 bolsas de aire y sistema de pre-colisión' },
+    specs:{ puestos:'5', motor:'Híbrido 1.8 L', potencia:'121 hp combinada', trans:'Automática E-CVT', traccion:'Delantera (4x2)', largo:'4.630 mm', ancho:'1.780 mm', alto:'1.455 mm', piso:'148 mm', airbags:'7', carga:'410 kg', baul:NA },
+    versions:[['XLI 1.8 HEV','Híbrido 1.8 L · E-CVT · 4x2',109900000],['XEI 1.8 HEV','Híbrido 1.8 L · E-CVT · 4x2',122200000],['SEG 1.8 HEV','Híbrido 1.8 L · E-CVT · 4x2',135200000]] },
+  { id:'cc', name:'Corolla Cross', body:'suv', cat:'Camioneta o SUV', catLabel:'SUV compacta', desde:139900000,
+    url:'https://www.toyota.com.co/vehiculos/hibridos/corolla-cross',
+    tags:['ciudad','espacio','ahorro','comodidad','tecnologia','suv','hibrido'],
+    reasons:{ ciudad:'Mide 4.460 mm de largo: más corta que el Corolla', espacio:'SUV de 1.620 mm de alto y 161 mm de altura al piso', ahorro:'Versiones híbridas de 1.8 L', hibrido:'Versiones híbridas de 1.8 L', comodidad:'Transmisión automática en todas sus versiones', tecnologia:'Pantalla de 10" con CarPlay y Android Auto inalámbricos, según versión', suv:'SUV compacta para 5 personas', seguridad:'7 bolsas de aire y sistema de pre-colisión' },
+    specs:{ puestos:'5', motor:'Híbrido 1.8 L o gasolina 2.0 L', potencia:'121 hp combinada (híbrido) · 169 hp (gasolina)', trans:'E-CVT (híbrido) · CVT de 10 velocidades (gasolina)', traccion:'Delantera (4x2)', largo:'4.460 mm', ancho:'1.825 mm', alto:'1.620 mm', piso:'161 mm', airbags:'7', carga:NA, baul:NA },
+    versions:[['XEI 1.8 HEV','Híbrido 1.8 L · E-CVT · 4x2',139900000],['SEG 2.0 Gasolina','Gasolina 2.0 L · CVT 10 vel. · 4x2',150500000],['SEG 1.8 HEV','Híbrido 1.8 L · E-CVT · 4x2',156900000]] },
+  { id:'rav4', name:'RAV4', body:'suv', cat:'Camioneta o SUV', catLabel:'SUV mediana', desde:207500000, pending:true,
+    url:'https://www.toyota.com.co/vehiculos/hibridos/rav4',
+    tags:['espacio','ahorro','comodidad','tecnologia','potencia','versatilidad','suv','hibrido'],
+    reasons:{ espacio:'SUV mediana de 4.600 mm de largo', ahorro:'Motor híbrido de 2.5 L', hibrido:'Motor híbrido de 2.5 L', comodidad:'Transmisión automática en todas sus versiones', tecnologia:'Pantalla táctil de 10,5" o 12,9", según versión', potencia:'239 hp de potencia combinada', versatilidad:'Tracción 4x4 integral eléctrica', suv:'SUV mediana para 5 personas', seguridad:'8 bolsas de aire y Toyota Safety Sense 4.0' },
+    specs:{ puestos:'5', motor:'Híbrido 2.5 L', potencia:'239 hp combinada *', trans:'Automática E-CVT', traccion:'4x4 integral eléctrica', largo:'4.600 mm *', ancho:'1.855 mm *', alto:'1.695 mm *', piso:NA, airbags:'8', carga:NA, baul:NA },
+    versions:[['XLE 2.5 HEV','Híbrido 2.5 L · E-CVT · 4x4',207500000],['Limited 2.5 HEV','Híbrido 2.5 L · E-CVT · 4x4',235500000]] },
+  { id:'hilux', name:'Hilux', body:'pickup', cat:'Pick-up', catLabel:'Pick-up doble cabina', desde:196500000,
+    url:'https://www.toyota.com.co/vehiculos/pick-ups/hilux',
+    tags:['carga','terreno','potencia','versatilidad','pickup','gasdiesel'],
+    reasons:{ carga:'Hasta 875 kg de capacidad de carga', terreno:'Tracción 4x4 con bajo y 286 mm de altura al piso', potencia:'Hasta 201 hp con el motor diésel 2.8 L', versatilidad:'Pick-up doble cabina para 5 personas y carga', pickup:'Pick-up doble cabina para 5 personas', gasdiesel:'Motores a gasolina o diésel', seguridad:'7 bolsas de aire y sistema de pre-colisión' },
+    specs:{ puestos:'5', motor:'Gasolina 2.7 L o diésel 2.4 / 2.8 L', potencia:'De 148 a 201 hp, según motor', trans:'Mecánica de 5 o 6 velocidades, o automática de 6', traccion:'4x4 con bajo', largo:'5.325 mm', ancho:'1.855 mm', alto:'1.815 mm', piso:'286 mm', airbags:'7', carga:'720 a 875 kg (379 a 534 kg en el platón)', baul:'No aplica (platón)' },
+    versions:[['D.C. SR 2.7 Gasolina MT','Gasolina 2.7 L · Mecánica 5 vel. · 4x4',196500000],['D.C. SR 2.4 Diésel MT','Diésel 2.4 L · Mecánica 6 vel. · 4x4',217500000],['D.C. SRV 2.4 Diésel AT','Diésel 2.4 L · Automática 6 vel. · 4x4',259500000],['D.C. SRX 2.8 Diésel AT','Diésel 2.8 L · Automática 6 vel. · 4x4',291900000]] },
+  { id:'fortuner', name:'Fortuner', body:'suvl', cat:'Camioneta o SUV', catLabel:'SUV grande · 3 filas', desde:242900000,
+    url:'https://www.toyota.com.co/vehiculos/camionetas/fortuner',
+    tags:['siete','espacio','terreno','comodidad','potencia','versatilidad','suv','gasdiesel'],
+    reasons:{ siete:'7 puestos en 3 filas', espacio:'SUV grande de 4.795 mm de largo', terreno:'279 mm de altura al piso y versiones 4x4 con bajo', comodidad:'Transmisión automática en todas sus versiones', potencia:'Hasta 201 hp con el motor diésel 2.8 L', versatilidad:'Versiones 4x2 y 4x4 con bajo', suv:'SUV grande para 7 personas', gasdiesel:'Motores a gasolina o diésel', seguridad:'7 bolsas de aire y sistema de pre-colisión' },
+    specs:{ puestos:'7', motor:'Gasolina 2.7 L o diésel 2.8 L', potencia:'De 164 a 201 hp, según motor', trans:'Automática de 6 velocidades', traccion:'4x2 trasera o 4x4 con bajo', largo:'4.795 mm', ancho:'1.855 mm', alto:'1.835 mm', piso:'279 mm', airbags:'7', carga:'500 a 655 kg', baul:NA },
+    versions:[['SR 2.8 Diésel 4x2 AT','Diésel 2.8 L · Automática 6 vel. · 4x2',242900000],['SRV 2.7 Gasolina 4x2 AT','Gasolina 2.7 L · Automática 6 vel. · 4x2',246900000],['SRV 2.8 Diésel 4x2 AT','Diésel 2.8 L · Automática 6 vel. · 4x2',284900000],['SR 2.8 Diésel 4x4 AT','Diésel 2.8 L · Automática 6 vel. · 4x4',288900000],['SRV 2.8 Diésel 4x4 AT','Diésel 2.8 L · Automática 6 vel. · 4x4',326900000]] }
+];
+const byId = id => MODELS.find(m => m.id === id);
+
+/* ---------- Asesoría (aprobada, 9 preguntas) ---------- */
+const BLOCKS = ['Tu momento','Tu uso','Tu espacio','Tus prioridades','Tus preferencias'];
+const QS = [
+  {id:'momento', block:0, label:'Tu momento', title:'¿En qué momento estás?', type:'single',
+   opts:[['primer','Voy a comprar mi primer carro'],['cambiar','Quiero cambiar mi carro'],['cambio','Mis necesidades cambiaron'],['explorar','Solo estoy explorando']]},
+  {id:'uso', block:1, label:'Uso principal', title:'¿Para qué vas a usar el carro principalmente?', type:'single',
+   opts:[['dia','El día a día'],['familia','Viajes en familia'],['trabajo','Trabajo'],['todo','Un poco de todo']]},
+  {id:'terreno', block:1, label:'Por dónde manejas', title:'¿Por dónde sueles manejar?', help:'Elige todas las que apliquen', type:'multi', exclusive:['nose'],
+   opts:[['ciudad','Ciudad'],['carretera','Carretera'],['destapado','Destapado o terreno difícil'],['nose','Aún no lo sé']]},
+  {id:'personas', block:2, label:'Personas', title:'¿Cuántas personas viajan normalmente, contándote a ti?', type:'single',
+   opts:[['12','1 o 2'],['35','3 a 5'],['6','6 o más'],['nose','Aún no lo sé']]},
+  {id:'llevar', block:2, label:'Qué llevas', title:'¿Qué sueles llevar?', help:'Elige todas las que apliquen', type:'multi', exclusive:['nada'],
+   opts:[['maletas','Maletas de viaje'],['mercado','Mercado y compras'],['herramientas','Herramientas o carga pesada'],['mascotas','Mascotas'],['nada','Nada en especial']]},
+  {id:'prioridades', block:3, label:'Prioridades', title:'¿Qué es lo que más te importa?', help:'Elige hasta 3', type:'multi', max:3, exclusive:['nose'],
+   opts:[['espacio','Espacio'],['comodidad','Comodidad'],['seguridad','Seguridad'],['ahorro','Ahorro de combustible'],['tecnologia','Tecnología'],['potencia','Potencia'],['versatilidad','Versatilidad'],['nose','Aún no lo sé']]},
+  {id:'presupuesto', block:4, optional:true, label:'Presupuesto', title:'¿Cuánto tienes pensado invertir?', help:'Usamos el precio sugerido de cada modelo', type:'single',
+   opts:[['100','Hasta $100 millones'],['150','$100 a $150 millones'],['220','$150 a $220 millones'],['mas','Más de $220 millones'],['nodecir','Prefiero no decirlo']]},
+  {id:'motor', block:4, optional:true, label:'Motor', title:'¿Prefieres algún tipo de motor?', type:'single',
+   opts:[['hibrido','Híbrido'],['gasdiesel','Gasolina o diésel'],['nopref','No tengo preferencia']]},
+  {id:'tipo', block:4, optional:true, label:'Tipo de carro', title:'¿Tienes un tipo de carro en mente?', type:'single',
+   opts:[['automovil','Automóvil'],['suv','Camioneta o SUV'],['pickup','Pick-up'],['nopref','No tengo preferencia']]}
+];
+const TOPE = {'100':100e6,'150':150e6,'220':220e6};
+const PRIO_LABEL = {espacio:'Espacio',comodidad:'Comodidad',seguridad:'Seguridad',ahorro:'Ahorro de combustible',tecnologia:'Tecnología',potencia:'Potencia',versatilidad:'Versatilidad'};
+
+/* ---------- Estado ---------- */
+const S = { view:'intro', q:0, a:{}, editing:false, backup:null, compare:[], detail:null, from:'results' };
+let thinkTimer = null;
+const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- Utilidades ---------- */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const money = n => '$' + n.toLocaleString('es-CO');
+const optLabel = (q, v) => (q.opts.find(o => o[0] === v) || [,''])[1];
+const answered = q => { const v = S.a[q.id]; return q.type === 'multi' ? Array.isArray(v) && v.length > 0 : !!v; };
+
+const CHECK = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4L16 6" fill="none" stroke="#EB0A1E" stroke-width="2.4" stroke-linecap="square"/></svg>';
+const DIFF = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="2" width="16" height="16" fill="none" stroke="#000" stroke-width="1.6"/><path d="M6 10h8" stroke="#000" stroke-width="2"/></svg>';
+const ARROW_L = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+const ARROW_R = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+const EXT = '<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 3h4v4M13 3L7 9M11 9v4H3V5h4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
+
+const BODY_PATHS = {
+  hatch:'M40 112 L42 90 Q46 80 62 78 L98 74 L124 50 Q132 43 148 43 L222 43 Q238 43 248 56 L270 84 Q280 94 280 112 Z',
+  sedan:'M22 112 L26 94 Q30 86 48 84 L94 80 L126 56 Q136 49 154 49 L204 49 Q222 49 236 60 L262 80 L298 86 Q312 90 314 104 L314 112 Z',
+  suv:'M26 112 L28 86 Q30 76 44 74 L80 70 L106 42 Q114 34 130 34 L240 34 Q256 34 266 46 L286 72 Q308 76 312 92 L312 112 Z',
+  suvl:'M20 112 L22 80 Q24 70 40 68 L74 64 L98 30 Q106 22 122 22 L258 22 Q274 22 284 36 L298 64 Q314 68 318 86 L318 112 Z',
+  pickup:'M16 112 L18 86 Q20 76 36 74 L68 70 L92 40 Q100 32 116 32 L184 32 Q194 32 198 42 L204 70 L314 70 Q320 70 320 78 L320 112 Z'
+};
+function car(body, label, style){
+  const p = BODY_PATHS[body];
+  const w1 = body === 'pickup' ? 90 : 86, w2 = body === 'hatch' ? 236 : 258;
+  return `<svg class="car ${style || ''}" viewBox="0 0 340 140" role="img" aria-label="Silueta de referencia: ${esc(label)}">
+    <path class="b" d="${p}"/>
+    <circle class="w" cx="${w1}" cy="114" r="20"/><circle class="h" cx="${w1}" cy="114" r="8"/>
+    <circle class="w" cx="${w2}" cy="114" r="20"/><circle class="h" cx="${w2}" cy="114" r="8"/>
+  </svg>`;
+}
+const pad = n => String(n).padStart(2, '0');
+
+/* ---------- Lógica simple (puntos por coincidencia) ---------- */
+function userTags(){
+  const a = S.a, t = [];
+  (a.prioridades || []).forEach(p => { if (p !== 'nose') t.push(p); });
+  if (a.motor === 'hibrido' || a.motor === 'gasdiesel') t.push(a.motor);
+  if (['automovil','suv','pickup'].includes(a.tipo)) t.push(a.tipo);
+  const uso = {dia:'ciudad', familia:'espacio', trabajo:'carga', todo:'versatilidad'}[a.uso];
+  if (uso) t.push(uso);
+  (a.terreno || []).forEach(x => { if (x === 'ciudad') t.push('ciudad'); if (x === 'destapado') t.push('terreno'); });
+  if (a.personas === '6') t.push('siete');
+  if ((a.llevar || []).includes('herramientas')) t.push('carga');
+  return t;
+}
+function score(m, tags){ return tags.filter(t => t !== 'seguridad' && m.tags.includes(t)).length; }
+function results(){
+  const tags = userTags();
+  const tope = TOPE[S.a.presupuesto] || Infinity;
+  return MODELS.filter(m => m.desde <= tope)
+    .map(m => ({ m, s: score(m, tags) }))
+    .sort((x, y) => y.s - x.s || x.m.desde - y.m.desde)
+    .slice(0, 3).map(r => r.m);
+}
+function prioStats(m){
+  const pr = (S.a.prioridades || []).filter(p => p !== 'nose');
+  const met = pr.filter(p => p === 'seguridad' || m.tags.includes(p));
+  return { total: pr.length, met: met.length };
+}
+function reasonsFor(m, n){
+  const out = [];
+  const push = txt => { if (txt && !out.includes(txt)) out.push(txt); };
+  const tags = [...new Set(userTags())];
+  tags.sort((x, y) => (y === 'siete') - (x === 'siete'));
+  tags.forEach(t => { if (t === 'seguridad' || m.tags.includes(t)) push(m.reasons[t]); });
+  if (S.a.presupuesto && S.a.presupuesto !== 'nodecir') push(`Desde ${money(m.desde)}, dentro de tu presupuesto`);
+  push(m.reasons.seguridad);
+  return out.slice(0, n);
+}
+
+/* ---------- Componentes ---------- */
+function visPanel(tagL, tagR, big, small, body, fast){
+  return `<div class="rad__vis"><div class="vis">
+    <div class="vis__tag lbl"><span>${esc(tagL)}</span><span>${esc(tagR)}</span></div>
+    <div class="vis__car"><div class="hug"><i></i><i></i><i></i><i></i></div>${car(body, 'vehículo', 'line')}</div>
+    <span class="sweep ${fast ? 'fast' : ''}" aria-hidden="true"></span>
+    ${big ? `<div class="vis__big">${big}<small>${esc(small)}</small></div>` : ''}
+  </div></div>`;
+}
+const reasonsList = (m, n) => reasonsFor(m, n).map(r => `<li>${CHECK}<span>${esc(r)}</span></li>`).join('');
+function matchLine(m){
+  const st = prioStats(m);
+  return st.total ? `<div class="match">Cumple ${st.met} de tus ${st.total} prioridades</div>` : '';
+}
+function priceLine(n, label){ return `<div class="price"><b>${label || 'Desde'} ${money(n)}</b><span>Precio sugerido</span></div>`; }
+function cmpBox(m){
+  const on = S.compare.includes(m.id);
+  const dis = !on && S.compare.length >= 3;
+  return `<label class="cmp"><input type="checkbox" data-cmp="${m.id}" ${on ? 'checked' : ''} ${dis ? 'disabled' : ''}> Comparar</label>`;
+}
+function media(m, cap){ return `<div class="media">${car(m.body, m.catLabel)}${cap ? '<span class="cap">Imagen de referencia</span>' : ''}</div>`; }
+
+/* ---------- Vistas ---------- */
+const $m = document.getElementById('module');
+function go(view, extra){
+  clearTimeout(thinkTimer);
+  Object.assign(S, extra || {}, { view });
+  render();
+  document.getElementById('encuentra').scrollIntoView({behavior: REDUCED ? 'auto' : 'smooth', block:'start'});
+}
+function render(){
+  const V = {intro:viewIntro, q:viewQuestion, profile:viewProfile, analyzing:viewAnalyzing, results:viewResults, detail:viewDetail, compare:viewCompare, similar:viewSimilar, ventajas:viewVentajas};
+  $m.innerHTML = V[S.view]();
+  if (S.view === 'analyzing') thinkTimer = setTimeout(() => go('results'), REDUCED ? 500 : 2100);
+}
+
+function viewIntro(){
+  return `<div class="rad dark intro">
+    <div class="rad__panel">
+      <span class="lbl" style="color:var(--red)">Encuentra tu Toyota</span>
+      <h2 class="h-s">Encuentra el Toyota que se adapta a tu vida</h2>
+      <p class="lead">Responde 9 preguntas sobre cómo te mueves y qué te importa. Te mostramos los modelos que mejor se ajustan y por qué.</p>
+      <div class="chips" style="margin-bottom:32px"><span class="chip">9 preguntas</span><span class="chip">2 minutos</span><span class="chip">Sin registrarte</span></div>
+      <div class="row" style="margin-bottom:12px">
+        <button class="btn btn-p" data-act="start">Empezar asesoría ${ARROW_R}</button>
+        <a class="btn-t" href="#catalogo" style="color:var(--white)">Ver catálogo</a>
+      </div>
+      <p class="small" style="color:var(--on-dark-2);margin:0 0 40px">Las recomendaciones salen del catálogo de vehículos nuevos de Toyota Colombia.</p>
+      <ol class="steps3" aria-label="Cómo funciona">
+        <li><b>01</b><strong>Cuéntanos cómo te mueves</strong><span>Uso, espacio, prioridades y presupuesto</span></li>
+        <li><b>02</b><strong>Revisa tu perfil</strong><span>Confirma o ajusta tus respuestas</span></li>
+        <li><b>03</b><strong>Descubre tus opciones</strong><span>Con las razones de cada recomendación</span></li>
+      </ol>
+    </div>
+    ${visPanel('Asesoría', '6 modelos', '', '', 'suv')}
+  </div>`;
+}
+
+function viewQuestion(){
+  const q = QS[S.q];
+  const sel = S.a[q.id];
+  const isSel = v => q.type === 'multi' ? (sel || []).includes(v) : sel === v;
+  const atMax = q.max && (sel || []).filter(x => !(q.exclusive || []).includes(x)).length >= q.max;
+  const rail = BLOCKS.map((b, i) => `<div class="sr ${i < q.block ? 'done' : i === q.block ? 'cur' : ''}"><i></i><span>${b}</span></div>`).join('');
+  const opts = q.opts.map(([v, l]) => {
+    const on = isSel(v);
+    const dis = !on && atMax && !(q.exclusive || []).includes(v);
+    return `<button type="button" class="opt ${q.type}" role="${q.type === 'multi' ? 'checkbox' : 'radio'}" aria-checked="${on}" data-opt="${v}" ${dis ? 'disabled' : ''}><span class="mk" aria-hidden="true"></span>${esc(l)}</button>`;
+  }).join('');
+  const canNext = q.optional || answered(q);
+  const last = S.q === QS.length - 1;
+  const actions = S.editing
+    ? `<button class="btn-t" data-act="cancel-edit" style="color:var(--white)">Cancelar</button>
+       <button class="btn btn-p" data-act="save-edit" ${canNext ? '' : 'disabled'}>Guardar cambio</button>`
+    : `<button class="btn-t" data-act="back" style="color:var(--white)">${ARROW_L} Atrás</button>
+       <button class="btn btn-p" data-act="next" ${canNext ? '' : 'disabled'}>${last ? 'Ver perfil' : 'Siguiente pregunta'} ${ARROW_R}</button>`;
+  const silBody = ['suv','hatch','suvl','sedan','pickup'][q.block];
+  return `<div class="rad dark">
+    <div class="rad__panel">
+      <div class="steps-rail" aria-hidden="true">${rail}</div>
+      <p class="qcount lbl">Pregunta ${S.q + 1} de ${QS.length}</p>
+      ${q.block === 4 && !S.editing ? '<p class="note-opt">Opcional. Si no tienes preferencia, te mostramos todas las opciones.</p>' : ''}
+      <h3 class="h-s q-title" id="qtitle">${esc(q.title)}</h3>
+      <p class="q-help">${q.help ? esc(q.help) : ''}</p>
+      <div class="opts" role="${q.type === 'multi' ? 'group' : 'radiogroup'}" aria-labelledby="qtitle">${opts}</div>
+      <div class="qfoot">${actions}</div>
+    </div>
+    ${visPanel(BLOCKS[q.block], `${pad(S.q + 1)} / ${pad(QS.length)}`, pad(q.block + 1) + '<span style="color:var(--on-dark-2);font-weight:300"> / 05</span>', BLOCKS[q.block], silBody)}
+  </div>`;
+}
+
+function profileValue(q){
+  const v = S.a[q.id];
+  if (q.type === 'multi') return (v && v.length) ? v.map(x => optLabel(q, x)).join(' · ') : '';
+  return v ? optLabel(q, v) : '';
+}
+function viewProfile(){
+  const rows = QS.map((q, i) => {
+    const val = profileValue(q);
+    return `<div class="prow"><dt>${esc(q.label)}</dt><dd class="${val ? '' : 'empty'}">${val ? esc(val) : 'Sin definir'}</dd>
+      <button class="btn-t" data-edit="${i}" aria-label="Editar ${esc(q.label)}">Editar</button></div>`;
+  }).join('');
+  return `<div class="rad dark">
+    <div class="rad__panel">
+      <span class="lbl" style="color:var(--red)">Encuentra tu Toyota</span>
+      <h2 class="h-s" style="font-size:clamp(34px,3.2vw,52px);margin:20px 0 14px">Tu perfil</h2>
+      <p class="lead" style="color:var(--on-dark-2);margin-bottom:28px">Esto es lo que entendimos. Revisa que esté bien antes de ver tus resultados.</p>
+      <dl class="plist">${rows}</dl>
+      <div class="row"><button class="btn btn-p" data-act="results">Ver resultados ${ARROW_R}</button></div>
+    </div>
+    ${visPanel('Tu perfil', 'Listo', '09<span style="color:var(--on-dark-2);font-weight:300"> / 09</span>', 'Preguntas respondidas', 'suv')}
+  </div>`;
+}
+
+function viewAnalyzing(){
+  return `<div class="rad dark">
+    <div class="rad__panel" style="justify-content:center">
+      <span class="lbl" style="color:var(--red)">Encuentra tu Toyota</span>
+      <h2 class="h-s" style="font-size:clamp(34px,3.2vw,52px);margin:20px 0 0">Buscando tu Toyota</h2>
+      <ul class="think" aria-live="polite">
+        <li>Revisando tus prioridades</li>
+        <li>Comparando con el catálogo</li>
+        <li>Preparando tus resultados</li>
+      </ul>
+    </div>
+    ${visPanel('Análisis', 'Catálogo Toyota', '', '', 'suv', true)}
+  </div>`;
+}
+
+function profileChips(){
+  const chips = [];
+  ['uso','terreno','personas','prioridades','presupuesto'].forEach(id => {
+    const q = QS.find(x => x.id === id);
+    const v = S.a[id];
+    if (!v || (Array.isArray(v) && !v.length)) return;
+    (Array.isArray(v) ? v : [v]).filter(x => !['nose','nada','nodecir','nopref'].includes(x)).forEach(x => {
+      chips.push(id === 'personas' ? optLabel(q, x) + ' personas' : optLabel(q, x));
+    });
+  });
+  return chips.slice(0, 6).map(c => `<span class="chip">${esc(c)}</span>`).join('');
+}
+function viewResults(){
+  const [f, ...alts] = results();
+  const altHTML = alts.map(m => `<article class="card">
+      ${media(m)}
+      <div class="body">
+        <p class="mmeta" style="margin:0">${esc(m.catLabel)}</p>
+        <div class="mname">${esc(m.name)}</div>
+        ${priceLine(m.desde)}
+        ${matchLine(m)}
+        <ul class="reasons">${reasonsList(m, 2)}</ul>
+        <div class="foot">${cmpBox(m)}<button class="btn btn-o" data-detail="${m.id}">Ver detalle</button></div>
+      </div>
+    </article>`).join('');
+  const n = S.compare.length;
+  return `<div class="light">
+    <div class="rhead">
+      <div>
+        <span class="lbl" style="color:var(--red)">Tus resultados</span>
+        <h2 class="h-s" style="margin-top:18px">Estos Toyota se ajustan a lo que buscas</h2>
+        <div class="chips">${profileChips()}</div>
+      </div>
+      <button class="btn-t" data-act="profile">Ajustar perfil</button>
+    </div>
+    <article class="feat">
+      ${media(f, true)}
+      <div class="body">
+        <span class="tag">La que más se ajusta a ti</span>
+        <div class="mname">${esc(f.name)}</div>
+        <p class="mmeta">${esc(f.catLabel)}</p>
+        ${priceLine(f.desde)}
+        ${matchLine(f)}
+        <p class="rs-title">Por qué te la recomendamos</p>
+        <ul class="reasons">${reasonsList(f, 3)}</ul>
+        <div class="row" style="justify-content:space-between">${cmpBox(f)}<button class="btn btn-p" data-detail="${f.id}">Ver detalle ${ARROW_R}</button></div>
+      </div>
+    </article>
+    ${alts.length ? `<h3 class="h-s alts-h">También te pueden servir</h3><div class="alts">${altHTML}</div>` : ''}
+    <p class="legal">Precios sugeridos al público por Automotores Toyota Colombia, vigentes del 1 al 30 de noviembre de 2026. Pueden variar según el concesionario.</p>
+    ${n ? `<div class="cmpbar"><span><strong>Seleccionados: ${n} de 3</strong>${n < 2 ? '<span style="color:var(--on-dark-2)"> · Elige al menos 2 para comparar</span>' : ''}</span>
+      <button class="btn btn-p" data-act="compare" ${n < 2 ? 'disabled' : ''}>Comparar modelos</button></div>` : ''}
+  </div>`;
+}
+
+const SPEC_ROWS = [['Puestos','puestos'],['Motor','motor'],['Potencia','potencia'],['Transmisión','trans'],['Tracción','traccion'],['Largo','largo'],['Ancho','ancho'],['Alto','alto'],['Altura al piso','piso'],['Bolsas de aire','airbags'],['Capacidad de carga','carga'],['Baúl','baul']];
+function viewDetail(){
+  const m = byId(S.detail);
+  const inResults = results().some(x => x.id === m.id);
+  const specs = SPEC_ROWS.map(([l, k]) => { const v = m.specs[k]; return `<div class="spec"><dt>${l}</dt><dd class="${v === NA ? 'na' : ''}">${esc(v)}</dd></div>`; }).join('');
+  const vers = m.versions.map(([n, d, p]) => `<tr><td><strong>${esc(n)}</strong></td><td>${esc(d)}</td><td class="num">${money(p)}</td></tr>`).join('');
+  const backLabel = {compare:'Tu comparación', similar:'Tus resultados', ventajas:'Tus resultados'}[S.from] || 'Tus resultados';
+  return `<div class="light">
+    <button class="back" data-act="${S.from}">${ARROW_L} ${backLabel}</button>
+    <div class="dtop">
+      ${media(m, true)}
+      <div>
+        <p class="mmeta" style="margin:0 0 10px">${esc(m.catLabel)}</p>
+        <div class="mname">${esc(m.name)}</div>
+        ${priceLine(m.desde)}
+        ${matchLine(m)}
+        <p class="rs-title">Por qué es para ti</p>
+        <ul class="reasons">${reasonsList(m, 3)}</ul>
+        ${inResults ? cmpBox(m) : ''}
+      </div>
+    </div>
+    <p class="sec-t">Versiones y precios</p>
+    <div class="vt"><table><thead><tr><th>Versión</th><th>Motor, transmisión y tracción</th><th>Precio sugerido</th></tr></thead><tbody>${vers}</tbody></table></div>
+    <p class="sec-t">Ficha técnica</p>
+    <dl class="specs">${specs}</dl>
+    ${m.pending ? '<p class="pending">* Dato por confirmar en la ficha técnica oficial de Toyota Colombia.</p>' : ''}
+    <div class="band dark">
+      <div><h3 class="h-s">¿Te interesa el ${esc(m.name)}?</h3><p>Cotízalo o agenda una prueba de manejo en toyota.com.co. Se abre en una pestaña nueva.</p></div>
+      <div class="row">
+        <a class="btn btn-o" href="${m.url}" target="_blank" rel="noopener">Test drive ${EXT}</a>
+        <a class="btn btn-p" href="${m.url}" target="_blank" rel="noopener">Cotizar ${EXT}</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+function viewCompare(){
+  const ms = S.compare.map(byId);
+  const head = ms.map(m => `<th>${media(m)}<div class="mname">${esc(m.name)}</div><button class="btn-t" data-detail="${m.id}" data-from="compare">Ver detalle</button></th>`).join('');
+  const rowsData = [['Precio desde', m => money(m.desde)], ['Tipo', m => m.catLabel], ...SPEC_ROWS.map(([l, k]) => [l, m => m.specs[k]])];
+  const rows = rowsData.map(([l, fn]) => `<tr><th scope="row">${l}</th>${ms.map(m => { const v = fn(m); return `<td class="${v === NA ? 'na' : ''}">${esc(v)}</td>`; }).join('')}</tr>`).join('');
+  const prio = (S.a.prioridades || []).filter(p => p !== 'nose');
+  const prioRow = prio.length ? `<tr><th scope="row">Tus prioridades que cumple</th>${ms.map(m => { const met = prio.filter(p => p === 'seguridad' || m.tags.includes(p)).map(p => PRIO_LABEL[p]); return `<td><strong>${met.length ? esc(met.join(' · ')) : '<span class="na">Ninguna</span>'}</strong></td>`; }).join('')}</tr>` : '';
+  return `<div class="light">
+    <button class="back" data-act="results">${ARROW_L} Tus resultados</button>
+    <h2 class="h-s" style="font-size:clamp(32px,3.2vw,52px);margin:0 0 12px">Compara tus opciones</h2>
+    <p class="lead mute" style="margin-bottom:36px">Las diferencias entre los modelos que elegiste, con los datos de la ficha técnica oficial.</p>
+    <div class="ct"><table><thead><tr><th></th>${head}</tr></thead><tbody>${prioRow}${rows}</tbody></table></div>
+    ${ms.some(m => m.pending) ? '<p class="legal">* Dato por confirmar en la ficha técnica oficial de Toyota Colombia.</p>' : ''}
+  </div>`;
+}
+
+/* ---------- Pantallas sueltas (sin lógica) ---------- */
+function tradeCard(m, title, meets, diffs){
+  return `<article class="card">
+    ${media(m)}
+    <div class="body">
+      <span class="tag k" style="align-self:flex-start">${esc(title)}</span>
+      <div class="mname">${esc(m.name)}</div>
+      ${priceLine(m.desde)}
+      <p class="rs-title">Lo que cumple</p>
+      <ul class="reasons" style="margin-bottom:20px">${meets.map(r => `<li>${CHECK}<span>${esc(r)}</span></li>`).join('')}</ul>
+      <p class="rs-title">Qué es distinto</p>
+      <ul class="diff">${diffs.map(r => `<li>${DIFF}<span>${esc(r)}</span></li>`).join('')}</ul>
+      <div class="foot"><span></span><button class="btn btn-o" data-detail="${m.id}" data-from="similar">Ver detalle</button></div>
+    </div>
+  </article>`;
+}
+function viewSimilar(){
+  return `<div class="light">
+    <div class="rhead">
+      <div>
+        <span class="lbl" style="color:var(--red)">Tus resultados · Pantalla suelta</span>
+        <h2 class="h-s" style="margin-top:18px">Estos se acercan a lo que buscas</h2>
+        <p class="lead mute" style="margin:0 0 16px">Ninguno cumple todo lo que pediste. Cada uno cumple una parte.</p>
+        <div class="chips"><span class="chip">6 o más personas</span><span class="chip">Camioneta o SUV</span><span class="chip">Híbrido</span></div>
+      </div>
+      <button class="btn-t" data-act="profile">Ajustar perfil</button>
+    </div>
+    <div class="trade">
+      ${tradeCard(byId('fortuner'), 'Si priorizas 7 puestos', ['7 puestos en 3 filas','SUV grande de 4.795 mm de largo'], ['No es híbrido: motor diésel 2.8 L o gasolina 2.7 L'])}
+      ${tradeCard(byId('rav4'), 'Si priorizas que sea híbrido', ['Motor híbrido de 2.5 L','SUV mediana con tracción 4x4'], ['Tiene 5 puestos, no 7'])}
+    </div>
+  </div>`;
+}
+function viewVentajas(){
+  const m = byId('fortuner');
+  return `<div class="light">
+    <div class="rhead">
+      <div>
+        <span class="lbl" style="color:var(--red)">Tus resultados · Pantalla suelta</span>
+        <h2 class="h-s" style="margin-top:18px">La opción más cercana a lo que buscas</h2>
+        <div class="chips"><span class="chip">6 o más personas</span><span class="chip">$150 a $220 millones</span></div>
+      </div>
+      <button class="btn-t" data-act="profile">Ajustar perfil</button>
+    </div>
+    <article class="feat">
+      ${media(m, true)}
+      <div class="body">
+        <span class="tag k">Fortuner SR 2.8 Diésel 4x2 AT</span>
+        <div class="mname">${esc(m.name)}</div>
+        ${priceLine(242900000, '')}
+        <p class="rs-title">Qué cambia</p>
+        <ul class="diff" style="margin-bottom:24px"><li>${DIFF}<span>Se pasa ${money(22900000)} de tu presupuesto</span></li></ul>
+        <p class="rs-title">Lo que ganas</p>
+        <ul class="reasons">
+          <li>${CHECK}<span>7 puestos en 3 filas: el único del catálogo</span></li>
+          <li>${CHECK}<span>279 mm de altura al piso</span></li>
+          <li>${CHECK}<span>Hasta 201 hp con el motor diésel 2.8 L</span></li>
+        </ul>
+        <div class="row" style="justify-content:flex-end"><button class="btn btn-p" data-detail="fortuner" data-from="ventajas">Ver detalle ${ARROW_R}</button></div>
+      </div>
+    </article>
+  </div>`;
+}
+
+/* ---------- Eventos ---------- */
+$m.addEventListener('click', e => {
+  const t = e.target.closest('button, input');
+  if (!t) return;
+  if (t.matches('[data-opt]')) {
+    const q = QS[S.q], v = t.dataset.opt;
+    if (q.type === 'single') S.a[q.id] = v;
+    else {
+      let cur = [...(S.a[q.id] || [])];
+      const ex = q.exclusive || [];
+      if (cur.includes(v)) cur = cur.filter(x => x !== v);
+      else if (ex.includes(v)) cur = [v];
+      else { cur = cur.filter(x => !ex.includes(x)); if (!q.max || cur.length < q.max) cur.push(v); }
+      S.a[q.id] = cur;
+    }
+    render();
+    const again = $m.querySelector(`[data-opt="${v}"]`); if (again) again.focus();
+    return;
+  }
+  if (t.matches('[data-cmp]')) {
+    const id = t.dataset.cmp;
+    S.compare = t.checked ? [...S.compare, id].slice(0, 3) : S.compare.filter(x => x !== id);
+    render();
+    return;
+  }
+  if (t.dataset.edit !== undefined) { go('q', { q:+t.dataset.edit, editing:true, backup:JSON.parse(JSON.stringify(S.a)) }); return; }
+  if (t.dataset.detail) { go('detail', { detail:t.dataset.detail, from:t.dataset.from || (S.view === 'compare' ? 'compare' : S.view === 'detail' ? S.from : 'results') }); return; }
+  const act = t.dataset.act;
+  if (act === 'start') go('q', { q:0, editing:false });
+  else if (act === 'next') { if (S.q < QS.length - 1) go('q', { q:S.q + 1 }); else go('profile'); }
+  else if (act === 'back') { if (S.q > 0) go('q', { q:S.q - 1 }); else go('intro'); }
+  else if (act === 'save-edit') go('profile', { editing:false, backup:null });
+  else if (act === 'cancel-edit') go('profile', { a:S.backup, editing:false, backup:null });
+  else if (act === 'results') { const ids = results().map(m => m.id); S.compare = S.compare.filter(x => ids.includes(x)); go(S.view === 'profile' ? 'analyzing' : 'results'); }
+  else if (act === 'profile') go('profile');
+  else if (act === 'compare') go('compare');
+  else if (act === 'similar' || act === 'ventajas') go(act);
+});
+
+document.querySelectorAll('[data-proto]').forEach(b => b.addEventListener('click', () => {
+  const p = b.dataset.proto;
+  if (p === 'reset') { S.a = {}; S.compare = []; go('intro', { q:0, editing:false }); }
+  else go(p);
+}));
+
+/* Home: hero, marquesina y catálogo */
+document.getElementById('hero-car').innerHTML = car('suv', 'vehículo destacado');
+const MQ = ['Automóviles','Camionetas y SUV','Pick-ups','Híbridos','Encuentra tu Toyota'];
+const mq = MQ.map(t => `<span>${t}<em></em></span>`).join('');
+document.getElementById('marq').innerHTML = `<span class="lbl" style="display:flex;gap:0">${mq}${mq}${mq}${mq}</span>`;
+document.getElementById('catalog-row').innerHTML = MODELS.map(m =>
+  `<a class="ccard" href="${m.url}" target="_blank" rel="noopener">${media(m)}<strong>${esc(m.name)}</strong><span>Desde ${money(m.desde)}</span></a>`).join('');
+
+render();
+</script>
+</body>
+</html>
