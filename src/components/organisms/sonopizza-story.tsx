@@ -9,13 +9,13 @@ import {
 } from 'next/font/google';
 
 import { SonoArrowMarker } from '@/components/atoms/sono-arrow-marker';
-import { SonoPlaceholder } from '@/components/atoms/sono-placeholder';
 import { CaseStoryCounter } from '@/components/molecules/case-story-counter';
 import { SonoBenchmarkSlides } from '@/components/molecules/sono-benchmark-slides';
 import { SonoFlowMaps } from '@/components/molecules/sono-flow-maps';
 import { SonoJumpBand } from '@/components/molecules/sono-jump-band';
 import { SonoRailNav } from '@/components/molecules/sono-rail-nav';
 import { SonoDesignSystem } from '@/components/organisms/sono-design-system';
+import { SonoProductShowcase } from '@/components/organisms/sono-product-showcase';
 import type {
   SonoSiteNodeKind,
   SonopizzaStory as SonopizzaStoryContent
@@ -48,6 +48,8 @@ const dmSans = dmSansFont({
 });
 
 const MASCOT_SRC = '/sonopizza/mascot.webp';
+// Foto de la portada: la pizza cenital, cortada por el borde derecho
+const COVER_SRC = '/sonopizza/cover.webp';
 // Sitemap en un lienzo de 1400 × 660. Fila 1: la navegación principal
 // (Inicio, Menú y Carrito); debajo del menú, Detalle y Personalización, y
 // debajo del carrito, Confirmación. El árbol une la app con la navegación
@@ -154,7 +156,16 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
           data-surface="dark"
         >
           <div className="sono-cover__cut">
-            <SonoPlaceholder label={cover.photoLabel} isLabelVisible={false} />
+            <span className="sono-cover__band" aria-hidden="true" />
+            <div className="sono-cover__panel">
+              <img
+                src={COVER_SRC}
+                alt={cover.photoLabel}
+                className="sono-cover__photo"
+                draggable={false}
+                fetchPriority="high"
+              />
+            </div>
           </div>
           <div className="sono-cover__text">
             <h1 className="sono-cover__wordmark">
@@ -541,9 +552,10 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
           <SonoFlowMaps flows={flows} />
         </div>
 
-        {/* 04 · Sistema de diseño: un solo ambiente con scroll libre por
-            dentro. Al llegar, el scroll recorre el contenido como una página;
-            al terminar, el siguiente gesto sigue al producto en acción */}
+        {/* 04 · Sistema de diseño: cuatro capítulos (portada, fundamentos,
+            componentes y elementos de marca) que entran de lado, como las
+            demás escenas; cada uno se lee hacia abajo como una página y, al
+            terminar el último, el siguiente gesto sigue al producto */}
         <div
           className="sono-view sono-free"
           data-sono-view
@@ -552,121 +564,20 @@ export function SonopizzaStory({ story }: SonopizzaStoryProps) {
           data-surface="dark"
           data-free-view
         >
-          <div
-            className="sono-free__area"
-            data-free-scroll-area
-            data-lenis-prevent
-          >
-            <SonoDesignSystem system={designSystem} />
-          </div>
+          <SonoDesignSystem system={designSystem} />
         </div>
 
-        {/* 05 · El producto en acción (referencia: motionin.design/gallery/
-            marathon): un paso por flujo. Cada gesto cambia el fondo, el
-            título entra letra por letra, el teléfono sube y entra el del
-            siguiente flujo desde abajo, y las etiquetas
-            de vidrio flotan alrededor del teléfono */}
+        {/* 05 · El producto en acción: una sola escena con las nueve pantallas
+            en un abanico de teléfonos */}
         <div
           className="sono-view sono-product"
           data-sono-view
           data-enter="rise"
-          data-steps={product.scenes.length}
           data-section="5"
           data-surface="dark"
           data-motion="product"
         >
-          {product.scenes.map((scene, index) => (
-            <span
-              key={scene.number}
-              className={cn('sono-product__bg', `sono-product__bg--${index}`)}
-              aria-hidden="true"
-              data-product-bg={index}
-            />
-          ))}
-          <span className="sono-product__glow" aria-hidden="true" />
-
-          {product.scenes.map((scene, index) => (
-            <div
-              key={scene.number}
-              className="sono-product__phone"
-              aria-hidden="true"
-              data-product-phone={index}
-            >
-              <span className="sono-product__screen">
-                <span className="sono-product__screen-label">
-                  {scene.screenLabel}
-                </span>
-              </span>
-            </div>
-          ))}
-
-          {product.scenes.map((scene, index) => (
-            <section
-              key={scene.number}
-              className="sono-product__scene"
-              aria-labelledby={`sono-product-${index}`}
-              data-product-scene={index}
-            >
-              <div className="sono-product__copy">
-                <p className="sono-product__eyebrow" data-product-fade>
-                  {product.number} · {product.name}
-                </p>
-                <h2
-                  id={`sono-product-${index}`}
-                  className="sono-product__title"
-                >
-                  <span className="sr-only">{scene.title}</span>
-                  <span aria-hidden="true">
-                    {scene.title.split(' ').map((word, wordIndex) => (
-                      <span
-                        key={`${word}-${wordIndex}`}
-                        className="sono-product__word"
-                      >
-                        {Array.from(word).map((letter, letterIndex) => (
-                          <span
-                            key={`${letter}-${letterIndex}`}
-                            className="sono-product__letter"
-                            data-product-letter
-                          >
-                            {letter}
-                          </span>
-                        ))}
-                      </span>
-                    ))}
-                  </span>
-                </h2>
-                <p className="sono-product__text" data-product-fade>
-                  {scene.text}
-                </p>
-                <p className="sono-product__pill" data-product-fade>
-                  <span className="sono-product__dot" aria-hidden="true" />
-                  {product.stepLabel} {scene.number} ·{' '}
-                  {flows.items[index]?.title}
-                </p>
-              </div>
-              <ul className="sono-product__chips">
-                {scene.chips.map((chip, chipIndex) => (
-                  <li
-                    key={chip.title}
-                    className={cn(
-                      'sono-product__chip',
-                      `sono-product__chip--${chipIndex}`
-                    )}
-                    data-product-chip
-                  >
-                    <span className="sono-product__chip-float">
-                      <span className="sono-product__chip-title">
-                        {chip.title}
-                      </span>
-                      <span className="sono-product__chip-text">
-                        {chip.text}
-                      </span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+          <SonoProductShowcase product={product} />
         </div>
 
         <SonoRailNav sections={story.sections} />

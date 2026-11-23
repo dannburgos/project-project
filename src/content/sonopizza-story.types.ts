@@ -142,22 +142,33 @@ export type SonopizzaStory = {
   };
   // 04 · Sistema de diseño: fundamentos, componentes y elementos de marca
   designSystem: SonoDesignSystem;
-  // 05 · El producto en acción: una escena por flujo (referencia:
-  // motionin.design/gallery/marathon)
+  // 05 · El producto en acción: una escena por pantalla del prototipo
+  // (referencia: motionin.design/gallery/marathon)
   product: {
     number: string;
     name: string;
-    stepLabel: string;
     scenes: readonly SonoProductScene[];
   };
 };
 
+// Una pantalla del prototipo, tal como se ve dentro del teléfono de su escena
+export type SonoProductScreen = {
+  // Nombre de la imagen (/sonopizza/screens/{key}.webp)
+  key: string;
+  // Número y nombre que lleva en el tablero
+  step: string;
+  label: string;
+};
+
+// Una escena por pantalla: su titular, qué hace, las etiquetas de lo que
+// resuelve y la pantalla. El fondo toma el color del flujo al que pertenece
 export type SonoProductScene = {
-  // Número y nombre del flujo (los mismos de flows.items)
   number: string;
   title: string;
   text: string;
-  screenLabel: string;
+  // 0 azul oscuro, 1 azul claro y 2 naranja (los colores de los tres flujos)
+  tone: 0 | 1 | 2;
+  screen: SonoProductScreen;
   chips: readonly SonoLabeledText[];
 };
 

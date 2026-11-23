@@ -4,6 +4,11 @@ import { useEffect, useState, type RefObject } from 'react';
 
 export type SurfaceTone = 'dark' | 'light' | null;
 
+// Como mucho una revisión cada tanto: buscar qué hay debajo obliga al
+// navegador a recalcular la página, y hacerlo en cada cuadro del scroll
+// (mientras un escenario anima) le quita fluidez
+const CHECK_EVERY_MS = 100;
+
 // Aviso para revisar de nuevo cuando el fondo cambia sin que la página se
 // mueva (por ejemplo, una capa que entra en un escenario fijo)
 export const SURFACE_CHANGE_EVENT = 'portfolio:surface-change';
@@ -20,9 +25,12 @@ export function useSurfaceUnder(
 
   useEffect(() => {
     let frameId: number | null = null;
+    let waitId: number | null = null;
+    let lastCheck = 0;
 
     const update = () => {
       frameId = null;
+      lastCheck = performance.now();
       const element = ref.current;
       if (!element) return;
       const rect = element.getBoundingClientRect();
@@ -38,7 +46,17 @@ export function useSurfaceUnder(
       setTone(value === 'dark' || value === 'light' ? value : null);
     };
     const schedule = () => {
-      if (frameId === null) frameId = requestAnimationFrame(update);
+      if (frameId !== null || waitId !== null) return;
+      const wait = CHECK_EVERY_MS - (performance.now() - lastCheck);
+      if (wait <= 0) {
+        frameId = requestAnimationFrame(update);
+        return;
+      }
+      // La última revisión siempre llega, aunque el scroll ya se detuvo
+      waitId = window.setTimeout(() => {
+        waitId = null;
+        frameId = requestAnimationFrame(update);
+      }, wait);
     };
 
     schedule();
@@ -49,6 +67,7 @@ export function useSurfaceUnder(
     const timeoutId = window.setTimeout(schedule, 300);
     return () => {
       if (frameId !== null) cancelAnimationFrame(frameId);
+      if (waitId !== null) window.clearTimeout(waitId);
       window.clearTimeout(timeoutId);
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);

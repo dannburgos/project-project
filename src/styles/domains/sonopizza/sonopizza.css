@@ -291,3 +291,9 @@
   @apply text-sm leading-5;
   color: var(--sp-muted);
 }
+
+/* Una sola pantalla dentro de un iframe (el caso): sin márgenes ni barras de
+   desplazamiento alrededor */
+.sp-screen-page {
+  @apply fixed inset-0 overflow-hidden;
+}

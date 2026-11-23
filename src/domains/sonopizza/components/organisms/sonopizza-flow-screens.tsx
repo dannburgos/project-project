@@ -84,3 +84,11 @@ export const SONOPIZZA_FLOWS: SonopizzaFlow[] = [
     ]
   }
 ];
+
+// Todas las pantallas de los tres flujos en una sola lista
+export const SONOPIZZA_ALL_SCREENS: SonopizzaFlowScreen[] =
+  SONOPIZZA_FLOWS.flatMap(flow => flow.screens);
+
+export function findSonopizzaFlowScreen(key: string) {
+  return SONOPIZZA_ALL_SCREENS.find(item => item.key === key);
+}

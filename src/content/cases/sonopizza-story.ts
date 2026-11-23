@@ -718,39 +718,113 @@ export const sonopizzaStory: SonopizzaStory = {
   product: {
     number: '05',
     name: 'El producto en acción',
-    stepLabel: 'Flujo',
     scenes: [
       {
         number: '01',
-        title: 'Descubre tu pizza',
-        text: 'Explora el menú o busca, y abre el detalle para ver foto, ingredientes, tamaños y precio.',
-        screenLabel: 'Pantalla · Inicio',
+        title: 'Lo más pedido',
+        text: 'Al abrir, la pizza favorita es la protagonista con un solo botón; debajo, las categorías y la promo de la semana, a un toque.',
+        tone: 0,
+        screen: { key: 'home', step: '01', label: 'Inicio' },
         chips: [
-          { title: 'Menú', text: 'Por categorías' },
-          { title: 'Buscar', text: 'Por nombre' },
-          { title: 'Detalle', text: 'Foto y precio' }
+          { title: 'Protagonista', text: 'Un solo botón' },
+          { title: 'Categorías', text: 'Claras' },
+          { title: 'Promo', text: 'De la semana' }
         ]
       },
       {
         number: '02',
-        title: 'Hazla a tu gusto',
-        text: 'Parte de la receta original: elige el tamaño, quita ingredientes, suma extras y mira el precio actualizado.',
-        screenLabel: 'Pantalla · Personalizar',
+        title: 'Encuentra rápido',
+        text: 'Buscador y filtros por orden, ingredientes y tamaño, favoritos y tarjetas parejas con el precio desde.',
+        tone: 0,
+        screen: { key: 'menu', step: '02', label: 'Menú' },
         chips: [
-          { title: 'Tamaño', text: 'Obligatorio' },
-          { title: 'Extras', text: 'Con su costo' },
-          { title: 'Precio', text: 'Al instante' }
+          { title: 'Filtros', text: 'Que se despliegan' },
+          { title: 'Favoritos', text: 'Con un toque' },
+          { title: 'Precio', text: 'Desde' }
         ]
       },
       {
         number: '03',
-        title: 'Confirma el pedido',
-        text: 'Revisa el carrito, edita o cambia cantidades, mira el total y confirma.',
-        screenLabel: 'Pantalla · Carrito',
+        title: 'Siempre al tanto',
+        text: 'La campana reúne el estado del pedido, las promos y las novedades, con lo nuevo bien marcado.',
+        tone: 0,
+        screen: { key: 'notifications', step: '03', label: 'Notificaciones' },
         chips: [
-          { title: 'Carrito', text: 'Editable' },
-          { title: 'Total', text: 'Sin sorpresas' },
-          { title: 'Confirmación', text: 'Visual' }
+          { title: 'Pedido', text: 'Su estado' },
+          { title: 'Promos', text: 'Y novedades' },
+          { title: 'Lo nuevo', text: 'Marcado' }
+        ]
+      },
+      {
+        number: '04',
+        title: 'Hazla a tu gusto',
+        text: 'Todo en una sola vista: primero lo obligatorio, el tamaño; después lo opcional, la salsa, qué quitar y los extras, cada uno con su costo.',
+        tone: 1,
+        screen: { key: 'product', step: '04', label: 'Elige tu pizza' },
+        chips: [
+          { title: 'Tamaño', text: 'Va primero' },
+          { title: 'Extras', text: 'Con su costo' },
+          { title: 'Total', text: 'Siempre abajo' }
+        ]
+      },
+      {
+        number: '05',
+        title: 'Tu pedido, claro',
+        text: 'El producto con su tamaño y extras, el cupón a la mano y un resumen con subtotal, domicilio y total.',
+        tone: 2,
+        screen: { key: 'cart', step: '05', label: 'Carrito' },
+        chips: [
+          { title: 'Detalle', text: 'Del producto' },
+          { title: 'Cupón', text: 'A la mano' },
+          { title: 'Resumen', text: 'Sin sorpresas' }
+        ]
+      },
+      {
+        number: '06',
+        title: 'Un solo paso',
+        text: 'Lo que pagas y lo que decides, en dos tarjetas: el producto con su domicilio, y la dirección, cuándo y cómo pagas.',
+        tone: 2,
+        screen: { key: 'checkout', step: '06', label: 'Checkout' },
+        chips: [
+          { title: 'Domicilio', text: 'A la vista' },
+          { title: 'Entrega', text: 'Ahora o después' },
+          { title: 'Pago', text: 'Al recibir' }
+        ]
+      },
+      {
+        number: '07',
+        title: 'Pedido en marcha',
+        text: 'Una confirmación clara: el número del pedido, cuánto demora y en qué paso va, con la mascota de la marca.',
+        tone: 2,
+        screen: { key: 'confirmed', step: '07', label: 'Pedido confirmado' },
+        chips: [
+          { title: 'Número', text: 'Del pedido' },
+          { title: 'Tiempo', text: 'Estimado' },
+          { title: 'Pasos', text: 'Del pedido' }
+        ]
+      },
+      {
+        number: '08',
+        title: 'Sigue tu pizza',
+        text: 'Cuánto falta en grande, la pizza como reloj, el código de entrega y quién va en camino, sin mapa.',
+        tone: 2,
+        screen: { key: 'tracking', step: '08', label: 'Seguimiento' },
+        chips: [
+          { title: 'Cuenta atrás', text: 'Grande' },
+          { title: 'Código', text: 'De entrega' },
+          { title: 'Repartidor', text: 'En camino' }
+        ]
+      },
+      {
+        number: '09',
+        title: 'Pídela otra vez',
+        text: 'El pedido en curso arriba y los anteriores debajo, cada uno con un botón para repetirlo con un toque.',
+        tone: 2,
+        screen: { key: 'orders', step: '09', label: 'Mis pedidos' },
+        chips: [
+          { title: 'En curso', text: 'Con seguimiento' },
+          { title: 'Anteriores', text: 'Con su fecha' },
+          { title: 'Pedir de nuevo', text: 'Con un toque' }
         ]
       }
     ]

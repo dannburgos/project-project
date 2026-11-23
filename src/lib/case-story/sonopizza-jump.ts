@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 
 import { queryAll } from '@/lib/case-story/motion';
-import type { StepJump } from '@/lib/case-story/step-navigator';
+import type { StepJump } from '@/lib/case-story/sonopizza-scrub.types';
 
 // Salto entre secciones de Sonopizza desde el submenú: la franja naranja de la
 // marca barre la pantalla con el número y el nombre de la sección a la que se
