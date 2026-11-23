@@ -15,3 +15,9 @@
 @import './domains/planti/planti-home-banner.css';
 @import './domains/planti/planti-week-agenda.css';
 @import './domains/planti/planti-plants-grid.css';
+@import './domains/petride/petride.css';
+@import './domains/petride/petride-parts.css';
+@import './domains/petride/petride-screens.css';
+@import './domains/petride/petride-trip.css';
+@import './domains/petride/petride-motion.css';
+@import './domains/petride/petride-motion-trip.css';

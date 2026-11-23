@@ -1,0 +1,1585 @@
+/* Microinteracciones del flujo 2 (Solicitar viaje) en el caso. Igual que
+   el flujo 1: cada pantalla espera en su primer cuadro y corre cuando se
+   revela; el dedo muestra qué toca la persona. Generado con tiempos en
+   segundos desde que la pantalla se revela */
+
+@keyframes pm-t-slide {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+}
+
+@keyframes pm-t-header {
+  from {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes pm-t-sheet {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes pm-t-lift {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+}
+
+@keyframes pm-t-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+@keyframes pm-t-pin {
+  0% {
+    opacity: 0;
+    transform: translateY(-26px) scale(0.6);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(3px) scale(1.04);
+  }
+}
+
+@keyframes pm-t-car-in {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+}
+
+@keyframes pm-t-drive {
+  0% {
+    opacity: 0;
+    translate: -140px 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    translate: 6px 0;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+@keyframes pm-t-arrive {
+  from {
+    opacity: 0;
+    transform: translateX(72px);
+  }
+}
+
+@keyframes pm-t-wheel {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pm-t-map {
+  from {
+    opacity: 0.4;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes pm-t-draw-fare {
+  from {
+    stroke-dashoffset: 494;
+  }
+}
+
+@keyframes pm-t-draw-pickup {
+  from {
+    stroke-dashoffset: -159;
+  }
+}
+
+@keyframes pm-t-dot {
+  from {
+    width: 6px;
+  }
+}
+
+@keyframes pm-t-focus {
+  from {
+    box-shadow: 0 0 0 0 rgb(221 243 68 / 0);
+  }
+}
+
+@keyframes pm-t-place-pick {
+  from {
+    border-color: #eceff7;
+    background-color: #fff;
+  }
+}
+
+@keyframes pm-t-pet-pick {
+  from {
+    border-color: var(--pr-border);
+    background-color: #fff;
+  }
+}
+
+@keyframes pm-t-check {
+  0% {
+    border-color: var(--pr-border);
+    background-color: transparent;
+    color: transparent;
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+}
+
+@keyframes pm-t-seat {
+  from {
+    background-color: var(--pr-border);
+  }
+}
+
+@keyframes pm-t-blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes pm-t-ring {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes pm-t-wave {
+  from {
+    opacity: 0.9;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes pm-t-paw-on {
+  from {
+    background-color: #f1f3fa;
+    color: #c3c8de;
+  }
+}
+
+@keyframes pm-t-paw-choose {
+  0% {
+    scale: 1;
+    box-shadow: 0 0 0 rgb(72 73 232 / 0);
+  }
+  55% {
+    scale: 1.16;
+  }
+}
+
+@keyframes pm-t-tag-pick {
+  from {
+    border-color: var(--pr-border);
+    background-color: #fff;
+    color: var(--pr-ink);
+  }
+}
+
+@keyframes pm-t-enable {
+  from {
+    filter: saturate(0) opacity(0.45);
+  }
+}
+
+/* 01 · Inicio: el carro arranca, la ruta se dibuja hasta el pin y se toca el buscador */
+.petride-motion[data-screen='home'] .petride-hero {
+  animation: pm-t-header 0.75s var(--pm-ease) 0s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-hero__grid {
+  animation: pm-fade 1.2s var(--pm-ease) 0.3s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-nav {
+  animation: pm-nav 0.7s var(--pm-ease) 0.35s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-nav__request {
+  animation:
+    pm-pop 0.6s var(--pm-spring) 0.8s backwards,
+    pm-glow-lime 1.4s ease-out 1.4s;
+}
+
+.petride-motion[data-screen='home'] .petride-hero__heading {
+  animation: pm-rise 0.6s var(--pm-ease) 0.4s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-hero__car {
+  animation: pm-t-car-in 0.7s var(--pm-ease) 0.6s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-hero__route {
+  animation: pm-t-reveal 1.1s var(--pm-ease) 0.75s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-hero__pin {
+  animation: pm-t-pin 0.7s var(--pm-spring) 1.65s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-hero__title {
+  animation: pm-rise 0.6s var(--pm-ease) 0.85s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-hero__text {
+  animation: pm-rise 0.6s var(--pm-ease) 0.95s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-search {
+  animation:
+    pm-rise 0.6s var(--pm-ease) 1.05s backwards,
+    pm-press 0.4s var(--pm-ease) 3.3s,
+    pm-glow-lime 0.9s var(--pm-ease) 3.35s;
+}
+
+.petride-motion[data-screen='home'] .petride-search__when {
+  animation: pm-pop 0.45s var(--pm-spring) 1.4s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-saved__item:nth-child(1) {
+  animation: pm-t-slide 0.6s var(--pm-ease) 1.3s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-saved__item:nth-child(2) {
+  animation: pm-t-slide 0.6s var(--pm-ease) 1.4s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-saved__item:nth-child(3) {
+  animation: pm-t-slide 0.6s var(--pm-ease) 1.5s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-home-pets .petride-section-head {
+  animation: pm-rise 0.5s var(--pm-ease) 1.45s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-home-pets__item:nth-child(1) {
+  animation: pm-pop 0.5s var(--pm-spring) 1.55s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-home-pets__item:nth-child(2) {
+  animation: pm-pop 0.5s var(--pm-spring) 1.63s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-home-pets__item:nth-child(3) {
+  animation: pm-pop 0.5s var(--pm-spring) 1.71s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-home-pets__item:nth-child(4) {
+  animation: pm-pop 0.5s var(--pm-spring) 1.79s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-home-pets__add {
+  animation: pm-wiggle 0.6s var(--pm-ease) 2.4s;
+}
+
+.petride-motion[data-screen='home']
+  .petride-ideas
+  .petride-section-head__title {
+  animation: pm-rise 0.5s var(--pm-ease) 1.8s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-ideas__list {
+  animation: pm-t-slide 0.8s var(--pm-ease) 1.9s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-idea--lime .petride-idea__icon {
+  animation: pm-wiggle 0.7s var(--pm-ease) 2.55s;
+}
+
+.petride-motion[data-screen='home'] .petride-ideas__dots {
+  animation: pm-fade 0.5s var(--pm-ease) 2.1s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-ideas__dot--on {
+  animation: pm-t-dot 0.5s var(--pm-ease) 2.45s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-touch {
+  animation: pm-touch-home 4.25s linear 0s backwards;
+}
+
+.petride-motion[data-screen='home'] .petride-touch__ripple {
+  animation: pm-tap-home 4.25s linear 0s backwards;
+}
+
+@keyframes pm-touch-home {
+  0% {
+    opacity: 0;
+    transform: translate(150px, 296px) scale(1.1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  60% {
+    opacity: 0;
+    transform: translate(150px, 296px) scale(1.1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  68.235% {
+    opacity: 1;
+    transform: translate(150px, 268px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  76.471% {
+    opacity: 1;
+    transform: translate(150px, 268px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  78.824% {
+    opacity: 1;
+    transform: translate(150px, 268px) scale(0.8);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  83.059% {
+    opacity: 1;
+    transform: translate(150px, 268px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  88.235% {
+    opacity: 1;
+    transform: translate(150px, 268px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  97.647% {
+    opacity: 0;
+    transform: translate(150px, 284px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(150px, 284px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+}
+
+@keyframes pm-tap-home {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  77.647% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  78.118% {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  90.588% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 02 · Origen y destino: se escribe el destino, aparecen los lugares y se elige uno */
+.petride-motion[data-screen='places'] .petride-place-search {
+  animation: pm-t-header 0.7s var(--pm-ease) 0s backwards;
+}
+
+.petride-motion[data-screen='places'] .petride-place-search__grid {
+  animation: pm-fade 1.2s var(--pm-ease) 0.3s backwards;
+}
+
+.petride-motion[data-screen='places'] .petride-place-search__bar {
+  animation: pm-drop 0.5s var(--pm-ease) 0.35s backwards;
+}
+
+.petride-motion[data-screen='places'] .petride-place-field:nth-child(1) {
+  animation: pm-rise 0.5s var(--pm-ease) 0.45s backwards;
+}
+
+.petride-motion[data-screen='places'] .petride-place-field--focus {
+  animation:
+    pm-rise 0.5s var(--pm-ease) 0.55s backwards,
+    pm-t-focus 0.4s var(--pm-ease) 1.05s backwards;
+}
+
+.petride-motion[data-screen='places'] .petride-place-field__origin {
+  animation:
+    pm-pop 0.4s var(--pm-spring) 0.7s backwards,
+    pm-glow-indigo 1s var(--pm-ease) 0.9s;
+}
+
+.petride-motion[data-screen='places'] .petride-place-field__value {
+  animation: pm-t-reveal 0.7s steps(6) 1.15s backwards;
+}
+
+.petride-motion[data-screen='places'] .petride-place-search__swap {
+  animation:
+    pm-pop 0.4s var(--pm-spring) 0.8s backwards,
+    pm-spin 0.6s var(--pm-swing) 1.9s;
+}
+
+.petride-motion[data-screen='places'] .petride-categories__item:nth-child(1) {
+  animation: pm-pop 0.4s var(--pm-spring) 1.3s backwards;
+}
+
+.petride-motion[data-screen='places'] .petride-categories__item:nth-child(2) {
+  animation: pm-pop 0.4s var(--pm-spring) 1.38s backwards;
+}
+
+.petride-motion[data-screen='places'] .petride-categories__item:nth-child(3) {
+  animation: pm-pop 0.4s var(--pm-spring) 1.46s backwards;
+}
+
+.petride-motion[data-screen='places'] .petride-place:nth-child(1) {
+  animation:
+    pm-rise 0.6s var(--pm-ease) 1.5s backwards,
+    pm-t-place-pick 0.4s var(--pm-ease) 3.05s backwards,
+    pm-press 0.4s var(--pm-ease) 3s;
+}
+
+.petride-motion[data-screen='places'] .petride-place:nth-child(2) {
+  animation: pm-rise 0.6s var(--pm-ease) 1.6s backwards;
+}
+
+.petride-motion[data-screen='places'] .petride-place:nth-child(3) {
+  animation: pm-rise 0.6s var(--pm-ease) 1.7s backwards;
+}
+
+.petride-motion[data-screen='places'] .petride-place:nth-child(4) {
+  animation: pm-rise 0.6s var(--pm-ease) 1.8s backwards;
+}
+
+.petride-motion[data-screen='places']
+  .petride-place:nth-child(1)
+  .petride-place__badge {
+  animation: pm-pop 0.4s var(--pm-spring) 1.95s backwards;
+}
+
+.petride-motion[data-screen='places']
+  .petride-place:nth-child(2)
+  .petride-place__badge {
+  animation: pm-pop 0.4s var(--pm-spring) 2.05s backwards;
+}
+
+.petride-motion[data-screen='places']
+  .petride-place:nth-child(3)
+  .petride-place__badge {
+  animation: pm-pop 0.4s var(--pm-spring) 2.15s backwards;
+}
+
+.petride-motion[data-screen='places']
+  .petride-place:nth-child(4)
+  .petride-place__badge {
+  animation: pm-pop 0.4s var(--pm-spring) 2.25s backwards;
+}
+
+.petride-motion[data-screen='places']
+  .petride-place:nth-child(1)
+  .petride-place__icon {
+  animation: pm-bump 0.5s var(--pm-spring) 3.15s;
+}
+
+.petride-motion[data-screen='places'] .petride-touch {
+  animation: pm-touch-places 4.1s linear 0s backwards;
+}
+
+.petride-motion[data-screen='places'] .petride-touch__ripple {
+  animation: pm-tap-places 4.1s linear 0s backwards;
+}
+
+@keyframes pm-touch-places {
+  0% {
+    opacity: 0;
+    transform: translate(195px, 420px) scale(1.1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  54.878% {
+    opacity: 0;
+    transform: translate(195px, 420px) scale(1.1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  63.415% {
+    opacity: 1;
+    transform: translate(195px, 392px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  71.951% {
+    opacity: 1;
+    transform: translate(195px, 392px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  74.39% {
+    opacity: 1;
+    transform: translate(195px, 392px) scale(0.8);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  78.78% {
+    opacity: 1;
+    transform: translate(195px, 392px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  85.366% {
+    opacity: 1;
+    transform: translate(195px, 392px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  95.122% {
+    opacity: 0;
+    transform: translate(195px, 408px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(195px, 408px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+}
+
+@keyframes pm-tap-places {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  73.171% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  73.659% {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  86.585% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 03 · Elegir mascotas: Toby ya va; se suma Kira, se llena otro puesto y se continúa */
+.petride-motion[data-screen='pets'] .petride-header {
+  animation: pm-fade 0.4s var(--pm-ease) 0s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-trip-pets__title {
+  animation: pm-rise 0.55s var(--pm-ease) 0.05s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-trip-pets__lead {
+  animation: pm-rise 0.55s var(--pm-ease) 0.15s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-seats {
+  animation: pm-rise 0.6s var(--pm-ease) 0.25s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-seats__stack > *:nth-child(1) {
+  animation: pm-pop 0.45s var(--pm-spring) 0.5s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-seats__stack > *:nth-child(2) {
+  animation: pm-pop 0.45s var(--pm-spring) 2.55s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-seats__free {
+  animation: pm-pop 0.45s var(--pm-spring) 0.66s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-seats__names {
+  animation: pm-ink 0.5s var(--pm-ease) 2.6s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-seats__count {
+  animation: pm-bump 0.5s var(--pm-spring) 2.65s;
+}
+
+.petride-motion[data-screen='pets'] .petride-seats__fill:nth-child(1) {
+  animation: pm-fill 0.5s var(--pm-ease) 0.75s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-seats__fill:nth-child(2) {
+  animation: pm-t-seat 0.45s var(--pm-ease) 2.6s backwards;
+}
+
+.petride-motion[data-screen='pets'] li:nth-child(1) .petride-trip-pet {
+  animation: pm-rise 0.6s var(--pm-ease) 0.4s backwards;
+}
+
+.petride-motion[data-screen='pets'] li:nth-child(2) .petride-trip-pet {
+  animation: pm-rise 0.6s var(--pm-ease) 0.5s backwards;
+}
+
+.petride-motion[data-screen='pets'] li:nth-child(3) .petride-trip-pet {
+  animation:
+    pm-rise 0.6s var(--pm-ease) 0.6s backwards,
+    pm-t-pet-pick 0.4s var(--pm-ease) 2.5s backwards,
+    pm-press 0.4s var(--pm-ease) 2.45s;
+}
+
+.petride-motion[data-screen='pets']
+  li:nth-child(1)
+  .petride-trip-pet
+  .petride-trip-pet__photo {
+  animation: pm-zoom 1.2s var(--pm-ease) 0.4s backwards;
+}
+
+.petride-motion[data-screen='pets']
+  li:nth-child(2)
+  .petride-trip-pet
+  .petride-trip-pet__photo {
+  animation: pm-zoom 1.2s var(--pm-ease) 0.5s backwards;
+}
+
+.petride-motion[data-screen='pets']
+  li:nth-child(3)
+  .petride-trip-pet
+  .petride-trip-pet__photo {
+  animation: pm-zoom 1.2s var(--pm-ease) 0.6s backwards;
+}
+
+.petride-motion[data-screen='pets']
+  li:nth-child(1)
+  .petride-trip-pet
+  .petride-trip-pet__check {
+  animation: pm-t-check 0.45s var(--pm-spring) 1s backwards;
+}
+
+.petride-motion[data-screen='pets']
+  li:nth-child(3)
+  .petride-trip-pet
+  .petride-trip-pet__check {
+  animation: pm-t-check 0.45s var(--pm-spring) 2.5s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-trip-pet__badge {
+  animation: pm-pop 0.4s var(--pm-spring) 1.15s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-together {
+  animation: pm-t-lift 0.6s var(--pm-ease) 2.95s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-together__icon {
+  animation: pm-pop 0.45s var(--pm-spring) 3.2s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-screen__footer .petride-button {
+  animation:
+    pm-rise 0.5s var(--pm-ease) 0.8s backwards,
+    pm-press 0.4s var(--pm-ease) 3.75s;
+}
+
+.petride-motion[data-screen='pets'] .petride-touch {
+  animation: pm-touch-pets 4.5s linear 0s backwards;
+}
+
+.petride-motion[data-screen='pets'] .petride-touch__ripple {
+  animation: pm-tap-pets 4.5s linear 0s backwards;
+}
+
+@keyframes pm-touch-pets {
+  0% {
+    opacity: 0;
+    transform: translate(300px, 603px) scale(1.1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  37.778% {
+    opacity: 0;
+    transform: translate(300px, 603px) scale(1.1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  45.556% {
+    opacity: 1;
+    transform: translate(300px, 575px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  53.333% {
+    opacity: 1;
+    transform: translate(300px, 575px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  55.556% {
+    opacity: 1;
+    transform: translate(300px, 575px) scale(0.8);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  59.556% {
+    opacity: 1;
+    transform: translate(300px, 575px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  65.556% {
+    opacity: 1;
+    transform: translate(300px, 575px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  76.667% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  82.222% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  84.444% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(0.8);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  88.444% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  91.111% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(195px, 792px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+}
+
+@keyframes pm-tap-pets {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  54.444% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  54.889% {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  66.667% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+  83.333% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  83.778% {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  95.556% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 04 · Tarifa y resumen: la ruta se dibuja hasta el parque, el carro llega con el precio y se confirma */
+.petride-motion[data-screen='fare'] .petride-map__svg {
+  animation: pm-t-map 1.4s var(--pm-ease) 0s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-map__route-shadow,
+.petride-motion[data-screen='fare'] .petride-map__route-casing,
+.petride-motion[data-screen='fare'] .petride-map__route {
+  animation: pm-t-draw-fare 1.2s var(--pm-swing) 0.35s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-map__arrow {
+  animation: pm-fade 0.3s var(--pm-ease) 1.45s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-map__origin {
+  animation: pm-pop 0.4s var(--pm-spring) 0.25s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-map__tag--origin {
+  animation: pm-pop 0.4s var(--pm-spring) 0.4s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-map__place--park {
+  animation: pm-pop 0.4s var(--pm-spring) 0.85s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-map__place--vet {
+  animation: pm-pop 0.4s var(--pm-spring) 0.95s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-map__place--cafe {
+  animation: pm-pop 0.4s var(--pm-spring) 1.05s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-map__pin {
+  animation: pm-t-pin 0.7s var(--pm-spring) 1.45s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-map__halo {
+  animation: pm-ring-out 1.2s var(--pm-ease) 1.7s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-map__callout {
+  animation: pm-pop 0.45s var(--pm-spring) 1.75s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-map__minutes {
+  animation: pm-pop 0.45s var(--pm-spring) 1.55s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-trip__back {
+  animation: pm-fade 0.4s var(--pm-ease) 0.2s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-sheet--fare {
+  animation: pm-t-sheet 0.7s var(--pm-ease) 0.45s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-fare-hero {
+  animation: pm-rise 0.5s var(--pm-ease) 0.85s backwards;
+}
+
+.petride-motion[data-screen='fare']
+  .petride-fare-hero
+  .petride-capacity-car__art {
+  animation: pm-t-drive 1.1s var(--pm-ease) 1s backwards;
+}
+
+.petride-motion[data-screen='fare']
+  .petride-fare-hero
+  .petride-capacity-car__spokes {
+  animation: pm-t-wheel 0.45s linear 1s 2;
+}
+
+.petride-motion[data-screen='fare'] .petride-fare-hero__price {
+  animation: pm-pop 0.45s var(--pm-spring) 1.7s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-fare-chips__item:nth-child(1) {
+  animation: pm-pop 0.4s var(--pm-spring) 1.85s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-fare-chips__item:nth-child(2) {
+  animation: pm-pop 0.4s var(--pm-spring) 1.93s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-fare-chips__item:nth-child(3) {
+  animation:
+    pm-pop 0.4s var(--pm-spring) 2.01s backwards,
+    pm-glow-lime 0.9s var(--pm-ease) 2.3s;
+}
+
+.petride-motion[data-screen='fare'] .petride-stops {
+  animation: pm-rise 0.5s var(--pm-ease) 2s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-sheet--fare .petride-button {
+  animation:
+    pm-rise 0.5s var(--pm-ease) 1.1s backwards,
+    pm-press 0.4s var(--pm-ease) 3.15s,
+    pm-glow-indigo 0.9s var(--pm-ease) 3.2s;
+}
+
+.petride-motion[data-screen='fare'] .petride-map__route-shadow,
+.petride-motion[data-screen='fare'] .petride-map__route-casing,
+.petride-motion[data-screen='fare'] .petride-map__route {
+  stroke-dasharray: 494;
+}
+
+.petride-motion .petride-capacity-car__spokes,
+.petride-motion .petride-capacity-car__window {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.petride-motion[data-screen='fare'] .petride-touch {
+  animation: pm-touch-fare 4s linear 0s backwards;
+}
+
+.petride-motion[data-screen='fare'] .petride-touch__ripple {
+  animation: pm-tap-fare 4s linear 0s backwards;
+}
+
+@keyframes pm-touch-fare {
+  0% {
+    opacity: 0;
+    transform: translate(195px, 804px) scale(1.1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  60% {
+    opacity: 0;
+    transform: translate(195px, 804px) scale(1.1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  68.75% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  77.5% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(0.8);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  84.5% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  88.75% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  98.75% {
+    opacity: 0;
+    transform: translate(195px, 792px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(195px, 792px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+}
+
+@keyframes pm-tap-fare {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  78.75% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  79.25% {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  92.5% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 05 · Buscando conductor: el carro llega rodando con las mascotas y los anillos laten mientras se busca */
+.petride-motion[data-screen='searching'] .petride-waiting__glow {
+  animation: pm-fade 1s var(--pm-ease) 0s backwards;
+}
+
+.petride-motion[data-screen='searching'] .petride-waiting__ring--inner {
+  animation:
+    pm-pop 0.6s var(--pm-ease) 0.1s backwards,
+    pm-t-ring 2.4s var(--pm-swing) 1s infinite;
+}
+
+.petride-motion[data-screen='searching'] .petride-waiting__ring--middle {
+  animation:
+    pm-pop 0.7s var(--pm-ease) 0.2s backwards,
+    pm-t-ring 2.4s var(--pm-swing) 1.3s infinite;
+}
+
+.petride-motion[data-screen='searching'] .petride-waiting__ring--outer {
+  animation:
+    pm-pop 0.8s var(--pm-ease) 0.3s backwards,
+    pm-t-ring 2.4s var(--pm-swing) 1.6s infinite;
+}
+
+.petride-motion[data-screen='searching'] .petride-waiting__car {
+  animation:
+    pm-t-drive 1.2s var(--pm-ease) 0.4s backwards,
+    pm-float 1.8s var(--pm-swing) 1.6s infinite;
+}
+
+.petride-motion[data-screen='searching']
+  .petride-waiting__car
+  .petride-capacity-car__spokes {
+  animation: pm-t-wheel 0.5s linear 0.4s infinite;
+}
+
+.petride-motion[data-screen='searching'] .petride-capacity-car__window--back {
+  animation: pm-pop 0.4s var(--pm-spring) 1.35s backwards;
+}
+
+.petride-motion[data-screen='searching'] .petride-capacity-car__window--middle {
+  animation: pm-pop 0.4s var(--pm-spring) 1.45s backwards;
+}
+
+.petride-motion[data-screen='searching'] .petride-capacity-car__window--front {
+  animation: pm-pop 0.4s var(--pm-spring) 1.55s backwards;
+}
+
+.petride-motion[data-screen='searching'] .petride-waiting__status {
+  animation: pm-pop 0.5s var(--pm-spring) 1.2s backwards;
+}
+
+.petride-motion[data-screen='searching'] .petride-waiting__dot {
+  animation: pm-t-blink 1s var(--pm-swing) 1.6s infinite;
+}
+
+.petride-motion[data-screen='searching'] .petride-waiting__title {
+  animation: pm-rise 0.6s var(--pm-ease) 0.9s backwards;
+}
+
+.petride-motion[data-screen='searching'] .petride-waiting__text {
+  animation: pm-rise 0.6s var(--pm-ease) 1.05s backwards;
+}
+
+.petride-motion[data-screen='searching'] .petride-waiting__trip {
+  animation: pm-rise 0.6s var(--pm-ease) 1.2s backwards;
+}
+
+.petride-motion[data-screen='searching'] .petride-waiting__cancel {
+  animation: pm-rise 0.6s var(--pm-ease) 1.3s backwards;
+}
+
+/* 06 · Conductor asignado: Laura llega por la calle hasta el punto de recogida y se la llama */
+.petride-motion[data-screen='driver'] .petride-map__svg {
+  animation: pm-t-map 1.4s var(--pm-ease) 0s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-map__ghost {
+  animation: pm-fade 0.6s var(--pm-ease) 0.3s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-map__route-casing,
+.petride-motion[data-screen='driver'] .petride-map__route {
+  animation: pm-t-draw-pickup 0.9s var(--pm-swing) 0.55s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-map__pin {
+  animation: pm-t-pin 0.7s var(--pm-spring) 0.4s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-map__place--park {
+  animation: pm-pop 0.4s var(--pm-spring) 0.7s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-map__place--vet {
+  animation: pm-pop 0.4s var(--pm-spring) 0.8s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-map__origin {
+  animation: pm-pop 0.4s var(--pm-spring) 0.3s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-map__wave--inner {
+  animation: pm-t-wave 2s var(--pm-ease) 0.4s infinite;
+}
+
+.petride-motion[data-screen='driver'] .petride-map__wave--outer {
+  animation: pm-t-wave 2s var(--pm-ease) 1.4s infinite;
+}
+
+.petride-motion[data-screen='driver'] .petride-map__car--driver {
+  animation:
+    pm-t-arrive 1s var(--pm-ease) 0.45s backwards,
+    pm-glow-lime 1.2s var(--pm-ease) 1.5s 2;
+}
+
+.petride-motion[data-screen='driver'] .petride-map__tag--pickup {
+  animation: pm-pop 0.45s var(--pm-spring) 1.25s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-sheet--driver {
+  animation: pm-t-sheet 0.7s var(--pm-ease) 0.5s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-driver-card__photo {
+  animation:
+    pm-pop 0.55s var(--pm-spring) 1s backwards,
+    pm-glow-lime 1s var(--pm-ease) 1.6s;
+}
+
+.petride-motion[data-screen='driver'] .petride-driver-card__badge {
+  animation: pm-pop 0.45s var(--pm-spring) 1.25s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-driver-card__title {
+  animation: pm-rise 0.55s var(--pm-ease) 1.1s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-driver-card__stat:nth-child(1) {
+  animation: pm-rise 0.5s var(--pm-ease) 1.3s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-driver-card__stat:nth-child(2) {
+  animation: pm-rise 0.5s var(--pm-ease) 1.4s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-driver-card__stat:nth-child(3) {
+  animation: pm-rise 0.5s var(--pm-ease) 1.5s backwards;
+}
+
+.petride-motion[data-screen='driver']
+  .petride-driver-card__stat:nth-child(1)
+  svg {
+  animation: pm-wiggle 0.7s var(--pm-ease) 1.9s;
+}
+
+.petride-motion[data-screen='driver'] .petride-car-art {
+  animation: pm-t-car-in 0.7s var(--pm-ease) 1.65s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-car__text {
+  animation: pm-rise 0.5s var(--pm-ease) 1.7s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-car__plate {
+  animation:
+    pm-pop 0.5s var(--pm-spring) 1.85s backwards,
+    pm-wiggle 0.6s var(--pm-ease) 2.4s;
+}
+
+.petride-motion[data-screen='driver']
+  .petride-driver-card__actions
+  .petride-button:nth-child(1) {
+  animation: pm-rise 0.5s var(--pm-ease) 1.95s backwards;
+}
+
+.petride-motion[data-screen='driver']
+  .petride-driver-card__actions
+  .petride-button:nth-child(2) {
+  animation:
+    pm-rise 0.5s var(--pm-ease) 2.05s backwards,
+    pm-press 0.4s var(--pm-ease) 3.2s,
+    pm-glow-indigo 0.9s var(--pm-ease) 3.25s;
+}
+
+.petride-motion[data-screen='driver'] .petride-touch {
+  animation: pm-touch-driver 4.1s linear 0s backwards;
+}
+
+.petride-motion[data-screen='driver'] .petride-touch__ripple {
+  animation: pm-tap-driver 4.1s linear 0s backwards;
+}
+
+@keyframes pm-touch-driver {
+  0% {
+    opacity: 0;
+    transform: translate(283px, 804px) scale(1.1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  59.756% {
+    opacity: 0;
+    transform: translate(283px, 804px) scale(1.1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  68.293% {
+    opacity: 1;
+    transform: translate(283px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  76.829% {
+    opacity: 1;
+    transform: translate(283px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  79.268% {
+    opacity: 1;
+    transform: translate(283px, 776px) scale(0.8);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  83.659% {
+    opacity: 1;
+    transform: translate(283px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  87.805% {
+    opacity: 1;
+    transform: translate(283px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  97.561% {
+    opacity: 0;
+    transform: translate(283px, 792px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(283px, 792px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+}
+
+@keyframes pm-tap-driver {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  78.049% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  78.537% {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  91.463% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 07 · Llegada y calificación: se toca la cuarta huella y se encienden en cadena; aparecen las etiquetas, se marcan dos y se envía */
+.petride-motion[data-screen='rating'] .petride-arrived__glow {
+  animation: pm-fade 1s var(--pm-ease) 0s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-arrived__close {
+  animation: pm-fade 0.4s var(--pm-ease) 0.6s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-arrived__eyebrow {
+  animation: pm-rise 0.5s var(--pm-ease) 0.1s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-arrived__eyebrow svg {
+  animation: pm-pop 0.45s var(--pm-spring) 0.35s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-arrived__title {
+  animation: pm-rise 0.55s var(--pm-ease) 0.2s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-arrived__meta {
+  animation: pm-rise 0.55s var(--pm-ease) 0.3s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-arrived__fact:nth-child(1) {
+  animation: pm-rise 0.5s var(--pm-ease) 0.45s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-arrived__fact:nth-child(2) {
+  animation: pm-rise 0.5s var(--pm-ease) 0.55s backwards;
+}
+
+.petride-motion[data-screen='rating']
+  .petride-arrived__fact
+  .petride-avatars__item:nth-child(1) {
+  animation: pm-pop 0.45s var(--pm-spring) 0.65s backwards;
+}
+
+.petride-motion[data-screen='rating']
+  .petride-arrived__fact
+  .petride-avatars__item:nth-child(2) {
+  animation: pm-pop 0.45s var(--pm-spring) 0.73s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate {
+  animation: pm-t-lift 0.7s var(--pm-ease) 0.35s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__photo {
+  animation: pm-pop 0.5s var(--pm-spring) 0.7s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__question {
+  animation: pm-rise 0.5s var(--pm-ease) 0.75s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__paw:nth-child(1) {
+  animation:
+    pm-pop 0.4s var(--pm-spring) 0.9s backwards,
+    pm-t-paw-on 0.3s var(--pm-ease) 1.95s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__paw:nth-child(2) {
+  animation:
+    pm-pop 0.4s var(--pm-spring) 0.96s backwards,
+    pm-t-paw-on 0.3s var(--pm-ease) 2.03s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__paw:nth-child(3) {
+  animation:
+    pm-pop 0.4s var(--pm-spring) 1.02s backwards,
+    pm-t-paw-on 0.3s var(--pm-ease) 2.11s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__paw:nth-child(4) {
+  animation:
+    pm-pop 0.4s var(--pm-spring) 1.08s backwards,
+    pm-t-paw-on 0.3s var(--pm-ease) 2.19s backwards,
+    pm-t-paw-choose 0.55s var(--pm-spring) 2.25s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__paw:nth-child(5) {
+  animation: pm-pop 0.4s var(--pm-spring) 1.14s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__read {
+  animation: pm-rise 0.45s var(--pm-ease) 2.4s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__tags-title {
+  animation: pm-rise 0.45s var(--pm-ease) 2.5s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__tag:nth-child(1) {
+  animation:
+    pm-pop 0.4s var(--pm-spring) 2.6s backwards,
+    pm-t-tag-pick 0.35s var(--pm-ease) 3.05s backwards,
+    pm-press 0.35s var(--pm-ease) 3s;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__tag:nth-child(2) {
+  animation: pm-pop 0.4s var(--pm-spring) 2.66s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__tag:nth-child(3) {
+  animation:
+    pm-pop 0.4s var(--pm-spring) 2.72s backwards,
+    pm-t-tag-pick 0.35s var(--pm-ease) 3.55s backwards,
+    pm-press 0.35s var(--pm-ease) 3.5s;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__tag:nth-child(4) {
+  animation: pm-pop 0.4s var(--pm-spring) 2.78s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__card--optional {
+  animation: pm-rise 0.55s var(--pm-ease) 1.3s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__tip:nth-child(1) {
+  animation: pm-pop 0.4s var(--pm-spring) 1.5s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__tip:nth-child(2) {
+  animation: pm-pop 0.4s var(--pm-spring) 1.56s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__tip:nth-child(3) {
+  animation: pm-pop 0.4s var(--pm-spring) 1.62s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__tip:nth-child(4) {
+  animation: pm-pop 0.4s var(--pm-spring) 1.68s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate__message {
+  animation: pm-rise 0.5s var(--pm-ease) 1.6s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-rate > .petride-button {
+  animation:
+    pm-rise 0.5s var(--pm-ease) 1.2s backwards,
+    pm-t-enable 0.35s var(--pm-ease) 2.2s backwards,
+    pm-press 0.4s var(--pm-ease) 4.35s,
+    pm-glow-indigo 0.9s var(--pm-ease) 4.4s;
+}
+
+.petride-motion[data-screen='rating'] .petride-touch {
+  animation: pm-touch-rating 5s linear 0s backwards;
+}
+
+.petride-motion[data-screen='rating'] .petride-touch__ripple {
+  animation: pm-tap-rating 5s linear 0s backwards;
+}
+
+@keyframes pm-touch-rating {
+  0% {
+    opacity: 0;
+    transform: translate(266px, 376px) scale(1.1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  24% {
+    opacity: 0;
+    transform: translate(266px, 376px) scale(1.1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  31% {
+    opacity: 1;
+    transform: translate(266px, 348px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  37% {
+    opacity: 1;
+    transform: translate(266px, 348px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  39% {
+    opacity: 1;
+    transform: translate(266px, 348px) scale(0.8);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  42.6% {
+    opacity: 1;
+    transform: translate(266px, 348px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(266px, 348px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  58% {
+    opacity: 1;
+    transform: translate(101px, 470px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  59% {
+    opacity: 1;
+    transform: translate(101px, 470px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  61% {
+    opacity: 1;
+    transform: translate(101px, 470px) scale(0.8);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  64.6% {
+    opacity: 1;
+    transform: translate(101px, 470px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  63% {
+    opacity: 1;
+    transform: translate(101px, 470px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  69% {
+    opacity: 1;
+    transform: translate(112px, 514px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  69% {
+    opacity: 1;
+    transform: translate(112px, 514px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  71% {
+    opacity: 1;
+    transform: translate(112px, 514px) scale(0.8);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  74.6% {
+    opacity: 1;
+    transform: translate(112px, 514px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  75% {
+    opacity: 1;
+    transform: translate(112px, 514px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  84% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  86% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  88% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(0.8);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  91.6% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  92% {
+    opacity: 1;
+    transform: translate(195px, 776px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(195px, 792px) scale(1);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+  }
+}
+
+@keyframes pm-tap-rating {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  38% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  38.4% {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  49% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+  60% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  60.4% {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  71% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  70.4% {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  81% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+  87% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  87.4% {
+    opacity: 0.9;
+    transform: scale(0.5);
+  }
+  98% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+  100% {
+    opacity: 0;
+  }
+}

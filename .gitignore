@@ -132,3 +132,6 @@ $RECYCLE.BIN/
 *storybook.log
 
 .atl/
+
+# Notas de las pruebas con Playwright
+.playwright-mcp/
