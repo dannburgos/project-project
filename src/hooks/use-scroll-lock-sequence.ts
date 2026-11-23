@@ -32,7 +32,15 @@ type SequenceState = 'idle' | 'active' | 'done';
 // hacia abajo. El avance se publica como --sequence-progress (0 a 1) y el
 // estado como data-state, sin volver a pintar React. Con "reducir
 // movimiento" no toma el scroll: todo se ve completo.
-export function useScrollLockSequence<T extends HTMLElement>() {
+type ScrollLockSequenceOptions = {
+  // Recorrido total del módulo, en px de rueda o de dedo. Los módulos largos
+  // (por ejemplo, una pista horizontal) piden más para leerse con calma
+  fullDistance?: number;
+};
+
+export function useScrollLockSequence<T extends HTMLElement>({
+  fullDistance = FULL_DISTANCE_PX
+}: ScrollLockSequenceOptions = {}) {
   const ref = useRef<T>(null);
 
   useEffect(() => {
@@ -121,7 +129,7 @@ export function useScrollLockSequence<T extends HTMLElement>() {
       const delta = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
       if (delta === 0) return;
       const direction = delta > 0 ? 1 : -1;
-      if (consume(direction, Math.abs(delta) / FULL_DISTANCE_PX)) {
+      if (consume(direction, Math.abs(delta) / fullDistance)) {
         event.preventDefault();
         event.stopImmediatePropagation();
       }
@@ -137,7 +145,7 @@ export function useScrollLockSequence<T extends HTMLElement>() {
       const delta = lastTouchY - y;
       lastTouchY = y;
       if (delta === 0) return;
-      if (consume(delta > 0 ? 1 : -1, Math.abs(delta) / FULL_DISTANCE_PX)) {
+      if (consume(delta > 0 ? 1 : -1, Math.abs(delta) / fullDistance)) {
         event.preventDefault();
       }
     };
@@ -208,7 +216,7 @@ export function useScrollLockSequence<T extends HTMLElement>() {
       document.removeEventListener('click', handleClick, { capture: true });
       if (isLocked) window.dispatchEvent(new Event(SCROLL_LOCK_END_EVENT));
     };
-  }, []);
+  }, [fullDistance]);
 
   return ref;
 }

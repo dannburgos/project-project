@@ -21,3 +21,5 @@
 - [Mudanza al computador personal](project-move-to-personal-computer.md) — Dann deja el trabajo pronto; repo público; originales y memoria solo en este Mac
 - [Estilo moderno de Sonopizza](feedback-sonopizza-modern-style.md) — sin bordes gruesos ni sombras naranjas; botones planos de un solo color; texto en tinta oscura, azul solo en títulos
 - [Rutina de cada noche](feedback-nightly-backup-routine.md) — "guarda y sube" = memoria al repo + commit/push + zip liviano en el Escritorio; avisar qué agregar al zip de originales
+- [Caso Toyota](project-toyota-case.md) — Beyond the Model en feat/toyota; trabajar desde el caso de estudio; nada es privado, todo va a git
+- [Referentes de a uno](feedback-references-one-by-one.md) — analizar y documentar cada link; no construir hasta que Dann diga que están todos; imágenes en cajas grises

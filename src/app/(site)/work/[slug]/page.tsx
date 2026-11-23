@@ -8,6 +8,7 @@ import { CaseStory } from '@/components/organisms/case-story';
 import { DesignSystemStory } from '@/components/organisms/design-system-story';
 import { PetrideStory } from '@/components/organisms/petride-story';
 import { SonopizzaStory } from '@/components/organisms/sonopizza-story';
+import { ToyotaStory } from '@/components/organisms/toyota-story';
 import { ClosingContact } from '@/components/organisms/closing-contact';
 import { PageCurtain } from '@/components/organisms/page-curtain';
 import { getCaseStory } from '@/content/case-stories';
@@ -15,6 +16,7 @@ import { getCaseStudy } from '@/content/case-studies';
 import { designSystemStory } from '@/content/cases/design-system-story';
 import { petrideStory } from '@/content/cases/petride-story';
 import { sonopizzaStory } from '@/content/cases/sonopizza-story';
+import { toyotaStory } from '@/content/cases/toyota-story';
 import { exampleProjects, type ExampleProject } from '@/content/site';
 import { cn } from '@/lib/utils';
 
@@ -30,7 +32,7 @@ export function generateStaticParams() {
 // 1 Banner con ficha e introducción · 2 Imagen que crece con el scroll ·
 // 3 Capítulos propios del proyecto en dos columnas · 4 Galería de proyectos
 // por ver · 5 Cierre de contacto. El tono del proyecto da el color de acento.
-// Los proyectos contados como recorrido (Planti, PetRide y Sonopizza) cambian 1 a 3
+// Los proyectos contados como recorrido (Planti, PetRide, Sonopizza y Toyota) cambian 1 a 3
 // por su escenario, con su propia marca.
 
 export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
@@ -48,7 +50,8 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         project.tone === 'green' && 'case-page--green',
         project.tone === 'purple' && 'case-page--purple',
         project.tone === 'blue' && 'case-page--blue',
-        project.tone === 'indigo' && 'case-page--indigo'
+        project.tone === 'indigo' && 'case-page--indigo',
+        project.tone === 'red' && 'case-page--red'
       )}
     >
       <PageCurtain variant="flush">
@@ -56,6 +59,8 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           <SonopizzaStory story={sonopizzaStory} />
         ) : project.slug === 'petride' ? (
           <PetrideStory story={petrideStory} />
+        ) : project.slug === 'toyota' ? (
+          <ToyotaStory story={toyotaStory} />
         ) : project.slug === 'design-system' ? (
           <DesignSystemStory story={designSystemStory} />
         ) : story ? (

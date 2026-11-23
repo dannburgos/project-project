@@ -134,6 +134,10 @@ html {
   --case-accent: #4849e8;
 }
 
+.case-page--red {
+  --case-accent: #eb0a1e;
+}
+
 /* Case study: galería final de proyectos por ver */
 .case-more {
   @apply border-border mx-4 flex flex-col gap-6 border-t pt-8 pb-12 md:mx-8 md:pb-16 lg:mx-12;
