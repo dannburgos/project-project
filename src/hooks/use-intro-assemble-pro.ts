@@ -62,7 +62,7 @@ const wait = (track: IntroRun['track'], element: Element, ms: number) =>
 type CoverReveal = {
   // Barra, frase, rol y palabra gigante: entran en cadena durante el viaje
   cover: Animation[];
-  // "Portfolio Lab": sale del logo cuando el símbolo aterriza en él (si
+  // El nombre (brand): sale del logo cuando el símbolo aterriza en él (si
   // apareciera antes, el símbolo le pasaría por encima)
   brand: Animation | null;
 };
@@ -136,7 +136,7 @@ function prepareCoverReveal(): CoverReveal {
     )
   );
 
-  // "Portfolio Lab" sale desde el logo hacia la derecha
+  // El nombre (brand) sale desde el logo hacia la derecha
   const brand = create(
     document.querySelector('.site-header__brand'),
     [
