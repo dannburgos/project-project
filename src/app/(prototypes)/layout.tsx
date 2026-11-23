@@ -1,5 +1,11 @@
 import type { Metadata } from 'next';
-import { Geist, Outfit, Poppins } from 'next/font/google';
+import {
+  Bowlby_One_SC as bowlbyOneSc,
+  DM_Sans as dmSansFont,
+  Geist,
+  Outfit,
+  Poppins
+} from 'next/font/google';
 
 import { cn } from '@/lib/utils';
 import '@/styles/prototypes.css';
@@ -23,6 +29,20 @@ const outfit = Outfit({
   weight: ['400', '500', '600', '700', '800']
 });
 
+// Tipografías de Sonopizza (sistema de diseño de la app): Bowlby One SC para
+// los titulares y DM Sans para la interfaz
+const bowlbyOne = bowlbyOneSc({
+  variable: '--font-sono-display',
+  subsets: ['latin'],
+  weight: '400'
+});
+
+const dmSans = dmSansFont({
+  variable: '--font-sono-text',
+  subsets: ['latin'],
+  weight: ['400', '600', '700', '900']
+});
+
 export const metadata: Metadata = {
   robots: { index: false, follow: false }
 };
@@ -42,6 +62,8 @@ export default function PrototypesLayout({
           geistSans.variable,
           poppins.variable,
           outfit.variable,
+          bowlbyOne.variable,
+          dmSans.variable,
           'antialiased'
         )}
       >

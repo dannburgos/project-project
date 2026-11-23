@@ -1,0 +1,23 @@
+- [No recordar commits](feedback-commit-reminders.md) — Dann pide el commit/push cuando quiera; no recordárselo en cada mensaje
+- [Una rama por trabajo](feedback-branch-per-feature.md) — rama nueva desde main por cada cosa; se une a main cuando Dann diga
+- [Teléfono en la hoja de vida](feedback-cv-phone.md) — Dann mantiene su teléfono en el CV público; no recomendar quitarlo
+- [Casos de estudio](project-case-studies.md) — capítulos propios por proyecto (máx. 10), Planti primero, prototipo dentro del caso
+- [Documento de Planti](reference-planti-source.md) — ruta del .md maestro de Planti, base del caso
+- [El .md de Planti es guía](feedback-planti-md-flexible.md) — sus reglas no son estrictas; Dann puede agregar funciones
+- [Tamaños pares](feedback-even-sizes.md) — tamaños siempre en múltiplos de 2 px
+- [Scroll por módulo](feedback-scroll-locked-modules.md) — módulos con scroll interno congelan la página hasta completarse
+- [Cambios directo en el proyecto](feedback-proposal-workflow.md) — lo pedido va al código; propuestas solo si las pide, dibujadas en el chat, nunca HTML
+- [Identidad por proyecto](project-case-visual-identity.md) — cada caso lleva la marca del proyecto; Planti = verde; luego el sitio adopta la dinámica
+- [Texto mínimo de 16 px](feedback-planti-min-text-14.md) — en las pantallas de Planti nada baja de 16 px, salvo la barra inferior
+- [Sin palabras huérfanas](feedback-planti-centered-text-no-orphans.md) — texto centrado en Planti: nunca una palabra sola abajo
+- [Flujos de Planti](project-planti-flows-workflow.md) — flujos 1 y 2 listos; el 3 se hace igual y se activa con su botón en el caso
+- [Imágenes libres de derechos](feedback-images-royalty-free.md) — todo recurso visual es libre o de IA; no preocuparse por derechos al publicar
+- [Tablero siempre a la vista](feedback-keep-board-visible.md) — el panel del navegador queda en el tablero del flujo; pruebas en otra pestaña
+- [Prototipo PetRide](project-petride-prototype.md) — terminado y unido a main; flujos 1 y 2 en el caso (flowShows)
+- [Rama de Sonopizza](project-sonopizza-branch.md) — se sigue en feat/sonopizza (main + avance viejo del caso), en chat nuevo
+- [Paleta de Sonopizza](project-sonopizza-palette.md) — los 7 HEX del caso son los reales; no volver a preguntar
+- [Flujos de Sonopizza](project-sonopizza-flows-approach.md) — sin flujos completos: inventario de pantallas clave, disruptivas y con su porqué; recordárselo al llegar a flujos
+- [Prototipo Sonopizza](project-sonopizza-prototype.md) — tablero /prototypes/sonopizza/board con 9 pantallas, sin estados (incluye checkout, notificaciones, seguimiento y mis pedidos; sin «eliminar y deshacer» ni «carrito vacío»; 03 fusiona detalle y personalización; 1 sola pizza; sin pantalla de «agregado»); animar el precio en vivo; falta llevarlas al caso
+- [Mudanza al computador personal](project-move-to-personal-computer.md) — Dann deja el trabajo pronto; repo público; originales y memoria solo en este Mac
+- [Estilo moderno de Sonopizza](feedback-sonopizza-modern-style.md) — sin bordes gruesos ni sombras naranjas; botones planos de un solo color; texto en tinta oscura, azul solo en títulos
+- [Rutina de cada noche](feedback-nightly-backup-routine.md) — "guarda y sube" = memoria al repo + commit/push + zip liviano en el Escritorio; avisar qué agregar al zip de originales

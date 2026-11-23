@@ -1,3 +1,4 @@
+import { sonopizzaDesignSystem } from '@/content/cases/sonopizza-design-system';
 import type { SonopizzaStory } from '@/content/sonopizza-story.types';
 
 // Caso de Sonopizza: rediseño conceptual de la app móvil para pedir pizza.
@@ -10,10 +11,10 @@ export const sonopizzaStory: SonopizzaStory = {
     'El reto',
     'Lo que encontramos',
     'La experiencia propuesta',
-    'La exploración visual'
+    'Sistema de diseño',
+    'El producto en acción'
   ],
   cover: {
-    eyebrow: 'Caso de estudio conceptual',
     wordmark: ['SONO', 'PIZZA'],
     tagline: 'Rediseño de la app móvil para pedir pizza',
     facts: [
@@ -21,193 +22,347 @@ export const sonopizzaStory: SonopizzaStory = {
       { title: 'Plataforma', text: 'App móvil' },
       { title: 'Alcance', text: 'Explorar, personalizar y revisar el pedido' }
     ],
-    disclaimer:
-      'Propuesta independiente: no es un encargo ni una colaboración con Sonopizza.',
     photoLabel: 'Fotografía de pizza, vista cenital',
     mascotAlt: 'Mascota de Sonopizza comiendo una porción de pizza'
   },
   challenge: {
     number: '01',
     name: 'El reto',
-    title: 'Una nueva experiencia para pedir pizza',
+    titleLines: ['Una nueva experiencia', 'para pedir pizza'],
     context: {
       title: 'Contexto',
-      text: 'Sonopizza cuenta con variedad de productos y opciones de personalización. La experiencia digital permite explorar el menú, consultar productos y configurar pizzas con ingredientes y extras, y deja ver oportunidades para organizar mejor la información y acompañar las decisiones.'
+      text: 'Sonopizza ofrece variedad de productos y de personalización. Su app permite explorar el menú, consultar productos y armar pizzas con ingredientes y extras, y deja ver oportunidades para organizar mejor la información y acompañar las decisiones.'
     },
     opportunity: {
       title: 'Oportunidad',
-      text: 'Pedir pizza debería ser sencillo: encontrar lo que se antoja, entender las opciones disponibles y personalizar sin complicaciones.'
+      text: 'Pedir pizza debería ser sencillo: encontrar lo que se antoja, entender las opciones y personalizar sin complicaciones.'
     },
-    challengeLabel: 'El reto',
+    // La tarjeta naranja: la meta, cómo se llega y qué abarca (sin repetir
+    // "el reto", que ya nombra la sección)
+    challengeLabel: 'La meta',
     challenge:
-      'Transformar una experiencia de pedido funcional en una experiencia móvil más intuitiva, visual y fácil de recorrer.',
+      'Pasar de un pedido que funciona a una app más intuitiva, visual y fácil de usar.',
     goal: {
-      title: 'Objetivo',
-      text: 'Facilitar el proceso desde la exploración del menú hasta la revisión del pedido, combinando claridad funcional con una dirección visual que fortalezca la marca.'
+      title: '¿Cómo lo lograremos?',
+      text: 'Aclarando el camino del menú al pedido, con una dirección visual que fortalezca la marca.'
     },
-    scopeTitle: 'Alcance de diseño',
+    scopeTitle: 'Alcance',
+    // En este orden caben en dos filas de etiquetas
     scope: [
-      'Navegación y exploración móvil',
-      'Organización y descubrimiento de productos',
-      'Tamaños, ingredientes y precios',
-      'Personalización y extras',
-      'Carrito y revisión del pedido'
+      'Navegación',
+      'Productos',
+      'Carrito',
+      'Tamaños y precios',
+      'Personalización'
     ]
   },
   audit: {
     number: '02',
     name: 'Lo que encontramos',
-    subtitle: '02.1',
-    title: 'Auditoría de la experiencia actual',
+    title: 'Así se pide pizza hoy',
+    // Capturas de la app actual que compartió Dann (originales en
+    // .claude/knowledge/sonopizza/audit-originals), en el orden de la fila.
+    // La última es la que queda cuando entran los hallazgos
     captures: [
-      'Captura principal de la app actual',
-      'Captura 2 de la app actual',
-      'Captura 3 de la app actual',
-      'Captura 4 de la app actual',
-      'Captura 5 de la app actual'
-    ],
-    dimensions: [
       {
-        title: 'Navegación y categorías',
-        text: 'Mejorar la organización y la jerarquía'
+        src: '/sonopizza/audit/capture-04.jpg',
+        alt: 'App actual: menú desplegable de categorías'
       },
       {
-        title: 'Presentación y descubrimiento',
-        text: 'Reforzar la jerarquía y la comparación'
+        src: '/sonopizza/audit/capture-01.jpg',
+        alt: 'App actual: menú de pizzas personales con foto, descripción, precio y botón para agregar'
       },
       {
-        title: 'Información del producto',
-        text: 'Ordenar la estructura del detalle'
+        src: '/sonopizza/audit/capture-03.jpg',
+        alt: 'App actual: lista de ingredientes adicionales para personalizar la pizza'
       },
       {
-        title: 'Personalización e ingredientes',
-        text: 'Distinguir lo obligatorio de lo opcional'
-      },
-      {
-        title: 'Presentación de precios',
-        text: 'Separar precio base, adicionales y total'
-      },
-      {
-        title: 'Jerarquía visual e identidad',
-        text: 'Más consistencia en tipografía y fotografía'
+        src: '/sonopizza/audit/capture-05.jpg',
+        alt: 'App actual: detalle de una pizza extra grande con el borde de queso elegido'
       }
     ],
-    note: 'Revisión visual y heurística con capturas. Un aviso de local cerrado impidió comprobar el recorrido real de pedido.'
+    // Título y texto cortos: cada hallazgo cabe en una línea
+    dimensions: [
+      { title: 'Navegación', text: 'Categorías más ordenadas' },
+      { title: 'Descubrimiento', text: 'Comparar con más facilidad' },
+      { title: 'Detalle', text: 'Una estructura más clara' },
+      { title: 'Personalización', text: 'Distinguir lo obligatorio' },
+      { title: 'Precios', text: 'Base, extras y total claros' },
+      { title: 'Identidad visual', text: 'Más consistencia visual' }
+    ]
   },
+  // Benchmark y hallazgos en tres slides. Lo observado sale de una revisión
+  // de las webs móviles de cada marca (menú, detalle y personalización) del
+  // 2026-11-19, sin iniciar sesión ni hacer pedidos. Cada slide cierra con
+  // su hallazgo, así que no hay una síntesis aparte
   benchmark: {
-    subtitle: '02.2',
-    title: 'Benchmark competitivo y patrones de diseño',
-    references: ["Domino's", 'Pizza Hut', "Papa John's"],
-    captureLabel: 'Capturas de',
-    dimensionsTitle: 'Qué se comparó',
-    dimensions: [
-      'Descubrimiento y navegación',
-      'Presentación de la información',
-      'Personalización',
-      'Claridad de precios',
-      'Experiencia visual'
-    ],
-    note: 'Para observar patrones que orienten la propuesta, no para copiar interfaces.'
-  },
-  synthesis: {
-    subtitle: '02.3',
-    title: 'Síntesis de hallazgos',
-    opportunities: [
+    eyebrow: 'Benchmark y hallazgos',
+    navLabel: 'Aspectos comparados',
+    previousLabel: 'Aspecto anterior',
+    nextLabel: 'Siguiente aspecto',
+    signals: {
+      strength: 'Fortaleza',
+      friction: 'Fricción',
+      neutral: 'Neutral'
+    },
+    takeLabel: 'Lo tomamos',
+    findingLabel: 'Hallazgo',
+    forSonopizzaLabel: 'Para Sonopizza',
+    paletteLabel: 'Su paleta',
+    brands: [
+      { name: "Domino's", logo: { src: '/sonopizza/benchmark/dominos.webp' } },
       {
-        title: 'Descubrir mejor',
-        text: 'Una navegación más clara para encontrar lo que se antoja.'
+        name: 'Pizza Hut',
+        logo: { src: '/sonopizza/benchmark/pizza-hut.svg' }
       },
       {
-        title: 'Personalizar sin complicaciones',
-        text: 'Más claridad en cada elección.'
-      },
-      {
-        title: 'Hacer protagonista al producto',
-        text: 'Una experiencia visual más atractiva.'
+        name: "Papa John's",
+        logo: { src: '/sonopizza/benchmark/papa-johns.jpg', isCard: true }
       }
     ],
-    direction:
-      'La dirección de diseño debe facilitar descubrir, elegir y personalizar, combinando claridad funcional y una propuesta visual atractiva.'
-  },
-  concept: {
-    number: '03',
-    name: 'La experiencia propuesta',
-    subtitle: '03.1',
-    verticalTitle: 'Concepto',
-    title: 'Una forma más sencilla de elegir y personalizar',
-    text: 'La app convierte la elección de una pizza en algo sencillo, visual y flexible: descubrir productos, consultar sus características, personalizarlos de forma intuitiva y entender cómo cada elección cambia el precio.',
-    principlesTitle: 'Principios',
-    principles: [
-      'Exploración intuitiva',
-      'Personalización guiada',
-      'Precios transparentes',
-      'Diseño centrado en el producto'
-    ],
-    synthesis: ['Descubrir.', 'Elegir.', 'Personalizar.', 'Disfrutar.'],
-    photoLabel: 'Fotografía de producto, acercamiento al queso'
+    slides: [
+      {
+        aspects: 'Descubrimiento e información',
+        title: 'Descubrir mejor',
+        rowLabels: ['Descubrimiento', 'Información'],
+        cards: [
+          {
+            rows: [
+              {
+                icon: 'layout-list',
+                text: 'Pocas categorías',
+                signal: 'neutral'
+              },
+              {
+                icon: 'image',
+                text: 'Foto cenital y descripción',
+                signal: 'strength'
+              }
+            ]
+          },
+          {
+            rows: [
+              {
+                icon: 'flame',
+                text: 'Pestañas y más vendidas',
+                signal: 'strength'
+              },
+              {
+                icon: 'id-card',
+                text: 'Foto, nombre y precio',
+                signal: 'strength'
+              }
+            ]
+          },
+          {
+            rows: [
+              { icon: 'search', text: 'Íconos y buscador', signal: 'strength' },
+              {
+                icon: 'ruler',
+                text: 'Tamaño en la tarjeta',
+                signal: 'strength'
+              }
+            ]
+          }
+        ],
+        takenFrom: 2,
+        finding: 'Una navegación más clara para encontrar lo que se antoja',
+        decision: 'Categorías claras y el tamaño desde la tarjeta'
+      },
+      {
+        aspects: 'Personalización y precios',
+        title: 'Personalizar sin complicaciones',
+        rowLabels: ['Personalización', 'Precios'],
+        cards: [
+          {
+            rows: [
+              {
+                icon: 'store',
+                text: 'Pide la tienda antes',
+                signal: 'friction'
+              },
+              { icon: 'lock', text: 'Ocultos al inicio', signal: 'friction' }
+            ]
+          },
+          {
+            rows: [
+              {
+                icon: 'list-checks',
+                text: 'Requerido u opcional',
+                signal: 'strength'
+              },
+              { icon: 'receipt', text: 'Total en el botón', signal: 'strength' }
+            ]
+          },
+          {
+            rows: [
+              {
+                icon: 'chevrons-up-down',
+                text: 'Listas desplegables',
+                signal: 'friction'
+              },
+              {
+                icon: 'map-pin',
+                text: 'Según tamaño y zona',
+                signal: 'neutral'
+              }
+            ]
+          }
+        ],
+        takenFrom: 1,
+        finding: 'Más claridad en cada elección',
+        decision: 'Marcar lo obligatorio y desglosar base, extras y total'
+      },
+      {
+        aspects: 'Experiencia visual',
+        title: 'Producto protagonista',
+        rowLabels: ['Su estilo'],
+        cards: [
+          {
+            palette: ['#0B6DA8', '#E31837', '#FFF4E2'],
+            rows: [
+              {
+                icon: 'camera',
+                text: 'Fotos cenitales consistentes',
+                signal: 'strength'
+              }
+            ]
+          },
+          {
+            palette: ['#E4002B', '#1E1E1E', '#1E7B34'],
+            rows: [
+              {
+                icon: 'shapes',
+                text: 'Piezas de estilos mezclados',
+                signal: 'friction'
+              }
+            ]
+          },
+          {
+            palette: ['#2E5A2B', '#D4202A', '#FFFFFF'],
+            rows: [
+              {
+                icon: 'layout-grid',
+                text: 'Tarjetas blancas y limpias',
+                signal: 'strength'
+              }
+            ]
+          }
+        ],
+        takenFrom: 0,
+        finding: 'Una experiencia visual más atractiva',
+        decision: 'Fotos consistentes y un sistema propio'
+      }
+    ]
   },
   persona: {
-    subtitle: '03.2 · Persona',
+    subtitle: 'Persona',
+    title: 'Usuario de estudio',
+    // Es una persona ficticia: no salió de entrevistas reales
+    note: 'Una persona ficticia que nos ayuda a tomar decisiones de diseño pensando en quién va a pedir.',
     name: 'John Martínez',
-    portraitLabel: 'Retrato ilustrado de John',
+    portrait: {
+      src: '/sonopizza/persona-john.jpg',
+      alt: 'John mira su celular mientras come una porción de pizza'
+    },
     facts: [
       { title: 'Edad', text: '27 años' },
       { title: 'Ocupación', text: 'Marketing digital' },
       { title: 'Ubicación', text: 'Bogotá' }
     ],
-    context:
-      'Joven, con poco tiempo libre, pide comida a domicilio con frecuencia y se mueve con facilidad en las apps.',
-    note: 'Persona conceptual y ficticia: orienta decisiones, no sale de entrevistas reales.'
+    context: [
+      { text: 'Joven, con ' },
+      { text: 'poco tiempo libre', isStrong: true },
+      { text: ', ' },
+      { text: 'pide comida a domicilio con frecuencia', isStrong: true },
+      { text: ' y ' },
+      { text: 'se mueve con facilidad en las apps', isStrong: true },
+      { text: '.' }
+    ]
   },
   journey: {
-    subtitle: '03.3 · Customer Journey Map',
+    subtitle: 'Customer Journey Map',
     title: 'Del antojo al pedido',
+    rowLabels: {
+      thought: 'Piensa',
+      friction: 'Fricción',
+      opportunity: 'Oportunidad'
+    },
     stages: [
-      'Surge la necesidad',
-      'Explora opciones',
-      'Elige y personaliza',
-      'Revisa el pedido',
-      'Finaliza la compra'
-    ],
-    note: 'La curva emocional y las fricciones son hipótesis de diseño, no datos de participantes.'
+      {
+        name: 'Surge la necesidad',
+        thought: '“Quiero algo rápido y rico.”',
+        friction: 'Poco tiempo para decidir',
+        opportunity: 'Lo más pedido a la vista al abrir'
+      },
+      {
+        name: 'Explora opciones',
+        thought: '“¿Dónde está lo que quiero?”',
+        friction: 'Etiquetas largas y cortadas',
+        opportunity: 'Categorías claras y fáciles de ver'
+      },
+      {
+        name: 'Elige y personaliza',
+        thought: '“¿Cuánto cuesta cada extra?”',
+        friction: 'No distingue lo obligatorio',
+        opportunity: 'Agrupar opciones y mostrar costos'
+      },
+      {
+        name: 'Revisa el pedido',
+        thought: '“¿Quedó todo como lo pedí?”',
+        friction: 'Precios que se confunden',
+        opportunity: 'Desglose de base, extras y total'
+      },
+      {
+        name: 'Finaliza la compra',
+        thought: '“Listo, ya viene mi pizza.”',
+        friction: 'Duda si el pedido quedó',
+        opportunity: 'Una confirmación clara del pedido'
+      }
+    ]
   },
   architecture: {
-    subtitle: '03.4',
     title: 'Arquitectura de información',
+    root: 'App Sonopizza',
+    // En el orden del flujo de compra
     sections: [
       {
         title: 'Inicio',
-        items: ['Promociones', 'Destacados', 'Combos', 'Acceso al menú']
+        kind: 'nav',
+        items: ['Promociones', 'Destacados', 'Combos', 'Ir al menú']
       },
       {
         title: 'Menú',
-        items: [
-          'Pizzas y especiales',
-          'Mitad y mitad',
-          'Combos y acompañamientos',
-          'Bebidas y postres'
-        ]
+        kind: 'nav',
+        items: ['Pizzas', 'Mitad y mitad', 'Combos', 'Búsqueda']
       },
       {
         title: 'Detalle',
-        items: ['Fotografía', 'Ingredientes', 'Tamaños', 'Precio base']
+        kind: 'step',
+        items: ['Foto', 'Ingredientes', 'Tamaños', 'Precio']
       },
       {
         title: 'Personalización',
-        items: ['Tamaño', 'Ingredientes', 'Extras con costo', 'Instrucciones']
+        kind: 'step',
+        items: ['Tamaño', 'Ingredientes', 'Extras', 'Notas']
       },
       {
         title: 'Carrito',
-        items: ['Productos', 'Cantidades', 'Adicionales', 'Total']
+        kind: 'nav',
+        items: ['Productos', 'Cantidades', 'Extras', 'Total']
       },
-      { title: 'Confirmación', items: ['Confirmación visual del pedido'] }
-    ],
-    navigation:
-      'Navegación principal: Inicio, Menú y Carrito. El detalle y la personalización son pasos del flujo.'
+      {
+        title: 'Confirmación',
+        kind: 'end',
+        items: ['Pedido confirmado']
+      }
+    ]
   },
   flows: {
-    subtitle: '03.5',
     title: 'Flujos principales',
+    navLabel: 'Flujos',
+    previousLabel: 'Flujo anterior',
+    nextLabel: 'Siguiente flujo',
     items: [
       {
         number: '01',
@@ -217,7 +372,92 @@ export const sonopizzaStory: SonopizzaStory = {
           'Abre el detalle',
           'Revisa foto, ingredientes, tamaños y precio',
           'Decide si es la que quiere'
-        ]
+        ],
+        goal: 'Encontrar la pizza que se le antoja por el menú o la búsqueda.',
+        map: {
+          nodes: [
+            {
+              label: 'Entra a la app',
+              kind: 'start',
+              x: 130,
+              y: 260,
+              width: 160,
+              order: 0
+            },
+            {
+              label: 'Explora el menú',
+              detail: 'Por categorías',
+              kind: 'step',
+              x: 420,
+              y: 140,
+              width: 200,
+              order: 1
+            },
+            {
+              label: 'Busca',
+              detail: 'Por nombre',
+              kind: 'step',
+              x: 420,
+              y: 380,
+              width: 200,
+              order: 1
+            },
+            {
+              label: 'Revisa el detalle',
+              detail: 'Foto, ingredientes, tamaños y precio',
+              kind: 'step',
+              x: 720,
+              y: 260,
+              width: 200,
+              order: 2
+            },
+            {
+              label: '¿Es la que quiere?',
+              kind: 'decision',
+              x: 1000,
+              y: 260,
+              width: 180,
+              order: 3
+            },
+            {
+              label: 'Pasa a personalizar',
+              kind: 'end',
+              x: 1270,
+              y: 260,
+              width: 170,
+              order: 4
+            }
+          ],
+          edges: [
+            {
+              path: 'M222 260 H253 Q265 260 265 248 V152 Q265 140 277 140 H304',
+              order: 0
+            },
+            {
+              path: 'M222 260 H253 Q265 260 265 272 V368 Q265 380 277 380 H304',
+              order: 0
+            },
+            {
+              path: 'M532 140 H563 Q575 140 575 152 V248 Q575 260 587 260 H604',
+              order: 1
+            },
+            {
+              path: 'M532 380 H563 Q575 380 575 368 V272 Q575 260 587 260 H604',
+              order: 1
+            },
+            {
+              path: 'M832 260 H894',
+              order: 2
+            },
+            {
+              path: 'M1102 260 H1169',
+              order: 3,
+              label: 'Sí',
+              labelX: 1135,
+              labelY: 244
+            }
+          ]
+        }
       },
       {
         number: '02',
@@ -227,7 +467,139 @@ export const sonopizzaStory: SonopizzaStory = {
           'Elige el tamaño',
           'Quita ingredientes y suma extras',
           'Revisa el precio y agrega'
-        ]
+        ],
+        goal: 'Ajustar la pizza a su gusto y agregarla al carrito con el precio claro.',
+        map: {
+          nodes: [
+            {
+              label: 'Receta original',
+              kind: 'start',
+              x: 150,
+              y: 150,
+              width: 160,
+              order: 0
+            },
+            {
+              label: 'Elige el tamaño',
+              detail: 'Obligatorio',
+              kind: 'step',
+              x: 409,
+              y: 150,
+              width: 190,
+              order: 1
+            },
+            {
+              label: 'Falta el tamaño',
+              detail: 'La app indica qué completar',
+              kind: 'alt',
+              x: 409,
+              y: 330,
+              width: 200,
+              order: 2
+            },
+            {
+              label: 'Quita ingredientes',
+              kind: 'step',
+              x: 683,
+              y: 150,
+              width: 190,
+              order: 2
+            },
+            {
+              label: 'Suma extras',
+              detail: 'Con su costo visible',
+              kind: 'step',
+              x: 957,
+              y: 150,
+              width: 190,
+              order: 3
+            },
+            {
+              label: 'Instrucciones',
+              detail: 'Opcional',
+              kind: 'step',
+              x: 1231,
+              y: 150,
+              width: 190,
+              order: 4
+            },
+            {
+              label: 'Revisa el precio',
+              detail: 'Actualizado',
+              kind: 'step',
+              x: 1231,
+              y: 370,
+              width: 190,
+              order: 5
+            },
+            {
+              label: 'Agrega al carrito',
+              kind: 'decision',
+              x: 957,
+              y: 370,
+              width: 180,
+              order: 6
+            },
+            {
+              label: 'Va al carrito',
+              kind: 'end',
+              x: 683,
+              y: 300,
+              width: 170,
+              order: 7
+            },
+            {
+              label: 'Sigue explorando',
+              kind: 'end',
+              x: 683,
+              y: 450,
+              width: 170,
+              order: 7
+            }
+          ],
+          edges: [
+            {
+              path: 'M242 150 H298',
+              order: 0
+            },
+            {
+              path: 'M516 150 H572',
+              order: 1
+            },
+            {
+              path: 'M409 206 V270',
+              isAlt: true,
+              order: 1,
+              label: 'Si falta',
+              labelX: 448,
+              labelY: 244
+            },
+            {
+              path: 'M790 150 H846',
+              order: 2
+            },
+            {
+              path: 'M1064 150 H1120',
+              order: 3
+            },
+            {
+              path: 'M1231 206 V310',
+              order: 4
+            },
+            {
+              path: 'M1124 370 H1063',
+              order: 5
+            },
+            {
+              path: 'M855 370 H828 Q816 370 816 358 V312 Q816 300 804 300 H784',
+              order: 6
+            },
+            {
+              path: 'M855 370 H828 Q816 370 816 382 V438 Q816 450 804 450 H784',
+              order: 6
+            }
+          ]
+        }
       },
       {
         number: '03',
@@ -237,52 +609,224 @@ export const sonopizzaStory: SonopizzaStory = {
           'Verifica productos y precios',
           'Edita, cambia cantidades o elimina',
           'Confirma el pedido'
+        ],
+        goal: 'Verificar el pedido, ajustarlo si hace falta y confirmarlo.',
+        map: {
+          nodes: [
+            {
+              label: 'Abre el carrito',
+              kind: 'start',
+              x: 90,
+              y: 300,
+              width: 160,
+              order: 0
+            },
+            {
+              label: 'Verifica productos',
+              detail: 'Tamaños, extras y precios',
+              kind: 'step',
+              x: 336,
+              y: 300,
+              width: 200,
+              order: 1
+            },
+            {
+              label: '¿Todo en orden?',
+              kind: 'decision',
+              x: 592,
+              y: 300,
+              width: 180,
+              order: 2
+            },
+            {
+              label: 'Edita o elimina',
+              detail: 'Personalización y cantidades',
+              kind: 'alt',
+              x: 592,
+              y: 100,
+              width: 200,
+              order: 3
+            },
+            {
+              label: 'Revisa el total',
+              kind: 'step',
+              x: 838,
+              y: 300,
+              width: 180,
+              order: 3
+            },
+            {
+              label: 'Confirma',
+              kind: 'step',
+              x: 1074,
+              y: 300,
+              width: 160,
+              order: 4
+            },
+            {
+              label: 'Pedido confirmado',
+              kind: 'end',
+              x: 1305,
+              y: 300,
+              width: 170,
+              order: 5
+            }
+          ],
+          edges: [
+            {
+              path: 'M182 300 H220',
+              order: 0
+            },
+            {
+              path: 'M448 300 H486',
+              order: 1
+            },
+            {
+              path: 'M694 300 H732',
+              order: 2,
+              label: 'Sí',
+              labelX: 713,
+              labelY: 284
+            },
+            {
+              path: 'M592 244 V160',
+              isAlt: true,
+              order: 2,
+              label: 'No',
+              labelX: 612,
+              labelY: 205
+            },
+            {
+              path: 'M480 100 H350 Q336 100 336 114 V240',
+              isAlt: true,
+              order: 3
+            },
+            {
+              path: 'M940 300 H978',
+              order: 3
+            },
+            {
+              path: 'M1166 300 H1204',
+              order: 4
+            }
+          ]
+        }
+      }
+    ]
+  },
+  designSystem: sonopizzaDesignSystem,
+  product: {
+    number: '05',
+    name: 'El producto en acción',
+    scenes: [
+      {
+        number: '01',
+        title: 'Lo más pedido',
+        text: 'Al abrir, la pizza favorita es la protagonista con un solo botón; debajo, las categorías y la promo de la semana, a un toque.',
+        tone: 0,
+        screen: { key: 'home', step: '01', label: 'Inicio' },
+        chips: [
+          { title: 'Protagonista', text: 'Un solo botón' },
+          { title: 'Categorías', text: 'Claras' },
+          { title: 'Promo', text: 'De la semana' }
+        ]
+      },
+      {
+        number: '02',
+        title: 'Encuentra rápido',
+        text: 'Buscador y filtros por orden, ingredientes y tamaño, favoritos y tarjetas parejas con el precio desde.',
+        tone: 0,
+        screen: { key: 'menu', step: '02', label: 'Menú' },
+        chips: [
+          { title: 'Filtros', text: 'Que se despliegan' },
+          { title: 'Favoritos', text: 'Con un toque' },
+          { title: 'Precio', text: 'Desde' }
+        ]
+      },
+      {
+        number: '03',
+        title: 'Siempre al tanto',
+        text: 'La campana reúne el estado del pedido, las promos y las novedades, con lo nuevo bien marcado.',
+        tone: 0,
+        screen: { key: 'notifications', step: '03', label: 'Notificaciones' },
+        chips: [
+          { title: 'Pedido', text: 'Su estado' },
+          { title: 'Promos', text: 'Y novedades' },
+          { title: 'Lo nuevo', text: 'Marcado' }
+        ]
+      },
+      {
+        number: '04',
+        title: 'Hazla a tu gusto',
+        text: 'Todo en una sola vista: primero lo obligatorio, el tamaño; después lo opcional, la salsa, qué quitar y los extras, cada uno con su costo.',
+        tone: 1,
+        screen: { key: 'product', step: '04', label: 'Elige tu pizza' },
+        chips: [
+          { title: 'Tamaño', text: 'Va primero' },
+          { title: 'Extras', text: 'Con su costo' },
+          { title: 'Total', text: 'Siempre abajo' }
+        ]
+      },
+      {
+        number: '05',
+        title: 'Tu pedido, claro',
+        text: 'El producto con su tamaño y extras, el cupón a la mano y un resumen con subtotal, domicilio y total.',
+        tone: 2,
+        screen: { key: 'cart', step: '05', label: 'Carrito' },
+        chips: [
+          { title: 'Detalle', text: 'Del producto' },
+          { title: 'Cupón', text: 'A la mano' },
+          { title: 'Resumen', text: 'Sin sorpresas' }
+        ]
+      },
+      {
+        number: '06',
+        title: 'Un solo paso',
+        text: 'Lo que pagas y lo que decides, en dos tarjetas: el producto con su domicilio, y la dirección, cuándo y cómo pagas.',
+        tone: 2,
+        screen: { key: 'checkout', step: '06', label: 'Checkout' },
+        chips: [
+          { title: 'Domicilio', text: 'A la vista' },
+          { title: 'Entrega', text: 'Ahora o después' },
+          { title: 'Pago', text: 'Al recibir' }
+        ]
+      },
+      {
+        number: '07',
+        title: 'Pedido en marcha',
+        text: 'Una confirmación clara: el número del pedido, cuánto demora y en qué paso va, con la mascota de la marca.',
+        tone: 2,
+        screen: { key: 'confirmed', step: '07', label: 'Pedido confirmado' },
+        chips: [
+          { title: 'Número', text: 'Del pedido' },
+          { title: 'Tiempo', text: 'Estimado' },
+          { title: 'Pasos', text: 'Del pedido' }
+        ]
+      },
+      {
+        number: '08',
+        title: 'Sigue tu pizza',
+        text: 'Cuánto falta en grande, la pizza como reloj, el código de entrega y quién va en camino, sin mapa.',
+        tone: 2,
+        screen: { key: 'tracking', step: '08', label: 'Seguimiento' },
+        chips: [
+          { title: 'Cuenta atrás', text: 'Grande' },
+          { title: 'Código', text: 'De entrega' },
+          { title: 'Repartidor', text: 'En camino' }
+        ]
+      },
+      {
+        number: '09',
+        title: 'Pídela otra vez',
+        text: 'El pedido en curso arriba y los anteriores debajo, cada uno con un botón para repetirlo con un toque.',
+        tone: 2,
+        screen: { key: 'orders', step: '09', label: 'Mis pedidos' },
+        chips: [
+          { title: 'En curso', text: 'Con seguimiento' },
+          { title: 'Anteriores', text: 'Con su fecha' },
+          { title: 'Pedir de nuevo', text: 'Con un toque' }
         ]
       }
-    ],
-    note: 'La confirmación es un estado visual del prototipo: no hay pago, dirección ni envío real.'
-  },
-  visual: {
-    number: '04',
-    name: 'La exploración visual',
-    title: 'Juvenil, divertida y con inspiración retro',
-    personality: [
-      'Fondos en blanco hueso',
-      'Titulares con carácter',
-      'Sellos, stickers e ilustraciones',
-      'La mascota como acento'
-    ],
-    paletteTitle: 'Paleta',
-    palette: [
-      { name: 'Navy Blue', hex: '#002B8F' },
-      { name: 'Royal Blue', hex: '#0D47C9' },
-      { name: 'Electric Blue', hex: '#2563EB' },
-      { name: 'Bright Orange', hex: '#FF5A00' },
-      { name: 'Soft Orange', hex: '#FF7A1A' },
-      { name: 'Off White', hex: '#F4F4F4' },
-      { name: 'Dark Gray', hex: '#1E1E1E' }
-    ],
-    paletteNote:
-      'Tres azules para la estructura, dos naranjas para la energía y la acción, y blanco hueso y gris oscuro para el contraste.',
-    typeTitle: 'Tipografía',
-    typefaces: [
-      { name: 'Titan One', role: 'Logotipo', sample: 'Sono Pizza' },
-      { name: 'Bowlby One SC', role: 'Titulares', sample: 'Del antojo' },
-      {
-        name: 'DM Sans',
-        role: 'Interfaz, precios y navegación',
-        sample: 'Agrega al carrito'
-      }
-    ],
-    brandTitle: 'Logotipo y mascota',
-    logoLabel: 'Wordmark SONO PIZZA',
-    mascotText:
-      'Una mascota tipo sticker: gorra, sonrisa, lunar y una porción de pizza. Aparece en momentos puntuales, no en todas las pantallas.',
-    photographyTitle: 'Fotografía',
-    photography: [
-      'Cenitales para el catálogo',
-      'Acercamientos para queso y texturas',
-      'Otros ángulos cuando muestran mejor el producto'
     ]
   }
 };

@@ -1,0 +1,1169 @@
+/* 04 · Sistema de diseño de Sonopizza. Vive dentro del área con scroll libre
+   del caso: una portada y tres paneles (fundamentos, componentes y elementos
+   de marca). Cada pieza se muestra en una hoja blanca con borde azul marino y
+   sombra corrida, y los componentes se arman con los mismos tokens que
+   documenta la parte de fundamentos. */
+.sono-ds {
+  /* Bordes */
+  --ds-radius-s: 8px;
+  --ds-radius-m: 16px;
+  --ds-radius-l: 24px;
+  /* Sombras suaves y difusas: las superficies se separan del fondo por
+     elevación. Los botones son planos, de un solo color, sin relieve ni sombra. Lo elegido lleva un anillo
+     naranja */
+  --ds-shadow-soft:
+    0 2px 4px rgb(0 20 70 / 0.04), 0 8px 24px rgb(0 20 70 / 0.08);
+  --ds-shadow-lift:
+    0 2px 6px rgb(0 20 70 / 0.06), 0 16px 32px rgb(0 20 70 / 0.14);
+  --ds-shadow-button: none;
+  --ds-shadow-card: var(--ds-shadow-soft);
+  --ds-shadow-highlight: 0 0 0 2px var(--sono-orange), var(--ds-shadow-soft);
+  --ds-shadow-sheet: 0 -8px 24px rgb(0 43 143 / 0.16);
+  --ds-fill-orange: var(--sono-orange);
+  --ds-fill-navy: var(--sono-navy);
+  /* Tinta para textos y descripciones: azul muy oscuro casi gris */
+  --ds-ink: #1b2338;
+  --ds-mist: #e2e7f2;
+  /* Curvas de movimiento */
+  --ds-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ds-ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ds-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ds-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Tinte naranja para fondos de selección y miniaturas */
+  --ds-orange-tint: #fff1e6;
+  @apply gap-10;
+}
+
+/* Portada: título, para qué sirve y las tres partes */
+.sono-ds-intro__lead {
+  @apply max-w-2xl text-xl;
+}
+
+.sono-ds-intro__parts {
+  @apply flex flex-wrap gap-3;
+}
+
+.sono-ds-intro__part {
+  @apply flex items-center gap-3 rounded-full bg-white px-5 py-3 text-lg font-semibold;
+  color: var(--sono-navy);
+  box-shadow: var(--ds-shadow-soft);
+}
+
+.sono-ds-intro__part b {
+  @apply text-2xl font-normal;
+  font-family: var(--font-sono-condensed), sans-serif;
+  color: var(--sono-orange);
+}
+
+/* Encabezado de cada parte: número condensado, nombre y para qué sirve */
+.sono-ds__part {
+  @apply flex flex-col gap-3;
+}
+
+.sono-ds__part-index {
+  @apply text-5xl leading-none;
+  font-family: var(--font-sono-condensed), sans-serif;
+  color: var(--sono-orange);
+}
+
+/* Grilla de hojas: tres columnas; una hoja puede ocupar dos o todas */
+.sono-ds__grid {
+  @apply grid grid-cols-3 gap-6;
+}
+
+.sono-ds__sheet {
+  @apply flex min-w-0 flex-col gap-5 rounded-3xl bg-white p-6;
+  color: var(--ds-ink);
+  box-shadow: var(--ds-shadow-soft);
+}
+
+.sono-ds--dark .sono-ds__sheet {
+  box-shadow: var(--ds-shadow-lift);
+}
+
+.sono-ds__sheet--wide {
+  @apply col-span-2;
+}
+
+.sono-ds__sheet--full {
+  @apply col-span-3;
+}
+
+.sono-ds__sheet-head {
+  @apply flex flex-col gap-1;
+}
+
+.sono-ds__sheet-title {
+  @apply text-sm font-bold tracking-[0.16em] uppercase;
+}
+
+.sono-ds__sheet-note {
+  @apply max-w-xl text-sm leading-5;
+  color: rgb(27 35 56 / 0.62);
+}
+
+/* Fondo de la app (blanco hueso) donde se muestran los componentes */
+.sono-ds__canvas {
+  @apply flex flex-1 flex-col items-start gap-4 rounded-2xl p-5;
+  background: var(--sono-white);
+}
+
+.sono-ds__canvas--center {
+  @apply min-h-56 items-center justify-center;
+}
+
+/* ---------- Fundamentos ---------- */
+
+/* Color: siete muestras con nombre, HEX y uso */
+.sono-ds-swatches {
+  @apply grid grid-cols-7 gap-3;
+}
+
+.sono-ds-swatch {
+  @apply relative isolate flex min-h-44 flex-col justify-end gap-0.5 overflow-hidden rounded-2xl p-4;
+  box-shadow: inset 0 0 0 2px rgb(0 43 143 / 0.08);
+  color: var(--sono-white);
+}
+
+.sono-ds-swatch--light {
+  color: var(--sono-navy);
+}
+
+.sono-ds-swatch__color {
+  @apply absolute inset-0 -z-10 size-full;
+}
+
+.sono-ds-swatch__name {
+  @apply text-sm font-bold;
+}
+
+.sono-ds-swatch__hex {
+  @apply text-sm;
+}
+
+.sono-ds-swatch__role {
+  @apply mt-1 text-xs leading-4 opacity-85;
+}
+
+/* Tipografía: las dos familias y la escala con una muestra de cada paso */
+.sono-ds-families {
+  @apply flex flex-wrap gap-2;
+}
+
+.sono-ds-families__item {
+  @apply flex items-baseline gap-2 rounded-full px-4 py-2;
+  background: var(--sono-white);
+}
+
+.sono-ds-families__name {
+  @apply font-bold;
+}
+
+.sono-ds-families__use {
+  @apply text-sm;
+  color: rgb(27 35 56 / 0.62);
+}
+
+.sono-ds-type {
+  @apply flex flex-col;
+}
+
+.sono-ds-type__row {
+  @apply grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-6 border-b py-3;
+  border-color: rgb(0 43 143 / 0.12);
+}
+
+.sono-ds-type__row:last-child {
+  @apply border-b-0;
+}
+
+.sono-ds-type__sample {
+  @apply min-w-0 truncate;
+}
+
+.sono-ds-type__sample--display,
+.sono-ds-type__sample--title {
+  @apply uppercase;
+  font-family: var(--font-sono-display), sans-serif;
+}
+
+.sono-ds-type__sample--display {
+  @apply text-[40px] leading-10;
+}
+
+.sono-ds-type__sample--title {
+  @apply text-2xl leading-[26px];
+}
+
+.sono-ds-type__sample--subtitle {
+  @apply text-xl leading-7 font-semibold;
+}
+
+.sono-ds-type__sample--body {
+  @apply text-base leading-6;
+}
+
+.sono-ds-type__sample--price {
+  @apply text-lg leading-6 font-bold;
+}
+
+.sono-ds-type__sample--label {
+  @apply text-xs leading-4 font-semibold tracking-[0.16em] uppercase;
+}
+
+.sono-ds-type__spec {
+  @apply flex flex-col items-end text-right text-sm;
+  color: rgb(27 35 56 / 0.62);
+}
+
+.sono-ds-type__spec b {
+  @apply font-bold;
+  color: var(--ds-ink);
+}
+
+/* Espaciado: cada valor con su barra a escala */
+.sono-ds-spacing {
+  @apply flex flex-col gap-3;
+}
+
+.sono-ds-spacing__row {
+  @apply grid grid-cols-[52px_minmax(0,1fr)] items-center gap-3;
+}
+
+.sono-ds-spacing__value {
+  @apply text-sm font-bold;
+}
+
+.sono-ds-spacing__bar {
+  @apply h-3 w-full max-w-48;
+}
+
+.sono-ds-spacing__bar rect {
+  fill: var(--sono-orange);
+}
+
+/* Área táctil: el botón de 40 px dentro de su zona de 48 px, punteada */
+.sono-ds-touch {
+  @apply mt-auto flex items-center gap-4 rounded-2xl p-3;
+  background: var(--sono-white);
+}
+
+.sono-ds-touch__area {
+  @apply grid size-12 shrink-0 place-items-center rounded-full border-2 border-dashed;
+  border-color: var(--sono-orange);
+}
+
+/* Bordes y sombras: una muestra por token, con su nombre y uso */
+.sono-ds-tokens {
+  @apply grid grid-cols-2 gap-x-4 gap-y-5;
+}
+
+.sono-ds-token {
+  @apply flex min-w-0 flex-col;
+}
+
+.sono-ds-token__shape {
+  @apply mb-3 block h-16 w-full;
+}
+
+.sono-ds-token__shape--radius {
+  background: var(--ds-orange-tint);
+  box-shadow: inset 0 0 0 2px rgb(255 90 0 / 0.28);
+}
+
+.sono-ds-token__shape--radius-s {
+  border-radius: var(--ds-radius-s);
+}
+
+.sono-ds-token__shape--radius-m {
+  border-radius: var(--ds-radius-m);
+}
+
+.sono-ds-token__shape--radius-l {
+  border-radius: var(--ds-radius-l);
+}
+
+.sono-ds-token__shape--radius-pill {
+  @apply rounded-full;
+}
+
+.sono-ds-token__shape--shadow {
+  @apply mr-2 bg-white;
+  border-radius: var(--ds-radius-m);
+}
+
+.sono-ds-token__shape--shadow-button {
+  @apply rounded-full;
+  background: var(--ds-fill-orange);
+  box-shadow: var(--ds-shadow-button);
+}
+
+.sono-ds-token__shape--shadow-card {
+  box-shadow: var(--ds-shadow-card);
+}
+
+.sono-ds-token__shape--shadow-highlight {
+  box-shadow: var(--ds-shadow-highlight);
+}
+
+.sono-ds-token__shape--shadow-sheet {
+  box-shadow: var(--ds-shadow-sheet);
+}
+
+/* Nombre y uso pegados: se leen como un solo dato */
+.sono-ds-token__name {
+  @apply text-sm leading-5 font-bold;
+}
+
+/* El valor no se parte por la mitad (por ejemplo, "ease-in-out") */
+.sono-ds-token__value {
+  @apply whitespace-nowrap;
+}
+
+.sono-ds-token__use {
+  @apply text-xs leading-4;
+  color: rgb(27 35 56 / 0.62);
+}
+
+/* Movimiento: cada fila muestra su curva al pasar el cursor o el foco */
+.sono-ds-motion {
+  @apply flex flex-col gap-2.5;
+}
+
+.sono-ds-motion__row {
+  @apply grid w-full cursor-pointer grid-cols-[88px_minmax(0,1fr)] items-center gap-4 rounded-2xl border-2 border-transparent p-2.5 text-left transition-colors duration-200;
+  background: var(--sono-white);
+  color: var(--ds-ink);
+}
+
+.sono-ds-motion__row:hover,
+.sono-ds-motion__row:focus-visible {
+  border-color: var(--sono-navy);
+}
+
+.sono-ds-motion__row:focus-visible {
+  @apply outline-2 outline-offset-2;
+  outline-color: var(--sono-orange);
+}
+
+.sono-ds-motion__stage {
+  @apply relative block h-12 overflow-hidden rounded-xl bg-white;
+  box-shadow: inset 0 0 0 2px rgb(0 43 143 / 0.08);
+}
+
+.sono-ds-motion__text {
+  @apply flex min-w-0 flex-col;
+}
+
+.sono-ds-motion__actor {
+  @apply absolute top-1/2 left-3 -mt-3 block size-6 rounded-full;
+  background: var(--ds-fill-orange);
+  box-shadow: var(--ds-shadow-button);
+}
+
+/* Entrar: sube y aparece */
+.sono-ds-motion__row--enter .sono-ds-motion__actor {
+  @apply left-1/2 -ml-3;
+  opacity: 0.2;
+  translate: 0 16px;
+  transition:
+    translate 300ms var(--ds-ease-out),
+    opacity 300ms var(--ds-ease-out);
+}
+
+/* Rebote: crece pasándose un poco y vuelve */
+.sono-ds-motion__row--pop .sono-ds-motion__actor {
+  @apply left-1/2 -ml-3;
+  scale: 0.3;
+  transition: scale 400ms var(--ds-ease-back);
+}
+
+/* Presionar: el botón se hunde y su sombra se acorta */
+.sono-ds-motion__row--press .sono-ds-motion__actor {
+  @apply left-1/2 -ml-7 w-14;
+  box-shadow: var(--ds-shadow-button);
+  transition:
+    translate 120ms var(--ds-ease-in),
+    box-shadow 120ms var(--ds-ease-in);
+}
+
+/* Deslizar: la píldora pasa de una pestaña a la otra */
+.sono-ds-motion__row--slide .sono-ds-motion__actor {
+  @apply w-8;
+  transition: translate 250ms var(--ds-ease-in-out);
+}
+
+.sono-ds-motion__row--enter:is(:hover, :focus-visible) .sono-ds-motion__actor {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.sono-ds-motion__row--pop:is(:hover, :focus-visible) .sono-ds-motion__actor {
+  scale: 1;
+}
+
+.sono-ds-motion__row--press:is(:hover, :focus-visible) .sono-ds-motion__actor {
+  translate: 3px 3px;
+  box-shadow: 0 0 0 var(--sono-navy);
+}
+
+.sono-ds-motion__row--slide:is(:hover, :focus-visible) .sono-ds-motion__actor {
+  translate: 36px 0;
+}
+
+/* Iconografía: cada ícono en su círculo con borde y sombra corrida */
+.sono-ds-icons {
+  @apply grid grid-cols-6 gap-x-4 gap-y-5;
+}
+
+.sono-ds-icons__item {
+  @apply flex flex-col items-center gap-2 text-center text-sm font-semibold;
+}
+
+.sono-ds-icon-badge {
+  @apply grid size-12 place-items-center rounded-full bg-white;
+  color: var(--sono-navy);
+  box-shadow: var(--ds-shadow-soft);
+}
+
+.sono-ds-icon-badge svg {
+  @apply size-5;
+}
+
+/* ---------- Componentes ---------- */
+
+/* Botones */
+.sono-ds-buttons {
+  @apply flex flex-wrap items-center gap-3;
+}
+
+.sono-ds-button {
+  @apply inline-flex cursor-pointer items-center gap-2 rounded-full px-5 py-3 text-base font-semibold transition-[translate,box-shadow,background-color] duration-[120ms];
+  transition-timing-function: var(--ds-ease-in);
+}
+
+.sono-ds-button svg {
+  @apply size-4;
+}
+
+.sono-ds-button--primary {
+  background: var(--ds-fill-orange);
+  color: var(--sono-white);
+  box-shadow: var(--ds-shadow-button);
+}
+
+.sono-ds-button--secondary {
+  background: var(--ds-fill-navy);
+  color: var(--sono-white);
+}
+
+.sono-ds-button--primary:active:not(:disabled),
+.sono-ds-button--secondary:active:not(:disabled) {
+  translate: 0 2px;
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.24);
+}
+
+.sono-ds-button--text {
+  @apply border-transparent bg-transparent px-3 py-2 text-sm;
+  color: var(--ds-ink);
+}
+
+.sono-ds-button--text:hover {
+  background: rgb(0 43 143 / 0.08);
+}
+
+.sono-ds-button:disabled {
+  @apply cursor-default;
+  background: var(--ds-mist);
+  color: rgb(27 35 56 / 0.45);
+  box-shadow: none;
+}
+
+.sono-ds-button--block {
+  @apply w-full justify-center;
+}
+
+.sono-ds-button:focus-visible,
+.sono-ds-tab:focus-visible,
+.sono-ds-nav__item:focus-visible,
+.sono-ds-size:focus-visible,
+.sono-ds-ingredient:focus-visible,
+.sono-ds-extra:focus-visible,
+.sono-ds-icon-button:focus-visible,
+.sono-ds-stepper__button:focus-visible,
+.sono-ds-size-art__option:focus-visible {
+  @apply outline-2 outline-offset-2;
+  outline-color: var(--sono-electric);
+}
+
+/* Pestañas de categoría y buscador */
+/* Pestañas y buscador comparten las filas: las pestañas no forman caja
+   propia (display: contents) y el buscador llena lo que queda de la última
+   fila, o baja a una nueva si no cabe */
+.sono-ds-filter {
+  @apply flex w-full flex-wrap items-center gap-2;
+}
+
+.sono-ds-tabs {
+  @apply contents;
+}
+
+.sono-ds-tab {
+  @apply cursor-pointer rounded-full bg-white px-4 py-2 text-sm font-semibold transition-colors duration-[250ms];
+  color: rgb(27 35 56 / 0.7);
+  box-shadow: 0 2px 6px rgb(0 20 70 / 0.08);
+  transition-timing-function: var(--ds-ease-in-out);
+}
+
+.sono-ds-tab--current {
+  background: var(--ds-fill-navy);
+  color: var(--sono-white);
+}
+
+.sono-ds-search {
+  @apply flex min-w-40 flex-1 items-center gap-2 rounded-full bg-white px-4 py-2 text-sm;
+  color: rgb(27 35 56 / 0.62);
+  box-shadow: var(--ds-shadow-soft);
+}
+
+.sono-ds-search svg {
+  @apply size-4 shrink-0;
+  color: var(--sono-navy);
+}
+
+/* Barra de navegación: tres pestañas y el número del carrito */
+.sono-ds-nav {
+  @apply flex w-full items-center justify-around rounded-3xl p-2;
+  background: linear-gradient(180deg, #fff 0%, #fbfbfd 45%, #eceff7 100%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 -1px 0 rgb(0 43 143 / 0.08),
+    var(--ds-shadow-soft);
+}
+
+.sono-ds-nav__item {
+  @apply relative flex cursor-pointer flex-col items-center gap-1 rounded-2xl px-4 py-2 text-xs font-semibold transition-colors duration-[250ms];
+  color: rgb(27 35 56 / 0.5);
+}
+
+.sono-ds-nav__item svg {
+  @apply size-5;
+}
+
+/* Pestaña actual: ícono y nombre en naranja, sin fondo (como en la app) */
+.sono-ds-nav__item--current {
+  @apply font-bold;
+  color: var(--sono-orange);
+}
+
+.sono-ds-nav__badge {
+  @apply absolute top-0 right-2 grid size-5 place-items-center rounded-full border-2 border-white text-xs leading-none font-bold;
+  background: var(--sono-orange);
+  color: var(--sono-white);
+}
+
+/* Tarjeta de producto */
+.sono-ds-product {
+  @apply flex w-full flex-col overflow-hidden rounded-3xl bg-white;
+  box-shadow: var(--ds-shadow-card);
+}
+
+.sono-ds-product__media {
+  @apply relative grid place-items-center p-5;
+  background: var(--ds-orange-tint);
+}
+
+.sono-ds-product__media .sono-pizza-art {
+  @apply size-28;
+}
+
+.sono-ds-badge {
+  @apply absolute top-3 left-3 inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold;
+  background: var(--sono-navy);
+  color: var(--sono-white);
+}
+
+.sono-ds-badge svg {
+  @apply size-3.5;
+  color: var(--sono-orange-soft);
+}
+
+.sono-ds-product__body {
+  @apply flex flex-col gap-1 p-4;
+}
+
+.sono-ds-product__name {
+  @apply text-lg leading-6 font-semibold;
+}
+
+.sono-ds-product__text {
+  @apply text-sm leading-5;
+  color: rgb(27 35 56 / 0.62);
+}
+
+.sono-ds-product__foot {
+  @apply mt-2 flex items-center justify-between gap-3;
+}
+
+.sono-ds-product__price {
+  @apply text-lg font-bold;
+}
+
+.sono-ds-icon-button {
+  @apply grid size-10 shrink-0 cursor-pointer place-items-center rounded-full transition-[translate,box-shadow] duration-[120ms];
+  background: var(--ds-fill-orange);
+  color: var(--sono-white);
+  box-shadow: var(--ds-shadow-button);
+}
+
+.sono-ds-icon-button:active {
+  translate: 0 2px;
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.24);
+}
+
+.sono-ds-icon-button svg {
+  @apply size-5;
+}
+
+/* Producto en el carrito */
+.sono-ds-cart-item {
+  @apply flex w-full items-center gap-3 rounded-2xl bg-white p-3;
+  box-shadow: var(--ds-shadow-soft);
+}
+
+.sono-ds-cart-item__thumb {
+  @apply grid size-16 shrink-0 place-items-center rounded-xl p-1.5;
+  background: var(--ds-orange-tint);
+}
+
+.sono-ds-cart-item__thumb .sono-pizza-art {
+  @apply size-full;
+}
+
+.sono-ds-cart-item__info {
+  @apply flex min-w-0 flex-col;
+}
+
+.sono-ds-cart-item__name {
+  @apply font-semibold;
+}
+
+.sono-ds-cart-item__detail {
+  @apply text-sm;
+  color: rgb(27 35 56 / 0.62);
+}
+
+.sono-ds-cart-item__price {
+  @apply font-bold;
+}
+
+.sono-ds-cart-item__actions {
+  @apply flex w-full flex-wrap items-center gap-1;
+}
+
+.sono-ds-cart-item__actions .sono-ds-stepper {
+  @apply mr-auto;
+}
+
+/* Contador de cantidad */
+.sono-ds-stepper {
+  @apply inline-flex items-center gap-2 rounded-full bg-white p-1;
+  box-shadow: var(--ds-shadow-soft);
+}
+
+.sono-ds-stepper__button {
+  @apply grid size-8 cursor-pointer place-items-center rounded-full transition-[scale] duration-[400ms];
+  background: var(--ds-fill-navy);
+  color: var(--sono-white);
+  transition-timing-function: var(--ds-ease-back);
+}
+
+.sono-ds-stepper__button:active:not(:disabled) {
+  scale: 0.88;
+}
+
+.sono-ds-stepper__button:disabled {
+  @apply cursor-default;
+  background: rgb(0 43 143 / 0.2);
+}
+
+.sono-ds-stepper__button svg {
+  @apply size-4;
+}
+
+.sono-ds-stepper__count {
+  @apply min-w-6 text-center font-bold;
+}
+
+/* Confirmación del pedido */
+.sono-ds-confirm {
+  @apply flex w-full flex-col items-center gap-2 rounded-3xl p-6 text-center;
+  background: var(--sono-navy);
+  color: var(--sono-white);
+}
+
+.sono-ds-confirm__badge {
+  @apply mb-1 grid size-14 place-items-center rounded-full transition-[scale] duration-[400ms];
+  background: var(--ds-fill-orange);
+  box-shadow: var(--ds-shadow-button);
+  transition-timing-function: var(--ds-ease-back);
+}
+
+.sono-ds-confirm:hover .sono-ds-confirm__badge {
+  scale: 1.1;
+}
+
+.sono-ds-confirm__badge svg {
+  @apply size-7;
+  stroke-width: 3;
+}
+
+.sono-ds-confirm__heading {
+  @apply text-xl uppercase;
+  font-family: var(--font-sono-display), sans-serif;
+}
+
+.sono-ds-confirm__text {
+  @apply text-sm;
+  color: rgb(244 244 244 / 0.85);
+}
+
+.sono-ds-confirm__time {
+  @apply mt-1 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold;
+  background: rgb(244 244 244 / 0.15);
+}
+
+.sono-ds-confirm__time svg {
+  @apply size-4;
+}
+
+/* Personalización: opciones a la izquierda y resumen a la derecha */
+.sono-ds-config {
+  @apply grid w-full grid-cols-[minmax(0,1.4fr)_minmax(260px,1fr)] items-start gap-6;
+}
+
+.sono-ds-config__options {
+  @apply flex flex-col gap-6;
+}
+
+.sono-ds-config__group {
+  @apply flex flex-col gap-3;
+}
+
+.sono-ds-config__head {
+  @apply flex items-center justify-between gap-3;
+}
+
+.sono-ds-config__title {
+  @apply font-semibold;
+}
+
+.sono-ds-tag {
+  @apply rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-[0.08em] uppercase;
+}
+
+.sono-ds-tag--required {
+  background: var(--sono-orange);
+  color: var(--sono-white);
+}
+
+.sono-ds-tag--optional {
+  background: rgb(0 43 143 / 0.1);
+  color: var(--ds-ink);
+}
+
+.sono-ds-sizes {
+  @apply grid grid-cols-3 gap-3;
+}
+
+.sono-ds-size {
+  @apply flex cursor-pointer flex-col items-start gap-0.5 rounded-2xl bg-white p-3 text-left transition-[background-color,box-shadow] duration-[250ms];
+  box-shadow: var(--ds-shadow-soft);
+  transition-timing-function: var(--ds-ease-in-out);
+}
+
+.sono-ds-size--current {
+  background: var(--ds-orange-tint);
+  box-shadow: var(--ds-shadow-highlight);
+}
+
+.sono-ds-size__name {
+  @apply font-semibold;
+}
+
+.sono-ds-size__detail {
+  @apply text-xs;
+  color: rgb(27 35 56 / 0.62);
+}
+
+.sono-ds-size__price {
+  @apply mt-1 text-sm font-bold;
+}
+
+.sono-ds-ingredients {
+  @apply flex flex-wrap gap-2;
+}
+
+.sono-ds-ingredient {
+  @apply inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-sm font-semibold;
+  color: var(--ds-ink);
+  box-shadow: 0 2px 6px rgb(0 20 70 / 0.08);
+}
+
+.sono-ds-ingredient svg {
+  @apply size-4;
+}
+
+.sono-ds-ingredient--removed {
+  background: transparent;
+  color: rgb(27 35 56 / 0.5);
+  box-shadow: none;
+  outline: 2px dashed rgb(0 43 143 / 0.3);
+  outline-offset: -2px;
+}
+
+.sono-ds-extras {
+  @apply flex flex-col gap-2;
+}
+
+.sono-ds-extra {
+  @apply flex w-full cursor-pointer items-center gap-3 rounded-2xl bg-white px-3 py-2.5 text-left transition-colors duration-[250ms];
+  box-shadow: var(--ds-shadow-soft);
+}
+
+.sono-ds-extra--checked {
+  background: var(--ds-orange-tint);
+}
+
+.sono-ds-extra__box {
+  @apply grid size-5 shrink-0 place-items-center rounded-md border-2;
+  border-color: rgb(0 43 143 / 0.3);
+}
+
+.sono-ds-extra--checked .sono-ds-extra__box {
+  background: var(--sono-orange);
+  border-color: var(--sono-orange);
+  color: var(--sono-white);
+}
+
+.sono-ds-extra__box svg {
+  @apply size-3.5;
+  stroke-width: 3;
+}
+
+.sono-ds-extra__name {
+  @apply flex-1 text-sm font-semibold;
+}
+
+.sono-ds-extra__price {
+  @apply text-sm font-semibold;
+}
+
+.sono-ds-config__summary {
+  @apply flex flex-col gap-4 rounded-3xl bg-white p-5;
+  box-shadow: var(--ds-shadow-lift);
+}
+
+.sono-ds-bill {
+  @apply flex flex-col gap-2;
+}
+
+.sono-ds-bill__row {
+  @apply flex items-baseline justify-between gap-3 text-sm;
+}
+
+.sono-ds-bill__row dd {
+  @apply font-semibold;
+}
+
+.sono-ds-bill__row--total {
+  @apply mt-1 border-t-2 border-dashed pt-3 text-lg font-bold;
+  border-color: rgb(0 43 143 / 0.25);
+}
+
+.sono-ds-bill__row--total dd {
+  @apply font-bold;
+}
+
+/* ---------- Elementos de marca ---------- */
+
+.sono-ds-brand__pizza {
+  @apply size-44;
+}
+
+/* Selector de tamaño: tres pizzas que crecen */
+.sono-ds-size-art {
+  @apply flex items-end justify-center gap-3;
+}
+
+.sono-ds-size-art__option {
+  @apply flex cursor-pointer flex-col items-center gap-2 rounded-2xl p-2 text-sm font-semibold transition-[background-color,box-shadow] duration-[250ms];
+  color: var(--ds-ink);
+}
+
+.sono-ds-size-art__option--current {
+  background: var(--ds-orange-tint);
+  box-shadow: 0 0 0 2px var(--sono-orange);
+}
+
+.sono-ds-size-art__pizza {
+  transition: scale 400ms var(--ds-ease-back);
+}
+
+.sono-ds-size-art__option--current .sono-ds-size-art__pizza {
+  scale: 1.06;
+}
+
+.sono-ds-size-art__pizza--small {
+  @apply size-14;
+}
+
+.sono-ds-size-art__pizza--medium {
+  @apply size-20;
+}
+
+.sono-ds-size-art__pizza--large {
+  @apply size-26;
+}
+
+/* Íconos de ingredientes */
+.sono-ds-ingredient-icons {
+  @apply grid grid-cols-4 gap-3;
+}
+
+.sono-ingredient-icon {
+  @apply size-6;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Carga por porciones: cada porción se enciende en orden y vuelve a empezar */
+.sono-ds-loader {
+  @apply flex flex-col items-center gap-3;
+}
+
+.sono-ds-loader__pizza {
+  @apply size-32;
+}
+
+.sono-ds-loader__slice {
+  fill: var(--ds-orange-tint);
+  stroke: var(--sono-navy);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  animation: sono-ds-slice 2.4s infinite;
+}
+
+.sono-ds-loader__slice:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.sono-ds-loader__slice:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.sono-ds-loader__slice:nth-child(4) {
+  animation-delay: 0.45s;
+}
+
+.sono-ds-loader__slice:nth-child(5) {
+  animation-delay: 0.6s;
+}
+
+.sono-ds-loader__slice:nth-child(6) {
+  animation-delay: 0.75s;
+}
+
+.sono-ds-loader__slice:nth-child(7) {
+  animation-delay: 0.9s;
+}
+
+.sono-ds-loader__slice:nth-child(8) {
+  animation-delay: 1.05s;
+}
+
+@keyframes sono-ds-slice {
+  0%,
+  5% {
+    fill: var(--ds-orange-tint);
+  }
+
+  12%,
+  70% {
+    fill: var(--sono-orange);
+  }
+
+  80%,
+  100% {
+    fill: var(--ds-orange-tint);
+  }
+}
+
+.sono-ds-loader__label {
+  @apply text-sm font-semibold;
+}
+
+/* Chips de toppings: agregado, retirado y extra con su costo */
+.sono-ds-toppings {
+  @apply flex flex-wrap justify-center gap-2;
+}
+
+.sono-ds-topping {
+  @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold;
+}
+
+.sono-ds-topping svg {
+  @apply size-4;
+}
+
+.sono-ds-topping--added {
+  @apply bg-white;
+  color: var(--ds-ink);
+  box-shadow: 0 2px 6px rgb(0 20 70 / 0.08);
+}
+
+.sono-ds-topping--removed {
+  @apply line-through;
+  color: rgb(27 35 56 / 0.5);
+  outline: 2px dashed rgb(0 43 143 / 0.3);
+  outline-offset: -2px;
+}
+
+.sono-ds-topping--extra {
+  background: var(--ds-fill-orange);
+  color: var(--sono-white);
+  box-shadow: var(--ds-shadow-button);
+}
+
+.sono-ds-topping__price {
+  @apply font-bold;
+}
+
+/* Ticket de pedido: papel blanco con el borde de abajo dentado */
+.sono-ds-ticket {
+  @apply relative w-full max-w-64 bg-white px-5 pt-5 pb-4;
+  color: var(--ds-ink);
+  filter: drop-shadow(0 6px 12px rgb(0 43 143 / 0.15));
+}
+
+.sono-ds-ticket::after {
+  @apply absolute inset-x-0 top-full h-2.5 content-[''];
+  background:
+    linear-gradient(135deg, #fff 33.33%, transparent 33.33%) 0 0 / 12px 10px,
+    linear-gradient(225deg, #fff 33.33%, transparent 33.33%) 0 0 / 12px 10px;
+}
+
+.sono-ds-ticket__title {
+  @apply mb-3 text-center text-sm uppercase;
+  font-family: var(--font-sono-display), sans-serif;
+}
+
+.sono-ds-ticket__lines {
+  @apply flex flex-col gap-2;
+}
+
+.sono-ds-ticket__line {
+  @apply flex items-baseline justify-between gap-3 text-sm;
+}
+
+.sono-ds-ticket__line--total {
+  @apply mt-1 border-t-2 border-dashed pt-2 text-base font-bold;
+  border-color: rgb(0 43 143 / 0.3);
+}
+
+/* La pizza de la marca (tarjetas, carrito y elementos de marca) */
+.sono-pizza-art {
+  @apply block;
+}
+
+.sono-pizza-art__crust {
+  fill: var(--sono-orange-soft);
+  stroke: var(--sono-navy);
+  stroke-width: 3;
+}
+
+.sono-pizza-art__cheese {
+  fill: #fff4e2;
+  stroke: var(--sono-navy);
+  stroke-width: 2;
+}
+
+.sono-pizza-art__slices {
+  fill: none;
+  stroke: rgb(0 43 143 / 0.35);
+  stroke-width: 1.5;
+}
+
+.sono-pizza-art__pepperoni {
+  stroke: var(--sono-navy);
+  stroke-width: 2;
+}
+
+.sono-pizza-art__pepperoni:not([fill]) {
+  fill: var(--sono-orange);
+}
+
+/* Computadores angostos: dos columnas */
+@media (max-width: 1279px) {
+  .sono-ds__grid {
+    @apply grid-cols-2;
+  }
+
+  .sono-ds__sheet--wide,
+  .sono-ds__sheet--full {
+    @apply col-span-2;
+  }
+
+  .sono-ds-swatches {
+    @apply grid-cols-4;
+  }
+
+  .sono-ds-config {
+    @apply grid-cols-1;
+  }
+}
+
+/* Celular: una columna */
+@media (max-width: 899px) {
+  .sono-ds__grid {
+    @apply grid-cols-1;
+  }
+
+  .sono-ds__sheet--wide,
+  .sono-ds__sheet--full {
+    @apply col-span-1;
+  }
+
+  .sono-ds__sheet {
+    @apply p-4;
+  }
+
+  .sono-ds-swatches {
+    @apply grid-cols-2;
+  }
+
+  .sono-ds-icons {
+    @apply grid-cols-3;
+  }
+
+  .sono-ds-tokens {
+    @apply grid-cols-1;
+  }
+
+  .sono-ds-sizes {
+    @apply grid-cols-1;
+  }
+}
+
+/* Con "reducir movimiento" las muestras de movimiento y la carga se quedan
+   quietas, en su estado final */
+@media (prefers-reduced-motion: reduce) {
+  .sono-ds-motion__actor,
+  .sono-ds-loader__slice {
+    transition: none;
+    animation: none;
+  }
+}
