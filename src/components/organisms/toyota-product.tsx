@@ -1,4 +1,6 @@
+import { ToyotaVisual } from '@/components/atoms/toyota-visual';
 import { ToyotaCallout } from '@/components/molecules/toyota-callout';
+import { ToyotaChips } from '@/components/molecules/toyota-chips';
 import { ToyotaCells } from '@/components/molecules/toyota-cells';
 import { ToyotaChapter } from '@/components/molecules/toyota-chapter';
 import { ToyotaFlow } from '@/components/molecules/toyota-flow';
@@ -18,7 +20,7 @@ type ToyotaProductProps = {
 // 04 · Product Definition, en el mundo oscuro: el MVP, la lógica de
 // recomendación, el flujo y las variantes de resultado
 export function ToyotaProduct({ index, label, product }: ToyotaProductProps) {
-  const { mvp, logic, flow } = product;
+  const { mvp, logic, flow, design } = product;
 
   return (
     <ToyotaChapter index={index} world="dark" label={label}>
@@ -32,7 +34,7 @@ export function ToyotaProduct({ index, label, product }: ToyotaProductProps) {
         </p>
         <ToyotaMoscow total={mvp.total} segments={mvp.moscow} />
         <h4 className="ty-subtitle">{mvp.behaviorsLabel}</h4>
-        <ToyotaCells items={mvp.behaviors} columns={3} />
+        <ToyotaCells items={mvp.behaviors} columns={2} />
       </div>
 
       {/* Lógica: cifras, la matriz de etiquetas y tres reglas clave */}
@@ -55,6 +57,38 @@ export function ToyotaProduct({ index, label, product }: ToyotaProductProps) {
         </p>
         <ToyotaFlow flow={flow} />
         <ToyotaCallout text={flow.decision} tone="rule" />
+      </div>
+
+      {/* El prototipo: sus pantallas y el sistema visual de la marca */}
+      <div className="ty-module">
+        <ToyotaHead head={design.head} size="large" />
+        <ul className="ty-screens" data-ty-group>
+          {design.screens.map(screen => (
+            <li key={screen.label} className="ty-screens__item" data-ty-item>
+              <ToyotaVisual visual={screen} className="ty-screens__visual" />
+            </li>
+          ))}
+        </ul>
+        <h4 className="ty-subtitle">{design.systemLabel}</h4>
+        <ul className="ty-swatches" data-ty-group aria-hidden="true">
+          <li
+            className="ty-swatches__item ty-swatches__item--red"
+            data-ty-item
+          />
+          <li
+            className="ty-swatches__item ty-swatches__item--black"
+            data-ty-item
+          />
+          <li
+            className="ty-swatches__item ty-swatches__item--white"
+            data-ty-item
+          />
+          <li
+            className="ty-swatches__item ty-swatches__item--gray"
+            data-ty-item
+          />
+        </ul>
+        <ToyotaChips items={design.decisions} />
       </div>
     </ToyotaChapter>
   );

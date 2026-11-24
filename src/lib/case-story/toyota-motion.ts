@@ -261,6 +261,33 @@ function growCover(root: HTMLElement) {
       )
       .to(hint, { autoAlpha: 0, ease: 'none', duration: 0.25 }, 0.75);
   }
+  // La foto arranca debajo del texto (el titular y la descripción se
+  // sobreponen a su tarjeta). En cuanto empieza a crecer pasa por encima y
+  // el texto queda detrás: la foto lo tapa mientras se abre
+  ScrollTrigger.create({
+    trigger: runway,
+    start: 'top top',
+    end: 'bottom bottom',
+    onUpdate: self => {
+      runway.toggleAttribute('data-grown', self.progress > 0.02);
+    }
+  });
+  // El titular y la descripción se desvanecen en el primer tramo del
+  // crecimiento. Además de quedar detrás de la foto, así no asoman letras por
+  // los costados mientras la foto todavía no llega a los bordes
+  const texts = queryAll(runway, '.ty-cover__title, .ty-cover__intro');
+  if (texts.length > 0) {
+    gsap.to(texts, {
+      autoAlpha: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: runway,
+        start: 'top top',
+        end: () => `+=${(runway.offsetHeight - window.innerHeight) * 0.4}`,
+        scrub: true
+      }
+    });
+  }
   // Solo mueve --cover-grow: el CSS arma el recorte con los cuatro bordes a
   // la vez (y con la medida de la tarjeta de celular o de computador)
   gsap.fromTo(
@@ -313,6 +340,38 @@ function fadeStackCaptions(root: HTMLElement) {
   media.add('(min-width: 1024px)', () => {
     queryAll(root, '.ty-stack__list').forEach(list => {
       const cards = queryAll(list, '.ty-stack__card');
+      // El último texto se va antes de que la lista termine: así no pasa por
+      // debajo de la palabra gigante al salir
+      const lastCaption = cards.at(-1)?.querySelector('.ty-stack__caption');
+      if (lastCaption) {
+        gsap.to(lastCaption, {
+          autoAlpha: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: list,
+            start: 'bottom 86%',
+            end: 'bottom 66%',
+            scrub: true
+          }
+        });
+      }
+      // La foto se desvanece mientras sale, en vez de quedar cortada por la
+      // palabra gigante
+      const frame = list
+        .closest('.ty-stack')
+        ?.querySelector<HTMLElement>('.ty-stack__frame');
+      if (frame) {
+        gsap.to(frame, {
+          autoAlpha: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: list,
+            start: 'bottom 62%',
+            end: 'bottom 38%',
+            scrub: true
+          }
+        });
+      }
       cards.slice(0, -1).forEach((card, index) => {
         const caption = card.querySelector('.ty-stack__caption');
         const next = cards[index + 1];
@@ -367,6 +426,36 @@ function driftStackImage(root: HTMLElement) {
   return media;
 }
 
+// En las aperturas, la celda sólida que tapa la palabra se desliza a la
+// derecha y se esconde detrás de la celda del número: abre una ventana a la
+// foto y la palabra se completa. Va ligada al scroll mientras la fila pasa
+// por la palabra. En celular esa celda no se muestra.
+function slideOpenerCells(root: HTMLElement) {
+  const media = gsap.matchMedia();
+  media.add('(min-width: 768px)', () => {
+    queryAll(root, '.ty-opener').forEach(opener => {
+      const grid = opener.querySelector('.ty-opener__grid');
+      const cell = opener.querySelector('.ty-opener__cell--edge');
+      if (!grid || !cell) return;
+      gsap.fromTo(
+        cell,
+        { '--slide': 0 },
+        {
+          '--slide': 1,
+          ease: 'power2.inOut',
+          scrollTrigger: {
+            trigger: grid,
+            start: 'top 55%',
+            end: 'top 5%',
+            scrub: true
+          }
+        }
+      );
+    });
+  });
+  return media;
+}
+
 function parallax(root: HTMLElement) {
   queryAll(root, '[data-ty-speed]').forEach(element => {
     const speed = Number(element.dataset.tySpeed ?? 0);
@@ -415,6 +504,7 @@ export function setupToyotaMotion(root: HTMLElement) {
   parallax(root);
   const stack = fadeStackCaptions(root);
   const stackImage = driftStackImage(root);
+  const openerCells = slideOpenerCells(root);
   const triggers = trackChapters(root);
   const counter = watchCounterVisibility(root);
   const stopJumps = listenJumps(root);
@@ -425,6 +515,7 @@ export function setupToyotaMotion(root: HTMLElement) {
     stopCar();
     stack.revert();
     stackImage.revert();
+    openerCells.revert();
     stopJumps();
     triggers.forEach(trigger => trigger.kill());
     counter.kill();

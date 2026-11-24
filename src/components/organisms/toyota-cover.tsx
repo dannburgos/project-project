@@ -26,7 +26,6 @@ export function ToyotaCover({ cover }: ToyotaCoverProps) {
             <ToyotaVisual visual={cover.visual} className="ty-cover__visual" />
           </div>
 
-          <p className="ty-cover__eyebrow">{cover.eyebrow}</p>
           <h1 className="ty-cover__title">
             <span className="ty-cover__brand">
               {brand}

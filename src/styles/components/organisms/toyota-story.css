@@ -13,7 +13,7 @@
      grandes, así que el margen crece a los dos lados para no descentrar */
   --ty-gutter: 24px;
   --ty-content: 1200px;
-  --ty-module-space: 64px;
+  --ty-module-space: 48px;
   /* Escala tipográfica: palabra de capítulo, titulares, bajada y cuerpo */
   --ty-display: clamp(64px, 14vw, 256px);
   --ty-title-xl: clamp(36px, 4.2vw, 72px);
@@ -35,14 +35,14 @@
 @media (min-width: 768px) {
   .ty-story {
     --ty-gutter: 48px;
-    --ty-module-space: 96px;
+    --ty-module-space: 72px;
   }
 }
 
 @media (min-width: 1280px) {
   .ty-story {
     --ty-gutter: 96px;
-    --ty-module-space: 80px;
+    --ty-module-space: 56px;
   }
 }
 
@@ -510,6 +510,12 @@
   @apply absolute inset-0;
 }
 
+/* Al empezar a crecer, la foto sube sobre el titular y la descripción (z-10)
+   y los deja detrás. El velocímetro queda siempre encima */
+.ty-cover__runway[data-grown] .ty-cover__frame {
+  @apply z-20;
+}
+
 /* La tarjeta inicial y su crecimiento. --cover-grow va de 0 (tarjeta) a 1
    (pantalla completa) con el scroll, y los cuatro bordes se abren a la vez
    y en proporción. El recorte de la tarjeta es más ancho en celular para
@@ -549,20 +555,59 @@
   padding-inline: 14%;
 }
 
-.ty-cover__eyebrow {
-  @apply absolute z-10 text-xs font-semibold tracking-[0.14em] uppercase;
-  top: calc(var(--site-header-clearance) + 16px);
-  left: var(--ty-gutter);
+/* Los textos de la portada llevan una sombra suave: sobre fondo negro no se
+   nota y, cuando la foto crece detrás, mantiene la lectura aunque pase un
+   destello de luz. El titular suma un filo corto y oscuro pegado a la letra
+   (contraste) y un velo amplio, sin oscurecer la foto */
+.ty-cover__intro {
+  text-shadow:
+    0 1px 2px rgb(0 0 0 / 0.55),
+    0 4px 20px rgb(0 0 0 / 0.5);
 }
 
-/* Titular partido: la marca a la izquierda y el proyecto a la derecha, a
-   media altura (referencia: Lightship) */
 .ty-cover__title {
-  @apply absolute top-1/2 z-10 flex -translate-y-1/2 flex-col gap-2 font-bold uppercase md:flex-row md:items-end md:justify-between;
+  text-shadow:
+    0 1px 2px rgb(0 0 0 / 0.65),
+    0 4px 14px rgb(0 0 0 / 0.5),
+    0 10px 40px rgb(0 0 0 / 0.45);
+}
+
+/* Un velo oscuro, suave y desenfocado detrás del titular: levanta el
+   contraste justo donde está el texto y deja el resto de la foto limpia. Sobre
+   el fondo negro del inicio no se nota */
+.ty-cover__title::before,
+.ty-cover__intro::before {
+  @apply pointer-events-none absolute -z-10 content-[''];
+  inset: -28px -56px -20px;
+  background: radial-gradient(
+    closest-side,
+    rgb(0 0 0 / 0.5),
+    rgb(0 0 0 / 0.28) 55%,
+    rgb(0 0 0 / 0)
+  );
+  filter: blur(8px);
+}
+
+/* Composición de la portada: la foto queda al centro como tarjeta, el titular
+   se sobrepone a su esquina de arriba a la izquierda y se sale por la
+   izquierda, y la descripción se sobrepone a su esquina de abajo a la
+   derecha y se sale por la derecha. «Toyota —» va justo encima de «Beyond the
+   Model». Al crecer la foto, los textos se quedan donde están */
+.ty-cover__title {
+  --title-size: clamp(32px, 4.8vw, 88px);
+  @apply absolute z-10 flex w-max flex-col items-start gap-2 font-black uppercase;
+  top: 24svh;
   left: var(--ty-gutter);
-  right: var(--ty-gutter);
-  font-size: clamp(32px, 4.8vw, 88px);
+  font-size: var(--title-size);
   line-height: 0.9;
+}
+
+.ty-cover__brand {
+  @apply self-start;
+}
+
+.ty-cover__project {
+  @apply self-start;
 }
 
 .ty-cover__brand,
@@ -576,17 +621,28 @@
 
 /* Un solo párrafo con lo esencial, abajo a la izquierda */
 .ty-cover__intro {
-  @apply absolute z-10 max-w-md text-lg leading-[1.35] font-semibold;
-  bottom: 40px;
+  @apply absolute z-10 max-w-md text-lg leading-[1.35] font-normal;
+  /* En celular va abajo a la izquierda y sube para no quedar bajo el botón
+     del índice */
+  bottom: 120px;
   left: var(--ty-gutter);
+}
+
+@media (min-width: 768px) {
+  .ty-cover__intro {
+    @apply left-auto;
+    right: var(--ty-gutter);
+    bottom: 22svh;
+  }
 }
 
 /* Indicador de scroll: el velocímetro (referencia: S-2K). En computador va
    centrado bajo la captura; en tableta, a la derecha sobre el botón de
    capítulos; en celular no va, porque el texto ocupa el ancho. Mientras
    está a la vista, el texto de la izquierda se angosta para no tocarlo */
-.ty-cover__hint {
-  @apply absolute z-10 hidden md:flex;
+/* Con .ty-gauge delante, para ganarle a su display:flex, que va más abajo */
+.ty-gauge.ty-cover__hint {
+  @apply absolute z-30 hidden md:flex;
   right: var(--ty-gutter);
   bottom: 96px;
 }
@@ -594,7 +650,7 @@
 @media (min-width: 1024px) {
   .ty-cover__hint {
     @apply right-auto left-1/2 -translate-x-1/2;
-    bottom: 32px;
+    bottom: 12px;
   }
 
   /* Deja al menos 64 px de aire entre el texto y el medidor */
@@ -669,7 +725,8 @@
 .ty-cover__facts {
   @apply mx-auto flex flex-col gap-10;
   width: min(100% - var(--ty-gutter) * 2, var(--ty-content));
-  padding-block: var(--ty-module-space);
+  /* 50 px más de fondo negro arriba y abajo de la ficha */
+  padding-block: calc(var(--ty-module-space) + 50px);
 }
 
 .ty-cover__facts-title {
@@ -709,6 +766,8 @@
    retícula sube encima: las celdas sólidas tapan la palabra y las vacías
    son ventanas (referencias: Longbow y S-2K) */
 .ty-opener {
+  --opener-gap: 16svh;
+  --opener-row: 15vw;
   @apply relative;
   /* El fondo y la palabra son fijos con margen negativo: sin recorte se
      quedarían pegados una pantalla más, encima de lo que sigue. clip no crea
@@ -757,14 +816,27 @@
 
 .ty-opener__grid {
   @apply relative z-20 grid grid-cols-2 md:grid-cols-4;
-  margin-top: 24svh;
+  margin-top: var(--opener-gap);
   /* Celdas cuadradas; las de texto crecen si su contenido no cabe */
   grid-auto-rows: minmax(50vw, auto);
 }
 
 @media (min-width: 768px) {
+  .ty-opener {
+    --opener-gap: 18svh;
+  }
+
   .ty-opener__grid {
-    grid-auto-rows: minmax(25vw, auto);
+    /* Más bajas que cuadradas (15 % del ancho): la apertura mide unos dos
+       tercios de pantalla y deja ver la foto arriba */
+    grid-auto-rows: minmax(var(--opener-row), auto);
+  }
+
+  /* La palabra queda a la altura de la primera fila de celdas */
+  .ty-opener__word {
+    top: calc(
+      var(--opener-gap) + var(--opener-row) / 2 - var(--word-size) * 0.45
+    );
   }
 }
 
@@ -787,31 +859,23 @@
   background: var(--ty-surface);
 }
 
-/* Con foto de fondo, la celda vacía de arriba es de vidrio esmerilado:
-   sigue tapando la palabra, pero la deja ver borrosa junto con la foto.
-   Sin esquinas, brillos ni sombras, para no salirse de la marca. Si el
-   navegador no desenfoca, o la persona pide menos transparencia, queda
-   sólida */
-@supports (backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px)) {
-  .ty-opener--photo .ty-opener__cell--edge {
-    @apply backdrop-blur-xl backdrop-saturate-125;
-    background: color-mix(in srgb, var(--ty-surface) 40%, transparent);
-  }
+/* La celda sólida de arriba tapa parte de la palabra y, con el scroll, se
+   desliza a la derecha y se esconde detrás de la celda del número: deja una
+   ventana limpia a la foto y la palabra se completa (--slide va de 0 a 1;
+   sin movimiento queda quieta y sólida) */
+.ty-opener__cell--edge {
+  @apply z-0;
+  translate: calc(var(--slide, 0) * 100%) 0;
 }
 
-@media (prefers-reduced-transparency: reduce) {
-  .ty-opener--photo .ty-opener__cell--edge {
-    @apply backdrop-blur-none backdrop-saturate-100;
-    background: var(--ty-surface);
-  }
-}
-
-.ty-opener__window {
-  @apply size-full;
+/* La foto de la celda llena la celda sin darle su propia altura: así la fila
+   mide lo que pide el diseño y no lo que mide la foto */
+.ty-opener__cell--media .ty-opener__window {
+  @apply absolute inset-0 size-full;
 }
 
 .ty-opener__cell--number {
-  @apply flex items-end p-6;
+  @apply z-10 flex items-end p-6;
 }
 
 .ty-opener__number {
@@ -867,6 +931,11 @@
    va de 0 (arriba de la imagen) a 1 (abajo) */
 .ty-stack {
   @apply relative pb-24;
+}
+
+/* Titular de la solución, sobre la palabra gigante */
+.ty-stack__head {
+  padding: 56px var(--ty-gutter) 24px;
 }
 
 .ty-stack__word {
@@ -925,14 +994,23 @@
     top: calc(var(--site-header-clearance) + 16px);
   }
 
-  /* El marco se queda fijo en el centro durante los tres pilares; su margen
-     negativo deja que la lista arranque a su misma altura */
+  /* El marco y la lista ocupan la misma celda: el marco se queda fijo en el
+     centro durante los tres pilares y termina junto con la lista, sin pasarse
+     al módulo siguiente */
+  .ty-stack__body {
+    @apply grid;
+  }
+
+  .ty-stack__frame,
+  .ty-stack__list {
+    grid-area: 1 / 1;
+  }
+
   .ty-stack__frame {
-    @apply sticky mt-0;
+    @apply sticky mt-0 self-start justify-self-center;
     top: 24svh;
     width: max(320px, 30vw);
     height: 72svh;
-    margin-bottom: -72svh;
     aspect-ratio: auto;
   }
 

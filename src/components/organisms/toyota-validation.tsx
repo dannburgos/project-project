@@ -35,7 +35,6 @@ export function ToyotaValidation({
         <p className="ty-body ty-body--large ty-body--measure" data-ty-rise>
           {plan.statement}
         </p>
-        <ToyotaChips items={plan.criteria} label={plan.criteriaLabel} />
         <h4 className="ty-subtitle">{plan.tasksLabel}</h4>
         <ToyotaCells items={plan.tasks} columns={4} />
         <ToyotaCallout
@@ -43,11 +42,7 @@ export function ToyotaValidation({
           label={labels.pending}
           tone="pending"
         />
-      </div>
-
-      <div className="ty-module">
-        <ToyotaHead head={next.head} />
-        <ToyotaChips items={next.steps} />
+        <ToyotaChips items={next.steps} label={next.head.eyebrow} />
       </div>
 
       <footer className="ty-closing" data-surface="dark">

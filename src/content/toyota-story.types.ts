@@ -108,6 +108,13 @@ export type ToyotaLayer = {
   text: string;
 };
 
+// Una etapa del concepto, sobre los pasos del flujo que abarca
+export type ToyotaFlowStage = {
+  label: string;
+  span: number;
+  isHighlight?: boolean;
+};
+
 export type ToyotaResultVariant = {
   name: string;
   title: string;
@@ -118,7 +125,6 @@ export type ToyotaResultVariant = {
 export type ToyotaLabels = {
   navigation: string;
   menu: string;
-  hypothesis: string;
   trackHint: string;
   trackProgress: string;
   pending: string;
@@ -128,7 +134,6 @@ export type ToyotaLabels = {
 };
 
 export type ToyotaCover = {
-  eyebrow: string;
   title: string;
   // Un solo párrafo con lo esencial: la bajada y el reto, juntos
   intro: string;
@@ -138,12 +143,19 @@ export type ToyotaCover = {
   scrollHint: string;
 };
 
-// 01 · Overview: descripción, tres pilares y del problema a la oportunidad
+// 01 · Contexto: Toyota en Colombia, el problema y la oportunidad, y la
+// solución (los tres pilares)
 export type ToyotaOverview = {
   opener: ToyotaOpener;
+  context: {
+    head: ToyotaHead;
+    stats: readonly ToyotaStat[];
+    currentLabel: string;
+    currentSteps: readonly ToyotaStep[];
+  };
+  // La solución: su titular (la frase del proyecto) va sobre los pilares
   description: {
     head: ToyotaHead;
-    statement: string;
     pillarsWord: string;
     // Una sola imagen larga (vertical) para los tres pilares
     pillarsVisual: ToyotaVisual;
@@ -154,29 +166,15 @@ export type ToyotaOverview = {
     problem: string;
     opportunityEyebrow: string;
     opportunity: string;
-    solutionLabel: string;
-    capabilities: readonly ToyotaItem[];
-    closing: string;
   };
 };
 
-// 02 · Discovery: contexto, benchmark, problema y usuario, la pregunta guía y
+// 02 · Discovery: benchmark, problema y usuario, la pregunta guía y
 // el trabajo central
 export type ToyotaDiscovery = {
   opener: ToyotaOpener;
-  context: {
-    head: ToyotaHead;
-    statement: string;
-    stats: readonly ToyotaStat[];
-    currentLabel: string;
-    currentSteps: readonly ToyotaStep[];
-    proposedLabel: string;
-    proposedSteps: readonly ToyotaStep[];
-    quote: string;
-  };
   benchmark: {
     head: ToyotaHead;
-    statement: string;
     criteriaLabel: string;
     criteria: readonly string[];
     strengthLabel: string;
@@ -187,12 +185,13 @@ export type ToyotaDiscovery = {
     head: ToyotaHead;
     model: readonly ToyotaStep[];
   };
-  // Para quién: los segmentos con su necesidad principal y sus dolores
+  // Para quién: los segmentos con su necesidad principal y, en etiquetas, sus
+  // puntos de dolor (su descripción completa va en la tabla de Estrategia)
   user: {
     head: ToyotaHead;
     segments: readonly ToyotaItem[];
     painsLabel: string;
-    pains: readonly ToyotaItem[];
+    pains: readonly string[];
   };
   hmw: {
     eyebrow: string;
@@ -200,13 +199,12 @@ export type ToyotaDiscovery = {
   };
   jobs: {
     head: ToyotaHead;
-    progress: readonly ToyotaItem[];
     statementLabel: string;
     statement: readonly ToyotaItem[];
   };
 };
 
-// 03 · Strategy: propuesta de valor, objetivos, concepto, IA y datos
+// 03 · Strategy: propuesta de valor, trazabilidad de objetivos e IA
 export type ToyotaStrategy = {
   opener: ToyotaOpener;
   value: {
@@ -214,17 +212,13 @@ export type ToyotaStrategy = {
     promise: string;
     shifts: ToyotaShiftSet;
     canvas: ToyotaVisual;
-    fit: string;
   };
+  // Trazabilidad: cada punto de dolor con su objetivo, su criterio de éxito y
+  // su métrica, en una sola tabla
   goals: {
     head: ToyotaHead;
     table: ToyotaTable;
     note: string;
-  };
-  concept: {
-    head: ToyotaHead;
-    stagesLabel: string;
-    stages: readonly ToyotaStep[];
   };
   ai: {
     head: ToyotaHead;
@@ -236,7 +230,8 @@ export type ToyotaStrategy = {
   };
 };
 
-// 04 · Product Definition: MVP, lógica de recomendación, flujo y variantes
+// 04 · Producto: MVP, lógica de recomendación, flujo (con sus variantes) y el
+// prototipo con su sistema visual
 export type ToyotaProduct = {
   opener: ToyotaOpener;
   mvp: {
@@ -261,6 +256,9 @@ export type ToyotaProduct = {
   flow: {
     head: ToyotaHead;
     statement: string;
+    // Las seis etapas del concepto, sobre los pasos que abarca cada una
+    stagesLabel: string;
+    stages: readonly ToyotaFlowStage[];
     steps: readonly ToyotaStep[];
     // Ciclo: desde el paso `from` se vuelve al paso `to` (posiciones desde 0)
     loop: { label: string; text: string; from: number; to: number };
@@ -271,29 +269,22 @@ export type ToyotaProduct = {
     exampleLabel: string;
     decision: string;
   };
-};
-
-// 05 · Experience Design. El prototipo y las pantallas se construyen al final;
-// por ahora lleva las cajas de las pantallas y el sistema visual
-export type ToyotaExperience = {
-  opener: ToyotaOpener;
+  // El prototipo y el sistema visual: las pantallas se construyen al final;
+  // por ahora son cajas grises con su nombre
   design: {
     head: ToyotaHead;
-    statement: string;
     screens: readonly ToyotaVisual[];
     systemLabel: string;
     decisions: readonly string[];
   };
 };
 
-// 06 · Validation & Learnings: solo con evidencia real
+// 05 · Validation: solo con evidencia real
 export type ToyotaValidation = {
   opener: ToyotaOpener;
   plan: {
     head: ToyotaHead;
     statement: string;
-    criteriaLabel: string;
-    criteria: readonly string[];
     tasksLabel: string;
     tasks: readonly string[];
     pending: string;
@@ -330,6 +321,5 @@ export type ToyotaStory = {
   discovery: ToyotaDiscovery;
   strategy: ToyotaStrategy;
   product: ToyotaProduct;
-  experience: ToyotaExperience;
   validation: ToyotaValidation;
 };

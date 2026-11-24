@@ -687,7 +687,7 @@
 }
 
 .ty-matrix__model {
-  @apply flex flex-col gap-1 py-4 pr-6;
+  @apply flex flex-col gap-0.5 py-2.5 pr-6;
 }
 
 .ty-matrix__name {
@@ -700,7 +700,7 @@
 }
 
 .ty-matrix__cell {
-  @apply py-4 text-center;
+  @apply py-2.5 text-center;
 }
 
 /* Cuadrado (forma del logo de plataforma de Toyota): relleno en rojo si el
@@ -867,6 +867,28 @@
   color: var(--ty-muted);
 }
 
+/* Banda de etapas: en celular, etiquetas en fila; en computador, un tramo por
+   etapa sobre los pasos que abarca */
+.ty-flow__stages-label {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-flow__stages {
+  @apply flex flex-wrap gap-2;
+}
+
+.ty-flow__stage {
+  @apply border-t-2 pt-2 pr-3 text-xs font-semibold tracking-[0.1em] uppercase;
+  border-color: var(--ty-line);
+  color: var(--ty-muted);
+}
+
+.ty-flow__stage--highlight {
+  border-color: var(--ty-red);
+  color: var(--ty-red);
+}
+
 /* Ciclo: en celular es una nota con su flecha; en computador, un arco */
 .ty-flow__loop {
   @apply flex flex-col gap-2 border-l-2 pl-4;
@@ -967,15 +989,31 @@
     display: contents;
   }
 
+  .ty-flow__stages-label {
+    @apply col-span-full row-start-1 pb-3;
+  }
+
+  .ty-flow__stages {
+    @apply col-span-full row-start-2 mb-5 grid gap-1;
+    grid-template-columns: repeat(var(--flow-columns), minmax(0, 1fr));
+  }
+
+  .ty-flow__stage {
+    grid-column: span var(--stage-span);
+  }
+
+  /* La línea es una celda más de la retícula, en la fila de los pasos: va del
+     centro del primer paso al del último */
   .ty-flow__line {
-    @apply top-4 right-auto bottom-auto left-auto h-0.5 w-auto origin-left;
-    left: calc(100% / (var(--flow-columns) * 2));
-    right: calc(100% / (var(--flow-columns) * 2));
+    @apply col-span-full row-start-3 h-0.5 w-auto origin-left self-start;
+    position: static;
+    margin-top: 15px;
+    margin-inline: calc(100% / (var(--flow-columns) * 2));
     transform: scaleX(var(--draw, 1));
   }
 
   .ty-flow__step {
-    @apply row-start-1 flex flex-col items-center gap-0 px-2 text-center;
+    @apply row-start-3 flex flex-col items-center gap-0 px-2 text-center;
   }
 
   .ty-flow__label {
@@ -989,7 +1027,7 @@
   /* Ciclo: un arco bajo «Tu perfil» y «Asesoría» que vuelve hacia atrás, con
      la flecha apuntando a «Asesoría» */
   .ty-flow__loop {
-    @apply row-start-2 gap-3 border-l-0 pt-3 pl-0;
+    @apply row-start-4 gap-3 border-l-0 pt-3 pl-0;
     grid-column: var(--loop-start) / span var(--loop-span);
   }
 
@@ -1011,14 +1049,14 @@
 
   /* Hilo que baja de «Resultado» hasta la línea de sus variantes */
   .ty-flow__stem {
-    @apply row-start-2 block w-0.5 justify-self-center;
+    @apply row-start-4 block w-0.5 justify-self-center;
     grid-column: var(--result-col);
     background: var(--ty-red);
   }
 
   /* Salidas, bajo el último paso */
   .ty-flow__exits {
-    @apply relative row-start-2 items-stretch px-2 pt-6 text-center;
+    @apply relative row-start-4 items-stretch px-2 pt-6 text-center;
     grid-column: -2 / -1;
   }
 
@@ -1041,7 +1079,7 @@
   }
 
   .ty-flow__results {
-    @apply col-span-full row-start-3;
+    @apply col-span-full row-start-5;
   }
 }
 

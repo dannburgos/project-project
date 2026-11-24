@@ -5,7 +5,6 @@ import { Figtree as figtreeFont } from 'next/font/google';
 import { ToyotaIndex } from '@/components/molecules/toyota-index';
 import { ToyotaCover } from '@/components/organisms/toyota-cover';
 import { ToyotaDiscovery } from '@/components/organisms/toyota-discovery';
-import { ToyotaExperience } from '@/components/organisms/toyota-experience';
 import { ToyotaOverview } from '@/components/organisms/toyota-overview';
 import { ToyotaProduct } from '@/components/organisms/toyota-product';
 import { ToyotaStrategy } from '@/components/organisms/toyota-strategy';
@@ -60,14 +59,9 @@ export function ToyotaStory({ story }: ToyotaStoryProps) {
       />
       <ToyotaStrategy index={2} label={name(2)} strategy={story.strategy} />
       <ToyotaProduct index={3} label={name(3)} product={story.product} />
-      <ToyotaExperience
+      <ToyotaValidation
         index={4}
         label={name(4)}
-        experience={story.experience}
-      />
-      <ToyotaValidation
-        index={5}
-        label={name(5)}
         validation={story.validation}
         labels={story.labels}
       />

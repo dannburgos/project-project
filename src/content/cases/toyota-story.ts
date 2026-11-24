@@ -7,17 +7,15 @@ import type { ToyotaStory } from '@/content/toyota-story.types';
 // imágenes que aún no llegan van como cajas grises con su etiqueta.
 export const toyotaStory: ToyotaStory = {
   sections: [
-    { number: '01', name: 'Panorama' },
+    { number: '01', name: 'Contexto' },
     { number: '02', name: 'Descubrimiento' },
     { number: '03', name: 'Estrategia' },
-    { number: '04', name: 'Definición de producto' },
-    { number: '05', name: 'Diseño de experiencia' },
-    { number: '06', name: 'Validación y aprendizajes' }
+    { number: '04', name: 'Producto' },
+    { number: '05', name: 'Validación' }
   ],
   labels: {
     navigation: 'Capítulos del caso',
     menu: 'Capítulos',
-    hypothesis: 'Hipótesis',
     trackHint: 'Sigue bajando para recorrer las referencias',
     trackProgress: 'Referencia {current} de {total}',
     pending: 'Por completar con evidencia real',
@@ -31,13 +29,13 @@ export const toyotaStory: ToyotaStory = {
   },
 
   cover: {
-    eyebrow: 'Caso de estudio · Diseño de producto',
     title: 'Toyota — Beyond the Model',
     intro:
       'Del modelo al vehículo adecuado: ayudar a cada persona a entender qué Toyota responde mejor a sus necesidades, y por qué.',
     visual: {
       label:
-        'Imagen principal · captura del módulo «Encuentra tu Toyota», inicio de la asesoría en panel oscuro'
+        'Toyota Hilux roja a toda velocidad por una carretera de los Andes, con polvo y cielo azul profundo',
+      src: '/toyota/fotos/00-portada-hilux.webp'
     },
     factsTitle: 'Ficha del proyecto',
     facts: [
@@ -56,8 +54,8 @@ export const toyotaStory: ToyotaStory = {
     opener: {
       number: '01',
       kicker: 'Capítulo 01',
-      word: 'Panorama',
-      summary: 'Qué es Beyond the Model y qué problema aborda.',
+      word: 'Contexto',
+      summary: '¿Qué es Beyond the Model y qué problema aborda?',
       background: {
         label:
           'Mujer sonriente junto a un Toyota Yaris Hatchback azul en una calle de Bogotá',
@@ -69,13 +67,29 @@ export const toyotaStory: ToyotaStory = {
         src: '/toyota/fotos/01-celda-fortuner.webp'
       }
     },
+    context: {
+      head: {
+        eyebrow: 'Toyota en Colombia',
+        title: 'Una oferta diversa, múltiples criterios de elección.'
+      },
+      stats: [
+        { value: 6, label: 'categorías en el catálogo' },
+        { value: 20, label: 'vehículos nuevos (noviembre de 2026)' },
+        { value: 4, label: 'filtros: tipo, precio, asientos y modelo' }
+      ],
+      currentLabel: 'Experiencia actual · parte del producto',
+      currentSteps: [
+        { label: 'Página principal' },
+        { label: 'Catálogo y filtros' },
+        { label: 'Detalle del vehículo' },
+        { label: 'Cotización' }
+      ]
+    },
     description: {
       head: {
-        eyebrow: 'Descripción del proyecto',
+        eyebrow: 'Solución',
         title: 'Una nueva forma de descubrir y elegir un Toyota'
       },
-      statement:
-        'Una propuesta conceptual de rediseño de la experiencia digital de Toyota Colombia, con asesoría personalizada y recomendaciones inteligentes.',
       pillarsWord: 'Tres pilares',
       pillarsVisual: {
         label:
@@ -86,12 +100,12 @@ export const toyotaStory: ToyotaStory = {
         {
           number: '01',
           title: 'Rediseño de la experiencia de descubrimiento',
-          text: 'Explorar los vehículos Toyota desde las necesidades del usuario.'
+          text: 'Descubrir: explorar los vehículos Toyota desde las necesidades y preferencias del usuario.'
         },
         {
           number: '02',
           title: 'Nuevo flujo de asesoría y recomendación',
-          text: 'Un cuestionario guiado y vehículos compatibles con sus razones.'
+          text: 'Recomendar y explicar: un cuestionario guiado y vehículos compatibles con su perfil, cada uno con sus razones.'
         },
         {
           number: '03',
@@ -106,23 +120,7 @@ export const toyotaStory: ToyotaStory = {
         'Identificar qué modelo se adapta mejor puede ser difícil por la cantidad de alternativas y lo complejo de entender sus diferencias.',
       opportunityEyebrow: 'Oportunidad',
       opportunity:
-        'Que las necesidades del usuario sean el punto de partida para explorar las alternativas disponibles.',
-      solutionLabel: 'Solución',
-      capabilities: [
-        {
-          title: 'Descubrir',
-          text: 'Identificar las necesidades y preferencias del usuario.'
-        },
-        {
-          title: 'Recomendar',
-          text: 'Presentar vehículos compatibles con su perfil.'
-        },
-        {
-          title: 'Explicar',
-          text: 'Comprender por qué cada alternativa responde a sus necesidades.'
-        }
-      ],
-      closing: 'De explorar vehículos a descubrir cuál es el adecuado para ti.'
+        'Que las necesidades del usuario sean el punto de partida para explorar las alternativas disponibles.'
     }
   },
 
@@ -131,8 +129,7 @@ export const toyotaStory: ToyotaStory = {
       number: '02',
       kicker: 'Capítulo 02',
       word: 'Descubrimiento',
-      summary:
-        'El contexto de Toyota en Colombia, el benchmark y las personas detrás del problema.',
+      summary: 'El benchmark, el problema y las personas que lo viven.',
       background: {
         label:
           'Vista aérea de vehículos Toyota de colores vivos estacionados en filas',
@@ -144,41 +141,13 @@ export const toyotaStory: ToyotaStory = {
         src: '/toyota/fotos/02-celda-hilux.webp'
       }
     },
-    context: {
-      head: {
-        eyebrow: 'Toyota en Colombia',
-        title: 'Una oferta diversa, múltiples criterios de elección.'
-      },
-      statement:
-        'La oportunidad está en conectar esa diversidad de productos con las necesidades de cada persona.',
-      stats: [
-        { value: 6, label: 'categorías en el catálogo' },
-        { value: 20, label: 'vehículos nuevos (noviembre de 2026)' },
-        { value: 4, label: 'filtros: tipo, precio, asientos y modelo' }
-      ],
-      currentLabel: 'Experiencia actual · parte del producto',
-      currentSteps: [
-        { label: 'Página principal' },
-        { label: 'Catálogo y filtros' },
-        { label: 'Detalle del vehículo' },
-        { label: 'Cotización' }
-      ],
-      proposedLabel: 'Experiencia propuesta · parte de la persona',
-      proposedSteps: [
-        { label: 'Necesidades del usuario', isHighlight: true },
-        { label: 'Asesoría y análisis' },
-        { label: 'Vehículos recomendados' }
-      ],
-      quote: 'El punto de partida no debería ser el vehículo, sino la persona.'
-    },
     benchmark: {
       head: {
         eyebrow: 'Análisis de referentes',
         title: 'Tres experiencias, siete criterios'
       },
-      statement:
-        'El objetivo no fue copiar interfaces, sino identificar patrones, buenas prácticas y oportunidades.',
-      criteriaLabel: 'Criterios',
+      criteriaLabel:
+        'Criterios · el objetivo no fue copiar interfaces, sino identificar patrones y oportunidades',
       criteria: [
         'Descubrimiento',
         'Navegación',
@@ -262,26 +231,14 @@ export const toyotaStory: ToyotaStory = {
           text: 'Validar su elección y comparar. Segmento complementario.'
         }
       ],
-      painsLabel: 'Puntos de dolor',
+      painsLabel: 'Puntos de dolor (hipótesis)',
       pains: [
-        { title: 'Exploración', text: 'No saber por dónde comenzar.' },
-        {
-          title: 'Información',
-          text: 'Dificultad para interpretar características técnicas.'
-        },
-        {
-          title: 'Relevancia',
-          text: 'No saber qué características son importantes.'
-        },
-        {
-          title: 'Evaluación',
-          text: 'Dificultad para identificar diferencias relevantes.'
-        },
-        { title: 'Decisión', text: 'Incertidumbre frente a la elección.' },
-        {
-          title: 'Confianza',
-          text: 'Necesidad de entender por qué una recomendación es adecuada.'
-        }
+        'Exploración',
+        'Información',
+        'Relevancia',
+        'Evaluación',
+        'Decisión',
+        'Confianza'
       ]
     },
     hmw: {
@@ -294,20 +251,6 @@ export const toyotaStory: ToyotaStory = {
         eyebrow: 'Trabajos por hacer (JTBD)',
         title: 'Encontrar el vehículo adecuado para mi contexto.'
       },
-      progress: [
-        {
-          title: 'Punto de partida',
-          text: '«Necesito un vehículo, pero no sé cuál elegir».'
-        },
-        {
-          title: 'Progreso buscado',
-          text: '«Entiendo mis necesidades e identifico mis alternativas».'
-        },
-        {
-          title: 'Resultado esperado',
-          text: '«Tomo una decisión informada y me siento seguro».'
-        }
-      ],
       statementLabel: 'Declaración del trabajo',
       statement: [
         {
@@ -332,7 +275,7 @@ export const toyotaStory: ToyotaStory = {
       kicker: 'Capítulo 03',
       word: 'Estrategia',
       summary:
-        'La propuesta de valor, el concepto y la estrategia de IA detrás de la experiencia.',
+        'La propuesta de valor, la trazabilidad de los objetivos y la estrategia de IA.',
       background: {
         label:
           'Toyota RAV4 híbrida verde cruzando un puente atirantado bajo un cielo azul',
@@ -385,38 +328,42 @@ export const toyotaStory: ToyotaStory = {
       canvas: {
         label:
           'Imagen · lienzo de la propuesta de valor completo (perfil del cliente y mapa de valor)'
-      },
-      fit: 'Encaje de valor: transformar la información del catálogo Toyota en orientación personalizada.'
+      }
     },
     goals: {
       head: {
-        eyebrow: 'Objetivos y criterios de éxito',
+        eyebrow: 'Objetivos, criterios y métricas',
         title: 'Una experiencia exitosa ayuda a elegir con mayor claridad.'
       },
       table: {
-        columns: ['Objetivo', 'Criterio de éxito', 'Métrica'],
+        columns: ['Punto de dolor', 'Objetivo', 'Criterio de éxito', 'Métrica'],
         rows: [
           [
+            'Exploración: no saber por dónde comenzar',
             'PG01 Descubrimiento',
             'Comprende las preguntas e identifica sus prioridades',
             'Comprensión del recorrido'
           ],
           [
+            'Relevancia: no saber qué características son importantes',
             'PG02 Personalización',
             'Las recomendaciones corresponden a lo que expresó',
             'Relevancia percibida'
           ],
           [
+            'Información: dificultad para interpretar características técnicas',
             'PG03 Comprensión',
             'Entiende beneficios y características',
             'Comprensión de beneficios'
           ],
           [
+            'Evaluación y decisión: dificultad para identificar diferencias relevantes e incertidumbre frente a la elección',
             'PG04 Evaluación',
             'Identifica diferencias relevantes',
             'Efectividad de comparación'
           ],
           [
+            'Confianza: necesidad de entender por qué una recomendación es adecuada',
             'PG05 Confianza',
             'Entiende por qué se le recomienda cada vehículo',
             'Confianza antes y después'
@@ -424,22 +371,6 @@ export const toyotaStory: ToyotaStory = {
         ]
       },
       note: 'Métricas para validar el concepto. No se miden resultados comerciales.'
-    },
-    concept: {
-      head: {
-        eyebrow: 'Concepto de producto',
-        title:
-          'Una experiencia que conecta personas con vehículos, no solamente modelos con características.'
-      },
-      stagesLabel: 'Seis etapas, un recorrido continuo',
-      stages: [
-        { label: 'Descubrir' },
-        { label: 'Comprender' },
-        { label: 'Interpretar' },
-        { label: 'Recomendar', isHighlight: true },
-        { label: 'Evaluar' },
-        { label: 'Continuar' }
-      ]
     },
     ai: {
       head: {
@@ -488,12 +419,17 @@ export const toyotaStory: ToyotaStory = {
       kicker: 'Capítulo 04',
       word: 'Producto',
       summary:
-        'Qué entra en el MVP, cómo recomienda y cómo se recorre la experiencia.',
+        'Qué entra en el MVP, cómo recomienda, cómo se recorre y cómo se ve.',
       background: {
         label:
-          'Imagen de fondo · Toyota Corolla Cross cobriza en movimiento, con fondo barrido'
+          'Toyota Corolla Cross cobriza en movimiento por una avenida arbolada, con el fondo barrido',
+        src: '/toyota/fotos/04-fondo-corolla-cross.webp'
       },
-      window: { label: 'Imagen · resultado de la asesoría en el prototipo' }
+      window: {
+        label:
+          'Detalle del faro LED y la parrilla con el emblema de una Corolla Cross cobriza',
+        src: '/toyota/fotos/04-celda-faro.webp'
+      }
     },
     mvp: {
       head: {
@@ -502,7 +438,7 @@ export const toyotaStory: ToyotaStory = {
       },
       statement:
         'El MVP se centra en la experiencia principal de descubrimiento y recomendación personalizada.',
-      total: '33 funcionalidades · método MoSCoW',
+      total: 'Método MoSCoW',
       moscow: [
         { value: 20, label: 'Imprescindibles' },
         { value: 7, label: 'Importantes' },
@@ -511,10 +447,7 @@ export const toyotaStory: ToyotaStory = {
       behaviorsLabel: 'Lo que el MVP garantiza',
       behaviors: [
         'Avanzar y regresar sin perder lo respondido.',
-        '«Aún no lo sé» es una respuesta válida y no filtra resultados.',
-        'Cada recomendación tiene razones verificables.',
-        'Los datos faltantes se señalan; no se inventan.',
-        'El usuario conserva el control de su elección.'
+        '«Aún no lo sé» es una respuesta válida y no filtra resultados.'
       ]
     },
     logic: {
@@ -523,12 +456,10 @@ export const toyotaStory: ToyotaStory = {
         title: 'Una lógica simple y explicable'
       },
       statement:
-        'Cada respuesta que coincide con una etiqueta del modelo suma un punto. El presupuesto es el único filtro.',
+        'Cada respuesta que coincide con una etiqueta del modelo suma un punto. El presupuesto es el único filtro. Se ordena por puntos y, si hay empate, por menor precio.',
       stats: [
         { value: 6, label: 'modelos del catálogo Toyota Colombia' },
-        { value: 19, label: 'versiones con precio sugerido' },
-        { value: 9, label: 'preguntas en 5 bloques' },
-        { value: 3, label: 'resultados: 1 destacado y 2 alternativas' }
+        { value: 19, label: 'versiones con precio sugerido' }
       ],
       matrixTitle: 'Etiquetas de cada modelo',
       matrix: {
@@ -600,10 +531,6 @@ export const toyotaStory: ToyotaStory = {
         {
           title: 'Qué llevas',
           text: 'Maletas, mercado y mascotas no suman: no hay dato oficial de baúl.'
-        },
-        {
-          title: 'Resultado',
-          text: 'Se ordena por puntos y, si hay empate, por menor precio.'
         }
       ]
     },
@@ -614,6 +541,15 @@ export const toyotaStory: ToyotaStory = {
       },
       statement:
         'Un módulo en el home de Toyota Colombia, también accesible desde el menú como «Encuentra tu Toyota».',
+      stagesLabel: 'Seis etapas, un recorrido continuo',
+      stages: [
+        { label: 'Descubrir', span: 2 },
+        { label: 'Comprender', span: 1 },
+        { label: 'Interpretar', span: 2 },
+        { label: 'Recomendar', span: 1, isHighlight: true },
+        { label: 'Evaluar', span: 1 },
+        { label: 'Continuar', span: 1 }
+      ],
       steps: [
         { label: 'Menú o Home' },
         { label: 'Inicio' },
@@ -625,7 +561,7 @@ export const toyotaStory: ToyotaStory = {
           text: 'Siempre hay una respuesta.',
           isHighlight: true
         },
-        { label: 'Detalle y comparación' },
+        { label: 'Detalle y comparación', text: 'Hasta 3 modelos.' },
         { label: 'Continuar en Toyota' }
       ],
       loop: {
@@ -636,7 +572,7 @@ export const toyotaStory: ToyotaStory = {
       },
       exitsLabel: 'Ya existen en Toyota',
       exits: ['Cotizador', 'Prueba de manejo'],
-      resultsLabel: 'El resultado, en tres variantes',
+      resultsLabel: 'Un destacado y dos alternativas, en tres variantes',
       results: [
         {
           name: 'Coincidencia total',
@@ -660,27 +596,12 @@ export const toyotaStory: ToyotaStory = {
       exampleLabel: 'Ejemplo',
       decision:
         'La propuesta complementa el catálogo existente, no lo reemplaza.'
-    }
-  },
-
-  experience: {
-    opener: {
-      number: '05',
-      kicker: 'Capítulo 05',
-      word: 'Experiencia',
-      summary: 'El prototipo funcional y el sistema visual.',
-      background: {
-        label: 'Imagen de fondo · prototipo «Encuentra tu Toyota» en pantalla'
-      },
-      window: { label: 'Imagen · panel oscuro de la asesoría' }
     },
     design: {
       head: {
         eyebrow: 'Prototipo y sistema visual',
         title: 'De la definición a una experiencia que se puede recorrer'
       },
-      statement:
-        'Asesoría de 9 preguntas, perfil, resultado con un destacado y dos alternativas, detalle y comparación de hasta tres modelos.',
       screens: [
         { label: 'Pantalla · inicio del módulo' },
         { label: 'Pantalla · pregunta de la asesoría' },
@@ -702,8 +623,8 @@ export const toyotaStory: ToyotaStory = {
 
   validation: {
     opener: {
-      number: '06',
-      kicker: 'Capítulo 06',
+      number: '05',
+      kicker: 'Capítulo 05',
       word: 'Validación',
       summary: 'Qué se va a comprobar, qué falta medir y qué sigue.',
       background: {
@@ -717,17 +638,7 @@ export const toyotaStory: ToyotaStory = {
         title: 'Qué vamos a comprobar'
       },
       statement:
-        'Si las personas comprenden la asesoría, si las recomendaciones corresponden a lo que expresaron y si entienden sus razones.',
-      criteriaLabel: 'Criterios',
-      criteria: [
-        'Claridad',
-        'Relevancia',
-        'Comprensión',
-        'Explicabilidad',
-        'Comparación',
-        'Confianza',
-        'Eficiencia'
-      ],
+        'Si las personas comprenden la asesoría, si las recomendaciones corresponden a lo que expresaron y si entienden sus razones. Se miden con las cinco métricas de la tabla de Estrategia (claridad, relevancia, comprensión, comparación y confianza) y con la eficiencia al completar las tareas.',
       tasksLabel: 'Tareas de la prueba',
       tasks: [
         'Completar la asesoría con tu situación real.',

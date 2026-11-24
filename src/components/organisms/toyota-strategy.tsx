@@ -6,7 +6,6 @@ import { ToyotaHead } from '@/components/molecules/toyota-head';
 import { ToyotaLayers } from '@/components/molecules/toyota-layers';
 import { ToyotaOpener } from '@/components/molecules/toyota-opener';
 import { ToyotaShifts } from '@/components/molecules/toyota-shifts';
-import { ToyotaSteps } from '@/components/molecules/toyota-steps';
 import { ToyotaTable } from '@/components/molecules/toyota-table';
 import type { ToyotaStrategy as ToyotaStrategyContent } from '@/content/toyota-story.types';
 
@@ -17,13 +16,13 @@ type ToyotaStrategyProps = {
 };
 
 // 03 · Strategy, en el mundo oscuro (plano técnico): propuesta de valor,
-// objetivos, concepto y estrategia de IA
+// trazabilidad de objetivos y estrategia de IA
 export function ToyotaStrategy({
   index,
   label,
   strategy
 }: ToyotaStrategyProps) {
-  const { value, goals, concept, ai } = strategy;
+  const { value, goals, ai } = strategy;
 
   return (
     <ToyotaChapter index={index} world="dark" label={label}>
@@ -41,19 +40,14 @@ export function ToyotaStrategy({
           visual={value.canvas}
           className="ty-media ty-media--wide"
         />
-        <ToyotaCallout text={value.fit} tone="rule" />
       </div>
 
+      {/* Trazabilidad: de cada punto de dolor a su objetivo, su criterio de
+          éxito y su métrica */}
       <div className="ty-module">
         <ToyotaHead head={goals.head} />
-        <ToyotaTable table={goals.table} accentColumn={2} />
+        <ToyotaTable table={goals.table} accentColumn={3} />
         <ToyotaCallout text={goals.note} />
-      </div>
-
-      {/* Concepto: las seis etapas del recorrido */}
-      <div className="ty-module">
-        <ToyotaHead head={concept.head} size="large" />
-        <ToyotaSteps steps={concept.stages} label={concept.stagesLabel} />
       </div>
 
       {/* Estrategia de IA: cuatro capas en plano técnico y cómo genera
