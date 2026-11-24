@@ -24,7 +24,6 @@ import { driveProgressCar } from '@/lib/case-story/toyota-progress-car';
 // - fill: el párrafo se enciende palabra por palabra con el scroll
 // - count: la cifra cuenta desde cero al llegar
 // - grow: la captura de la portada crece hasta llenar la pantalla
-// - bar: los tramos de una barra crecen de izquierda a derecha
 // - cells / cell: los puntos de la matriz llegan fila por fila
 // - speed: parallax suave (el fondo se mueve más lento)
 // Sin animación (reducir movimiento) todo queda visible tal cual.
@@ -33,6 +32,22 @@ const EASE_OUT = 'power3.out';
 const EASE_IN_OUT = 'power3.inOut';
 const ENTER = 'top 85%';
 const CLIP_BELOW = 'inset(0% 0% 100% 0%)';
+// Las revelaciones ligadas al scroll terminan cuando la pieza ya se ve
+// completa y entera en la parte baja de la pantalla, no cuando llega al
+// centro: así, al subir a leer un módulo largo, ya está todo dibujado.
+// Si la pieza es más alta que media pantalla, termina cuando su borde de
+// arriba llega a un tercio de la pantalla, para que el módulo no salga antes.
+const SETTLE_START = 'top 96%';
+const SETTLE_END_LOW = 'bottom 90%';
+const SETTLE_END_TALL = 'top 34%';
+
+function settleEnd(element: Element) {
+  return () =>
+    element.getBoundingClientRect().height > window.innerHeight * 0.5
+      ? SETTLE_END_TALL
+      : SETTLE_END_LOW;
+}
+
 const CLIP_OPEN = 'inset(-12% -4% -12% -4%)';
 
 function pageTop(element: Element) {
@@ -128,6 +143,41 @@ function trackChapters(root: HTMLElement) {
   return [...coverTrigger, ...chapters, ...surfaces, overall];
 }
 
+// Pone el índice en el capítulo que está a la vista, sin esperar a que el
+// scroll cruce el borde de uno. Hace falta al recargar a mitad de página (el
+// navegador devuelve el scroll donde estaba) o al saltar con la barra: sin
+// esto, el índice se queda en «01» hasta cruzar un borde
+function syncChapter(root: HTMLElement) {
+  const center = window.scrollY + window.innerHeight / 2;
+  const chapters = queryAll(root, '[data-ty-chapter]');
+  const current = chapters.find(
+    chapter =>
+      pageTop(chapter) <= center &&
+      center < pageTop(chapter) + chapter.offsetHeight
+  );
+  if (!current) return;
+  announceSection(root, Number(current.dataset.tyChapter));
+  if (current.dataset.tyWorld) root.dataset.world = current.dataset.tyWorld;
+}
+
+// Sincroniza el índice al cargar y mientras la página termina de acomodarse
+// (imágenes, fuentes y el scroll que el navegador devuelve al recargar llegan
+// un poco después de montar el caso), y de nuevo en el primer scroll
+function keepChapterSynced(root: HTMLElement) {
+  const sync = () => syncChapter(root);
+  sync();
+  const timers = [150, 600, 1500].map(delay => window.setTimeout(sync, delay));
+  ScrollTrigger.addEventListener('refresh', sync);
+  window.addEventListener('load', sync);
+  window.addEventListener('scroll', sync, { once: true, passive: true });
+  return () => {
+    timers.forEach(timer => window.clearTimeout(timer));
+    ScrollTrigger.removeEventListener('refresh', sync);
+    window.removeEventListener('load', sync);
+    window.removeEventListener('scroll', sync);
+  };
+}
+
 function revealMasks(root: HTMLElement) {
   queryAll(root, '[data-ty-mask]').forEach(element => {
     gsap.fromTo(
@@ -183,6 +233,7 @@ function revealGroups(root: HTMLElement) {
 // si crece a lo ancho (computador) o a lo alto (celular) con --draw
 function drawLines(root: HTMLElement) {
   queryAll(root, '[data-ty-line]').forEach(line => {
+    const trigger = line.closest('[data-ty-group]') ?? line;
     gsap.fromTo(
       line,
       { '--draw': 0 },
@@ -190,13 +241,35 @@ function drawLines(root: HTMLElement) {
         '--draw': 1,
         ease: 'none',
         scrollTrigger: {
-          trigger: line.closest('[data-ty-group]') ?? line,
-          start: 'top 85%',
-          end: 'center 50%',
+          trigger,
+          start: SETTLE_START,
+          end: settleEnd(trigger),
           scrub: true
         }
       }
     );
+  });
+}
+
+// Las palabras marcadas con data-ty-accent se ponen rojas de una, todas a la
+// vez, cuando el titular llega a cierta altura de la pantalla (no se van
+// encendiendo poco a poco). Si el lector sube de nuevo, vuelven a su color.
+function igniteAccents(root: HTMLElement) {
+  queryAll(root, '.ty-head').forEach(head => {
+    const accents = queryAll(head, '[data-ty-accent]');
+    if (accents.length === 0) return;
+    const turnRed = gsap.to(accents, {
+      color: '#eb0a1e',
+      duration: 0.25,
+      ease: 'power1.out',
+      paused: true
+    });
+    ScrollTrigger.create({
+      trigger: head,
+      start: 'top 62%',
+      onEnter: () => turnRed.play(),
+      onLeaveBack: () => turnRed.reverse()
+    });
   });
 }
 
@@ -210,8 +283,8 @@ function fillWords(root: HTMLElement) {
         trigger: text,
         // Termina cuando el párrafo entero ya está en la parte de abajo de la
         // pantalla: al bajar a leerlo, todo está encendido
-        start: 'top 90%',
-        end: 'bottom 70%',
+        start: 'top 94%',
+        end: 'bottom 84%',
         scrub: true
       }
     });
@@ -306,19 +379,6 @@ function growCover(root: HTMLElement) {
   );
 }
 
-function growBars(root: HTMLElement) {
-  queryAll(root, '.ty-moscow__bar').forEach(bar => {
-    gsap.from(queryAll(bar, '[data-ty-bar]'), {
-      scaleX: 0,
-      transformOrigin: 'left center',
-      duration: 1.2,
-      ease: EASE_IN_OUT,
-      stagger: 0.18,
-      scrollTrigger: { trigger: bar, start: ENTER, once: true }
-    });
-  });
-}
-
 function revealCells(root: HTMLElement) {
   queryAll(root, '[data-ty-cells]').forEach(matrix => {
     gsap.from(queryAll(matrix, '[data-ty-cell]'), {
@@ -340,38 +400,6 @@ function fadeStackCaptions(root: HTMLElement) {
   media.add('(min-width: 1024px)', () => {
     queryAll(root, '.ty-stack__list').forEach(list => {
       const cards = queryAll(list, '.ty-stack__card');
-      // El último texto se va antes de que la lista termine: así no pasa por
-      // debajo de la palabra gigante al salir
-      const lastCaption = cards.at(-1)?.querySelector('.ty-stack__caption');
-      if (lastCaption) {
-        gsap.to(lastCaption, {
-          autoAlpha: 0,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: list,
-            start: 'bottom 86%',
-            end: 'bottom 66%',
-            scrub: true
-          }
-        });
-      }
-      // La foto se desvanece mientras sale, en vez de quedar cortada por la
-      // palabra gigante
-      const frame = list
-        .closest('.ty-stack')
-        ?.querySelector<HTMLElement>('.ty-stack__frame');
-      if (frame) {
-        gsap.to(frame, {
-          autoAlpha: 0,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: list,
-            start: 'bottom 62%',
-            end: 'bottom 38%',
-            scrub: true
-          }
-        });
-      }
       cards.slice(0, -1).forEach((card, index) => {
         const caption = card.querySelector('.ty-stack__caption');
         const next = cards[index + 1];
@@ -381,8 +409,8 @@ function fadeStackCaptions(root: HTMLElement) {
           ease: 'none',
           scrollTrigger: {
             trigger: next,
-            start: 'top 70%',
-            end: 'top 40%',
+            start: 'top 56%',
+            end: 'top 34%',
             scrub: true
           }
         });
@@ -390,6 +418,19 @@ function fadeStackCaptions(root: HTMLElement) {
     });
   });
   return media;
+}
+
+// Altura (px) a la que se queda fijo el bloque de los pilares (palabra y
+// marco), arriba de la pantalla: lo dice el CSS (top del bloque)
+function pinTop(stack: Element) {
+  const pin = stack.querySelector('.ty-stack__pin');
+  return pin ? Math.round(parseFloat(getComputedStyle(pin).top) || 0) : 0;
+}
+
+// Distancia, desde el borde de arriba del bloque fijo, hasta el borde de
+// abajo del marco (sin contar su animación de llegada)
+function stackFrameEnd(frame: HTMLElement) {
+  return frame.offsetTop + frame.offsetHeight;
 }
 
 // La imagen larga de los pilares baja por dentro de su marco más lento que
@@ -400,8 +441,8 @@ function driftStackImage(root: HTMLElement) {
   const drift = (
     trigger: Element,
     frame: Element,
-    start: string,
-    end: string
+    start: string | (() => string),
+    end: string | (() => string)
   ) =>
     gsap.fromTo(
       frame,
@@ -413,14 +454,60 @@ function driftStackImage(root: HTMLElement) {
       }
     );
   queryAll(root, '.ty-stack').forEach(stack => {
-    const frame = stack.querySelector('.ty-stack__frame');
+    const frame = stack.querySelector<HTMLElement>('.ty-stack__frame');
     const list = stack.querySelector('.ty-stack__list');
     if (!frame || !list) return;
     media.add('(min-width: 1024px)', () => {
-      drift(list, frame, 'top 24%', 'bottom 96%');
+      // Va desde que el bloque queda fijo hasta que el marco se suelta
+      drift(
+        list,
+        frame,
+        () => `top ${pinTop(stack)}px`,
+        () => `bottom ${pinTop(stack) + stackFrameEnd(frame)}px`
+      );
     });
     media.add('(max-width: 1023px)', () => {
       drift(frame, frame, 'top bottom', 'bottom top');
+    });
+  });
+  return media;
+}
+
+// Llegada de los tres pilares, ligada al scroll y solo en computador: el
+// marco de la foto sube más rápido que el scroll desde más abajo, se abre de
+// abajo hacia arriba y pierde un zoom suave. Termina cuando la foto llega a su
+// lugar fijo, y desde ahí empieza la secuencia de pilares.
+function enterStack(root: HTMLElement) {
+  const media = gsap.matchMedia();
+  media.add('(min-width: 1024px)', () => {
+    queryAll(root, '.ty-stack').forEach(stack => {
+      const body = stack.querySelector('.ty-stack__body');
+      const frame = stack.querySelector('.ty-stack__frame');
+      const visual = stack.querySelector('.ty-stack__visual');
+      if (!body || !frame) return;
+      // Empieza cuando la palabra ya está arriba y termina con el marco metido
+      // bajo ella, en su lugar fijo
+      const scrollTrigger = {
+        trigger: body,
+        start: 'top 72%',
+        end: () => `top ${pinTop(stack)}px`,
+        scrub: true
+      };
+      gsap.fromTo(
+        frame,
+        { y: 140, clipPath: 'inset(70% 0% 0% 0%)' },
+        { y: 0, clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', scrollTrigger }
+      );
+      // El zoom va en una variable de CSS (--zoom) y no con scale de GSAP:
+      // GSAP convertiría el translate de la imagen en un valor fijo y la
+      // imagen larga dejaría de bajar con el scroll
+      if (visual) {
+        gsap.fromTo(
+          visual,
+          { '--zoom': 1.08 },
+          { '--zoom': 1, ease: 'none', scrollTrigger }
+        );
+      }
     });
   });
   return media;
@@ -476,13 +563,37 @@ function parallax(root: HTMLElement) {
   });
 }
 
+// La foto de fondo de cada apertura se recorre de forma continua mientras la
+// apertura cruza la pantalla, más lenta que el scroll de la página. El CSS
+// convierte --pan (0 a 1) en el desplazamiento de la foto
+function panOpenerBackdrops(root: HTMLElement) {
+  queryAll(root, '[data-ty-pan]').forEach(backdrop => {
+    gsap.fromTo(
+      backdrop,
+      { '--pan': 0 },
+      {
+        '--pan': 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: backdrop.parentElement ?? backdrop,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true
+        }
+      }
+    );
+  });
+}
+
 // Sin animación: solo el seguimiento de capítulos y saltos directos
 export function setupToyotaStatic(root: HTMLElement) {
   const triggers = trackChapters(root);
+  const stopSync = keepChapterSynced(root);
   const counter = watchCounterVisibility(root);
   const stopJumps = listenJumps(root);
   const stopCar = driveProgressCar(root, { hasPhysics: false });
   return () => {
+    stopSync();
     stopCar();
     stopJumps();
     triggers.forEach(trigger => trigger.kill());
@@ -497,24 +608,29 @@ export function setupToyotaMotion(root: HTMLElement) {
   revealGroups(root);
   drawLines(root);
   fillWords(root);
+  igniteAccents(root);
   countNumbers(root);
   growCover(root);
-  growBars(root);
   revealCells(root);
   parallax(root);
+  panOpenerBackdrops(root);
   const stack = fadeStackCaptions(root);
   const stackImage = driftStackImage(root);
+  const stackEntrance = enterStack(root);
   const openerCells = slideOpenerCells(root);
   const triggers = trackChapters(root);
+  const stopSync = keepChapterSynced(root);
   const counter = watchCounterVisibility(root);
   const stopJumps = listenJumps(root);
   const stopCar = driveProgressCar(root, { hasPhysics: true });
   ScrollTrigger.refresh();
 
   return () => {
+    stopSync();
     stopCar();
     stack.revert();
     stackImage.revert();
+    stackEntrance.revert();
     openerCells.revert();
     stopJumps();
     triggers.forEach(trigger => trigger.kill());

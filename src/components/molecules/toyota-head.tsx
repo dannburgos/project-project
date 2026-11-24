@@ -21,6 +21,22 @@ const ALIGN_CLASS: Record<ToyotaHeadAlign, string> = {
   center: 'ty-head--center'
 };
 
+// Parte el titular en trozos; las palabras de `accents` van en su propio span
+// para pasar a rojo con el scroll (data-ty-accent)
+function renderTitle(title: string, accents: readonly string[] | undefined) {
+  if (!accents || accents.length === 0) return title;
+  const pattern = new RegExp(`(${accents.join('|')})`, 'gi');
+  return title.split(pattern).map((part, index) =>
+    accents.some(word => word.toLowerCase() === part.toLowerCase()) ? (
+      <span key={index} className="ty-head__accent" data-ty-accent>
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  );
+}
+
 // Encabezado de un módulo: eyebrow, titular que se destapa con una máscara y
 // bajada
 export function ToyotaHead({
@@ -34,12 +50,19 @@ export function ToyotaHead({
       className={cn('ty-head', SIZE_CLASS[size], ALIGN_CLASS[align], className)}
     >
       {head.eyebrow && (
-        <p className="ty-head__eyebrow" data-ty-rise>
+        <p
+          className={cn(
+            'ty-head__eyebrow',
+            head.isEyebrowAccent && 'ty-head__accent'
+          )}
+          data-ty-rise
+          data-ty-accent={head.isEyebrowAccent ? '' : undefined}
+        >
           {head.eyebrow}
         </p>
       )}
       <h3 className="ty-head__title" data-ty-mask>
-        {head.title}
+        {renderTitle(head.title, head.accents)}
       </h3>
       {head.lead && (
         <p className="ty-head__lead" data-ty-rise>

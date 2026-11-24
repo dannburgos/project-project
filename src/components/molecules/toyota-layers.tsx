@@ -6,7 +6,8 @@ type ToyotaLayersProps = {
 
 // Las cuatro capas de la estrategia de IA como plano técnico (referencia:
 // S-2K): cajas sobre una retícula, unidas por una línea que se dibuja de
-// izquierda a derecha mientras cada capa llega en orden.
+// izquierda a derecha mientras cada capa llega en orden. Cada capa lleva
+// abajo lo que garantiza para que la experiencia sea confiable.
 export function ToyotaLayers({ layers }: ToyotaLayersProps) {
   return (
     <figure className="ty-layers" data-ty-group>
@@ -17,6 +18,13 @@ export function ToyotaLayers({ layers }: ToyotaLayersProps) {
             <span className="ty-layers__number">{layer.number}</span>
             <p className="ty-layers__name">{layer.name}</p>
             <p className="ty-layers__text">{layer.text}</p>
+            <ul className="ty-layers__guarantees">
+              {layer.guarantees.map(guarantee => (
+                <li key={guarantee} className="ty-layers__guarantee">
+                  {guarantee}
+                </li>
+              ))}
+            </ul>
           </li>
         ))}
       </ol>

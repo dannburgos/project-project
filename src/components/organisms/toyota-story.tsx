@@ -51,12 +51,7 @@ export function ToyotaStory({ story }: ToyotaStoryProps) {
 
       <ToyotaCover cover={story.cover} />
       <ToyotaOverview index={0} label={name(0)} overview={story.overview} />
-      <ToyotaDiscovery
-        index={1}
-        label={name(1)}
-        discovery={story.discovery}
-        labels={story.labels}
-      />
+      <ToyotaDiscovery index={1} label={name(1)} discovery={story.discovery} />
       <ToyotaStrategy index={2} label={name(2)} strategy={story.strategy} />
       <ToyotaProduct index={3} label={name(3)} product={story.product} />
       <ToyotaValidation

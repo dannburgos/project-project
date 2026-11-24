@@ -10,19 +10,14 @@ type ToyotaFlowProps = {
 // Flujo de usuario como diagrama. En computador, una retícula de una columna
 // por paso: arriba la banda con las seis etapas del concepto, luego el camino
 // principal (su línea se dibuja con el scroll),
-// debajo el ciclo que vuelve atrás y las salidas hacia Toyota, y abajo el
-// resultado abierto en sus variantes. En celular todo va en una columna.
+// debajo el ciclo que vuelve atrás y las salidas hacia Toyota. En celular
+// todo va en una columna.
 export function ToyotaFlow({ flow }: ToyotaFlowProps) {
-  const { steps, loop, exits, results } = flow;
-  const resultAt = Math.max(
-    0,
-    steps.findIndex(step => step.isHighlight)
-  );
+  const { steps, loop, exits } = flow;
   const layout = {
     '--flow-columns': steps.length,
     '--loop-start': loop.to + 1,
-    '--loop-span': loop.from - loop.to + 1,
-    '--result-col': resultAt + 1
+    '--loop-span': loop.from - loop.to + 1
   } as CSSProperties;
 
   return (
@@ -80,9 +75,6 @@ export function ToyotaFlow({ flow }: ToyotaFlowProps) {
           </p>
         </div>
 
-        {/* Del resultado baja el hilo hacia sus variantes */}
-        <span className="ty-flow__stem" aria-hidden="true" />
-
         {/* Salidas: lo que ya existe en Toyota */}
         <div className="ty-flow__exits">
           <p className="ty-flow__exits-label">{flow.exitsLabel}</p>
@@ -93,24 +85,6 @@ export function ToyotaFlow({ flow }: ToyotaFlowProps) {
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="ty-flow__results">
-          <p className="ty-flow__results-label">{flow.resultsLabel}</p>
-          <ol className="ty-flow__variants">
-            {results.map((item, index) => (
-              <li key={item.name} className="ty-flow__variant" data-ty-item>
-                <span className="ty-flow__variant-number">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <p className="ty-flow__variant-name">{item.name}</p>
-                <p className="ty-flow__variant-title">{item.title}</p>
-                <p className="ty-flow__variant-example">
-                  <b>{flow.exampleLabel}:</b> {item.example}
-                </p>
-              </li>
-            ))}
-          </ol>
         </div>
       </div>
     </figure>

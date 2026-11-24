@@ -38,17 +38,21 @@
   color: var(--ty-muted);
 }
 
-/* Titulares en oración y semibold, interlineado del 90 % (manual) */
-.ty-head__title {
-  @apply font-semibold;
-  font-size: var(--ty-title);
-  line-height: 0.96;
+/* Palabras que pasan a rojo con el scroll (el movimiento lo pone toyota-motion);
+   sin movimiento, quedan en rojo */
+@media (prefers-reduced-motion: reduce) {
+  .ty-head__accent {
+    color: var(--ty-red);
+  }
 }
 
-.ty-head--large .ty-head__title {
-  @apply font-bold;
-  font-size: var(--ty-title-xl);
-  line-height: 0.92;
+/* Titulares de sección: un solo tamaño y peso para todos, en oración y con
+   interlineado del 90 % (manual) */
+.ty-head__title {
+  /* Un salto de línea en el texto del titular se respeta */
+  @apply font-bold whitespace-pre-line;
+  font-size: var(--ty-title);
+  line-height: 0.96;
 }
 
 .ty-head__lead {
@@ -127,108 +131,8 @@
   line-height: 0.9;
 }
 
-
 /* Pregunta guía como manifiesto: se enciende palabra por palabra */
-.ty-manifesto {
-  @apply flex flex-col gap-6 border-t pt-10;
-  border-color: var(--ty-line);
-}
-
-.ty-manifesto__eyebrow {
-  @apply text-xs font-semibold tracking-[0.14em] uppercase;
-  color: var(--ty-red);
-}
-
-.ty-manifesto__text {
-  @apply max-w-5xl font-semibold;
-  font-size: clamp(32px, 4.4vw, 72px);
-  line-height: 1.02;
-}
-
 /* Job Statement: una línea por parte, con su palabra clave en rojo */
-.ty-job {
-  @apply flex flex-col gap-6 border-t pt-10;
-  border-color: var(--ty-line);
-}
-
-.ty-job__label {
-  @apply text-xs font-semibold tracking-[0.14em] uppercase;
-  color: var(--ty-muted);
-}
-
-.ty-job__text {
-  @apply flex max-w-4xl flex-col gap-3;
-  font-size: clamp(22px, 2.2vw, 32px);
-  line-height: 1.2;
-}
-
-.ty-job__part {
-  @apply block;
-}
-
-.ty-job__key {
-  @apply font-bold;
-  color: var(--ty-red);
-}
-
-/* ─── Ficha técnica ───────────────────────────────────────────────── */
-
-.ty-table {
-  @apply w-full overflow-x-auto overflow-y-hidden;
-}
-
-.ty-table__grid {
-  @apply w-full border-collapse text-left;
-  min-width: 560px;
-}
-
-.ty-table__caption {
-  @apply mb-4 text-left text-2xl font-semibold;
-}
-
-.ty-table__row {
-  @apply border-t;
-  border-color: var(--ty-line);
-}
-
-.ty-table__row:last-child {
-  @apply border-b;
-}
-
-.ty-table__heading {
-  @apply pt-0 pr-6 pb-3 text-xs font-semibold tracking-[0.14em] uppercase;
-  color: var(--ty-muted);
-}
-
-.ty-table__heading--accent {
-  color: var(--ty-red);
-}
-
-.ty-table__row--head {
-  @apply border-t-0;
-}
-
-.ty-table__label {
-  @apply py-4 pr-6 align-top text-base font-semibold;
-  width: 32%;
-}
-
-.ty-table__cell {
-  @apply py-4 pr-6 align-top text-base leading-[1.45];
-  color: var(--ty-muted);
-}
-
-/* La columna de la propuesta lleva tinta y una marca roja */
-.ty-table__cell--accent {
-  @apply relative pl-5 font-semibold;
-  color: var(--ty-fg);
-}
-
-.ty-table__cell--accent::before {
-  @apply absolute top-6 left-0 size-2 content-[''];
-  background: var(--ty-red);
-}
-
 /* ─── Cifras ──────────────────────────────────────────────────────── */
 
 .ty-stats {
@@ -361,8 +265,7 @@
      (pasos − 1) columnas del primero */
   .ty-steps__line {
     --step-col: calc(
-      (100% - (var(--step-columns) - 1) * var(--step-gap)) /
-        var(--step-columns)
+      (100% - (var(--step-columns) - 1) * var(--step-gap)) / var(--step-columns)
     );
     @apply h-px w-auto origin-left;
     top: calc(var(--step-node) / 2);
@@ -521,49 +424,31 @@
   border-color: var(--ty-line);
 }
 
-/* ─── Cambios: lo tradicional tachado y lo nuevo encendido ────────── */
+/* ─── Cambios: de la experiencia de hoy a la propuesta ────────────── */
 
-/* Con el scroll, --draw va de 0 a 1 en toda la lista y cada cambio toma su
-   tramo: la línea roja tacha la frase vieja y, a la vez, la nueva pasa de
-   apagada a encendida. Sin movimiento, --draw vale 1 y todo se ve completo */
+/* Tabla de cuatro columnas en computador: el tema, cómo es hoy, una flecha y
+   cómo será con la propuesta (lo que se tiene en cuenta). En celular cada
+   fila va apilada: tema, hoy y propuesta */
 .ty-shifts {
-  @apply flex flex-col gap-6;
+  @apply flex flex-col gap-2;
+  --shifts-columns: 160px minmax(0, 1fr) 24px minmax(0, 1.2fr);
 }
 
-.ty-shifts__legend {
-  @apply flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-semibold tracking-[0.14em] uppercase;
+.ty-shifts__head {
+  @apply hidden text-xs font-semibold tracking-[0.14em] uppercase;
   color: var(--ty-muted);
 }
 
-.ty-shifts__key {
-  @apply flex items-center gap-2;
-}
-
-.ty-shifts__key::before {
-  @apply block h-0.5 w-6 content-[''];
-  background: var(--ty-muted);
-}
-
-.ty-shifts__key--after {
+.ty-shifts__head-after {
   color: var(--ty-red);
 }
 
-.ty-shifts__key--after::before {
-  @apply size-2;
-  background: var(--ty-red);
-}
-
 .ty-shifts__list {
-  @apply grid grid-cols-1 gap-x-6;
+  @apply flex flex-col;
 }
 
 .ty-shifts__item {
-  @apply flex flex-col gap-2 border-t py-5;
-  --shift-step: clamp(
-    0,
-    var(--draw, 1) * var(--shift-count) - var(--shift-index),
-    1
-  );
+  @apply flex flex-col gap-1.5 border-t py-5;
   border-color: var(--ty-line);
 }
 
@@ -573,38 +458,40 @@
 }
 
 .ty-shifts__before {
-  @apply text-base;
+  @apply text-xl leading-[1.25];
   color: var(--ty-muted);
 }
 
-/* La raya es un fondo del texto en línea: si la frase ocupa dos renglones,
-   tacha el primero y sigue en el segundo */
-.ty-shifts__struck {
-  background-image: linear-gradient(var(--ty-red), var(--ty-red));
-  background-repeat: no-repeat;
-  background-position: 0 56%;
-  background-size: calc(var(--shift-step) * 100%) 2px;
+.ty-shifts__arrow {
+  @apply hidden;
+  color: var(--ty-red);
 }
 
 .ty-shifts__after {
-  @apply text-2xl leading-[1.15] font-semibold;
-  opacity: calc(0.24 + var(--shift-step) * 0.76);
+  @apply text-xl leading-[1.25] font-bold;
 }
 
 @media (min-width: 768px) {
-  .ty-shifts__list {
-    @apply grid-cols-3 gap-y-2;
+  .ty-shifts__head {
+    @apply grid gap-x-6;
+    grid-template-columns: var(--shifts-columns);
   }
-}
 
-/* En computador los cinco cambios caben en una sola fila */
-@media (min-width: 1024px) {
-  .ty-shifts__list {
-    grid-template-columns: repeat(var(--shift-count), minmax(0, 1fr));
+  .ty-shifts__head-before {
+    grid-column: 2;
+  }
+
+  .ty-shifts__head-after {
+    grid-column: 4;
   }
 
   .ty-shifts__item {
-    @apply gap-3 pt-6;
+    @apply grid items-baseline gap-x-6 py-4;
+    grid-template-columns: var(--shifts-columns);
+  }
+
+  .ty-shifts__arrow {
+    @apply block text-xl leading-[1.25];
   }
 }
 
@@ -650,7 +537,6 @@
   @apply text-base;
   color: var(--ty-fg);
 }
-
 
 /* ─── Matriz de etiquetas ─────────────────────────────────────────── */
 
@@ -703,64 +589,17 @@
   @apply py-2.5 text-center;
 }
 
-/* Cuadrado (forma del logo de plataforma de Toyota): relleno en rojo si el
-   modelo tiene la etiqueta; solo el contorno si no */
+/* Cuadrado (forma del logo de plataforma de Toyota): grande y en rojo si el
+   modelo tiene la etiqueta; si no, solo un punto tenue, para que la vista
+   quede limpia */
 .ty-matrix__dot {
-  @apply inline-block size-3 border;
-  border-color: var(--ty-line);
+  @apply inline-block size-1.5 align-middle;
+  background: var(--ty-line);
 }
 
 .ty-matrix__dot--on {
-  border-color: var(--ty-red);
+  @apply size-5;
   background: var(--ty-red);
-}
-
-/* ─── Barra MoSCoW ────────────────────────────────────────────────── */
-
-.ty-moscow {
-  @apply flex flex-col gap-4;
-}
-
-.ty-moscow__total {
-  @apply text-xs font-semibold tracking-[0.14em] uppercase;
-  color: var(--ty-muted);
-}
-
-.ty-moscow__bar {
-  @apply flex h-12 w-full gap-1;
-}
-
-.ty-moscow__segment {
-  flex: var(--segment-weight) 1 0;
-  background: var(--ty-gray);
-}
-
-.ty-moscow__segment:first-child {
-  background: var(--ty-red);
-}
-
-.ty-moscow__segment:nth-child(2) {
-  background: var(--ty-fg);
-}
-
-.ty-moscow__legend {
-  @apply flex gap-1;
-}
-
-.ty-moscow__item {
-  @apply flex min-w-0 flex-col gap-1;
-  flex: var(--segment-weight) 1 0;
-}
-
-.ty-moscow__value {
-  @apply order-first font-black tabular-nums;
-  font-size: clamp(32px, 4vw, 64px);
-  line-height: 0.9;
-}
-
-.ty-moscow__label {
-  @apply text-sm font-semibold;
-  color: var(--ty-muted);
 }
 
 /* ─── Capas de la estrategia de IA ────────────────────────────────── */
@@ -799,18 +638,43 @@
   color: var(--ty-muted);
 }
 
+/* Garantías de la capa: abajo de la tarjeta, separadas por una línea fina y
+   con un cuadrado rojo */
+.ty-layers__guarantees {
+  @apply mt-auto flex flex-col gap-3 border-t pt-4;
+  border-color: var(--ty-line);
+}
+
+.ty-layers__guarantee {
+  @apply relative pl-5 text-base leading-[1.35];
+}
+
+.ty-layers__guarantee::before {
+  @apply absolute top-[0.45em] left-0 size-2 content-[''];
+  background: var(--ty-red);
+}
+
 @media (min-width: 1024px) {
   .ty-layers__line {
     @apply top-1/2 right-0 bottom-auto left-0 h-px w-auto origin-left;
     transform: scaleX(var(--draw, 1));
   }
 
+  /* Cuatro filas compartidas (número, nombre, texto y garantías): así las
+     líneas y las garantías de las cuatro tarjetas quedan a la misma altura */
   .ty-layers__list {
-    @apply grid-cols-4 gap-8;
+    @apply grid-cols-4 gap-x-8 gap-y-0;
+    grid-template-rows: auto auto auto 1fr;
   }
 
   .ty-layers__item {
-    @apply ml-0 min-h-56;
+    @apply ml-0 grid gap-y-2;
+    grid-row: span 4;
+    grid-template-rows: subgrid;
+  }
+
+  .ty-layers__guarantees {
+    @apply mt-0;
   }
 }
 
@@ -909,16 +773,11 @@
   color: var(--ty-fg);
 }
 
-.ty-flow__stem {
-  @apply hidden;
-}
-
 .ty-flow__exits {
   @apply flex flex-col gap-2;
 }
 
-.ty-flow__exits-label,
-.ty-flow__results-label {
+.ty-flow__exits-label {
   @apply text-xs font-semibold tracking-[0.14em] uppercase;
   color: var(--ty-muted);
 }
@@ -930,50 +789,6 @@
 .ty-flow__exit {
   @apply border px-3.5 py-2 text-sm font-semibold;
   border-color: var(--ty-fg);
-}
-
-/* Resultado: una línea roja lo une con el hilo que baja de «Resultado» */
-.ty-flow__results {
-  @apply flex flex-col gap-4 border-t-2 pt-5;
-  border-color: var(--ty-red);
-}
-
-.ty-flow__results-label {
-  color: var(--ty-red);
-}
-
-.ty-flow__variants {
-  @apply grid gap-4 lg:grid-cols-3;
-}
-
-.ty-flow__variant {
-  @apply flex flex-col gap-3 border p-6;
-  border-color: var(--ty-line);
-}
-
-.ty-flow__variant-number {
-  @apply text-xs font-semibold tabular-nums;
-  color: var(--ty-red);
-}
-
-.ty-flow__variant-name {
-  @apply text-xs font-semibold tracking-[0.14em] uppercase;
-  color: var(--ty-muted);
-}
-
-.ty-flow__variant-title {
-  @apply text-xl leading-[1.15] font-semibold;
-}
-
-.ty-flow__variant-example {
-  @apply mt-auto border-t pt-4 text-sm leading-[1.45];
-  border-color: var(--ty-line);
-  color: var(--ty-muted);
-}
-
-.ty-flow__variant-example b {
-  @apply font-semibold;
-  color: var(--ty-fg);
 }
 
 @media (min-width: 1024px) {
@@ -1007,7 +822,7 @@
   .ty-flow__line {
     @apply col-span-full row-start-3 h-0.5 w-auto origin-left self-start;
     position: static;
-    margin-top: 15px;
+    margin-top: 19px;
     margin-inline: calc(100% / (var(--flow-columns) * 2));
     transform: scaleX(var(--draw, 1));
   }
@@ -1016,12 +831,17 @@
     @apply row-start-3 flex flex-col items-center gap-0 px-2 text-center;
   }
 
+  .ty-flow__node {
+    @apply size-10 text-sm;
+  }
+
+  /* Nueve columnas: el nombre en cuerpo y la nota en cuerpo pequeño */
   .ty-flow__label {
-    @apply mt-3 text-sm;
+    @apply mt-4 text-base leading-[1.2];
   }
 
   .ty-flow__note {
-    @apply mt-1 text-xs;
+    @apply mt-2 text-sm leading-[1.35];
   }
 
   /* Ciclo: un arco bajo «Tu perfil» y «Asesoría» que vuelve hacia atrás, con
@@ -1044,14 +864,7 @@
   }
 
   .ty-flow__loop-text {
-    @apply px-4 text-center text-xs;
-  }
-
-  /* Hilo que baja de «Resultado» hasta la línea de sus variantes */
-  .ty-flow__stem {
-    @apply row-start-4 block w-0.5 justify-self-center;
-    grid-column: var(--result-col);
-    background: var(--ty-red);
+    @apply px-4 text-center text-sm;
   }
 
   /* Salidas, bajo el último paso */
@@ -1067,7 +880,7 @@
 
   /* En una sola columna no cabe la etiqueta en mayúsculas espaciadas */
   .ty-flow__exits-label {
-    @apply text-xs leading-[1.3] font-medium tracking-normal normal-case;
+    @apply text-sm leading-[1.3] font-medium tracking-normal normal-case;
   }
 
   .ty-flow__exits-list {
@@ -1075,45 +888,131 @@
   }
 
   .ty-flow__exit {
-    @apply text-xs;
-  }
-
-  .ty-flow__results {
-    @apply col-span-full row-start-5;
+    @apply text-sm;
   }
 }
 
-/* ─── Pantallas del prototipo y colores de la marca ───────────────── */
+/* ─── Recorrido de hoy ────────────────────────────────────────────── */
 
-.ty-screens {
-  @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+/* En celular, en columna con la línea a la izquierda; desde tableta, centrado
+   y de izquierda a derecha, con la línea de centro a centro de los pasos */
+.ty-journey {
+  @apply flex flex-col gap-8 md:items-center;
 }
 
-.ty-screens__visual {
-  @apply aspect-[16/10] w-full;
+.ty-journey__label {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase md:text-center;
+  color: var(--ty-muted);
 }
 
-.ty-swatches {
-  @apply flex flex-wrap gap-4;
+.ty-journey__track {
+  @apply relative w-full;
 }
 
-.ty-swatches__item {
-  @apply size-24 border;
-  border-color: var(--ty-line);
+.ty-journey__list {
+  @apply flex flex-col gap-8;
 }
 
-.ty-swatches__item--red {
-  background: var(--ty-red);
+.ty-journey__line {
+  @apply absolute top-4 bottom-4 left-4 w-0.5 origin-top;
+  background: var(--ty-fg);
+  transform: scaleY(var(--draw, 1));
 }
 
-.ty-swatches__item--black {
-  background: var(--ty-black);
+.ty-journey__step {
+  @apply relative grid items-start gap-x-4;
+  grid-template-columns: 32px 1fr;
 }
 
-.ty-swatches__item--white {
-  background: var(--ty-white);
+.ty-journey__node {
+  @apply z-10 flex size-8 items-center justify-center border text-xs font-semibold;
+  background: var(--ty-surface);
+  border-color: var(--ty-fg);
 }
 
-.ty-swatches__item--gray {
-  background: var(--ty-gray);
+.ty-journey__name {
+  @apply text-lg leading-8 font-semibold;
+}
+
+@media (min-width: 768px) {
+  .ty-journey__track {
+    max-width: 1000px;
+  }
+
+  .ty-journey__list {
+    @apply grid gap-0;
+    grid-template-columns: repeat(var(--journey-count), minmax(0, 1fr));
+  }
+
+  .ty-journey__line {
+    @apply right-auto bottom-auto h-0.5 w-auto origin-left;
+    left: calc(100% / (var(--journey-count) * 2));
+    right: calc(100% / (var(--journey-count) * 2));
+    transform: scaleX(var(--draw, 1));
+  }
+
+  .ty-journey__step {
+    @apply flex flex-col items-center gap-0 px-3 text-center;
+  }
+
+  .ty-journey__name {
+    @apply mt-3 leading-snug;
+  }
+}
+
+/* ─── Dos recuadros juntos (problema y oportunidad) ───────────────── */
+
+/* Centrados y pegados: comparten una sola línea en el medio. El contorno de
+   cada uno se dibuja con el scroll (--draw), igual que las líneas de los
+   recorridos. Desde tableta salen un poco del ancho del módulo (hasta 1360 px
+   en total) para verse más anchos */
+.ty-pair {
+  @apply grid w-full grid-cols-1 md:grid-cols-2;
+}
+
+@media (min-width: 768px) {
+  .ty-pair {
+    width: auto;
+    margin-inline: calc(50% - min(50vw - 24px, 680px));
+  }
+}
+
+.ty-pair__box {
+  @apply relative flex flex-col gap-4 p-8 md:p-12;
+}
+
+.ty-pair__frame {
+  @apply pointer-events-none absolute inset-0 size-full overflow-visible;
+}
+
+/* Trazo fino de 1 px, adentro de su recuadro */
+.ty-pair__frame rect {
+  x: 0.5px;
+  y: 0.5px;
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+  fill: none;
+  stroke: var(--ty-fg);
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--draw, 1));
+}
+
+/* El segundo recuadro corre su trazo medio píxel afuera por la izquierda: su
+   borde izquierdo cae justo encima del derecho del primero y se ve una sola
+   línea, no dos */
+@media (min-width: 768px) {
+  .ty-pair__box + .ty-pair__box .ty-pair__frame rect {
+    x: -0.5px;
+    width: 100%;
+  }
+}
+
+/* En celular quedan uno sobre otro: lo mismo con el borde de arriba */
+@media (max-width: 767px) {
+  .ty-pair__box + .ty-pair__box .ty-pair__frame rect {
+    y: -0.5px;
+    height: 100%;
+  }
 }

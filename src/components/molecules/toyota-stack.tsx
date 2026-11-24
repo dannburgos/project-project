@@ -31,14 +31,17 @@ export function ToyotaStack({ head, word, visual, cards }: ToyotaStackProps) {
           className="ty-stack__head"
         />
       )}
-      <p className="ty-stack__word" aria-hidden="true">
-        {word}
-      </p>
-      {/* El marco y la lista comparten un cuerpo: así el marco fijo termina
-          junto con la lista y no se pasa al módulo siguiente */}
+      {/* La palabra y el marco comparten un bloque fijo: se quedan juntos
+          durante los tres pilares y, al terminar, suben juntos hacia el
+          capítulo siguiente. La lista de textos va en la misma celda */}
       <div className="ty-stack__body">
-        <div className="ty-stack__frame">
-          <ToyotaVisual visual={visual} className="ty-stack__visual" />
+        <div className="ty-stack__pin">
+          <p className="ty-stack__word" aria-hidden="true">
+            {word}
+          </p>
+          <div className="ty-stack__frame">
+            <ToyotaVisual visual={visual} className="ty-stack__visual" />
+          </div>
         </div>
         <ol className="ty-stack__list" aria-label={word}>
           {cards.map((card, index) => (

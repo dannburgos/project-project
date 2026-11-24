@@ -8,18 +8,25 @@ type ToyotaOpenerProps = {
   opener: ToyotaOpenerContent;
 };
 
-// Apertura de capítulo (referencias: Longbow y S-2K). El fondo queda casi
-// quieto y la palabra gigante se queda en el centro; encima sube una
-// retícula de dos filas: las celdas sólidas tapan partes de la palabra y las
+// Apertura de capítulo (referencias: Longbow y S-2K). El fondo queda fijo
+// y su foto se recorre despacio con el scroll, más lento que la página; la
+// palabra gigante se queda en el centro; encima sube una retícula de dos filas: las celdas sólidas tapan partes de la palabra y las
 // vacías son ventanas al fondo, así que la palabra se completa con el
 // scroll. El título real del capítulo va en una celda, para el lector de
 // pantalla.
 export function ToyotaOpener({ opener }: ToyotaOpenerProps) {
   return (
     <div
-      className={cn('ty-opener', opener.background.src && 'ty-opener--photo')}
+      className={cn(
+        'ty-opener',
+        opener.background.src && 'ty-opener--photo',
+        opener.isBackgroundTall && 'ty-opener--tall',
+        opener.isBackgroundWide && 'ty-opener--wide'
+      )}
     >
-      <div className="ty-opener__backdrop" data-ty-speed="0.12">
+      {/* La foto se recorre con el scroll (--pan de 0 a 1), más despacio que
+          la página */}
+      <div className="ty-opener__backdrop" data-ty-pan>
         <ToyotaVisual
           visual={opener.background}
           className="ty-opener__visual"

@@ -1,0 +1,741 @@
+/* Sistema de diseño de Toyota (módulo del capítulo 04). Menú de fundamentos y
+   esenciales a la izquierda; a la derecha, una hoja blanca con la muestra viva
+   del elemento elegido en grande (referencias: los sistemas de Sonopizza y
+   PetRide), con los valores del prototipo: blanco, negro, gris y rojo,
+   esquinas rectas. */
+
+.ty-ds {
+  @apply flex flex-col gap-6;
+}
+
+/* ─── Índice ──────────────────────────────────────────────────────── */
+
+.ty-ds__index {
+  @apply flex flex-col gap-5;
+}
+
+.ty-ds__group {
+  @apply flex flex-col gap-2;
+}
+
+.ty-ds__group-label {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-muted);
+}
+
+.ty-ds__list {
+  @apply flex flex-wrap gap-2 lg:flex-col lg:gap-0;
+}
+
+.ty-ds__item {
+  @apply flex w-full cursor-pointer items-baseline gap-3 border px-3 py-2 text-left text-base lg:border-0 lg:border-t lg:px-0 lg:py-2.5;
+  border-color: var(--ty-line);
+  color: var(--ty-muted);
+  transition:
+    color 200ms var(--ty-ease),
+    border-color 200ms var(--ty-ease);
+}
+
+.ty-ds__item:hover,
+.ty-ds__item--on {
+  color: var(--ty-fg);
+}
+
+.ty-ds__item--on {
+  @apply font-semibold;
+  border-color: var(--ty-red);
+}
+
+.ty-ds__number {
+  @apply text-xs font-semibold tabular-nums;
+  color: var(--ty-red);
+}
+
+/* ─── Hoja ────────────────────────────────────────────────────────── */
+
+.ty-ds__sheet {
+  --ds-ink: var(--ty-black);
+  --ds-paper: var(--ty-white);
+  --ds-gray: var(--ty-gray);
+  --ds-line: rgb(0 0 0 / 0.14);
+  --ds-subtle: #f4f4f4;
+  --ds-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  @apply flex flex-col gap-8 p-6 md:p-10;
+  background: var(--ds-paper);
+  color: var(--ds-ink);
+}
+
+.ty-ds__sheet-head {
+  @apply flex flex-col gap-3;
+}
+
+.ty-ds__spec-number {
+  @apply text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ty-red);
+}
+
+.ty-ds__sheet-name {
+  @apply text-4xl leading-none font-bold;
+}
+
+.ty-ds__spec-summary {
+  @apply max-w-2xl text-base leading-[1.45];
+  color: var(--ds-gray);
+}
+
+.ty-ds__specimen {
+  @apply flex flex-col;
+}
+
+.ty-ds__specs {
+  @apply flex flex-col;
+}
+
+.ty-ds__row {
+  @apply grid gap-1 border-t py-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] sm:gap-6;
+  border-color: var(--ds-line);
+}
+
+.ty-ds__row-label {
+  @apply text-sm font-semibold;
+  color: var(--ds-gray);
+}
+
+.ty-ds__row-value {
+  @apply text-base leading-[1.4];
+}
+
+.ty-ds__rules {
+  @apply grid gap-3 border-t pt-5 md:grid-cols-2 md:gap-8;
+  border-color: var(--ds-line);
+}
+
+.ty-ds__rule {
+  @apply text-base leading-[1.45];
+}
+
+.ty-ds__rule-key {
+  @apply mr-1 font-bold;
+}
+
+.ty-ds__rule-key--avoid {
+  color: var(--ty-red);
+}
+
+.ty-ds__note {
+  @apply text-sm;
+  color: var(--ty-muted);
+}
+
+/* ─── Computador: menú y hoja en una retícula ──────────────────────── */
+
+@media (min-width: 1024px) {
+  .ty-ds {
+    @apply grid items-start gap-x-10 gap-y-8;
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+
+  .ty-ds__note {
+    @apply col-span-full;
+  }
+}
+
+/* ─── Muestras (dsx) ──────────────────────────────────────────────── */
+
+.ty-dsx-label {
+  @apply text-xs font-semibold tracking-[0.12em] uppercase;
+  color: var(--ds-gray);
+}
+
+/* Botones: los tres tipos, en cuatro estados */
+.ty-dsx-button {
+  @apply inline-flex h-[52px] items-center justify-center px-7 text-[17px] font-bold whitespace-nowrap;
+}
+
+.ty-dsx-button--primary {
+  background-color: var(--ty-red);
+  background-image: linear-gradient(var(--ds-ink), var(--ds-ink));
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: 100% 0;
+  color: var(--ty-white);
+  transition: background-size 400ms var(--ds-ease);
+}
+
+.ty-dsx-button--primary:hover,
+.ty-dsx-button--primary.ty-dsx-button--hover {
+  background-size: 100% 100%;
+}
+
+.ty-dsx-button--outline {
+  @apply border-[1.5px];
+  border-color: var(--ds-ink);
+}
+
+.ty-dsx-button--outline.ty-dsx-button--hover,
+.ty-dsx-button--outline:hover {
+  background: var(--ds-ink);
+  color: var(--ty-white);
+}
+
+.ty-dsx-button--text {
+  @apply h-auto border-b-[1.5px] px-0 py-1.5 text-[13px] tracking-[0.08em] uppercase;
+  border-color: currentcolor;
+}
+
+.ty-dsx-button--text.ty-dsx-button--hover,
+.ty-dsx-button--text:hover {
+  color: var(--ty-red);
+}
+
+.ty-dsx-button--focus {
+  outline: 2px solid var(--ty-red);
+  outline-offset: 3px;
+}
+
+.ty-dsx-button--disabled {
+  @apply opacity-35;
+}
+
+.ty-dsx-button--primary.ty-dsx-button--disabled {
+  @apply border-[1.5px];
+  background: transparent;
+  border-color: currentcolor;
+  color: var(--ds-ink);
+}
+
+.ty-dsx-matrix {
+  @apply grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-[110px_repeat(4,minmax(0,1fr))];
+}
+
+.ty-dsx-matrix__row {
+  @apply grid grid-cols-subgrid items-center gap-y-3 md:col-span-5;
+}
+
+/* Etiquetas y opciones */
+.ty-dsx-chip__item {
+  @apply inline-flex h-8 items-center border px-3 text-[13px] font-semibold;
+  border-color: var(--ds-line);
+}
+
+.ty-dsx-chip__item--on {
+  background: var(--ds-ink);
+  border-color: var(--ds-ink);
+  color: var(--ty-white);
+}
+
+.ty-dsx-chip__item--disabled {
+  @apply opacity-35;
+}
+
+.ty-dsx-chip__button {
+  @apply cursor-pointer;
+}
+
+.ty-dsx-chip__button:hover:not(.ty-dsx-chip__item--on) {
+  border-color: var(--ds-ink);
+}
+
+.ty-dsx-chip {
+  @apply flex flex-col gap-8;
+}
+
+.ty-dsx-chip__states {
+  @apply flex flex-wrap gap-x-10 gap-y-5;
+}
+
+.ty-dsx-chip__state {
+  @apply flex flex-col items-start gap-3;
+}
+
+.ty-dsx-chip__group {
+  @apply flex flex-col gap-3 border-t pt-5;
+  border-color: var(--ds-line);
+}
+
+.ty-dsx-chip__choices {
+  @apply flex flex-wrap gap-2;
+}
+
+.ty-dsx-tag {
+  @apply inline-flex h-[30px] items-center px-3 text-xs font-bold tracking-[0.08em] uppercase;
+  background: var(--ty-red);
+  color: var(--ty-white);
+}
+
+/* Color: cuatro bloques grandes */
+.ty-dsx-color {
+  @apply grid gap-3 sm:grid-cols-2 lg:grid-cols-4;
+}
+
+.ty-dsx-color__block {
+  @apply flex h-72 w-full cursor-pointer flex-col items-start gap-2 border p-5 text-left;
+  border-color: var(--ds-line);
+  transition: transform 300ms var(--ds-ease);
+}
+
+.ty-dsx-color__block:hover {
+  transform: translateY(-4px);
+}
+
+.ty-dsx-color__block--eb0a1e {
+  background: #eb0a1e;
+  color: #fff;
+}
+
+.ty-dsx-color__block--000000 {
+  background: #000;
+  color: #fff;
+}
+
+.ty-dsx-color__block--ffffff {
+  background: #fff;
+  color: #000;
+}
+
+.ty-dsx-color__block--58595b {
+  background: #58595b;
+  color: #fff;
+}
+
+.ty-dsx-color__name {
+  @apply text-2xl font-bold;
+}
+
+.ty-dsx-color__hex {
+  @apply text-base font-semibold tabular-nums;
+}
+
+.ty-dsx-color__use {
+  @apply text-sm leading-[1.35] opacity-80;
+}
+
+.ty-dsx-color__copy {
+  @apply mt-auto text-sm font-semibold underline underline-offset-4;
+}
+
+/* Tipografía: la escala con el estilo real de cada rol */
+.ty-dsx-type {
+  @apply flex flex-col gap-6;
+}
+
+.ty-dsx-type__field {
+  @apply flex flex-col gap-2;
+}
+
+.ty-dsx-type__input {
+  @apply h-12 w-full border px-4 text-base;
+  border-color: var(--ds-line);
+  background: var(--ds-subtle);
+  color: var(--ds-ink);
+}
+
+.ty-dsx-type__input:focus-visible {
+  outline: 2px solid var(--ty-red);
+  outline-offset: 3px;
+}
+
+.ty-dsx-type__list {
+  @apply flex flex-col;
+}
+
+.ty-dsx-type__row {
+  @apply grid items-baseline gap-2 border-t py-5 md:grid-cols-[200px_minmax(0,1fr)] md:gap-8;
+  border-color: var(--ds-line);
+}
+
+.ty-dsx-type__caption {
+  @apply flex flex-col gap-1;
+}
+
+.ty-dsx-type__spec {
+  @apply text-sm leading-[1.35];
+  color: var(--ds-gray);
+}
+
+.ty-dsx-type__sample {
+  @apply leading-[1.1] break-words;
+}
+
+.ty-dsx-type__sample--0 {
+  @apply text-5xl leading-[0.9] font-bold uppercase;
+}
+
+.ty-dsx-type__sample--1 {
+  @apply text-4xl leading-[0.98] font-semibold;
+}
+
+.ty-dsx-type__sample--2 {
+  @apply text-lg leading-[1.45];
+}
+
+.ty-dsx-type__sample--3 {
+  @apply text-base leading-[1.45];
+}
+
+.ty-dsx-type__sample--4 {
+  @apply text-sm;
+}
+
+.ty-dsx-type__sample--5 {
+  @apply text-xs font-semibold tracking-[0.12em] uppercase;
+}
+
+/* Retícula: columnas, márgenes, espacio y esquinas */
+.ty-dsx-grid {
+  @apply flex flex-col gap-8;
+}
+
+.ty-dsx-grid__frame {
+  @apply relative flex h-56 flex-col justify-between border p-6;
+  border-color: var(--ds-line);
+  background: var(--ds-subtle);
+}
+
+.ty-dsx-grid__columns {
+  @apply absolute inset-x-6 inset-y-6 grid gap-3;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.ty-dsx-grid__column {
+  background: rgb(235 10 30 / 0.14);
+}
+
+.ty-dsx-grid__tag,
+.ty-dsx-grid__content {
+  @apply relative z-10 inline-flex self-start px-2 py-1 text-xs font-semibold tracking-[0.1em] uppercase;
+  background: var(--ds-paper);
+}
+
+.ty-dsx-grid__tag--margin {
+  @apply absolute top-1 left-1 z-10;
+}
+
+.ty-dsx-grid__content {
+  @apply self-end;
+}
+
+.ty-dsx-grid__row {
+  @apply grid gap-8 md:grid-cols-2;
+}
+
+.ty-dsx-grid__block {
+  @apply flex flex-col gap-4;
+}
+
+.ty-dsx-grid__spacing {
+  @apply flex items-end gap-4;
+}
+
+.ty-dsx-grid__step {
+  @apply flex flex-col items-start gap-2;
+}
+
+.ty-dsx-grid__bar {
+  @apply block bg-[var(--ty-red)];
+  width: var(--bar-size, 8px);
+  height: var(--bar-size, 8px);
+}
+
+.ty-dsx-grid__bar--8 {
+  --bar-size: 8px;
+}
+
+.ty-dsx-grid__bar--16 {
+  --bar-size: 16px;
+}
+
+.ty-dsx-grid__bar--24 {
+  --bar-size: 24px;
+}
+
+.ty-dsx-grid__bar--32 {
+  --bar-size: 32px;
+}
+
+.ty-dsx-grid__bar--48 {
+  --bar-size: 48px;
+}
+
+.ty-dsx-grid__bar--72 {
+  --bar-size: 72px;
+}
+
+.ty-dsx-grid__size {
+  @apply text-sm font-semibold tabular-nums;
+}
+
+.ty-dsx-grid__corners {
+  @apply flex gap-4;
+}
+
+.ty-dsx-grid__corner {
+  @apply flex h-24 w-32 items-center justify-center border-2 text-sm font-semibold;
+  border-color: var(--ds-ink);
+}
+
+.ty-dsx-grid__corner--rounded {
+  @apply rounded-3xl opacity-35;
+  border-style: dashed;
+}
+
+/* Formas */
+.ty-dsx-shape {
+  @apply grid gap-3 sm:grid-cols-2 lg:grid-cols-4;
+}
+
+.ty-dsx-shape__tile {
+  @apply flex flex-col gap-3;
+}
+
+.ty-dsx-shape__art {
+  @apply flex h-40 items-center justify-center gap-1.5 border text-6xl font-bold;
+  border-color: var(--ds-line);
+  background: var(--ds-subtle);
+}
+
+.ty-dsx-shape__art--cross {
+  @apply font-light;
+}
+
+.ty-dsx-shape__square {
+  @apply size-5;
+  background: var(--ds-line);
+}
+
+.ty-dsx-shape__square--on {
+  background: var(--ty-red);
+}
+
+.ty-dsx-shape__tag {
+  @apply inline-flex h-[30px] items-center px-3 text-xs font-bold tracking-[0.08em] uppercase;
+  background: var(--ty-red);
+  color: var(--ty-white);
+}
+
+/* Movimiento */
+.ty-dsx-motion {
+  @apply flex flex-col gap-8;
+}
+
+.ty-dsx-motion__stage {
+  @apply relative flex flex-col gap-4 border p-6;
+  border-color: var(--ds-line);
+  background: var(--ds-subtle);
+}
+
+.ty-dsx-motion__cards {
+  @apply grid gap-3 sm:grid-cols-4;
+}
+
+.ty-dsx-motion__card {
+  @apply flex h-28 flex-col justify-between border p-4 text-base font-semibold;
+  border-color: var(--ds-line);
+  background: var(--ds-paper);
+  animation: ty-dsx-rise 800ms var(--ds-ease) both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+
+.ty-dsx-motion__number {
+  @apply text-xs tabular-nums;
+  color: var(--ty-red);
+}
+
+.ty-dsx-motion__replay {
+  @apply cursor-pointer self-start border px-3.5 py-2 text-sm font-semibold;
+  border-color: var(--ty-red);
+  color: var(--ty-red);
+}
+
+.ty-dsx-motion__row {
+  @apply grid gap-8 md:grid-cols-2;
+}
+
+.ty-dsx-motion__block {
+  @apply flex flex-col items-start gap-3;
+}
+
+.ty-dsx-motion__curve {
+  @apply size-32 overflow-visible;
+}
+
+.ty-dsx-motion__axis {
+  fill: none;
+  stroke: var(--ds-line);
+  stroke-width: 1;
+}
+
+.ty-dsx-motion__path {
+  fill: none;
+  stroke: var(--ty-red);
+  stroke-width: 2;
+}
+
+@keyframes ty-dsx-rise {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+    clip-path: inset(0 0 100% 0);
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ty-dsx-motion__card {
+    animation: none;
+  }
+
+  .ty-dsx-button--primary {
+    transition: none;
+  }
+}
+
+/* Accesibilidad */
+.ty-dsx-access {
+  @apply flex flex-col gap-8;
+}
+
+.ty-dsx-access__pairs {
+  @apply grid gap-3 sm:grid-cols-2 lg:grid-cols-4;
+}
+
+.ty-dsx-access__pair {
+  @apply flex h-40 flex-col justify-between border p-4;
+  border-color: var(--ds-line);
+  background: var(--pair-bg);
+  color: var(--pair-fg);
+}
+
+.ty-dsx-access__ratio {
+  @apply text-3xl font-bold tabular-nums;
+}
+
+.ty-dsx-access__name {
+  @apply text-sm font-semibold;
+}
+
+.ty-dsx-access__touch {
+  @apply inline-flex h-[52px] items-center justify-center border-x-4 px-6 text-base font-bold tabular-nums;
+  border-color: var(--ty-red);
+  background: var(--ds-subtle);
+}
+
+/* Panel de pregunta */
+.ty-dsx-question {
+  @apply relative flex flex-col gap-5 border p-6 pl-8;
+  border-color: var(--ds-line);
+}
+
+.ty-dsx-question::before {
+  @apply absolute inset-y-0 left-0 w-0.5 content-[''];
+  background: var(--ty-red);
+}
+
+.ty-dsx-question__step {
+  @apply text-xs font-semibold tracking-[0.12em] uppercase;
+  color: var(--ds-gray);
+}
+
+.ty-dsx-question__title {
+  @apply max-w-xl text-5xl leading-[0.98] font-semibold;
+}
+
+.ty-dsx-question__progress {
+  @apply flex gap-1.5;
+}
+
+.ty-dsx-question__square {
+  @apply size-3;
+  background: var(--ds-line);
+}
+
+.ty-dsx-question__square--on {
+  background: var(--ty-red);
+}
+
+.ty-dsx-question__actions {
+  @apply flex flex-wrap items-center gap-6;
+}
+
+/* Tarjetas de modelo */
+.ty-dsx-cards {
+  @apply grid gap-3 md:grid-cols-3;
+}
+
+.ty-dsx-card {
+  @apply flex flex-col items-start gap-3 border p-6;
+  border-color: var(--ds-line);
+}
+
+.ty-dsx-card--main {
+  border-color: var(--ty-red);
+  border-width: 2px;
+}
+
+.ty-dsx-card__model {
+  @apply mt-2 text-3xl leading-[0.9] font-bold uppercase;
+}
+
+.ty-dsx-card__price {
+  @apply text-base;
+  color: var(--ds-gray);
+}
+
+/* Razones */
+.ty-dsx-reasons {
+  @apply flex max-w-xl flex-col gap-4;
+}
+
+.ty-dsx-reasons__item {
+  @apply relative pl-9 text-xl leading-[1.35];
+}
+
+.ty-dsx-reasons__item::before {
+  @apply absolute top-1 left-0 size-5 content-[''];
+  background: var(--ty-red);
+}
+
+/* Comparador */
+.ty-dsx-compare {
+  @apply flex flex-col gap-6;
+}
+
+.ty-dsx-compare__bar {
+  @apply flex flex-wrap items-center justify-between gap-4 border-t pt-5;
+  border-color: var(--ds-line);
+}
+
+.ty-dsx-compare__count {
+  @apply flex flex-col text-base;
+}
+
+.ty-dsx-compare__hint {
+  @apply text-sm;
+  color: var(--ds-gray);
+}
+
+/* Nota legal */
+.ty-dsx-legal {
+  @apply flex max-w-xl flex-col items-start gap-0 border p-6;
+  border-color: var(--ds-line);
+}
+
+.ty-dsx-legal__content {
+  @apply text-xl font-semibold;
+}
+
+.ty-dsx-legal__gap {
+  @apply my-1 flex h-8 items-center border-y border-dashed px-3 text-xs font-semibold tabular-nums;
+  border-color: var(--ty-red);
+  color: var(--ty-red);
+}
+
+.ty-dsx-legal__text {
+  @apply text-[13px];
+  color: var(--ds-gray);
+}

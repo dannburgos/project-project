@@ -18,14 +18,14 @@ export type ToyotaItem = {
 };
 
 // Cifra destacada: el número cuenta desde cero al llegar a la vista
-export type ToyotaStat = {
-  value: number;
+// Un paso del recorrido de hoy
+export type ToyotaJourneyStep = {
   label: string;
 };
 
-export type ToyotaTable = {
-  columns: readonly string[];
-  rows: readonly (readonly string[])[];
+export type ToyotaStat = {
+  value: number;
+  label: string;
 };
 
 // Un cambio de la experiencia tradicional a la propuesta, en pocas palabras
@@ -49,7 +49,11 @@ export type ToyotaFact = {
 // Encabezado de un módulo: eyebrow, titular y bajada
 export type ToyotaHead = {
   eyebrow?: string;
+  // El eyebrow también pasa a rojo con el scroll
+  isEyebrowAccent?: boolean;
   title: string;
+  // Palabras del titular que pasan a rojo con el scroll
+  accents?: readonly string[];
   lead?: string;
 };
 
@@ -70,6 +74,12 @@ export type ToyotaOpener = {
   word: string;
   summary: string;
   background: ToyotaVisual;
+  // La foto de fondo es vertical (más alta que la pantalla): con el scroll se
+  // recorre entera, de arriba abajo, sin acercarla
+  isBackgroundTall?: boolean;
+  // La foto de fondo es panorámica (más ancha que la pantalla): con el scroll
+  // se recorre de izquierda a derecha, sin acercarla
+  isBackgroundWide?: boolean;
   window: ToyotaVisual;
 };
 
@@ -84,6 +94,9 @@ export type ToyotaBenchmarkReference = {
   name: string;
   strength: string;
   opportunity: string;
+  // De los siete criterios del análisis, los que esa referente cumple bien
+  // (los de su fortaleza)
+  criteria: readonly string[];
   visual: ToyotaVisual;
 };
 
@@ -97,15 +110,12 @@ export type ToyotaTagMatrix = {
   }[];
 };
 
-export type ToyotaMoscowSegment = {
-  value: number;
-  label: string;
-};
-
 export type ToyotaLayer = {
   number: string;
   name: string;
   text: string;
+  // Lo que esa capa garantiza para que la experiencia sea confiable
+  guarantees: readonly string[];
 };
 
 // Una etapa del concepto, sobre los pasos del flujo que abarca
@@ -115,18 +125,10 @@ export type ToyotaFlowStage = {
   isHighlight?: boolean;
 };
 
-export type ToyotaResultVariant = {
-  name: string;
-  title: string;
-  example: string;
-};
-
 // Etiquetas compartidas por los capítulos
 export type ToyotaLabels = {
   navigation: string;
   menu: string;
-  trackHint: string;
-  trackProgress: string;
   pending: string;
   // El auto del avance: su nombre como control y la pista al pasarle el cursor
   carControl: string;
@@ -149,9 +151,8 @@ export type ToyotaOverview = {
   opener: ToyotaOpener;
   context: {
     head: ToyotaHead;
-    stats: readonly ToyotaStat[];
-    currentLabel: string;
-    currentSteps: readonly ToyotaStep[];
+    journeyLabel: string;
+    journey: readonly ToyotaJourneyStep[];
   };
   // La solución: su titular (la frase del proyecto) va sobre los pilares
   description: {
@@ -169,14 +170,12 @@ export type ToyotaOverview = {
   };
 };
 
-// 02 · Discovery: benchmark, problema y usuario, la pregunta guía y
+// 02 · Discovery: benchmark, problema y usuario, y
 // el trabajo central
 export type ToyotaDiscovery = {
   opener: ToyotaOpener;
   benchmark: {
     head: ToyotaHead;
-    criteriaLabel: string;
-    criteria: readonly string[];
     strengthLabel: string;
     opportunityLabel: string;
     references: readonly ToyotaBenchmarkReference[];
@@ -185,22 +184,20 @@ export type ToyotaDiscovery = {
     head: ToyotaHead;
     model: readonly ToyotaStep[];
   };
-  // Para quién: los segmentos con su necesidad principal y, en etiquetas, sus
-  // puntos de dolor (su descripción completa va en la tabla de Estrategia)
+  // La persona usuaria en un solo bloque: su foto, quiénes son (segmentos con
+  // su necesidad), dónde se traban (puntos de dolor, en etiquetas) y el
+  // trabajo que quieren lograr (Job Statement)
   user: {
     head: ToyotaHead;
+    // Foto de la persona usuaria
+    visual: ToyotaVisual;
+    segmentsLabel: string;
     segments: readonly ToyotaItem[];
     painsLabel: string;
     pains: readonly string[];
-  };
-  hmw: {
-    eyebrow: string;
-    question: string;
-  };
-  jobs: {
-    head: ToyotaHead;
-    statementLabel: string;
-    statement: readonly ToyotaItem[];
+    jobLabel: string;
+    // Cuando… quiero… para… (la palabra clave va en rojo)
+    job: readonly ToyotaItem[];
   };
 };
 
@@ -208,25 +205,13 @@ export type ToyotaDiscovery = {
 export type ToyotaStrategy = {
   opener: ToyotaOpener;
   value: {
-    head: ToyotaHead;
     promise: string;
     shifts: ToyotaShiftSet;
     canvas: ToyotaVisual;
   };
-  // Trazabilidad: cada punto de dolor con su objetivo, su criterio de éxito y
-  // su métrica, en una sola tabla
-  goals: {
-    head: ToyotaHead;
-    table: ToyotaTable;
-    note: string;
-  };
   ai: {
     head: ToyotaHead;
     layers: readonly ToyotaLayer[];
-    rule: string;
-    trustLabel: string;
-    mechanisms: readonly string[];
-    trustRule: string;
   };
 };
 
@@ -235,10 +220,6 @@ export type ToyotaStrategy = {
 export type ToyotaProduct = {
   opener: ToyotaOpener;
   mvp: {
-    head: ToyotaHead;
-    statement: string;
-    total: string;
-    moscow: readonly ToyotaMoscowSegment[];
     behaviorsLabel: string;
     behaviors: readonly string[];
   };
@@ -248,7 +229,6 @@ export type ToyotaProduct = {
     stats: readonly ToyotaStat[];
     matrixTitle: string;
     matrix: ToyotaTagMatrix;
-    rules: readonly ToyotaItem[];
   };
   // El flujo como diagrama: el camino principal, un ciclo que vuelve atrás,
   // las salidas hacia Toyota y el resultado abierto en sus variantes. El paso
@@ -264,19 +244,117 @@ export type ToyotaProduct = {
     loop: { label: string; text: string; from: number; to: number };
     exitsLabel: string;
     exits: readonly string[];
-    resultsLabel: string;
-    results: readonly ToyotaResultVariant[];
-    exampleLabel: string;
     decision: string;
   };
-  // El prototipo y el sistema visual: las pantallas se construyen al final;
-  // por ahora son cajas grises con su nombre
+  // El sistema de diseño del prototipo
   design: {
     head: ToyotaHead;
-    screens: readonly ToyotaVisual[];
-    systemLabel: string;
-    decisions: readonly string[];
+    system: ToyotaDesignSystem;
   };
+};
+
+// Sistema de diseño interactivo: un índice de fundamentos y esenciales y una
+// ficha por elemento (valores, qué usar y qué evitar). Al elegir un elemento
+// en el índice, su ficha reemplaza a la anterior.
+export type ToyotaDesignSpec = {
+  label: string;
+  value: string;
+  // Color que se muestra junto al valor (para los colores de la marca)
+  swatch?: string;
+};
+
+export type ToyotaDesignItem = {
+  id: string;
+  group: 'foundation' | 'essential';
+  number: string;
+  name: string;
+  summary: string;
+  specs: readonly ToyotaDesignSpec[];
+  use: string;
+  avoid: string;
+};
+
+// Textos de las muestras vivas del sistema (lo que se ve en cada hoja)
+export type ToyotaDesignSample = {
+  type: { fieldLabel: string; placeholder: string; text: string };
+  grid: {
+    marginLabel: string;
+    columnLabel: string;
+    contentLabel: string;
+    spacingLabel: string;
+    spacing: readonly number[];
+    cornersLabel: string;
+    squareLabel: string;
+    roundedLabel: string;
+  };
+  shape: {
+    squareLabel: string;
+    arrowLabel: string;
+    tagLabel: string;
+    crossLabel: string;
+    tag: string;
+  };
+  motion: {
+    replay: string;
+    curveLabel: string;
+    cards: readonly string[];
+    buttonLabel: string;
+    buttonText: string;
+  };
+  access: {
+    pairs: readonly { name: string; fg: string; bg: string }[];
+    ratioLabel: string;
+    focusLabel: string;
+    touchLabel: string;
+    focusText: string;
+  };
+  button: {
+    variants: readonly string[];
+    states: readonly string[];
+    text: string;
+    link: string;
+  };
+  chip: {
+    stateLabels: readonly string[];
+    options: readonly string[];
+    groupLabel: string;
+    tagLabel: string;
+    tag: string;
+  };
+  question: {
+    step: string;
+    title: string;
+    options: readonly string[];
+    primary: string;
+    secondary: string;
+    progressTotal: number;
+    progressCurrent: number;
+  };
+  cards: readonly { tag: string; model: string; price: string }[];
+  reasons: readonly string[];
+  compare: {
+    models: readonly string[];
+    counterLabel: string;
+    button: string;
+    hint: string;
+  };
+  legal: { content: string; text: string };
+};
+
+export type ToyotaDesignSystem = {
+  foundationsLabel: string;
+  essentialsLabel: string;
+  // Nombre del índice, para el lector de pantalla
+  indexLabel: string;
+  labels: {
+    use: string;
+    avoid: string;
+    copy: string;
+    copied: string;
+  };
+  sample: ToyotaDesignSample;
+  note: string;
+  items: readonly ToyotaDesignItem[];
 };
 
 // 05 · Validation: solo con evidencia real
