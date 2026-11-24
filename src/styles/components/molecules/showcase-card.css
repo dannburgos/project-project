@@ -20,6 +20,11 @@
   @apply aspect-4/3;
 }
 
+/* De tres en tres (cuadrícula de Work): más alta que ancha */
+.showcase-card--portrait {
+  @apply aspect-4/5;
+}
+
 .showcase-card__media {
   @apply absolute inset-0;
 }

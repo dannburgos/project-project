@@ -53,6 +53,7 @@
 @import './components/organisms/design-system-story.css';
 @import './components/organisms/pet-design-system.css';
 @import './components/organisms/work-carousel.css';
+@import './components/organisms/work-grid.css';
 @import './components/organisms/closing-contact.css';
 @import './components/organisms/page-curtain.css';
 @import './components/organisms/intro.css';

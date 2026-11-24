@@ -1,0 +1,48 @@
+/* Work, de momento: encabezado y proyectos en una cuadrícula de tres por fila
+   (dos en tabletas, una en celular). */
+.work-grid {
+  @apply bg-background relative z-10 flex flex-col gap-8 px-4 pb-16 md:gap-12 md:px-8 md:pb-24 lg:px-12;
+  padding-top: calc(var(--site-header-clearance, 5.5rem) + 24px);
+  min-height: 100svh;
+}
+
+.work-grid__head {
+  @apply flex flex-col gap-3;
+}
+
+.work-grid__eyebrow {
+  @apply text-sm font-medium tracking-[0.14em] uppercase;
+  color: var(--muted-foreground);
+}
+
+.work-grid__title {
+  @apply text-6xl leading-none font-semibold tracking-tight md:text-8xl;
+}
+
+.work-grid__text {
+  @apply max-w-xl text-lg;
+  color: var(--muted-foreground);
+}
+
+.work-grid__list {
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3;
+}
+
+.work-grid__item {
+  @apply min-w-0;
+}
+
+/* Tres por fila: el texto de la tarjeta baja de tamaño para que no la llene */
+.work-grid__item .showcase-card__content {
+  @apply gap-3 p-5 md:p-6;
+}
+
+.work-grid__item .showcase-card__title {
+  @apply text-2xl md:text-3xl;
+}
+
+/* La etiqueta de la imagen pendiente va al centro: arriba chocaría con las
+   palabras clave en tarjetas angostas */
+.work-grid__item .showcase-card__placeholder {
+  @apply items-center justify-center;
+}

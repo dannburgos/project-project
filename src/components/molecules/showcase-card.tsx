@@ -13,7 +13,7 @@ type ShowcaseCardProps = {
   description: string;
   actionLabel: string;
   mediaLabel: string;
-  size?: 'full' | 'half' | 'fill';
+  size?: 'full' | 'half' | 'fill' | 'portrait';
   // Palabras clave del proyecto, arriba a la derecha
   tags?: readonly string[];
 };
@@ -38,7 +38,8 @@ export function ShowcaseCard({
         'showcase-card',
         size === 'full' && 'showcase-card--full',
         size === 'half' && 'showcase-card--half',
-        size === 'fill' && 'showcase-card--fill'
+        size === 'fill' && 'showcase-card--fill',
+        size === 'portrait' && 'showcase-card--portrait'
       )}
     >
       <div className="showcase-card__media" aria-hidden="true">

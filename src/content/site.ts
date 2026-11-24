@@ -135,6 +135,8 @@ export const siteContent = {
     // Pantalla inicial de Work, en gris, antes del primer proyecto
     introEyebrow: 'Portafolio',
     introText: '6 proyectos. Usa el scroll o las flechas para recorrerlos.',
+    // Cuadrícula de Work (de momento reemplaza al carrusel)
+    gridText: 'Casos de estudio de producto y experiencia digital.',
     previous: 'Proyecto anterior',
     next: 'Proyecto siguiente',
     showProject: 'Mostrar',
