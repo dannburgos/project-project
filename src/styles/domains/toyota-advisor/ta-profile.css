@@ -1,0 +1,661 @@
+/* Pregunta 2 (configurador), Tu perfil, el panel de edición y el análisis */
+
+/* ─── Pregunta 2: filas tipo configurador ─────────────────────────── */
+
+.ta-ask__config {
+  @apply mt-7 flex flex-col;
+}
+
+.ta-config {
+  @apply grid items-center gap-6 border-t py-5;
+  grid-template-columns: 220px minmax(0, 1fr);
+  border-color: rgb(255 255 255 / 0.1);
+}
+
+.ta-config:last-child {
+  @apply border-b;
+}
+
+.ta-config__head {
+  @apply flex flex-col gap-1.5;
+}
+
+.ta-config__index {
+  @apply flex size-6 items-center justify-center border text-xs font-bold tabular-nums;
+  border-color: rgb(255 255 255 / 0.24);
+  color: rgb(255 255 255 / 0.56);
+  transition:
+    background 260ms var(--ta-ease),
+    border-color 260ms var(--ta-ease),
+    color 260ms var(--ta-ease);
+}
+
+/* Fila respondida: su número se vuelve un cuadrado rojo */
+.ta-config--done .ta-config__index {
+  background: var(--ta-red);
+  border-color: var(--ta-red);
+  color: var(--ta-paper);
+}
+
+.ta-config__label {
+  @apply text-lg leading-[1.25] font-semibold;
+  text-wrap: balance;
+}
+
+.ta-config__optional {
+  @apply text-xs font-semibold tracking-[0.12em] uppercase;
+  color: rgb(255 255 255 / 0.48);
+}
+
+.ta-config__options {
+  @apply flex gap-2;
+}
+
+.ta-config__option {
+  @apply relative flex h-[88px] min-w-0 flex-1 cursor-pointer flex-col items-start justify-center gap-1.5 border px-4 text-left text-base font-semibold;
+  background: rgb(255 255 255 / 0.03);
+  border-color: rgb(255 255 255 / 0.16);
+  transition:
+    background 260ms var(--ta-ease),
+    border-color 260ms var(--ta-ease),
+    color 260ms var(--ta-ease);
+}
+
+.ta-config__option:hover {
+  background: rgb(255 255 255 / 0.06);
+  border-color: rgb(255 255 255 / 0.48);
+}
+
+.ta-config__option:focus-visible {
+  outline: 2px solid var(--ta-red);
+  outline-offset: 3px;
+}
+
+.ta-config__option--on,
+.ta-config__option--on:hover {
+  background: var(--ta-paper);
+  border-color: var(--ta-paper);
+  color: var(--ta-ink);
+}
+
+/* «Sin preferencia» y «Aún no lo sé»: más angostas y sin relleno */
+.ta-config__option--soft {
+  @apply max-w-40 flex-none basis-40 items-center text-center;
+  background: transparent;
+  border-style: dashed;
+  color: rgb(255 255 255 / 0.72);
+}
+
+.ta-config__option--soft.ta-config__option--on {
+  border-style: solid;
+}
+
+/* Puestos: un cuadrado por persona; al elegir, se encienden en rojo */
+.ta-config__seats {
+  @apply flex gap-1;
+}
+
+.ta-config__seats span {
+  @apply block size-2.5;
+  background: rgb(255 255 255 / 0.32);
+  transition: background 260ms var(--ta-ease);
+}
+
+.ta-config__option:hover .ta-config__seats span {
+  background: rgb(255 255 255 / 0.6);
+}
+
+.ta-config__option--on .ta-config__seats span,
+.ta-config__option--on:hover .ta-config__seats span {
+  background: var(--ta-red);
+  animation: ta-pop 320ms var(--ta-ease) both;
+}
+
+.ta-config__option--on .ta-config__seats span:nth-child(2) {
+  animation-delay: 40ms;
+}
+
+.ta-config__option--on .ta-config__seats span:nth-child(3) {
+  animation-delay: 80ms;
+}
+
+.ta-config__option--on .ta-config__seats span:nth-child(4) {
+  animation-delay: 120ms;
+}
+
+.ta-config__option--on .ta-config__seats span:nth-child(5) {
+  animation-delay: 160ms;
+}
+
+.ta-config__option--on .ta-config__seats span:nth-child(6) {
+  animation-delay: 200ms;
+}
+
+.ta-config__option--on .ta-config__seats span:nth-child(7) {
+  animation-delay: 240ms;
+}
+
+.ta-config__score {
+  @apply absolute top-3 right-3 text-xs font-bold;
+  color: rgb(255 255 255 / 0);
+  transition: color 260ms var(--ta-ease);
+}
+
+.ta-config__option:hover .ta-config__score {
+  color: rgb(255 255 255 / 0.56);
+}
+
+.ta-config__option--on .ta-config__score,
+.ta-config__option--on:hover .ta-config__score {
+  color: var(--ta-red);
+}
+
+/* ─── Tu perfil ───────────────────────────────────────────────────── */
+
+.ta-profile {
+  @apply relative flex h-full w-[1440px] flex-col overflow-hidden;
+  background: var(--ta-paper);
+  color: var(--ta-ink);
+}
+
+.ta-ask__bar--light {
+  border-color: var(--ta-line);
+}
+
+.ta-ask__bar--light .ta-ask__module {
+  border-color: var(--ta-line);
+}
+
+.ta-ask__bar--light .ta-ask__exit {
+  color: var(--ta-gray);
+}
+
+.ta-ask__bar--light .ta-ask__exit:hover {
+  color: var(--ta-ink);
+}
+
+/* Avance completo sobre fondo claro */
+.ta-profile__rail .ta-rail__tick {
+  background: rgb(0 0 0 / 0.1);
+}
+
+.ta-profile__rail .ta-rail__tick--done {
+  background: var(--ta-ink);
+}
+
+.ta-profile__rail .ta-rail__label,
+.ta-profile__rail .ta-rail__block--done .ta-rail__label {
+  color: var(--ta-gray);
+}
+
+.ta-profile__rail .ta-rail__counter {
+  @apply flex items-center gap-2;
+  color: var(--ta-ink);
+}
+
+.ta-profile__rail .ta-rail__counter::before {
+  @apply block size-2 content-[''];
+  background: var(--ta-red);
+}
+
+.ta-profile__body {
+  @apply grid min-h-0 flex-1 gap-14 pt-8 pr-12 pl-12;
+  grid-template-columns: 500px minmax(0, 1fr);
+}
+
+.ta-profile__side {
+  @apply flex flex-col pb-10;
+}
+
+.ta-profile__title {
+  @apply mt-4 text-5xl leading-[1.02] font-bold;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  animation: ta-rise 700ms var(--ta-ease) both;
+}
+
+.ta-profile__lead {
+  @apply mt-3 text-lg;
+  color: var(--ta-gray);
+}
+
+/* Lectura del sistema: tarjeta negra, lo que sale de tus respuestas en
+   blanco y el resto en gris */
+.ta-reading {
+  @apply relative mt-7 flex flex-col gap-3 p-7;
+  background: var(--ta-ink);
+  color: rgb(255 255 255 / 0.56);
+}
+
+.ta-reading::before {
+  @apply absolute top-0 left-0 h-full w-1 content-[''];
+  background: var(--ta-red);
+}
+
+.ta-reading__label {
+  @apply flex items-center gap-2.5 text-sm font-semibold tracking-[0.14em] uppercase;
+  color: var(--ta-paper);
+}
+
+.ta-reading__spark {
+  @apply block size-2.5;
+  background: var(--ta-red);
+  animation: ta-blink 1600ms ease-in-out infinite;
+}
+
+.ta-reading__text {
+  @apply text-xl leading-[1.45];
+}
+
+.ta-reading__text b {
+  @apply font-semibold;
+  color: var(--ta-paper);
+  background: linear-gradient(var(--ta-red), var(--ta-red)) no-repeat 0 100% /
+    100% 2px;
+}
+
+.ta-reading__note {
+  @apply text-sm;
+  color: rgb(255 255 255 / 0.48);
+}
+
+.ta-profile__next {
+  @apply mt-auto flex flex-col gap-3 border-t pt-6;
+  border-color: var(--ta-line);
+}
+
+.ta-profile__count {
+  @apply flex items-baseline gap-3 text-lg;
+  color: var(--ta-gray);
+}
+
+.ta-profile__count b {
+  @apply text-[40px] leading-none font-black tabular-nums;
+  color: var(--ta-red);
+}
+
+.ta-profile__leader {
+  @apply -mt-1 mb-2 flex items-center gap-2 text-base;
+  color: var(--ta-gray);
+}
+
+.ta-profile__leader b {
+  color: var(--ta-ink);
+}
+
+.ta-profile__next .ta-button--large {
+  @apply w-full justify-between;
+}
+
+.ta-profile__back {
+  @apply flex items-center gap-2 self-start text-sm font-semibold;
+  color: var(--ta-gray);
+  transition: color 200ms ease;
+}
+
+.ta-profile__back:hover {
+  color: var(--ta-ink);
+}
+
+/* Respuestas: una fila por parte, con lo que suma y su «Editar» */
+.ta-profile__rows {
+  @apply flex flex-col self-start border-t;
+  border-color: var(--ta-ink);
+}
+
+.ta-row {
+  @apply relative grid min-h-[96px] items-center gap-6 border-b px-5 py-4;
+  grid-template-columns: 152px minmax(0, 1fr) 176px 56px;
+  border-color: var(--ta-line);
+  transition: background 260ms var(--ta-ease);
+}
+
+.ta-row::before {
+  @apply absolute inset-y-0 left-0 w-1 origin-top content-[''];
+  background: var(--ta-red);
+  scale: 1 0;
+  transition: scale 320ms var(--ta-ease);
+}
+
+.ta-row:hover {
+  background: var(--ta-mist);
+}
+
+.ta-row:hover::before,
+.ta-row--editing::before {
+  scale: 1 1;
+}
+
+.ta-row--editing {
+  background: var(--ta-mist);
+}
+
+.ta-row__label {
+  @apply text-sm font-semibold tracking-[0.1em] uppercase;
+  color: var(--ta-gray);
+}
+
+.ta-row__values {
+  @apply flex flex-wrap gap-2;
+}
+
+.ta-row__value {
+  @apply border px-3 py-1.5 text-base font-semibold;
+  border-color: var(--ta-ink);
+}
+
+.ta-row__empty {
+  @apply flex items-baseline gap-2 text-base;
+  color: var(--ta-gray);
+}
+
+.ta-row__empty i {
+  @apply text-sm not-italic;
+  color: rgb(0 0 0 / 0.4);
+}
+
+.ta-row__sums {
+  @apply flex flex-wrap gap-1.5;
+}
+
+.ta-row__sum {
+  @apply text-sm font-bold;
+  color: var(--ta-red);
+}
+
+.ta-row__sum:not(:last-child)::after {
+  content: ' ·';
+  color: rgb(0 0 0 / 0.3);
+}
+
+.ta-row__none {
+  @apply text-sm;
+  color: rgb(0 0 0 / 0.4);
+}
+
+.ta-row__edit {
+  @apply cursor-pointer justify-self-end border-b-[1.5px] pb-0.5 text-sm font-bold;
+  border-color: currentcolor;
+  transition: color 200ms ease;
+}
+
+.ta-row__edit:hover,
+.ta-row--editing .ta-row__edit {
+  color: var(--ta-red);
+}
+
+/* ─── Panel de edición ────────────────────────────────────────────── */
+
+.ta-drawer__scrim {
+  @apply absolute inset-0 top-16;
+  background: rgb(0 0 0 / 0.48);
+  animation: ta-fade 400ms ease both;
+}
+
+.ta-drawer {
+  @apply absolute top-16 right-0 bottom-0 flex w-[640px] flex-col px-12 pt-6 pb-8;
+  background: var(--ta-panel);
+  color: var(--ta-paper);
+  box-shadow: -24px 0 48px rgb(0 0 0 / 0.32);
+  animation: ta-drawer-in 560ms var(--ta-ease) both;
+}
+
+.ta-drawer__head {
+  @apply mb-5 flex items-center justify-between border-b pb-4;
+  border-color: rgb(255 255 255 / 0.1);
+}
+
+.ta-drawer__eyebrow {
+  @apply text-sm font-semibold tracking-[0.14em] uppercase;
+  color: rgb(255 255 255 / 0.56);
+}
+
+.ta-drawer__close {
+  @apply flex size-10 cursor-pointer items-center justify-center border;
+  border-color: rgb(255 255 255 / 0.2);
+  transition: border-color 200ms ease;
+}
+
+.ta-drawer__close:hover {
+  border-color: var(--ta-paper);
+}
+
+.ta-drawer__title {
+  @apply mt-3 text-4xl leading-[1.05] font-semibold;
+  letter-spacing: -0.01em;
+}
+
+.ta-drawer__options {
+  @apply mt-5 grid grid-cols-1 gap-1.5;
+}
+
+.ta-drawer__options .ta-tile {
+  @apply h-14;
+}
+
+.ta-drawer__impact {
+  @apply mt-4 flex items-center gap-2 text-base;
+  color: rgb(255 255 255 / 0.72);
+}
+
+.ta-drawer__impact span {
+  @apply mr-1 text-xs font-semibold tracking-[0.12em] uppercase;
+  color: rgb(255 255 255 / 0.48);
+}
+
+.ta-drawer__impact b {
+  color: var(--ta-paper);
+}
+
+.ta-drawer__actions {
+  @apply mt-auto flex items-center gap-3 border-t pt-6;
+  border-color: rgb(255 255 255 / 0.1);
+}
+
+.ta-drawer__keep {
+  @apply ml-auto max-w-40 text-right text-sm;
+  color: rgb(255 255 255 / 0.48);
+}
+
+/* ─── Análisis ────────────────────────────────────────────────────── */
+
+.ta-analysis {
+  @apply flex h-full w-[1440px] flex-col overflow-hidden;
+  background: var(--ta-panel);
+  color: var(--ta-paper);
+}
+
+.ta-analysis__top {
+  @apply flex items-end justify-between gap-12 px-12 pt-14;
+}
+
+.ta-analysis__title {
+  @apply mt-5 text-[96px] leading-[0.9] font-black uppercase;
+  letter-spacing: -0.02em;
+}
+
+.ta-analysis__profile {
+  @apply flex max-w-[460px] flex-col items-end gap-3 pb-2;
+}
+
+.ta-analysis__label {
+  @apply text-sm font-semibold tracking-[0.14em] uppercase;
+  color: rgb(255 255 255 / 0.56);
+}
+
+.ta-analysis__tags {
+  @apply flex flex-wrap justify-end gap-2;
+}
+
+.ta-analysis__tags li {
+  @apply border px-3 py-1.5 text-base font-semibold;
+  border-color: rgb(255 255 255 / 0.24);
+  animation: ta-tag-in 520ms var(--ta-ease) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+/* Carril de modelos: la línea roja los recorre de izquierda a derecha y
+   cada uno se enciende cuando pasa */
+.ta-analysis__lane {
+  @apply relative mx-12 mt-12 border-y py-8;
+  border-color: rgb(255 255 255 / 0.1);
+}
+
+.ta-analysis__beam {
+  @apply absolute inset-y-0 z-10 block w-0.5;
+  background: var(--ta-red);
+  box-shadow: 0 0 20px 4px rgb(235 10 30 / 0.5);
+  animation: ta-lane 4800ms var(--ta-ease) infinite;
+}
+
+.ta-analysis__beam::before {
+  @apply absolute inset-y-0 right-0.5 block w-32 content-[''];
+  background: linear-gradient(90deg, transparent, rgb(235 10 30 / 0.18));
+}
+
+.ta-analysis__models {
+  @apply grid grid-cols-6 gap-4;
+}
+
+.ta-analysis__model {
+  @apply flex flex-col gap-1.5;
+  animation: ta-light 4800ms var(--ta-ease) infinite;
+  animation-delay: calc(var(--i, 0) * 680ms);
+}
+
+.ta-analysis__visual {
+  @apply mb-3 h-[200px];
+}
+
+.ta-analysis__name {
+  @apply text-lg font-bold;
+}
+
+.ta-analysis__price {
+  @apply text-sm tabular-nums;
+  color: rgb(255 255 255 / 0.56);
+}
+
+.ta-analysis__match {
+  @apply mt-1 self-start border px-2 py-1 text-xs font-bold tracking-[0.08em] uppercase;
+  border-color: rgb(255 255 255 / 0.24);
+}
+
+.ta-analysis__model--lead .ta-analysis__visual {
+  outline: 2px solid var(--ta-red);
+  outline-offset: 4px;
+}
+
+.ta-analysis__model--lead .ta-analysis__match {
+  background: var(--ta-red);
+  border-color: var(--ta-red);
+}
+
+.ta-analysis__model--out {
+  opacity: 0.4;
+}
+
+.ta-analysis__model--out .ta-analysis__match {
+  border-style: dashed;
+}
+
+.ta-analysis__steps {
+  @apply mt-auto grid items-end gap-6 px-12 pb-12;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+}
+
+.ta-analysis__step {
+  @apply flex flex-col gap-3;
+}
+
+.ta-analysis__bar {
+  @apply relative block h-1 overflow-hidden;
+  background: rgb(255 255 255 / 0.14);
+}
+
+.ta-analysis__step--done .ta-analysis__bar {
+  background: var(--ta-paper);
+}
+
+.ta-analysis__step--active .ta-analysis__bar::after {
+  @apply absolute inset-y-0 left-0 block content-[''];
+  background: var(--ta-red);
+  animation: ta-fill 2400ms var(--ta-ease) infinite;
+}
+
+.ta-analysis__step-text {
+  @apply flex items-center gap-2 text-lg font-semibold;
+  color: rgb(255 255 255 / 0.4);
+}
+
+.ta-analysis__step--done .ta-analysis__step-text {
+  color: rgb(255 255 255 / 0.72);
+}
+
+.ta-analysis__step--active .ta-analysis__step-text {
+  color: var(--ta-paper);
+}
+
+.ta-analysis__progress {
+  @apply pb-0.5 text-sm font-semibold tabular-nums;
+  color: rgb(255 255 255 / 0.56);
+}
+
+@keyframes ta-lane {
+  from {
+    left: 0;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+
+@keyframes ta-light {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+
+  8% {
+    filter: brightness(1.6);
+  }
+
+  24% {
+    filter: brightness(1);
+  }
+}
+
+@keyframes ta-fill {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes ta-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes ta-drawer-in {
+  from {
+    translate: 48px 0;
+    opacity: 0;
+  }
+}
+
+@keyframes ta-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+}

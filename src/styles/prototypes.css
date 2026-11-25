@@ -29,3 +29,8 @@
 @import './domains/sonopizza/sonopizza-notifications.css';
 @import './domains/sonopizza/sonopizza-orders.css';
 @import './domains/sonopizza/sonopizza-motion.css';
+@import './domains/toyota-advisor/ta-base.css';
+@import './domains/toyota-advisor/ta-home.css';
+@import './domains/toyota-advisor/ta-advisor.css';
+@import './domains/toyota-advisor/ta-profile.css';
+@import './domains/toyota-advisor/ta-result.css';

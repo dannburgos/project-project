@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import {
   Bowlby_One_SC as bowlbyOneSc,
   DM_Sans as dmSansFont,
+  Figtree as figtreeFont,
   Geist,
   Outfit,
   Poppins
@@ -43,6 +44,14 @@ const dmSans = dmSansFont({
   weight: ['400', '600', '700', '900']
 });
 
+// Tipografía del prototipo de Toyota: Figtree mientras no haya acceso a
+// Toyota Type (decisión B.11 del caso)
+const figtree = figtreeFont({
+  variable: '--font-toyota',
+  subsets: ['latin'],
+  weight: ['300', '400', '600', '700', '800', '900']
+});
+
 export const metadata: Metadata = {
   robots: { index: false, follow: false }
 };
@@ -64,6 +73,7 @@ export default function PrototypesLayout({
           outfit.variable,
           bowlbyOne.variable,
           dmSans.variable,
+          figtree.variable,
           'antialiased'
         )}
       >

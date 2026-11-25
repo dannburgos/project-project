@@ -1,0 +1,1118 @@
+/* Resultado y sus variantes, detalle del vehículo y comparación */
+
+/* Las páginas largas dejan que la barra de comparar y los encabezados de la
+   tabla se peguen al bajar por el tablero */
+.ta-board__screen {
+  overflow: clip;
+}
+
+/* ─── Piezas compartidas ──────────────────────────────────────────── */
+
+.ta-meter {
+  @apply flex items-center gap-3 text-base font-semibold;
+}
+
+.ta-meter__squares {
+  @apply flex gap-1;
+}
+
+.ta-meter__square {
+  @apply block size-3.5 border-[1.5px];
+  border-color: rgb(0 0 0 / 0.3);
+}
+
+.ta-meter__square--on {
+  background: var(--ta-red);
+  border-color: var(--ta-red);
+}
+
+.ta-meter--compact {
+  @apply text-sm;
+}
+
+.ta-meter--compact .ta-meter__square {
+  @apply size-3;
+}
+
+.ta-check {
+  @apply flex h-[52px] cursor-pointer items-center gap-2.5 border-[1.5px] px-5 text-base font-bold;
+  border-color: var(--ta-line);
+  transition:
+    border-color 200ms ease,
+    background 200ms ease;
+}
+
+.ta-check:hover {
+  border-color: var(--ta-ink);
+}
+
+.ta-check__box {
+  @apply flex size-5 items-center justify-center border-[1.5px];
+  border-color: var(--ta-ink);
+  color: transparent;
+  transition: background 220ms var(--ta-ease);
+}
+
+.ta-check--on {
+  border-color: var(--ta-ink);
+}
+
+.ta-check--on .ta-check__box {
+  background: var(--ta-red);
+  border-color: var(--ta-red);
+  color: var(--ta-paper);
+  animation: ta-pop 320ms var(--ta-ease);
+}
+
+.ta-check--off,
+.ta-check--off:hover {
+  @apply cursor-not-allowed;
+  border-color: var(--ta-line);
+  opacity: 0.4;
+}
+
+/* ─── Resultado ───────────────────────────────────────────────────── */
+
+.ta-result {
+  @apply relative w-[1440px];
+  background: var(--ta-paper);
+}
+
+.ta-result__head {
+  @apply flex items-end justify-between gap-12 px-12 pt-12;
+}
+
+.ta-result__title {
+  @apply mt-4 max-w-[18ch] text-[56px] leading-[1.02] font-bold;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  animation: ta-rise 700ms var(--ta-ease) both;
+}
+
+.ta-result__profile {
+  @apply mx-12 mt-8 flex flex-wrap items-center gap-2 border-y py-4;
+  border-color: var(--ta-line);
+}
+
+.ta-result__profile-label {
+  @apply mr-2 text-sm font-semibold tracking-[0.14em] uppercase;
+  color: var(--ta-gray);
+}
+
+.ta-result__chip {
+  @apply px-3 py-1.5 text-sm font-semibold;
+  background: var(--ta-mist);
+}
+
+/* Destacado: escenario grande a la izquierda, decisión a la derecha */
+.ta-featured {
+  @apply mx-12 mt-10 grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  box-shadow: 0 0 0 1px var(--ta-line);
+}
+
+.ta-featured__stage {
+  @apply relative min-h-[600px] overflow-hidden;
+  background: linear-gradient(180deg, #f3f3f3 0%, #e1e1e1 70%, #cfcfcf 100%);
+}
+
+.ta-featured__tag {
+  @apply absolute top-6 left-6 z-10 px-3 py-2 text-sm font-bold tracking-[0.1em] uppercase;
+  background: var(--ta-red);
+  color: var(--ta-paper);
+  animation: ta-tag-slide 640ms var(--ta-ease) both;
+}
+
+.ta-featured__visual {
+  @apply absolute inset-x-12 top-24 bottom-28;
+  background: rgb(255 255 255 / 0.55);
+}
+
+.ta-featured__stage .ta-meter {
+  @apply absolute bottom-8 left-8 px-4 py-3;
+  background: var(--ta-paper);
+}
+
+.ta-featured__info {
+  @apply flex flex-col px-12 py-10;
+}
+
+.ta-featured__body {
+  @apply text-sm font-semibold tracking-[0.12em] uppercase;
+  color: var(--ta-gray);
+}
+
+.ta-featured__name {
+  @apply mt-2 text-[64px] leading-[0.92] font-black uppercase;
+  letter-spacing: -0.02em;
+}
+
+.ta-featured__price {
+  @apply mt-4 flex items-baseline gap-2 text-sm;
+  color: var(--ta-gray);
+}
+
+.ta-featured__price b {
+  @apply text-[28px] font-bold tabular-nums;
+  color: var(--ta-ink);
+}
+
+.ta-featured__reasons-title {
+  @apply mt-8 mb-3 text-sm font-semibold tracking-[0.14em] uppercase;
+  color: var(--ta-red);
+}
+
+/* Razones: lo que pediste → el dato que lo responde */
+.ta-reasons {
+  @apply flex flex-col border-t;
+  border-color: var(--ta-line);
+}
+
+.ta-reasons__item {
+  @apply grid items-center gap-3 border-b py-3.5;
+  grid-template-columns: 168px 16px minmax(0, 1fr);
+  border-color: var(--ta-line);
+  animation: ta-rise 520ms var(--ta-ease) both;
+}
+
+.ta-reasons__item:nth-child(2) {
+  animation-delay: 80ms;
+}
+
+.ta-reasons__item:nth-child(3) {
+  animation-delay: 160ms;
+}
+
+.ta-reasons__item:nth-child(4) {
+  animation-delay: 240ms;
+}
+
+.ta-reasons__asked {
+  @apply flex flex-col text-xs font-semibold tracking-[0.1em] uppercase;
+  color: var(--ta-gray);
+}
+
+.ta-reasons__asked b {
+  @apply text-sm tracking-normal normal-case;
+  color: var(--ta-ink);
+}
+
+.ta-reasons__arrow {
+  color: var(--ta-red);
+}
+
+.ta-reasons__fact {
+  @apply text-base leading-[1.35] font-semibold;
+}
+
+.ta-featured__actions {
+  @apply mt-auto flex items-center gap-3 pt-8;
+}
+
+/* Alternativas: tarjetas horizontales con lo que les falta */
+.ta-alts {
+  @apply px-12 pt-16 pb-12;
+}
+
+.ta-alts__title {
+  @apply mb-6 text-[32px] font-bold;
+}
+
+.ta-alts__grid {
+  @apply grid grid-cols-2 gap-6;
+}
+
+.ta-alt {
+  @apply grid border;
+  grid-template-columns: 260px minmax(0, 1fr);
+  border-color: var(--ta-line);
+  transition:
+    border-color 240ms ease,
+    translate 400ms var(--ta-ease);
+}
+
+.ta-alt:hover {
+  border-color: var(--ta-ink);
+  translate: 0 -2px;
+}
+
+.ta-alt__visual {
+  @apply h-full min-h-[280px];
+}
+
+.ta-alt__info {
+  @apply flex flex-col gap-2 p-7;
+}
+
+.ta-alt__name {
+  @apply text-[32px] leading-none font-black;
+}
+
+.ta-alt__price {
+  @apply mb-2 text-sm;
+  color: var(--ta-gray);
+}
+
+.ta-alt__price b {
+  @apply text-lg tabular-nums;
+  color: var(--ta-ink);
+}
+
+.ta-alt__missing,
+.ta-alt__reason {
+  @apply flex items-center gap-2 text-sm;
+}
+
+.ta-alt__missing {
+  color: var(--ta-red);
+}
+
+.ta-alt__missing b {
+  color: var(--ta-ink);
+}
+
+.ta-alt__reason {
+  color: var(--ta-gray);
+}
+
+.ta-alt__actions {
+  @apply mt-auto flex items-center justify-between pt-4;
+}
+
+.ta-alt__actions .ta-check {
+  @apply h-11 px-4 text-sm;
+}
+
+.ta-result__legal {
+  @apply mt-8 max-w-[96ch] text-sm;
+  color: var(--ta-gray);
+}
+
+/* Barra de comparar: se pega abajo al bajar */
+.ta-compare-bar {
+  @apply sticky bottom-0 z-20 flex items-center gap-6 px-12 py-4;
+  background: var(--ta-ink);
+  color: var(--ta-paper);
+}
+
+.ta-compare-bar__label {
+  @apply flex flex-col text-xs font-semibold tracking-[0.14em] uppercase;
+  color: rgb(255 255 255 / 0.56);
+}
+
+.ta-compare-bar__label b {
+  @apply text-xl tracking-normal tabular-nums;
+  color: var(--ta-paper);
+}
+
+.ta-compare-bar__slots {
+  @apply flex gap-2;
+}
+
+.ta-compare-bar__slot {
+  @apply flex h-11 min-w-44 items-center justify-between gap-3 border px-4 text-sm font-semibold;
+  border-color: rgb(255 255 255 / 0.32);
+  animation: ta-rise 360ms var(--ta-ease) both;
+}
+
+.ta-compare-bar__slot button {
+  @apply flex size-6 cursor-pointer items-center justify-center;
+  color: rgb(255 255 255 / 0.6);
+  transition: color 200ms ease;
+}
+
+.ta-compare-bar__slot button:hover {
+  color: var(--ta-red);
+}
+
+.ta-compare-bar__slot--empty {
+  @apply justify-start border-dashed;
+  color: rgb(255 255 255 / 0.48);
+}
+
+.ta-compare-bar__hint {
+  @apply text-sm;
+  color: rgb(255 255 255 / 0.56);
+}
+
+.ta-compare-bar .ta-button--primary {
+  @apply ml-auto;
+}
+
+/* ─── Variantes del resultado ─────────────────────────────────────── */
+
+.ta-variant {
+  @apply flex h-full w-[1440px] flex-col;
+  background: var(--ta-paper);
+}
+
+.ta-variant__head {
+  @apply flex flex-col gap-3 px-12 pt-10;
+}
+
+.ta-variant__title {
+  @apply mt-1 text-5xl leading-[1.02] font-bold;
+  letter-spacing: -0.015em;
+}
+
+.ta-variant__lead {
+  @apply text-lg;
+  color: var(--ta-gray);
+}
+
+.ta-variant__asked {
+  @apply mt-1 flex items-center gap-2;
+}
+
+.ta-variant__asked span {
+  @apply mr-1 text-sm font-semibold tracking-[0.14em] uppercase;
+  color: var(--ta-gray);
+}
+
+.ta-variant__asked b {
+  @apply border-[1.5px] px-3 py-1.5 text-sm font-semibold;
+  border-color: var(--ta-ink);
+}
+
+.ta-variant__actions {
+  @apply mt-auto flex items-center justify-center gap-3 border-t px-12 py-6;
+  border-color: var(--ta-line);
+}
+
+/* «Se acercan»: dos caminos enfrentados */
+.ta-near {
+  @apply mt-7 mb-8 grid flex-1 grid-cols-2 gap-10 px-12;
+}
+
+.ta-near__card {
+  @apply relative flex flex-col gap-5 border p-7;
+  border-color: var(--ta-line);
+  transition: border-color 240ms ease;
+}
+
+.ta-near__card:hover {
+  border-color: var(--ta-ink);
+}
+
+.ta-near__priority {
+  @apply self-start px-3 py-1.5 text-sm font-bold tracking-[0.08em] uppercase;
+  background: var(--ta-ink);
+  color: var(--ta-paper);
+}
+
+.ta-near__top {
+  @apply grid items-start gap-6;
+  grid-template-columns: 240px minmax(0, 1fr);
+}
+
+.ta-near__visual {
+  @apply h-52;
+}
+
+.ta-near__name {
+  @apply text-[40px] leading-none font-black;
+}
+
+.ta-near__price {
+  @apply mt-1 text-sm;
+  color: var(--ta-gray);
+}
+
+.ta-near__price b {
+  @apply text-base tabular-nums;
+  color: var(--ta-ink);
+}
+
+.ta-near__requests {
+  @apply mt-4 flex flex-wrap gap-1.5;
+}
+
+.ta-near__request {
+  @apply flex items-center gap-1.5 border border-dashed px-2.5 py-1 text-sm font-semibold;
+  border-color: var(--ta-red);
+  color: var(--ta-red);
+}
+
+.ta-near__request--met {
+  border-style: solid;
+  background: var(--ta-ink);
+  border-color: var(--ta-ink);
+  color: var(--ta-paper);
+}
+
+.ta-near__lists,
+.ta-closest__lists {
+  @apply grid grid-cols-2 gap-6 border-t pt-5;
+  border-color: var(--ta-line);
+}
+
+.ta-near__list-title {
+  @apply mb-2 text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ta-gray);
+}
+
+.ta-near__list {
+  @apply flex flex-col gap-2;
+}
+
+.ta-near__list li {
+  @apply flex items-start gap-2 text-base leading-[1.35];
+}
+
+.ta-near__list svg {
+  @apply mt-0.5 shrink-0;
+  color: var(--ta-ink);
+}
+
+.ta-near__list--differs svg {
+  color: var(--ta-red);
+}
+
+.ta-near__card .ta-button--text {
+  @apply mt-auto self-start;
+}
+
+/* La «o» que separa los dos caminos */
+.ta-near__or {
+  @apply absolute top-1/2 -right-[34px] z-10 flex size-12 -translate-y-1/2 items-center justify-center text-lg font-black;
+  background: var(--ta-red);
+  color: var(--ta-paper);
+}
+
+/* «La opción más cercana»: foto a la izquierda, decisión a la derecha */
+.ta-closest {
+  @apply mt-7 grid flex-1 gap-12 px-12 pb-10;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+}
+
+.ta-closest__visual {
+  @apply h-full;
+}
+
+.ta-closest__info {
+  @apply flex flex-col;
+}
+
+.ta-closest__name {
+  @apply flex flex-col text-[56px] leading-[0.95] font-black uppercase;
+}
+
+.ta-closest__name span {
+  @apply mt-2 text-xl font-semibold normal-case;
+  color: var(--ta-gray);
+}
+
+.ta-closest__price {
+  @apply mt-3 text-[28px] font-bold tabular-nums;
+}
+
+.ta-closest__why {
+  @apply mt-3 max-w-[44ch] text-base leading-[1.45];
+  color: var(--ta-gray);
+}
+
+/* Barra de presupuesto: tu rango, dónde cae el precio y el exceso */
+.ta-gauge {
+  @apply relative mt-7 mb-7 pt-6;
+}
+
+.ta-gauge__track {
+  @apply relative h-3;
+  background: var(--ta-mist);
+}
+
+.ta-gauge__range {
+  @apply absolute inset-y-0 block;
+  left: var(--range-start);
+  width: calc(var(--range-end) - var(--range-start));
+  background: var(--ta-ink);
+}
+
+.ta-gauge__over {
+  @apply absolute inset-y-0 block origin-left;
+  left: var(--range-end);
+  width: calc(var(--price) - var(--range-end));
+  background: repeating-linear-gradient(
+    135deg,
+    var(--ta-red) 0 4px,
+    rgb(235 10 30 / 0.35) 4px 8px
+  );
+  animation: ta-grow 900ms var(--ta-ease) 300ms both;
+}
+
+.ta-gauge__pin {
+  @apply absolute -top-2 block h-7 w-1 -translate-x-1/2;
+  left: var(--price);
+  background: var(--ta-red);
+}
+
+.ta-gauge__labels {
+  @apply relative mt-3 h-10 text-xs font-semibold tracking-[0.1em] uppercase;
+  color: var(--ta-gray);
+}
+
+.ta-gauge__labels b {
+  @apply block text-base tracking-normal normal-case tabular-nums;
+  color: var(--ta-ink);
+}
+
+.ta-gauge__range-label {
+  @apply absolute;
+  left: var(--range-start);
+}
+
+.ta-gauge__price-label {
+  @apply absolute -translate-x-1/2 text-center;
+  left: var(--price);
+}
+
+.ta-gauge__over-label {
+  @apply absolute top-0 -translate-x-1/2 text-sm font-black tabular-nums;
+  left: calc((var(--range-end) + var(--price)) / 2);
+  color: var(--ta-red);
+}
+
+.ta-closest__actions {
+  @apply mt-auto flex gap-3 pt-6;
+}
+
+/* ─── Detalle del vehículo ────────────────────────────────────────── */
+
+.ta-detail {
+  @apply w-[1440px];
+  background: var(--ta-paper);
+}
+
+.ta-detail__hero {
+  @apply grid min-h-[720px];
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+}
+
+.ta-detail__copy {
+  @apply flex flex-col px-12 pt-10 pb-12;
+}
+
+.ta-detail__back {
+  @apply flex items-center gap-2 self-start text-sm font-semibold;
+  color: var(--ta-gray);
+  transition:
+    color 200ms ease,
+    gap 320ms var(--ta-ease);
+}
+
+.ta-detail__back:hover {
+  @apply gap-3;
+  color: var(--ta-ink);
+}
+
+.ta-detail__category {
+  @apply mt-10 text-sm font-semibold tracking-[0.14em] uppercase;
+  color: var(--ta-red);
+}
+
+.ta-detail__name {
+  @apply mt-3 text-[88px] leading-[0.88] font-black uppercase;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.ta-detail__price {
+  @apply mt-5 mb-4 flex items-baseline gap-2 text-sm;
+  color: var(--ta-gray);
+}
+
+.ta-detail__price b {
+  @apply text-[28px] font-bold tabular-nums;
+  color: var(--ta-ink);
+}
+
+.ta-detail__versions {
+  @apply mt-8 flex flex-col gap-2;
+}
+
+.ta-detail__versions-label {
+  @apply mb-1 text-xs font-semibold tracking-[0.14em] uppercase;
+  color: var(--ta-gray);
+}
+
+.ta-detail__version {
+  @apply flex h-14 cursor-pointer items-center justify-between border px-5 text-base font-semibold;
+  border-color: var(--ta-line);
+  transition:
+    border-color 200ms ease,
+    background 200ms ease;
+}
+
+.ta-detail__version span {
+  @apply text-sm tabular-nums;
+  color: var(--ta-gray);
+}
+
+.ta-detail__version:hover {
+  border-color: var(--ta-ink);
+}
+
+.ta-detail__version--on,
+.ta-detail__version--on:hover {
+  background: var(--ta-ink);
+  border-color: var(--ta-ink);
+  color: var(--ta-paper);
+}
+
+.ta-detail__version--on span {
+  color: rgb(255 255 255 / 0.72);
+}
+
+.ta-detail__actions {
+  @apply mt-8 flex gap-3;
+}
+
+.ta-detail__actions .ta-button {
+  @apply flex-1;
+}
+
+.ta-detail__external {
+  @apply mt-3 text-sm;
+  color: var(--ta-gray);
+}
+
+.ta-detail__visual {
+  @apply h-full;
+}
+
+/* Por qué es para ti: cuatro datos grandes sobre negro */
+.ta-detail__why {
+  @apply px-12 py-14;
+  background: var(--ta-ink);
+  color: var(--ta-paper);
+}
+
+.ta-detail__why-title {
+  @apply mb-8 text-[32px] font-bold;
+}
+
+.ta-detail__why-list {
+  @apply grid grid-cols-4 gap-6;
+}
+
+.ta-detail__why-list li {
+  @apply flex flex-col gap-3 border-t pt-5;
+  border-color: rgb(255 255 255 / 0.24);
+  transition: border-color 260ms var(--ta-ease);
+}
+
+.ta-detail__why-list li:hover {
+  border-color: var(--ta-red);
+}
+
+.ta-detail__why-number {
+  @apply text-sm font-bold tabular-nums;
+  color: var(--ta-red);
+}
+
+.ta-detail__why-fact {
+  @apply text-xl leading-[1.3] font-semibold;
+}
+
+.ta-detail__why-source {
+  @apply mt-auto flex flex-col text-xs font-semibold tracking-[0.1em] uppercase;
+  color: rgb(255 255 255 / 0.48);
+}
+
+.ta-detail__why-source b {
+  @apply text-sm tracking-normal normal-case;
+  color: var(--ta-paper);
+}
+
+.ta-detail__section {
+  @apply flex flex-col gap-6 px-12 pt-20;
+}
+
+/* Recorrido: la foto con puntos y, al lado, cada punto en primer plano */
+.ta-tour {
+  @apply grid gap-8;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+}
+
+.ta-tour__stage {
+  @apply relative h-[560px];
+}
+
+.ta-tour__visual {
+  @apply h-full;
+}
+
+.ta-tour__pin {
+  @apply absolute flex size-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center text-sm font-bold;
+  left: var(--x);
+  top: var(--y);
+  background: var(--ta-paper);
+  box-shadow: 0 0 0 2px var(--ta-ink);
+  transition:
+    background 240ms var(--ta-ease),
+    color 240ms var(--ta-ease),
+    scale 320ms var(--ta-ease);
+}
+
+/* Onda que late alrededor del punto activo */
+.ta-tour__pin::after {
+  @apply absolute inset-0 content-[''];
+  box-shadow: 0 0 0 2px var(--ta-red);
+  opacity: 0;
+}
+
+.ta-tour__pin--on {
+  background: var(--ta-red);
+  color: var(--ta-paper);
+  box-shadow: 0 0 0 2px var(--ta-red);
+  scale: 1.15;
+}
+
+.ta-tour__pin--on::after {
+  animation: ta-pulse 1600ms var(--ta-ease) infinite;
+}
+
+.ta-tour__list {
+  @apply flex flex-col border-t;
+  border-color: var(--ta-ink);
+}
+
+.ta-tour__item {
+  @apply relative grid cursor-default items-center gap-4 border-b py-4 pr-2;
+  grid-template-columns: 32px minmax(0, 1fr) 128px;
+  border-color: var(--ta-line);
+  transition: background 240ms var(--ta-ease);
+}
+
+.ta-tour__item--on {
+  background: var(--ta-mist);
+}
+
+.ta-tour__number {
+  @apply flex size-8 items-center justify-center text-sm font-bold;
+  box-shadow: 0 0 0 1.5px var(--ta-ink);
+}
+
+.ta-tour__item--on .ta-tour__number {
+  background: var(--ta-red);
+  color: var(--ta-paper);
+  box-shadow: none;
+}
+
+.ta-tour__text {
+  @apply flex flex-col gap-1;
+}
+
+.ta-tour__text b {
+  @apply text-lg;
+}
+
+.ta-tour__text span {
+  @apply text-sm leading-[1.4];
+  color: var(--ta-gray);
+}
+
+.ta-tour__text i {
+  @apply self-start text-xs font-bold tracking-[0.1em] uppercase not-italic;
+  color: var(--ta-red);
+}
+
+.ta-tour__close {
+  @apply h-24 p-2;
+}
+
+.ta-tour__close .ta-visual__label {
+  @apply text-xs;
+}
+
+/* Versiones con tu presupuesto marcado */
+.ta-versions {
+  @apply w-full border-collapse text-left;
+}
+
+.ta-versions th,
+.ta-versions td {
+  @apply border-b py-4 pr-6;
+  border-color: var(--ta-line);
+}
+
+.ta-versions thead th {
+  @apply pb-3 text-xs font-semibold tracking-[0.14em] uppercase;
+  border-color: var(--ta-ink);
+  color: var(--ta-gray);
+}
+
+.ta-versions tbody th {
+  @apply text-lg font-bold;
+}
+
+.ta-versions tbody td {
+  @apply text-base;
+}
+
+.ta-versions__price {
+  @apply font-bold tabular-nums;
+}
+
+.ta-versions__row--in th {
+  box-shadow: inset 4px 0 0 var(--ta-red);
+  padding-left: 16px;
+}
+
+.ta-versions__badge {
+  @apply inline-flex border px-2.5 py-1 text-xs font-bold tracking-[0.08em] uppercase;
+  border-color: var(--ta-line);
+  color: var(--ta-gray);
+}
+
+.ta-versions__badge--in {
+  background: var(--ta-red);
+  border-color: var(--ta-red);
+  color: var(--ta-paper);
+}
+
+/* Ficha técnica */
+.ta-specs {
+  @apply grid grid-cols-4 border-t border-l;
+  border-color: var(--ta-line);
+}
+
+.ta-specs__item {
+  @apply flex flex-col gap-1.5 border-r border-b p-5;
+  border-color: var(--ta-line);
+  transition: background 200ms ease;
+}
+
+.ta-specs__item:hover {
+  background: var(--ta-mist);
+}
+
+.ta-specs__item dt {
+  @apply text-xs font-semibold tracking-[0.12em] uppercase;
+  color: var(--ta-gray);
+}
+
+.ta-specs__item dd {
+  @apply text-lg font-semibold;
+}
+
+.ta-specs__item--missing dd {
+  @apply text-sm font-normal;
+  color: rgb(0 0 0 / 0.44);
+}
+
+.ta-detail__context {
+  @apply relative mt-20;
+}
+
+.ta-detail__context-visual {
+  @apply h-[520px];
+}
+
+.ta-detail__context figcaption {
+  @apply absolute bottom-8 left-12 px-5 py-3 text-lg font-semibold;
+  background: var(--ta-paper);
+}
+
+/* Banda final oscura */
+.ta-band {
+  @apply flex items-center justify-between gap-12 px-12 py-16;
+  background: var(--ta-ink);
+  color: var(--ta-paper);
+}
+
+.ta-band__title {
+  @apply text-[48px] leading-none font-black;
+}
+
+.ta-band__text {
+  @apply mt-3 max-w-[56ch] text-lg;
+  color: rgb(255 255 255 / 0.64);
+}
+
+.ta-band__actions {
+  @apply flex gap-3;
+}
+
+/* ─── Comparación ─────────────────────────────────────────────────── */
+
+.ta-compare {
+  @apply w-[1440px] pb-16;
+  background: var(--ta-paper);
+}
+
+.ta-compare__head {
+  @apply flex items-end justify-between gap-12 px-12 pt-10;
+}
+
+.ta-compare__title {
+  @apply mt-6 text-[56px] leading-none font-bold;
+  letter-spacing: -0.015em;
+}
+
+.ta-compare__lead {
+  @apply mt-3 max-w-[60ch] text-lg;
+  color: var(--ta-gray);
+}
+
+.ta-compare__tools {
+  @apply flex flex-col items-end gap-2;
+}
+
+.ta-switch {
+  @apply flex cursor-pointer items-center gap-3 text-base font-bold;
+}
+
+.ta-switch__track {
+  @apply relative block h-7 w-12 border-[1.5px];
+  border-color: var(--ta-ink);
+  transition: background 240ms var(--ta-ease);
+}
+
+.ta-switch__thumb {
+  @apply absolute top-[3px] left-[3px] block size-[18px];
+  background: var(--ta-ink);
+  transition:
+    translate 320ms var(--ta-ease),
+    background 240ms var(--ta-ease);
+}
+
+.ta-switch--on .ta-switch__track {
+  background: var(--ta-ink);
+}
+
+.ta-switch--on .ta-switch__thumb {
+  background: var(--ta-red);
+  translate: 20px 0;
+}
+
+.ta-compare__hidden,
+.ta-compare__legend {
+  @apply flex items-center gap-2 text-sm;
+  color: var(--ta-gray);
+}
+
+.ta-compare__best-mark {
+  @apply block size-2.5;
+  background: var(--ta-red);
+}
+
+.ta-compare__table {
+  @apply mt-10 px-12;
+  --compare-columns: 260px repeat(var(--cols, 3), minmax(0, 1fr));
+}
+
+.ta-compare__models,
+.ta-compare__row {
+  @apply grid gap-6;
+  grid-template-columns: var(--compare-columns);
+}
+
+/* Las columnas quedan fijas arriba al bajar */
+.ta-compare__models {
+  @apply sticky top-0 z-10 border-b pt-4 pb-5;
+  background: var(--ta-paper);
+  border-color: var(--ta-ink);
+}
+
+.ta-compare__model {
+  @apply flex flex-col gap-3;
+}
+
+.ta-compare__visual {
+  @apply h-36;
+}
+
+.ta-compare__model-head {
+  @apply flex items-center justify-between;
+}
+
+.ta-compare__model-head b {
+  @apply text-2xl font-black;
+}
+
+.ta-compare__remove {
+  @apply flex size-9 cursor-pointer items-center justify-center border;
+  border-color: var(--ta-line);
+  transition: border-color 200ms ease;
+}
+
+.ta-compare__remove:hover {
+  border-color: var(--ta-red);
+  color: var(--ta-red);
+}
+
+.ta-compare__row {
+  @apply items-center border-b py-4;
+  border-color: var(--ta-line);
+  animation: ta-rise 420ms var(--ta-ease) both;
+  transition: background 200ms ease;
+}
+
+.ta-compare__row:hover {
+  background: var(--ta-mist);
+}
+
+.ta-compare__label {
+  @apply text-sm font-semibold tracking-[0.1em] uppercase;
+  color: var(--ta-gray);
+}
+
+.ta-compare__cell {
+  @apply flex items-center gap-2.5 text-lg font-semibold;
+}
+
+/* Mejor valor de la fila: cuadrado rojo delante */
+.ta-compare__cell--best::before {
+  @apply block size-2.5 shrink-0 content-[''];
+  background: var(--ta-red);
+}
+
+.ta-compare__cell--missing {
+  @apply text-sm font-normal;
+  color: rgb(0 0 0 / 0.44);
+}
+
+.ta-compare__row--priorities {
+  background: var(--ta-mist);
+}
+
+.ta-compare__row--priorities .ta-compare__label {
+  color: var(--ta-red);
+}
+
+.ta-compare__row--actions {
+  @apply border-b-0 pt-6;
+}
+
+.ta-compare__row--actions:hover {
+  background: transparent;
+}
+
+@keyframes ta-tag-slide {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes ta-grow {
+  from {
+    scale: 0 1;
+  }
+}
+
+@keyframes ta-pulse {
+  from {
+    opacity: 0.9;
+    scale: 1;
+  }
+
+  to {
+    opacity: 0;
+    scale: 1.8;
+  }
+}

@@ -26,3 +26,4 @@
 - [Pila unida a main](project-stacked-prs-main.md) — header→design-system→planti→sonopizza→toyota ya están en main (23 nov); ramas conservadas
 - [Siempre en español](feedback-always-spanish.md) — todo en español, prompts de imagen incluidos; solo código y commits en inglés
 - [Prompts de imagen luminosos](feedback-image-prompts-bright.md) — de día, autos con color llamativo, look publicitario; variar modelos Toyota
+- [Prototipo Toyota](project-toyota-prototype.md) — 4 preguntas, 13 pantallas listas en feat/toyota-prototype; esperar visto bueno entre tandas

@@ -459,7 +459,7 @@ Son 5 bloques y 10 preguntas, una pregunta por pantalla, con "Atrás" siempre di
 ### Lógica del prototipo · [Aprobado, versión simple]
 
 - **Un solo happy path** que siempre termina en un resultado: un Toyota destacado y hasta 2 alternativas. Las variantes "Similar" y "Con ventajas" quedan como pantallas sueltas de ejemplo, sin lógica.
-- **Se quitó del prototipo la pregunta "¿Hay algo en lo que no cederías?".** La asesoría queda en 9 preguntas.
+- **Se quitó del prototipo la pregunta "¿Hay algo en lo que no cederías?".** La asesoría quedó en 9 preguntas y el 25 nov 2026 se integró en 4 (ver D.3 del caso).
 - **Calculadora de costos y favoritos:** fuera del MVP.
 - **Puntos por coincidencia:** cada respuesta que coincide con una etiqueta del modelo suma 1 punto. Gana el que más puntos tiene y, si hay empate, el más económico.
 - **El presupuesto es el único filtro** (precio "desde" menor o igual al tope del rango). "Prefiero no decirlo" no filtra.

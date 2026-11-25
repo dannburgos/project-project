@@ -636,7 +636,7 @@ Menú progresivo y agrupado: no se muestran todas las secciones a la vez. Nombre
 
 - **6** modelos del catálogo Toyota Colombia
 - **19** versiones con precio sugerido
-- **9** preguntas en 5 bloques
+- **4** preguntas, una por pantalla
 - **1** destacado + 2 alternativas
 
 **Nota:** Modelos del prototipo: Yaris HB, Corolla, Corolla Cross, RAV4, Hilux y Fortuner. Precios sugeridos vigentes del 1 al 30 de noviembre de 2026.
@@ -659,7 +659,7 @@ Menú progresivo y agrupado: no se muestran todas las secciones a la vez. Nombre
 
 - **Eyebrow:** User Flow
 - **Titular:** Un solo recorrido que siempre termina en un resultado
-- **Cuerpo:** El flujo se diseñó como un único camino: inicio, asesoría de 9 preguntas, revisión del perfil, resultado, detalle y comparación, y continuidad en Toyota. Responder "Aún no lo sé" nunca bloquea el avance, y editar el perfil es una acción dentro del mismo recorrido. Así, la experiencia se mantiene simple de entender y siempre entrega una respuesta.
+- **Cuerpo:** El flujo se diseñó como un único camino: inicio, asesoría de 4 preguntas, revisión del perfil, resultado, detalle y comparación, y continuidad en Toyota. Responder "Aún no lo sé" nunca bloquea el avance, y editar el perfil es una acción dentro del mismo recorrido. Así, la experiencia se mantiene simple de entender y siempre entrega una respuesta.
 - **Visual sugerido:** diagrama del flujo único. Menú o Home → Inicio → Asesoría → Tu perfil → Evaluación → Resultado (3 variantes) → Detalle y comparación → Continuar en Toyota.
 
 ### Variantes de resultado
@@ -685,7 +685,7 @@ Menú progresivo y agrupado: no se muestran todas las secciones a la vez. Nombre
 ### Prototipo
 
 - **Titular:** De la definición a una experiencia que se puede recorrer
-- **Cuerpo:** El prototipo funcional desktop materializa el recorrido completo dentro del home de Toyota: una asesoría de 9 preguntas en 5 bloques, la revisión del perfil, un resultado con un modelo destacado y dos alternativas, el detalle de cada vehículo con versiones y ficha técnica, y la comparación de hasta tres modelos. Los datos y precios corresponden al catálogo oficial de Toyota Colombia.
+- **Cuerpo:** El prototipo funcional desktop materializa el recorrido completo dentro del home de Toyota: una asesoría de 4 preguntas, la revisión del perfil, un resultado con un modelo destacado y dos alternativas, el detalle de cada vehículo con versiones y ficha técnica, y la comparación de hasta tres modelos. Los datos y precios corresponden al catálogo oficial de Toyota Colombia.
 - **Visual sugerido:** secuencia de pantallas: inicio, pregunta, perfil, resultado, detalle, comparación.
 
 ### Sistema visual
@@ -805,8 +805,8 @@ Problema, factores del problema, segmentos, necesidades, pain points, motivacion
 |---|---|
 | Eyebrow | Encuentra tu Toyota |
 | Titular | Encuentra el Toyota que se adapta a tu vida |
-| Bajada | Responde 9 preguntas sobre cómo te mueves y qué te importa. Te mostramos los modelos que mejor se ajustan y por qué. |
-| Chips | 9 preguntas · 2 minutos · Sin registrarte |
+| Bajada | Responde 4 preguntas sobre cómo te mueves y qué te importa. Te mostramos los modelos que mejor se ajustan y por qué. |
+| Chips | 4 preguntas · 1 minuto · Sin registrarte |
 | CTA principal | Empezar asesoría |
 | Enlace | Ver catálogo |
 | Nota | Las recomendaciones salen del catálogo de vehículos nuevos de Toyota Colombia. |
@@ -814,24 +814,20 @@ Problema, factores del problema, segmentos, necesidades, pain points, motivacion
 | Paso 02 | Revisa tu perfil · Confirma o ajusta tus respuestas |
 | Paso 03 | Descubre tus opciones · Con las razones de cada recomendación |
 
-## D.3 Asesoría (9 preguntas)
+## D.3 Asesoría (4 preguntas)
 
-- **Barra de progreso:** Tu momento · Tu uso · Tu espacio · Tus prioridades · Tus preferencias
-- **Contador:** Pregunta [n] de 9
-- **Botones:** Atrás · Siguiente pregunta · Ver perfil (en la última) · Cancelar / Guardar cambio (al editar)
-- **Nota del bloque 5:** Opcional. Si no tienes preferencia, te mostramos todas las opciones.
+Integrada el 25 nov 2026: de 9 preguntas en 5 bloques pasó a 4, una por pantalla. Salieron «¿En qué momento estás?» y maletas, mercado y mascotas, porque no cambiaban el resultado (no suman puntos; no hay dato oficial de baúl). Cada respuesta suma las mismas etiquetas que antes.
+
+- **Barra de progreso:** Tu uso · Tu carro · Tus prioridades · Tu presupuesto
+- **Contador:** Pregunta [n] de 4
+- **Botones:** Atrás · Siguiente pregunta · Ver mi perfil (en la última) · Cancelar / Guardar cambio (al editar)
 
 | # | Bloque | Pregunta | Ayuda | Opciones | Tipo |
 |---|---|---|---|---|---|
-| 1 | Tu momento | ¿En qué momento estás? | — | Voy a comprar mi primer carro · Quiero cambiar mi carro · Mis necesidades cambiaron · Solo estoy explorando | Una |
-| 2 | Tu uso | ¿Para qué vas a usar el carro principalmente? | — | El día a día · Viajes en familia · Trabajo · Un poco de todo | Una |
-| 3 | Tu uso | ¿Por dónde sueles manejar? | Elige todas las que apliquen | Ciudad · Carretera · Destapado o terreno difícil · Aún no lo sé | Varias |
-| 4 | Tu espacio | ¿Cuántas personas viajan normalmente, contándote a ti? | — | 1 o 2 · 3 a 5 · 6 o más · Aún no lo sé | Una |
-| 5 | Tu espacio | ¿Qué sueles llevar? | Elige todas las que apliquen | Maletas de viaje · Mercado y compras · Herramientas o carga pesada · Mascotas · Nada en especial | Varias |
-| 6 | Tus prioridades | ¿Qué es lo que más te importa? | Elige hasta 3 | Espacio · Comodidad · Seguridad · Ahorro de combustible · Tecnología · Potencia · Versatilidad · Aún no lo sé | Hasta 3 |
-| 7 | Tus preferencias | ¿Cuánto tienes pensado invertir? | Usamos el precio sugerido de cada modelo | Hasta $100 millones · $100 a $150 millones · $150 a $220 millones · Más de $220 millones · Prefiero no decirlo | Una, opcional |
-| 8 | Tus preferencias | ¿Prefieres algún tipo de motor? | — | Híbrido · Gasolina o diésel · No tengo preferencia | Una, opcional |
-| 9 | Tus preferencias | ¿Tienes un tipo de carro en mente? | — | Automóvil · Camioneta o SUV · Pick-up · No tengo preferencia | Una, opcional |
+| 1 | Tu uso | ¿Cómo te mueves? | Elige todas las que apliquen | Día a día en ciudad · Viajes en familia · Carretera · Destapado o terreno difícil · Trabajo o carga pesada · Un poco de todo · Aún no lo sé | Varias |
+| 2 | Tu carro | ¿Cómo te imaginas tu carro? | Tipo y motor son opcionales | Personas que viajan: 1 o 2 · 3 a 5 · 6 o más · Aún no lo sé. Tipo de carro (opcional): Automóvil · Camioneta o SUV · Pick-up · Sin preferencia. Motor (opcional): Híbrido · Gasolina o diésel · Sin preferencia | Tres filas, una respuesta cada una |
+| 3 | Tus prioridades | ¿Qué es lo que más te importa? | Elige hasta 3 | Espacio · Comodidad · Seguridad · Ahorro de combustible · Tecnología · Potencia · Versatilidad · Aún no lo sé | Hasta 3 |
+| 4 | Tu presupuesto | ¿Cuánto tienes pensado invertir? | Usamos el precio sugerido de cada modelo | Hasta $100 millones · $100 a $150 millones · $150 a $220 millones · Más de $220 millones · Prefiero no decirlo | Una, opcional |
 
 ## D.4 Tu perfil
 
@@ -839,7 +835,7 @@ Problema, factores del problema, segmentos, necesidades, pain points, motivacion
 |---|---|
 | Titular | Tu perfil |
 | Bajada | Esto es lo que entendimos. Revisa que esté bien antes de ver tus resultados. |
-| Etiquetas | Tu momento · Uso principal · Por dónde manejas · Personas · Qué llevas · Prioridades · Presupuesto · Motor · Tipo de carro |
+| Etiquetas | Cómo te mueves · Personas · Tipo de carro · Motor · Prioridades · Presupuesto |
 | Valor vacío | Sin definir |
 | Acción por fila | Editar |
 | CTA | Ver resultados |
@@ -957,10 +953,8 @@ El detalle completo está en `ficha-datos-prototipo.md`.
 
 **Cómo se convierten las respuestas en etiquetas**
 
-- **Uso:** El día a día → Ciudad · Viajes en familia → Espacio · Trabajo → Carga · Un poco de todo → Versatilidad.
-- **Por dónde manejas:** Ciudad → Ciudad · Destapado → Terreno.
+- **¿Cómo te mueves?:** Día a día en ciudad → Ciudad · Viajes en familia → Espacio · Destapado o terreno difícil → Terreno · Trabajo o carga pesada → Carga · Un poco de todo → Versatilidad. Carretera no suma.
 - **Personas:** 6 o más → 7 puestos.
-- **Qué llevas:** Herramientas o carga pesada → Carga. Maletas, mercado y mascotas no suman porque no hay dato de baúl.
 - **Prioridades, motor y tipo de carro:** cada respuesta suma su etiqueta. Seguridad no suma, porque los 6 modelos la cumplen.
 
 **Cómo se arma el resultado**

@@ -1,0 +1,245 @@
+/* Prototipo «Encuentra tu Toyota»: tokens (los del sistema de diseño del
+   caso), el tablero de revisión, la card de recurso visual y los botones.
+   Tamaños en múltiplos de 2 */
+.ta-board {
+  --ta-red: #eb0a1e;
+  --ta-red-deep: #b80818;
+  --ta-ink: #000;
+  --ta-panel: #0c0d0f;
+  --ta-panel-deep: #070809;
+  --ta-gray: #58595b;
+  --ta-paper: #fff;
+  --ta-mist: #f4f4f4;
+  --ta-line: rgb(0 0 0 / 0.12);
+  --ta-line-dark: rgb(255 255 255 / 0.14);
+  --ta-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ta-ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  font-family: var(--font-toyota), sans-serif;
+  @apply min-h-screen min-w-[1536px] px-12 py-16 antialiased;
+  background: #1c1c1e;
+  color: var(--ta-paper);
+}
+
+/* ─── Tablero ─────────────────────────────────────────────────────── */
+
+.ta-board__head {
+  @apply mx-auto mb-12 flex w-[1440px] flex-col gap-3;
+}
+
+.ta-board__eyebrow {
+  @apply text-sm font-semibold tracking-[0.14em] uppercase;
+  color: var(--ta-red);
+}
+
+.ta-board__title {
+  @apply text-5xl leading-none font-bold;
+}
+
+.ta-board__hint {
+  @apply max-w-3xl text-lg;
+  color: rgb(255 255 255 / 0.64);
+}
+
+.ta-board__frames {
+  @apply flex flex-col items-center gap-24;
+}
+
+.ta-board__frame {
+  @apply flex w-[1440px] flex-col gap-5;
+}
+
+.ta-board__label {
+  @apply grid items-baseline gap-x-4 gap-y-1;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.ta-board__step {
+  @apply border px-2 py-0.5 text-sm font-bold tabular-nums;
+  border-color: var(--ta-red);
+  color: var(--ta-red);
+}
+
+.ta-board__name {
+  @apply text-2xl font-bold;
+}
+
+.ta-board__size {
+  @apply text-sm tabular-nums;
+  color: rgb(255 255 255 / 0.4);
+}
+
+.ta-board__note {
+  @apply col-start-2 max-w-3xl text-base;
+  color: rgb(255 255 255 / 0.6);
+}
+
+.ta-board__screen {
+  @apply relative w-[1440px] overflow-hidden;
+  background: var(--ta-paper);
+  color: var(--ta-ink);
+  box-shadow: 0 40px 80px rgb(0 0 0 / 0.5);
+}
+
+.ta-board__screen--fixed {
+  @apply h-[900px];
+}
+
+/* ─── Recurso visual: card gris con su rótulo ─────────────────────── */
+
+.ta-visual {
+  @apply flex items-center justify-center p-6 text-center;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 14px,
+      rgb(0 0 0 / 0.025) 14px 16px
+    ),
+    #dedede;
+  outline: 1px dashed rgb(0 0 0 / 0.18);
+  outline-offset: -1px;
+}
+
+.ta-visual__label {
+  @apply max-w-[34ch] text-sm leading-[1.4] font-semibold;
+  color: #6a6a6c;
+}
+
+.ta-visual--dark {
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 14px,
+      rgb(255 255 255 / 0.025) 14px 16px
+    ),
+    #26272a;
+  outline-color: rgb(255 255 255 / 0.16);
+}
+
+.ta-visual--dark .ta-visual__label {
+  color: #8c8d91;
+}
+
+/* ─── Botones: rojo plano; al pasar el cursor el negro sube desde abajo
+   (regla de movimiento del sistema) y la flecha avanza ──────────────── */
+
+.ta-button {
+  @apply relative inline-flex h-[52px] cursor-pointer items-center justify-center gap-3 px-7 text-base font-bold whitespace-nowrap;
+  transition:
+    background-size 400ms var(--ta-ease),
+    border-color 200ms ease,
+    color 200ms ease,
+    scale 160ms ease;
+}
+
+.ta-button:active {
+  scale: 0.98;
+}
+
+.ta-button:focus-visible {
+  outline: 2px solid var(--ta-red);
+  outline-offset: 3px;
+}
+
+.ta-button__arrow {
+  transition: translate 320ms var(--ta-ease);
+}
+
+.ta-button:hover .ta-button__arrow {
+  translate: 4px 0;
+}
+
+.ta-button--primary {
+  background-color: var(--ta-red);
+  background-image: linear-gradient(var(--ta-ink), var(--ta-ink));
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: 100% 0;
+  color: var(--ta-paper);
+}
+
+.ta-button--primary:hover {
+  background-size: 100% 100%;
+}
+
+.ta-button--primary:disabled {
+  @apply cursor-not-allowed;
+  background: #2c2d30;
+  color: rgb(255 255 255 / 0.4);
+}
+
+.ta-button--outline {
+  @apply border-[1.5px];
+  border-color: currentcolor;
+}
+
+.ta-button--outline:hover {
+  background: var(--ta-ink);
+  border-color: var(--ta-ink);
+  color: var(--ta-paper);
+}
+
+.ta-button--ghost {
+  @apply border-[1.5px];
+  border-color: rgb(255 255 255 / 0.28);
+  color: var(--ta-paper);
+}
+
+.ta-button--ghost:hover {
+  border-color: var(--ta-paper);
+}
+
+.ta-button--text {
+  @apply h-auto border-b-[1.5px] px-0 py-1.5;
+  border-color: currentcolor;
+}
+
+.ta-button--text:hover {
+  color: var(--ta-red);
+}
+
+.ta-button--small {
+  @apply h-11 px-5 text-sm;
+}
+
+.ta-button--large {
+  @apply h-[60px] px-9 text-lg;
+}
+
+/* ─── Antetítulo e índice de sección ──────────────────────────────── */
+
+.ta-eyebrow {
+  @apply flex items-center gap-3 text-sm font-semibold tracking-[0.14em] uppercase;
+}
+
+.ta-eyebrow__line {
+  @apply block h-0.5 w-8;
+  background: currentcolor;
+}
+
+.ta-eyebrow--red {
+  color: var(--ta-red);
+}
+
+.ta-index {
+  @apply flex items-center gap-4 text-sm font-semibold tracking-[0.14em] uppercase;
+  color: var(--ta-gray);
+}
+
+.ta-index b {
+  @apply tabular-nums;
+  color: var(--ta-red);
+}
+
+.ta-index__line {
+  @apply block h-px w-12;
+  background: currentcolor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ta-board *,
+  .ta-board *::before,
+  .ta-board *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

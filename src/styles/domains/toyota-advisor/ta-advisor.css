@@ -1,0 +1,760 @@
+/* Asesoría: panel oscuro de 1440 × 900 con el avance, la pregunta, las
+   respuestas y el sistema a la vista */
+.ta-ask {
+  @apply flex h-full w-[1440px] flex-col overflow-hidden;
+  background: var(--ta-panel);
+  color: var(--ta-paper);
+}
+
+.ta-ask__bar {
+  @apply flex h-16 shrink-0 items-center gap-5 border-b px-12;
+  border-color: rgb(255 255 255 / 0.1);
+}
+
+.ta-ask__logo {
+  @apply h-8 w-28 p-1;
+}
+
+.ta-ask__module {
+  @apply border-l pl-5 text-base font-semibold;
+  border-color: rgb(255 255 255 / 0.18);
+}
+
+.ta-ask__exit {
+  @apply ml-auto flex cursor-pointer items-center gap-2 text-sm font-semibold;
+  color: rgb(255 255 255 / 0.7);
+  transition: color 200ms ease;
+}
+
+.ta-ask__exit:hover {
+  color: var(--ta-paper);
+}
+
+/* ─── Avance por bloques ──────────────────────────────────────────── */
+
+.ta-rail {
+  @apply flex shrink-0 items-end gap-8 px-12 pt-5;
+}
+
+.ta-rail__blocks {
+  @apply flex flex-1 gap-2;
+}
+
+.ta-rail__block {
+  @apply flex min-w-[192px] flex-col gap-2.5;
+  flex: var(--ticks, 1) 1 0;
+}
+
+.ta-rail__ticks {
+  @apply flex gap-1;
+}
+
+.ta-rail__tick {
+  @apply relative block h-1 flex-1 overflow-hidden;
+  background: rgb(255 255 255 / 0.16);
+}
+
+.ta-rail__tick--done {
+  background: var(--ta-paper);
+}
+
+/* La pregunta actual: rojo con un brillo que la recorre */
+.ta-rail__tick--current {
+  background: var(--ta-red);
+}
+
+.ta-rail__tick--current::after {
+  @apply absolute inset-y-0 w-1/3 content-[''];
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 0.6),
+    transparent
+  );
+  animation: ta-shine 2400ms var(--ta-ease) infinite;
+}
+
+.ta-rail__label {
+  @apply flex items-center gap-2 text-sm font-semibold tracking-[0.08em] whitespace-nowrap uppercase;
+  color: rgb(255 255 255 / 0.4);
+}
+
+.ta-rail__index {
+  @apply tabular-nums;
+}
+
+.ta-rail__block--done .ta-rail__label {
+  color: rgb(255 255 255 / 0.72);
+}
+
+.ta-rail__block--current .ta-rail__label {
+  color: var(--ta-paper);
+}
+
+.ta-rail__block--current .ta-rail__index {
+  color: var(--ta-red);
+}
+
+.ta-rail__counter {
+  @apply pb-px text-sm font-semibold whitespace-nowrap tabular-nums;
+  color: rgb(255 255 255 / 0.72);
+}
+
+@keyframes ta-shine {
+  from {
+    left: -40%;
+  }
+
+  to {
+    left: 110%;
+  }
+}
+
+/* ─── Cuerpo: pregunta a la izquierda, sistema a la derecha ───────── */
+
+.ta-ask__body {
+  @apply grid min-h-0 flex-1;
+  grid-template-columns: minmax(0, 1fr) 480px;
+}
+
+.ta-ask__main {
+  @apply flex min-h-0 flex-col pt-12 pr-14 pb-8 pl-12;
+}
+
+.ta-ask__block {
+  @apply flex items-center gap-3 text-sm font-semibold tracking-[0.14em] uppercase;
+  color: var(--ta-red);
+}
+
+.ta-ask__block-line {
+  @apply block h-0.5 w-8;
+  background: currentcolor;
+}
+
+.ta-ask__optional {
+  @apply ml-1 border px-2 py-0.5 text-xs tracking-[0.1em];
+  border-color: rgb(255 255 255 / 0.24);
+  color: rgb(255 255 255 / 0.7);
+}
+
+.ta-ask__title {
+  @apply mt-4 max-w-[20ch] text-[56px] leading-[1.02] font-semibold;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  animation: ta-rise 700ms var(--ta-ease) both;
+}
+
+.ta-ask__help {
+  @apply mt-4 flex items-center gap-5 text-lg;
+  color: rgb(255 255 255 / 0.64);
+}
+
+.ta-ask__quota {
+  @apply flex items-center gap-2.5 text-base font-semibold;
+  color: var(--ta-paper);
+}
+
+.ta-ask__quota-pips {
+  @apply flex gap-1;
+}
+
+.ta-ask__pip {
+  @apply block size-2.5 border;
+  border-color: rgb(255 255 255 / 0.4);
+  transition:
+    background 240ms var(--ta-ease),
+    border-color 240ms var(--ta-ease);
+}
+
+.ta-ask__pip--on {
+  background: var(--ta-red);
+  border-color: var(--ta-red);
+}
+
+.ta-ask__quota--full .ta-ask__quota-pips {
+  animation: ta-nudge 480ms var(--ta-ease);
+}
+
+.ta-ask__options {
+  @apply mt-8 grid grid-cols-2 gap-3;
+}
+
+.ta-ask__options--dense {
+  @apply gap-2.5;
+}
+
+.ta-ask__options--tall .ta-tile {
+  @apply h-[112px];
+}
+
+.ta-ask__options--dense .ta-tile {
+  @apply h-[72px];
+}
+
+.ta-ask__limit {
+  @apply mt-3 flex items-center gap-2 text-sm;
+  color: rgb(255 255 255 / 0.72);
+}
+
+.ta-ask__limit::before {
+  @apply block size-2 content-[''];
+  background: var(--ta-red);
+}
+
+.ta-ask__unsure {
+  @apply mt-5 cursor-pointer self-start border-b-[1.5px] pb-1 text-base font-semibold;
+  border-color: rgb(255 255 255 / 0.32);
+  color: rgb(255 255 255 / 0.72);
+  transition:
+    color 200ms ease,
+    border-color 200ms ease;
+}
+
+.ta-ask__unsure:hover {
+  border-color: var(--ta-paper);
+  color: var(--ta-paper);
+}
+
+.ta-ask__unsure--on {
+  border-color: var(--ta-red);
+  color: var(--ta-paper);
+}
+
+.ta-ask__actions {
+  @apply mt-auto flex items-center gap-4 border-t pt-6;
+  border-color: rgb(255 255 255 / 0.1);
+}
+
+.ta-ask__keys {
+  @apply ml-auto flex items-center gap-2 text-sm;
+  color: rgb(255 255 255 / 0.48);
+}
+
+.ta-ask__keys kbd {
+  @apply flex size-6 items-center justify-center border;
+  border-color: rgb(255 255 255 / 0.24);
+}
+
+.ta-ask__dot {
+  @apply mx-1 block size-1;
+  background: rgb(255 255 255 / 0.32);
+}
+
+/* ─── Tarjeta de respuesta ────────────────────────────────────────── */
+
+.ta-tile {
+  @apply relative grid h-20 cursor-pointer items-center gap-4 border px-5 text-left;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  background: rgb(255 255 255 / 0.03);
+  border-color: rgb(255 255 255 / 0.16);
+  transition:
+    background 260ms var(--ta-ease),
+    border-color 260ms var(--ta-ease),
+    color 260ms var(--ta-ease),
+    translate 260ms var(--ta-ease);
+}
+
+.ta-tile:not(:has(.ta-tile__icon)) {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+.ta-tile:hover {
+  background: rgb(255 255 255 / 0.06);
+  border-color: rgb(255 255 255 / 0.48);
+}
+
+.ta-tile:active {
+  translate: 0 1px;
+}
+
+.ta-tile:focus-visible {
+  outline: 2px solid var(--ta-red);
+  outline-offset: 3px;
+}
+
+.ta-tile__icon {
+  @apply flex size-10 items-center justify-center border;
+  border-color: rgb(255 255 255 / 0.16);
+  transition:
+    border-color 260ms var(--ta-ease),
+    translate 320ms var(--ta-ease);
+}
+
+.ta-tile:hover .ta-tile__icon {
+  translate: 2px 0;
+}
+
+.ta-tile__body {
+  @apply flex min-w-0 flex-col gap-0.5;
+}
+
+.ta-tile__label {
+  @apply text-lg leading-[1.2] font-semibold;
+}
+
+/* Lo que suma la respuesta: se asoma al pasar el cursor, queda al elegirla */
+.ta-tile__hint {
+  @apply text-sm font-semibold;
+  color: rgb(255 255 255 / 0);
+  translate: 0 4px;
+  transition:
+    color 260ms var(--ta-ease),
+    translate 260ms var(--ta-ease);
+}
+
+.ta-tile:hover .ta-tile__hint {
+  color: rgb(255 255 255 / 0.56);
+  translate: 0 0;
+}
+
+.ta-tile__key {
+  @apply flex h-6 min-w-6 items-center justify-center border px-1 text-xs font-semibold;
+  border-color: rgb(255 255 255 / 0.24);
+  color: rgb(255 255 255 / 0.56);
+}
+
+.ta-tile__mark {
+  @apply flex size-6 items-center justify-center border-[1.5px];
+  border-color: rgb(255 255 255 / 0.4);
+  transition:
+    background 220ms var(--ta-ease),
+    border-color 220ms var(--ta-ease);
+}
+
+.ta-tile__check {
+  @apply size-4;
+  color: var(--ta-paper);
+  scale: 0;
+  transition: scale 320ms var(--ta-ease);
+}
+
+.ta-tile--on,
+.ta-tile--on:hover {
+  background: var(--ta-paper);
+  border-color: var(--ta-paper);
+  color: var(--ta-ink);
+}
+
+.ta-tile--on .ta-tile__icon {
+  border-color: rgb(0 0 0 / 0.14);
+}
+
+.ta-tile--on .ta-tile__hint,
+.ta-tile--on:hover .ta-tile__hint {
+  color: var(--ta-red);
+  translate: 0 0;
+}
+
+.ta-tile--on .ta-tile__key {
+  border-color: rgb(0 0 0 / 0.18);
+  color: rgb(0 0 0 / 0.5);
+}
+
+.ta-tile--on .ta-tile__mark {
+  background: var(--ta-red);
+  border-color: var(--ta-red);
+  animation: ta-pop 360ms var(--ta-ease);
+}
+
+.ta-tile--on .ta-tile__check {
+  scale: 1;
+}
+
+/* Ya hay 3: las demás se apagan y no se pueden elegir */
+.ta-tile--off,
+.ta-tile--off:hover {
+  @apply cursor-not-allowed;
+  background: transparent;
+  border-color: rgb(255 255 255 / 0.08);
+  opacity: 0.36;
+}
+
+.ta-tile--off:hover .ta-tile__hint {
+  color: transparent;
+}
+
+/* ─── El sistema a la vista ───────────────────────────────────────── */
+
+.ta-scanner {
+  @apply flex min-h-0 flex-col gap-5 overflow-hidden border-l px-10 pt-8 pb-6;
+  background: var(--ta-panel-deep);
+  border-color: rgb(255 255 255 / 0.1);
+}
+
+.ta-scanner__eyebrow {
+  @apply text-sm font-semibold tracking-[0.14em] uppercase;
+  color: rgb(255 255 255 / 0.56);
+}
+
+.ta-scanner__frame {
+  @apply relative h-[148px] shrink-0 overflow-hidden border;
+  border-color: rgb(255 255 255 / 0.1);
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.ta-scanner__visual {
+  @apply absolute inset-x-12 inset-y-6;
+}
+
+.ta-scanner__corner {
+  @apply absolute z-10 block size-6 border-2;
+  border-color: rgb(255 255 255 / 0.6);
+}
+
+.ta-scanner__corner--tl {
+  @apply top-3 left-3 border-r-0 border-b-0;
+}
+
+.ta-scanner__corner--tr {
+  @apply top-3 right-3 border-b-0 border-l-0;
+}
+
+.ta-scanner__corner--bl {
+  @apply bottom-3 left-3 border-t-0 border-r-0;
+}
+
+.ta-scanner__corner--br {
+  @apply right-3 bottom-3 border-t-0 border-l-0;
+}
+
+.ta-module__scan .ta-scanner__corner {
+  @apply size-8;
+}
+
+.ta-module__scan .ta-scanner__corner--tl {
+  @apply top-8 left-8;
+}
+
+.ta-module__scan .ta-scanner__corner--tr {
+  @apply top-8 right-8;
+}
+
+.ta-module__scan .ta-scanner__corner--bl {
+  @apply bottom-8 left-8;
+}
+
+.ta-module__scan .ta-scanner__corner--br {
+  @apply right-8 bottom-8;
+}
+
+/* Línea roja que barre la silueta, con su estela */
+.ta-scanner__beam {
+  @apply absolute inset-x-0 z-10 block h-0.5;
+  background: var(--ta-red);
+  box-shadow: 0 0 16px 2px rgb(235 10 30 / 0.6);
+  animation: ta-beam 3200ms ease-in-out infinite alternate;
+}
+
+.ta-scanner__beam::after {
+  @apply absolute inset-x-0 bottom-0.5 block h-16 content-[''];
+  background: linear-gradient(0deg, rgb(235 10 30 / 0.22), transparent);
+}
+
+@keyframes ta-beam {
+  from {
+    top: 8%;
+  }
+
+  to {
+    top: 92%;
+  }
+}
+
+.ta-scanner__section {
+  @apply flex flex-col gap-2.5;
+}
+
+.ta-scanner__title {
+  @apply flex items-center justify-between text-sm font-semibold tracking-[0.14em] uppercase;
+  color: rgb(255 255 255 / 0.56);
+}
+
+.ta-scanner__count {
+  @apply text-sm tracking-normal normal-case tabular-nums;
+  color: var(--ta-red);
+}
+
+.ta-scanner__empty {
+  @apply text-base;
+  color: rgb(255 255 255 / 0.4);
+}
+
+.ta-scanner__tags {
+  @apply flex flex-wrap gap-2;
+}
+
+.ta-scanner__tag {
+  @apply flex flex-col border px-3 py-1.5;
+  border-color: rgb(255 255 255 / 0.16);
+}
+
+.ta-scanner__tag b {
+  @apply text-base font-semibold;
+}
+
+.ta-scanner__tag span {
+  @apply text-xs;
+  color: rgb(255 255 255 / 0.48);
+}
+
+/* Lo que acaba de sumar esta respuesta entra en rojo */
+.ta-scanner__tag--new {
+  border-color: var(--ta-red);
+  animation: ta-tag-in 520ms var(--ta-ease) both;
+}
+
+.ta-scanner__notice {
+  @apply border-l-2 pl-3 text-sm leading-[1.4];
+  border-color: var(--ta-red);
+  color: rgb(255 255 255 / 0.72);
+  animation: ta-rise 420ms var(--ta-ease) both;
+}
+
+.ta-scanner__ranking {
+  @apply flex flex-col;
+}
+
+.ta-scanner__row {
+  @apply grid h-9 items-center gap-3 border-b;
+  grid-template-columns: 20px minmax(0, 1fr) auto 52px;
+  border-color: rgb(255 255 255 / 0.08);
+  animation: ta-row-in 480ms var(--ta-ease) both;
+  animation-delay: calc(var(--row, 0) * 40ms);
+}
+
+.ta-scanner__place {
+  @apply text-sm tabular-nums;
+  color: rgb(255 255 255 / 0.4);
+}
+
+.ta-scanner__name {
+  @apply flex items-center gap-2 truncate text-base font-semibold;
+}
+
+.ta-scanner__badge {
+  @apply px-1.5 py-0.5 text-xs font-bold tracking-[0.08em] uppercase;
+  background: var(--ta-red);
+  color: var(--ta-paper);
+}
+
+.ta-scanner__out {
+  @apply text-xs font-semibold;
+  color: rgb(255 255 255 / 0.48);
+}
+
+.ta-scanner__bar {
+  @apply flex gap-[3px];
+}
+
+.ta-scanner__pip {
+  @apply block size-2.5;
+  background: rgb(255 255 255 / 0.1);
+  transition: background 320ms var(--ta-ease);
+}
+
+.ta-scanner__pip--on {
+  background: var(--ta-paper);
+}
+
+.ta-scanner__row--leader .ta-scanner__pip--on,
+.ta-scanner__row--leader .ta-scanner__place {
+  background: var(--ta-red);
+  color: var(--ta-red);
+}
+
+.ta-scanner__row--leader .ta-scanner__place {
+  background: none;
+}
+
+.ta-scanner__points {
+  @apply text-right text-sm tabular-nums;
+  color: rgb(255 255 255 / 0.64);
+}
+
+.ta-scanner__row--out {
+  opacity: 0.36;
+}
+
+.ta-scanner__rule {
+  @apply mt-1 text-sm leading-[1.45];
+  color: rgb(255 255 255 / 0.4);
+}
+
+/* ─── Pregunta 7: la regla de precios ─────────────────────────────── */
+
+.ta-budget {
+  @apply mt-6 flex flex-col;
+}
+
+.ta-budget__ruler {
+  @apply relative pt-[104px];
+}
+
+.ta-budget__models {
+  @apply absolute inset-x-0 top-0 h-[104px];
+}
+
+.ta-budget__flag {
+  @apply absolute bottom-0 flex -translate-x-1/2 flex-col items-center gap-0.5 whitespace-nowrap;
+  left: var(--x);
+  padding-bottom: 20px;
+  transition:
+    opacity 420ms var(--ta-ease),
+    translate 420ms var(--ta-ease);
+}
+
+/* Banderas alternadas en dos alturas para que no se pisen */
+.ta-budget__flag--high {
+  padding-bottom: 60px;
+}
+
+.ta-budget__flag::after {
+  @apply absolute bottom-0 left-1/2 block w-px content-[''];
+  height: 20px;
+  background: currentcolor;
+}
+
+.ta-budget__flag--high::after {
+  height: 60px;
+}
+
+.ta-budget__flag-name {
+  @apply text-sm font-bold;
+}
+
+.ta-budget__flag-price {
+  @apply text-xs tabular-nums;
+  color: rgb(255 255 255 / 0.6);
+}
+
+.ta-budget__flag--out {
+  opacity: 0.28;
+}
+
+.ta-budget__track {
+  @apply relative h-2;
+  background: rgb(255 255 255 / 0.1);
+}
+
+.ta-budget__fill {
+  @apply absolute inset-y-0 left-0 block;
+  width: var(--cap);
+  background: rgb(255 255 255 / 0.28);
+  transition: width 560ms var(--ta-ease);
+}
+
+.ta-budget__band {
+  @apply absolute inset-y-0 block;
+  left: var(--band-start);
+  width: calc(var(--cap) - var(--band-start));
+  background: var(--ta-red);
+  transition:
+    left 560ms var(--ta-ease),
+    width 560ms var(--ta-ease);
+}
+
+.ta-budget__cap {
+  @apply absolute top-4 -translate-x-1/2 text-xs font-bold tracking-[0.1em] whitespace-nowrap uppercase;
+  left: var(--cap);
+  color: var(--ta-red);
+  transition: left 560ms var(--ta-ease);
+}
+
+.ta-budget__cap::before {
+  @apply absolute -top-4 left-1/2 block h-3 w-px content-[''];
+  background: var(--ta-red);
+}
+
+/* Vista previa al pasar el cursor por un rango */
+.ta-budget__ruler--preview .ta-budget__band {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ta-red) 0 6px,
+    transparent 6px 10px
+  );
+}
+
+.ta-budget__scale {
+  @apply mt-9 flex justify-between text-xs tabular-nums;
+  color: rgb(255 255 255 / 0.4);
+}
+
+.ta-budget__result {
+  @apply mt-3 flex items-baseline gap-3 text-lg;
+  color: rgb(255 255 255 / 0.72);
+}
+
+.ta-budget__count {
+  @apply text-[40px] leading-none font-black tabular-nums;
+  color: var(--ta-red);
+}
+
+.ta-budget__options {
+  @apply mt-5 grid grid-cols-2 gap-2.5;
+}
+
+.ta-budget__options .ta-tile {
+  @apply h-16 w-full;
+}
+
+/* ─── Movimientos compartidos ─────────────────────────────────────── */
+
+@keyframes ta-rise {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+@keyframes ta-pop {
+  0% {
+    scale: 0.6;
+  }
+
+  60% {
+    scale: 1.12;
+  }
+
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes ta-nudge {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  30% {
+    translate: -3px 0;
+  }
+
+  60% {
+    translate: 3px 0;
+  }
+}
+
+@keyframes ta-tag-in {
+  from {
+    background: rgb(235 10 30 / 0.32);
+    opacity: 0;
+    scale: 0.9;
+  }
+
+  to {
+    background: transparent;
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes ta-row-in {
+  from {
+    opacity: 0;
+    translate: -8px 0;
+  }
+}

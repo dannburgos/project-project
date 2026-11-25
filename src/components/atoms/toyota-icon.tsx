@@ -28,7 +28,16 @@ const ICON_PATHS = {
   versatility: 'M3 3h8v8H3z M13 3h8v8h-8z M3 13h8v8H3z M13 13h8v8h-8z',
   cargo: 'M3 8l9-5 9 5v10l-9 5-9-5z M3 8l9 5 9-5 M12 13v10',
   terrain: 'M2 20L9 7l4 7 3-4 6 10z',
-  seven: 'M3 3h18v18H3z M8 8h8l-4 9'
+  seven: 'M3 3h18v18H3z M8 8h8l-4 9',
+  key: 'M3 9h8v6H3z M11 12h10 M17 12v4 M20 12v3',
+  calendar: 'M3 5h18v16H3z M3 10h18 M8 3v4 M16 3v4 M7 14h2 M11 14h2 M15 14h2',
+  family: 'M5 4h4v4H5z M15 4h4v4h-4z M3 21v-9h8v9 M13 21v-9h8v9 M10 21h4',
+  road: 'M8 3L4 21 M16 3l4 18 M12 4v3 M12 10v4 M12 17v4',
+  suitcase: 'M4 8h16v12H4z M9 8V4h6v4 M9 8v12 M15 8v12',
+  bag: 'M4 8h16l-2 13H6z M9 8V5h6v3',
+  pet: 'M6 6h3v3H6z M15 6h3v3h-3z M3 11h3v3H3z M18 11h3v3h-3z M8 13h8l2 7H6z',
+  shield: 'M12 3l8 3v7l-8 8-8-8V6z M8 12l3 3 5-6',
+  enter: 'M20 5v8H5 M9 9l-4 4 4 4'
 } as const;
 
 export type ToyotaIconName = keyof typeof ICON_PATHS;
