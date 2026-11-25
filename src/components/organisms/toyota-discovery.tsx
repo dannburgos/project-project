@@ -36,14 +36,14 @@ export function ToyotaDiscovery({
       </div>
 
       {/* Problema: la brecha de interpretación, en rojo */}
-      <div className="ty-module">
+      <div className="ty-module ty-module--roomy">
         <ToyotaHead head={problem.head} />
         <ToyotaSteps steps={problem.model} className="ty-steps--large" />
       </div>
 
       {/* Usuario: la persona en un solo bloque, con su foto, sus segmentos,
           sus puntos de dolor y el trabajo que quiere lograr */}
-      <div className="ty-module ty-module--wide">
+      <div className="ty-module ty-module--spacious">
         <ToyotaHead head={user.head} size="large" />
         <ToyotaPersona user={user} />
       </div>

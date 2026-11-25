@@ -292,6 +292,26 @@
     @apply text-2xl;
   }
 
+  /* Versión grande: cada paso queda centrado en su columna (cuadro con su
+     número y nombre debajo, en dos líneas) y la línea va de un centro al
+     otro */
+  .ty-steps--large .ty-steps__item {
+    @apply items-center text-center;
+  }
+
+  .ty-steps--large .ty-steps__text {
+    max-width: 9em;
+    text-wrap: balance;
+  }
+
+  .ty-steps--large .ty-steps__line {
+    left: calc(var(--step-col) / 2);
+    right: calc(
+      100% - (var(--step-count) - 1) * (var(--step-col) + var(--step-gap)) -
+        var(--step-col) / 2
+    );
+  }
+
   .ty-steps--dense .ty-steps__text {
     @apply text-sm;
   }
@@ -935,8 +955,9 @@
 }
 
 @media (min-width: 768px) {
-  .ty-journey__track {
-    max-width: 1000px;
+  /* Sale de la retícula igual que los recuadros de abajo: mismo ancho */
+  .ty-journey {
+    margin-inline: calc(50% - var(--ty-wide) / 2);
   }
 
   .ty-journey__list {
@@ -964,8 +985,8 @@
 
 /* Centrados y pegados: comparten una sola línea en el medio. El contorno de
    cada uno se dibuja con el scroll (--draw), igual que las líneas de los
-   recorridos. Desde tableta salen un poco del ancho del módulo (hasta 1360 px
-   en total) para verse más anchos */
+   recorridos. Desde tableta salen un poco del ancho del módulo (--ty-wide) para
+   verse más anchos, con la misma medida que el recorrido de hoy */
 .ty-pair {
   @apply grid w-full grid-cols-1 md:grid-cols-2;
 }
@@ -973,7 +994,7 @@
 @media (min-width: 768px) {
   .ty-pair {
     width: auto;
-    margin-inline: calc(50% - min(50vw - 24px, 680px));
+    margin-inline: calc(50% - var(--ty-wide) / 2);
   }
 }
 

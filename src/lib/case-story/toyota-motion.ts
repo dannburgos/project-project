@@ -31,6 +31,13 @@ import { driveProgressCar } from '@/lib/case-story/toyota-progress-car';
 const EASE_OUT = 'power3.out';
 const EASE_IN_OUT = 'power3.inOut';
 const ENTER = 'top 85%';
+// Suavizado de las animaciones de la apertura ligadas al scroll (segundos que
+// tarda en alcanzar al scroll): el movimiento se ve fluido, sin saltos
+const SCRUB_SMOOTHING = 0.6;
+// Hasta dónde baja la foto larga de los pilares dentro de su marco (1 sería
+// hasta el último píxel): se corta antes para que el suelo no ocupe tanto y
+// solo se vea la mitad del asfalto
+const STACK_DRIFT_END = 0.7;
 const CLIP_BELOW = 'inset(0% 0% 100% 0%)';
 // Las revelaciones ligadas al scroll terminan cuando la pieza ya se ve
 // completa y entera en la parte baja de la pantalla, no cuando llega al
@@ -409,8 +416,8 @@ function fadeStackCaptions(root: HTMLElement) {
           ease: 'none',
           scrollTrigger: {
             trigger: next,
-            start: 'top 56%',
-            end: 'top 34%',
+            start: 'top 36%',
+            end: 'top 20%',
             scrub: true
           }
         });
@@ -427,10 +434,16 @@ function pinTop(stack: Element) {
   return pin ? Math.round(parseFloat(getComputedStyle(pin).top) || 0) : 0;
 }
 
-// Distancia, desde el borde de arriba del bloque fijo, hasta el borde de
-// abajo del marco (sin contar su animación de llegada)
-function stackFrameEnd(frame: HTMLElement) {
-  return frame.offsetTop + frame.offsetHeight;
+// Scroll que hay desde el inicio de la lista de pilares hasta que la última
+// tarjeta entra: es lo que tarda la foto en llegar al suelo
+function lastCardOffset(list: Element) {
+  const cards = queryAll(list, '.ty-stack__card');
+  const first = cards[0];
+  if (!first) return 0;
+  const pitch =
+    first.offsetHeight +
+    (parseFloat(getComputedStyle(first).marginBottom) || 0);
+  return pitch * (cards.length - 1);
 }
 
 // La imagen larga de los pilares baja por dentro de su marco más lento que
@@ -442,13 +455,14 @@ function driftStackImage(root: HTMLElement) {
     trigger: Element,
     frame: Element,
     start: string | (() => string),
-    end: string | (() => string)
+    end: string | (() => string),
+    to: number
   ) =>
     gsap.fromTo(
       frame,
       { '--progress': 0 },
       {
-        '--progress': 1,
+        '--progress': to,
         ease: 'none',
         scrollTrigger: { trigger, start, end, scrub: true }
       }
@@ -458,16 +472,19 @@ function driftStackImage(root: HTMLElement) {
     const list = stack.querySelector('.ty-stack__list');
     if (!frame || !list) return;
     media.add('(min-width: 1024px)', () => {
-      // Va desde que el bloque queda fijo hasta que el marco se suelta
+      // Va desde que el bloque queda fijo hasta que el pilar 03 llega al 30 %
+      // de la pantalla: ahí la foto ya mostró todo el suelo y se queda quieta
+      // hasta que la página sigue
       drift(
         list,
         frame,
         () => `top ${pinTop(stack)}px`,
-        () => `bottom ${pinTop(stack) + stackFrameEnd(frame)}px`
+        () => `top+=${lastCardOffset(list)} 30%`,
+        STACK_DRIFT_END
       );
     });
     media.add('(max-width: 1023px)', () => {
-      drift(frame, frame, 'top bottom', 'bottom top');
+      drift(frame, frame, 'top bottom', 'bottom top', STACK_DRIFT_END);
     });
   });
   return media;
@@ -534,7 +551,7 @@ function slideOpenerCells(root: HTMLElement) {
             trigger: grid,
             start: 'top 55%',
             end: 'top 5%',
-            scrub: true
+            scrub: SCRUB_SMOOTHING
           }
         }
       );
@@ -578,7 +595,35 @@ function panOpenerBackdrops(root: HTMLElement) {
           trigger: backdrop.parentElement ?? backdrop,
           start: 'top bottom',
           end: 'bottom top',
-          scrub: true
+          scrub: SCRUB_SMOOTHING
+        }
+      }
+    );
+  });
+}
+
+// La palabra gigante de cada apertura se mueve de forma continua con el scroll
+// desde que la apertura aparece hasta que sale, a la mitad de la velocidad de
+// la página: así las celdas pasan por encima de ella, sin que se quede quieta
+// en ningún punto. El CSS la deja en su lugar de partida (sobre la primera
+// fila); aquí se mueve de -recorrido a +recorrido alrededor de ese lugar
+function driftOpenerWords(root: HTMLElement) {
+  queryAll(root, '.ty-opener').forEach(opener => {
+    const word = opener.querySelector('.ty-opener__word');
+    if (!word) return;
+    const travel = () => 0.25 * (window.innerHeight + opener.offsetHeight);
+    gsap.fromTo(
+      word,
+      { y: () => -travel() },
+      {
+        y: () => travel(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: opener,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: SCRUB_SMOOTHING,
+          invalidateOnRefresh: true
         }
       }
     );
@@ -614,6 +659,7 @@ export function setupToyotaMotion(root: HTMLElement) {
   revealCells(root);
   parallax(root);
   panOpenerBackdrops(root);
+  driftOpenerWords(root);
   const stack = fadeStackCaptions(root);
   const stackImage = driftStackImage(root);
   const stackEntrance = enterStack(root);

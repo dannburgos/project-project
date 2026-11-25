@@ -191,7 +191,7 @@ export const toyotaStory: ToyotaStory = {
       model: [
         { label: 'Necesidad del usuario' },
         { label: 'Exploración del catálogo' },
-        { label: 'Brecha de interpretación', isHighlight: true },
+        { label: 'Brecha de interpretación' },
         { label: 'Incertidumbre y mayor esfuerzo' }
       ]
     },
@@ -256,8 +256,7 @@ export const toyotaStory: ToyotaStory = {
       number: '03',
       kicker: 'Capítulo 03',
       word: 'Estrategia',
-      summary:
-        'La propuesta de valor, la trazabilidad de los objetivos y la estrategia de IA.',
+      summary: 'La propuesta de valor y la estrategia de IA.',
       background: {
         label:
           'Toyota RAV4 híbrida verde cruzando un puente atirantado bajo un cielo azul',
@@ -358,8 +357,7 @@ export const toyotaStory: ToyotaStory = {
       number: '04',
       kicker: 'Capítulo 04',
       word: 'Producto',
-      summary:
-        'Qué entra en el MVP, cómo recomienda, cómo se recorre y cómo se ve.',
+      summary: 'La lógica, el flujo y el sistema de diseño del MVP.',
       background: {
         label:
           'Toyota Corolla Cross cobriza en movimiento por una avenida arbolada, con el fondo barrido',

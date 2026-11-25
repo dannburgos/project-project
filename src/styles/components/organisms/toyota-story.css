@@ -14,6 +14,9 @@
   --ty-gutter: 24px;
   --ty-content: 1200px;
   --ty-module-space: 48px;
+  /* Ancho de las piezas que salen un poco de la retícula (recorrido de hoy y
+     recuadros de problema y oportunidad): la misma medida para las dos */
+  --ty-wide: min(100vw - 48px, calc(var(--ty-content) + 120px));
   /* Escala tipográfica: palabra de capítulo, titulares, bajada y cuerpo */
   --ty-display: clamp(64px, 14vw, 256px);
   /* Una sola escala de texto para todo el caso:
@@ -120,10 +123,9 @@
   @apply items-center text-center;
 }
 
-/* Módulo más ancho que la retícula (la persona usuaria): usa casi todo el
-   ancho de la página y deja más aire abajo, antes de lo que sigue */
-.ty-module--wide {
-  width: min(100% - 48px, calc(var(--ty-content) + 120px));
+/* Módulo con más aire abajo, antes de lo que sigue (la persona usuaria): usa el
+   mismo ancho que los demás módulos */
+.ty-module--spacious {
   padding-bottom: calc(var(--ty-module-space) + 96px);
 }
 
@@ -131,8 +133,15 @@
    retícula */
 .ty-module--bleed {
   @apply w-full;
-  /* Más aire arriba: separa la pista del benchmark de la apertura */
+  /* Más aire arriba: separa la pista del benchmark de la apertura. Abajo, 150 px
+     antes de «Definición del problema» */
   padding-top: calc(var(--ty-module-space) + 80px);
+  padding-bottom: 150px;
+}
+
+/* Módulo con 100 px de aire abajo (el problema, antes del usuario) */
+.ty-module--roomy {
+  padding-bottom: 100px;
 }
 
 .ty-module__inner {
@@ -865,8 +874,10 @@
    bajan según su número de letras para no salirse de la pantalla */
 .ty-opener__word {
   --word-size: min(var(--ty-display), calc(128vw / var(--word-chars, 8)));
-  @apply sticky z-10 text-center font-black whitespace-nowrap uppercase;
-  top: calc(50svh - var(--word-size) * 0.45);
+  @apply relative z-10 text-center font-black whitespace-nowrap uppercase;
+  /* Parte a la altura de la primera fila de celdas; con el scroll se mueve de
+     forma continua, más lento que la página (toyota-motion.ts) */
+  top: calc(var(--opener-gap) + 25vw - var(--word-size) * 0.45);
   font-size: var(--word-size);
   line-height: 0.9;
   margin-bottom: calc(var(--word-size) * -0.9);
@@ -885,20 +896,15 @@
 }
 
 @media (min-width: 768px) {
+  /* Arriba de la retícula queda una franja de foto libre de 42 % de la
+     pantalla: es donde se ve el recorrido de la foto (y los autos de la
+     panorámica del 02) antes de que lleguen las celdas */
   .ty-opener {
-    --opener-gap: 30svh;
-  }
-
-  /* La panorámica del 02 trae la fila de autos en el cuarto de arriba: la
-     franja libre sube a 42 % para que se vean antes de que lleguen las
-     celdas */
-  .ty-opener--wide {
     --opener-gap: 42svh;
   }
 
   .ty-opener__grid {
-    /* Casi cuadradas (21 % del ancho de alto): arriba queda una franja de foto
-       de 30 % de la pantalla */
+    /* Casi cuadradas: 21 % del ancho de alto */
     grid-auto-rows: minmax(var(--opener-row), auto);
   }
 
@@ -966,8 +972,9 @@
 /* La pregunta del capítulo es la protagonista de la celda */
 .ty-opener__summary {
   @apply max-w-xl font-semibold;
-  font-size: var(--ty-title);
-  line-height: 1.05;
+  /* Subtítulo: la pregunta del capítulo cabe en dos líneas en computador */
+  font-size: clamp(24px, 2.2vw, 32px);
+  line-height: 1.1;
 }
 
 /* En celular, menos celdas: se quitan las que solo son ventana o relleno y
@@ -1073,7 +1080,9 @@
   /* Tamaño de la palabra gigante: del él cuelgan el solape del marco y la
      altura a la que se quedan fijos */
   --stack-word: clamp(48px, 11vw, 192px);
-  @apply relative pb-24;
+  @apply relative;
+  /* Espacio en blanco entre la foto y la apertura que sigue */
+  padding-bottom: 150px;
 }
 
 /* Titular de la solución, sobre la palabra gigante */
@@ -1135,11 +1144,10 @@
 
 @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
   .ty-stack {
-    /* El marco y los textos se quedan fijos metidos bajo la palabra: su borde
-       de arriba cae a un tercio del alto de las letras desde abajo */
-    --stack-top: calc(
-      var(--site-header-clearance) + 16px + var(--stack-word) * 0.63
-    );
+    /* La foto fija ocupa casi toda la pantalla, desde el borde de arriba: así
+       la imagen sigue hacia arriba por detrás de la palabra y no se corta con
+       un marco bajo ella */
+    --stack-frame-height: calc(100svh - 64px);
   }
 
   /* El bloque (palabra + marco) y la lista ocupan la misma celda: el bloque
@@ -1155,34 +1163,36 @@
   }
 
   .ty-stack__pin {
-    @apply sticky z-20 self-start;
+    @apply sticky top-0 z-20 self-start;
+  }
+
+  /* La palabra va encima de la foto y es lo que queda fijo arriba */
+  .ty-stack__word {
+    @apply absolute inset-x-0;
     top: calc(var(--site-header-clearance) + 16px);
   }
 
   .ty-stack__frame {
     @apply mt-0 justify-self-center;
-    margin-top: calc(var(--stack-word) * -0.27);
     width: max(320px, 30vw);
-    height: 72svh;
+    height: var(--stack-frame-height);
     aspect-ratio: auto;
   }
 
   .ty-stack__list {
-    @apply gap-0;
+    @apply gap-0 pt-0;
     width: 100%;
-    /* Mismo corrimiento que el marco dentro del bloque: los textos quedan
-       a su altura */
-    padding-top: calc(var(--stack-word) * 0.63);
   }
 
   .ty-stack__card {
     @apply sticky items-end gap-12 bg-transparent;
     grid-template-columns: 1fr minmax(320px, 30vw) 1fr;
-    top: var(--stack-top);
-    height: 72svh;
-    /* Cada tarjeta llega antes de que la anterior termine de subir: así los
-       tres pilares piden menos scroll */
-    margin-bottom: -16svh;
+    top: 0;
+    height: var(--stack-frame-height);
+    /* Cada tarjeta llega antes de que la anterior termine de subir: el segundo
+       pilar empieza a verse casi al fijarse la foto y los tres piden menos
+       scroll */
+    margin-bottom: calc(var(--stack-frame-height) * -0.58);
     padding-inline: var(--ty-gutter);
   }
 
