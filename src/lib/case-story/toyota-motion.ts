@@ -298,23 +298,6 @@ function fillWords(root: HTMLElement) {
   });
 }
 
-function countNumbers(root: HTMLElement) {
-  queryAll(root, '[data-ty-count]').forEach(element => {
-    const target = Number(element.dataset.tyCount ?? 0);
-    const counter = { value: 0 };
-    element.textContent = '0';
-    gsap.to(counter, {
-      value: target,
-      duration: 1.4,
-      ease: EASE_OUT,
-      onUpdate: () => {
-        element.textContent = String(Math.round(counter.value));
-      },
-      scrollTrigger: { trigger: element, start: ENTER, once: true }
-    });
-  });
-}
-
 // La captura de la portada crece hacia adelante, de tarjeta a pantalla
 // completa, mientras se recorre la pista de la portada
 function growCover(root: HTMLElement) {
@@ -384,19 +367,6 @@ function growCover(root: HTMLElement) {
       }
     }
   );
-}
-
-function revealCells(root: HTMLElement) {
-  queryAll(root, '[data-ty-cells]').forEach(matrix => {
-    gsap.from(queryAll(matrix, '[data-ty-cell]'), {
-      scale: 0,
-      autoAlpha: 0,
-      duration: 0.5,
-      ease: EASE_OUT,
-      stagger: 0.03,
-      scrollTrigger: { trigger: matrix, start: 'top 75%', once: true }
-    });
-  });
 }
 
 // En la pila, el texto de cada tarjeta se va cuando la siguiente la cubre,
@@ -654,9 +624,7 @@ export function setupToyotaMotion(root: HTMLElement) {
   drawLines(root);
   fillWords(root);
   igniteAccents(root);
-  countNumbers(root);
   growCover(root);
-  revealCells(root);
   parallax(root);
   panOpenerBackdrops(root);
   driftOpenerWords(root);
@@ -682,9 +650,5 @@ export function setupToyotaMotion(root: HTMLElement) {
     triggers.forEach(trigger => trigger.kill());
     counter.kill();
     root.removeAttribute('data-counter-hidden');
-    // Las cifras vuelven a su valor real si se apaga el movimiento
-    queryAll(root, '[data-ty-count]').forEach(element => {
-      element.textContent = element.dataset.tyCount ?? '';
-    });
   };
 }

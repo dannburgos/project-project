@@ -4,7 +4,7 @@ import type {
   ToyotaDesignItem,
   ToyotaDesignSample
 } from '@/content/toyota-story.types';
-import { useMultiChoice, useSingleChoice } from '@/hooks/use-design-specimen';
+import { useSingleChoice } from '@/hooks/use-design-specimen';
 import { cn } from '@/lib/utils';
 
 type ToyotaDsEssentialProps = {
@@ -15,8 +15,6 @@ type ToyotaDsEssentialProps = {
 const BUTTON_STATE_IDS = ['rest', 'hover', 'focus', 'disabled'] as const;
 const BUTTON_VARIANT_IDS = ['primary', 'outline', 'text'] as const;
 const CHIP_STATE_IDS = ['rest', 'selected', 'disabled'] as const;
-const COMPARE_MAX = 3;
-const COMPARE_MIN = 2;
 
 // Muestras vivas de los componentes esenciales: cada uno se ve completo, con
 // sus variantes y, donde se puede, para probarlo
@@ -30,12 +28,6 @@ export function ToyotaDsEssential({ item, sample }: ToyotaDsEssentialProps) {
       return <QuestionSpecimen sample={sample.question} />;
     case 'card':
       return <CardSpecimen cards={sample.cards} />;
-    case 'reasons':
-      return <ReasonsSpecimen reasons={sample.reasons} />;
-    case 'compare':
-      return <CompareSpecimen sample={sample.compare} />;
-    case 'legal':
-      return <LegalSpecimen sample={sample.legal} />;
     default:
       return null;
   }
@@ -122,55 +114,61 @@ function ChipSpecimen({ sample }: { sample: ToyotaDesignSample['chip'] }) {
   );
 }
 
-// El panel completo de una pregunta, con su avance y sus acciones
+// El panel de una pregunta: su paso, la pregunta y el avance. Las opciones y
+// los botones son los de las hojas «Etiqueta y opción» y «Botón»
 function QuestionSpecimen({
   sample
 }: {
   sample: ToyotaDesignSample['question'];
 }) {
-  const { selected, handleSelect } = useSingleChoice(0);
-
   return (
-    <div className="ty-dsx-question">
-      <p className="ty-dsx-question__step">{sample.step}</p>
-      <h5 className="ty-dsx-question__title">{sample.title}</h5>
-      <ul className="ty-dsx-chip__choices">
-        {sample.options.map((option, index) => (
-          <li key={option}>
-            <button
-              type="button"
-              className={cn(
-                'ty-dsx-chip__item ty-dsx-chip__button',
-                selected === index && 'ty-dsx-chip__item--on'
-              )}
-              aria-pressed={selected === index}
-              onClick={() => handleSelect(index)}
-            >
-              {option}
-            </button>
-          </li>
-        ))}
-      </ul>
-      <ol className="ty-dsx-question__progress" aria-hidden="true">
-        {Array.from({ length: sample.progressTotal }, (_, index) => (
-          <li
-            key={index}
-            className={cn(
-              'ty-dsx-question__square',
-              index < sample.progressCurrent && 'ty-dsx-question__square--on'
-            )}
-          />
-        ))}
-      </ol>
-      <div className="ty-dsx-question__actions">
-        <span className="ty-dsx-button ty-dsx-button--primary">
-          {sample.primary}
-        </span>
-        <span className="ty-dsx-button ty-dsx-button--text">
-          {sample.secondary}
-        </span>
+    <div className="ty-dsx-question-sheet">
+      <div className="ty-dsx-question">
+        <p className="ty-dsx-question__step">{sample.step}</p>
+        <h5 className="ty-dsx-question__title">{sample.title}</h5>
+        <QuestionProgress
+          total={sample.progressTotal}
+          current={sample.progressCurrent}
+        />
+      </div>
+      <div className="ty-dsx-question__states">
+        <p className="ty-dsx-label">{sample.statesLabel}</p>
+        <ul className="ty-dsx-question__list">
+          {sample.states.map(state => (
+            <li key={state.label} className="ty-dsx-question__state">
+              <QuestionProgress
+                total={sample.progressTotal}
+                current={state.current}
+              />
+              <span className="ty-dsx-question__caption">{state.label}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
+  );
+}
+
+// Un cuadrado por pregunta: en rojo los que ya van
+function QuestionProgress({
+  total,
+  current
+}: {
+  total: number;
+  current: number;
+}) {
+  return (
+    <ol className="ty-dsx-question__progress" aria-hidden="true">
+      {Array.from({ length: total }, (_, index) => (
+        <li
+          key={index}
+          className={cn(
+            'ty-dsx-question__square',
+            index < current && 'ty-dsx-question__square--on'
+          )}
+        />
+      ))}
+    </ol>
   );
 }
 
@@ -189,79 +187,5 @@ function CardSpecimen({ cards }: { cards: ToyotaDesignSample['cards'] }) {
         </li>
       ))}
     </ul>
-  );
-}
-
-// La lista de razones con su cuadrado rojo
-function ReasonsSpecimen({ reasons }: { reasons: readonly string[] }) {
-  return (
-    <ul className="ty-dsx-reasons">
-      {reasons.map(reason => (
-        <li key={reason} className="ty-dsx-reasons__item">
-          {reason}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-// Elige modelos: el botón se activa desde el segundo
-function CompareSpecimen({
-  sample
-}: {
-  sample: ToyotaDesignSample['compare'];
-}) {
-  const { selected, handleToggle } = useMultiChoice(COMPARE_MAX);
-  const isReady = selected.length >= COMPARE_MIN;
-
-  return (
-    <div className="ty-dsx-compare">
-      <ul className="ty-dsx-chip__choices">
-        {sample.models.map((model, index) => (
-          <li key={model}>
-            <button
-              type="button"
-              className={cn(
-                'ty-dsx-chip__item ty-dsx-chip__button',
-                selected.includes(index) && 'ty-dsx-chip__item--on'
-              )}
-              aria-pressed={selected.includes(index)}
-              onClick={() => handleToggle(index)}
-            >
-              {model}
-            </button>
-          </li>
-        ))}
-      </ul>
-      <div className="ty-dsx-compare__bar">
-        <p className="ty-dsx-compare__count">
-          <b>{selected.length}</b> / {COMPARE_MAX} {sample.counterLabel}
-          {!isReady && (
-            <span className="ty-dsx-compare__hint">{sample.hint}</span>
-          )}
-        </p>
-        <span
-          className={cn(
-            'ty-dsx-button ty-dsx-button--outline',
-            !isReady && 'ty-dsx-button--disabled'
-          )}
-        >
-          {sample.button}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-// El aviso al pie, con su separación
-function LegalSpecimen({ sample }: { sample: ToyotaDesignSample['legal'] }) {
-  return (
-    <div className="ty-dsx-legal">
-      <p className="ty-dsx-legal__content">{sample.content}</p>
-      <span className="ty-dsx-legal__gap" aria-hidden="true">
-        32 px
-      </span>
-      <p className="ty-dsx-legal__text">{sample.text}</p>
-    </div>
   );
 }

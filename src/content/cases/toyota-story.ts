@@ -316,37 +316,29 @@ export const toyotaStory: ToyotaStory = {
         {
           number: '01',
           name: 'Entrada',
-          text: 'Respuestas de la asesoría y catálogo Toyota.',
-          guarantees: [
-            'Mostrar información verificable',
-            'Reconocer cuando falta información'
-          ]
+          text: 'Asesoría y catálogo Toyota.',
+          guarantees: ['Información verificable', 'Avisa cuando falta un dato']
         },
         {
           number: '02',
           name: 'Interpretación',
-          text: 'La IA interpreta necesidades y preferencias.',
+          text: 'La IA entiende necesidades.',
           guarantees: [
-            'Diferenciar hechos de interpretaciones',
-            'No inventar características, precios, especificaciones ni beneficios'
+            'Separa hechos de interpretación',
+            'No inventa datos ni precios'
           ]
         },
         {
           number: '03',
           name: 'Compatibilidad',
-          text: 'La lógica de compatibilidad cruza perfil y catálogo.',
-          guarantees: [
-            'No mostrar un puntaje de compatibilidad sin una metodología definida'
-          ]
+          text: 'Cruza perfil y catálogo.',
+          guarantees: ['Sin puntaje sin metodología']
         },
         {
           number: '04',
           name: 'Resultado',
-          text: 'Recomendaciones, razones y diferencias.',
-          guarantees: [
-            'Explicar el porqué de cada recomendación',
-            'Dejar la decisión en manos del usuario'
-          ]
+          text: 'Opciones, razones y diferencias.',
+          guarantees: ['Explica cada opción', 'La decisión es del usuario']
         }
       ]
     }
@@ -369,13 +361,6 @@ export const toyotaStory: ToyotaStory = {
         src: '/toyota/fotos/04-celda-faro.webp'
       }
     },
-    mvp: {
-      behaviorsLabel: 'Lo que el MVP garantiza',
-      behaviors: [
-        'Avanzar y regresar sin perder lo respondido.',
-        '«Aún no lo sé» es una respuesta válida y no filtra resultados.'
-      ]
-    },
     logic: {
       head: {
         eyebrow: 'Lógica de recomendación',
@@ -383,81 +368,37 @@ export const toyotaStory: ToyotaStory = {
       },
       statement:
         'Cada respuesta que coincide con una etiqueta del modelo suma un punto. El presupuesto es el único filtro. Se ordena por puntos y, si hay empate, por menor precio.',
-      stats: [
-        { value: 6, label: 'modelos del catálogo Toyota Colombia' },
-        { value: 19, label: 'versiones con precio sugerido' }
-      ],
-      matrixTitle: 'Etiquetas de cada modelo',
-      matrix: {
-        modelsLabel: 'Modelo',
-        tags: [
-          'Ciudad',
-          'Espacio',
-          'Ahorro',
-          'Comodidad',
-          'Tecnología',
-          'Potencia',
-          'Versatilidad',
-          'Carga',
-          'Terreno',
-          '7 puestos'
-        ],
-        models: [
-          {
-            name: 'Yaris HB',
-            price: 'Desde $89.900.000',
-            tags: ['Ciudad', 'Ahorro', 'Comodidad']
-          },
-          {
-            name: 'Corolla',
-            price: 'Desde $109.900.000',
-            tags: ['Ciudad', 'Ahorro', 'Comodidad', 'Tecnología']
-          },
-          {
-            name: 'Corolla Cross',
-            price: 'Desde $139.900.000',
-            tags: ['Ciudad', 'Espacio', 'Ahorro', 'Comodidad', 'Tecnología']
-          },
-          {
-            name: 'Hilux',
-            price: 'Desde $196.500.000',
-            tags: ['Potencia', 'Versatilidad', 'Carga', 'Terreno']
-          },
-          {
-            name: 'RAV4',
-            price: 'Desde $207.500.000',
-            tags: [
-              'Espacio',
-              'Ahorro',
-              'Comodidad',
-              'Tecnología',
-              'Potencia',
-              'Versatilidad'
-            ]
-          },
-          {
-            name: 'Fortuner',
-            price: 'Desde $242.900.000',
-            tags: [
-              'Espacio',
-              'Comodidad',
-              'Potencia',
-              'Versatilidad',
-              'Terreno',
-              '7 puestos'
-            ]
-          }
-        ]
+      example: {
+        label: 'Un ejemplo',
+        answers: {
+          title: 'La persona responde',
+          tags: ['Ciudad', 'Ahorro', 'Comodidad', 'Tecnología']
+        },
+        budget: {
+          title: 'El presupuesto filtra',
+          text: 'Hasta $150.000.000. Hilux, RAV4 y Fortuner quedan fuera.'
+        },
+        ranking: {
+          title: 'Los puntos ordenan',
+          models: [
+            {
+              name: 'Corolla',
+              price: '$109.900.000',
+              points: '4 pts',
+              isWinner: true
+            },
+            { name: 'Corolla Cross', price: '$139.900.000', points: '4 pts' },
+            { name: 'Yaris HB', price: '$89.900.000', points: '3 pts' }
+          ],
+          note: 'Corolla y Corolla Cross empatan: gana el de menor precio.'
+        }
       }
     },
     flow: {
       head: {
-        eyebrow: 'Flujo de usuario',
+        eyebrow: 'Flujo propuesto',
         title: 'Un solo recorrido que siempre termina en un resultado'
       },
-      statement:
-        'Un módulo en el home de Toyota Colombia, también accesible desde el menú como «Encuentra tu Toyota».',
-      stagesLabel: 'Seis etapas, un recorrido continuo',
       stages: [
         { label: 'Descubrir', span: 2 },
         { label: 'Comprender', span: 1 },
@@ -469,7 +410,7 @@ export const toyotaStory: ToyotaStory = {
       steps: [
         { label: 'Menú o Home' },
         { label: 'Inicio' },
-        { label: 'Asesoría', text: '9 preguntas. «Aún no lo sé» no bloquea.' },
+        { label: 'Asesoría' },
         { label: 'Tu perfil' },
         { label: 'Evaluación' },
         {
@@ -480,16 +421,8 @@ export const toyotaStory: ToyotaStory = {
         { label: 'Detalle y comparación', text: 'Hasta 3 modelos.' },
         { label: 'Continuar en Toyota' }
       ],
-      loop: {
-        label: 'Editar perfil',
-        text: 'Vuelve a la asesoría sin salir del recorrido',
-        from: 3,
-        to: 2
-      },
       exitsLabel: 'Ya existen en Toyota',
-      exits: ['Cotizador', 'Prueba de manejo'],
-      decision:
-        'La propuesta complementa el catálogo existente, no lo reemplaza.'
+      exits: ['Cotizador', 'Prueba de manejo']
     },
     design: {
       head: {
@@ -498,11 +431,9 @@ export const toyotaStory: ToyotaStory = {
       },
       system: {
         foundationsLabel: 'Fundamentos',
-        essentialsLabel: 'Esenciales',
+        essentialsLabel: 'Componentes',
         indexLabel: 'Sistema de diseño',
         labels: {
-          use: 'Usa',
-          avoid: 'Evita',
           copy: 'Copiar',
           copied: 'Copiado'
         },
@@ -512,29 +443,64 @@ export const toyotaStory: ToyotaStory = {
             placeholder: 'Escribe aquí',
             text: 'Encuentra el Toyota que se adapta a tu vida'
           },
-          grid: {
-            marginLabel: 'Margen',
-            columnLabel: 'Columna',
-            contentLabel: 'Ancho máximo 1440 px',
-            spacingLabel: 'Escala de espacio',
-            spacing: [8, 16, 24, 32, 48, 72],
-            cornersLabel: 'Esquinas',
-            squareLabel: 'Recta',
-            roundedLabel: 'Redondeada'
-          },
-          shape: {
-            squareLabel: 'Cuadrado',
-            arrowLabel: 'Flecha',
-            tagLabel: 'Etiqueta roja',
-            crossLabel: 'Cruz',
-            tag: 'Coincidencia total'
+          icons: {
+            groups: [
+              {
+                label: 'Para el prototipo',
+                items: [
+                  { id: 'arrow-right', name: 'Siguiente' },
+                  { id: 'arrow-left', name: 'Atrás' },
+                  { id: 'plus', name: 'Agregar' },
+                  { id: 'close', name: 'Cerrar' },
+                  { id: 'check', name: 'Confirmar' },
+                  { id: 'search', name: 'Buscar' },
+                  { id: 'compare', name: 'Comparar' },
+                  { id: 'info', name: 'Información' },
+                  { id: 'external', name: 'Continuar en Toyota' },
+                  { id: 'profile', name: 'Tu perfil' },
+                  { id: 'menu', name: 'Menú' }
+                ]
+              },
+              {
+                label: 'De la marca y del catálogo',
+                items: [
+                  { id: 'car', name: 'Modelo' },
+                  { id: 'hybrid', name: 'Híbrido' },
+                  { id: 'quote', name: 'Cotizador' },
+                  { id: 'test-drive', name: 'Prueba de manejo' },
+                  { id: 'city', name: 'Ciudad' },
+                  { id: 'space', name: 'Espacio' },
+                  { id: 'saving', name: 'Ahorro' },
+                  { id: 'comfort', name: 'Comodidad' },
+                  { id: 'technology', name: 'Tecnología' },
+                  { id: 'power', name: 'Potencia' },
+                  { id: 'versatility', name: 'Versatilidad' },
+                  { id: 'cargo', name: 'Carga' },
+                  { id: 'terrain', name: 'Terreno' },
+                  { id: 'seven', name: '7 puestos' }
+                ]
+              }
+            ]
           },
           motion: {
-            replay: 'Repetir',
-            curveLabel: 'Curva',
-            cards: ['Pregunta', 'Respuesta', 'Resultado', 'Comparación'],
-            buttonLabel: 'El relleno sube',
-            buttonText: 'Pasa el cursor'
+            demos: [
+              {
+                id: 'fill',
+                name: 'Responde al cursor',
+                spec: 'Rápida · 400 ms · el relleno sube',
+                label: 'Ver resultado'
+              },
+              {
+                id: 'enter',
+                name: 'Entra en orden',
+                spec: 'Escalonada · 80 ms entre piezas'
+              },
+              {
+                id: 'advance',
+                name: 'Marca el avance',
+                spec: 'Media · 240 ms · de izquierda a derecha'
+              }
+            ]
           },
           access: {
             pairs: [
@@ -564,11 +530,14 @@ export const toyotaStory: ToyotaStory = {
           question: {
             step: 'Paso 2 de 9',
             title: '¿Para qué vas a usar tu Toyota?',
-            options: ['Ciudad', 'Familia', 'Trabajo', 'Viajes largos'],
-            primary: 'Continuar',
-            secondary: 'Aún no lo sé',
             progressTotal: 9,
-            progressCurrent: 2
+            progressCurrent: 2,
+            statesLabel: 'Avance',
+            states: [
+              { label: 'Al empezar', current: 1 },
+              { label: 'A la mitad', current: 5 },
+              { label: 'Al terminar', current: 9 }
+            ]
           },
           cards: [
             {
@@ -586,32 +555,14 @@ export const toyotaStory: ToyotaStory = {
               model: 'RAV4',
               price: 'Desde $207.500.000'
             }
-          ],
-          reasons: [
-            'Ahorra combustible en ciudad',
-            'Tiene espacio para tu familia',
-            'Incluye seguridad activa de serie'
-          ],
-          compare: {
-            models: ['Corolla Cross', 'Yaris HB', 'RAV4'],
-            counterLabel: 'elegidos',
-            button: 'Comparar',
-            hint: 'Elige al menos dos modelos'
-          },
-          legal: {
-            content: 'Precio sugerido para este perfil.',
-            text: 'Concepto de diseño. Precios sugeridos de toyota.com.co, noviembre de 2026.'
-          }
+          ]
         },
-        note: 'Sistema del prototipo, inspirado en el manual de marca de Toyota. No es un sistema oficial.',
         items: [
           {
             id: 'color',
             group: 'foundation',
             number: '01',
             name: 'Color',
-            summary:
-              'Rojo para lo importante y contraste para todo lo demás: blanco, negro y un gris.',
             specs: [
               {
                 label: 'Rojo',
@@ -637,268 +588,75 @@ export const toyotaStory: ToyotaStory = {
                 label: 'Líneas',
                 value: 'Negro al 14 % en fondo claro · blanco al 22 % en oscuro'
               }
-            ],
-            use: 'Un solo elemento rojo por vista: la acción principal.',
-            avoid: 'Degradados, rojos a media opacidad o varios rojos a la vez.'
+            ]
           },
           {
             id: 'type',
             group: 'foundation',
             number: '02',
             name: 'Tipografía',
-            summary:
-              'Toyota Type (temporal: Figtree). La jerarquía la dan el peso y el tamaño, no el color.',
             specs: [
               {
                 label: 'Titular en mayúsculas',
-                value: 'Negrita · interlineado 90 % · 7 palabras o menos'
+                value: 'Negrita · 7 palabras o menos'
               },
               {
                 label: 'Titular en oración',
-                value: 'Semibold · interlineado 98 %'
+                value: 'Semibold'
               },
               {
                 label: 'Bajada',
-                value: '18 px · interlineado 145 %'
+                value: '18 px'
               },
-              { label: 'Cuerpo', value: '16 px · interlineado 145 %' },
+              { label: 'Cuerpo', value: '16 px' },
               { label: 'Texto pequeño', value: '14 px' },
               {
                 label: 'Etiqueta',
                 value: '12 px · semibold · mayúsculas · espaciado 0,12 em'
               }
-            ],
-            use: 'Titulares en oración y con el interlineado ajustado.',
-            avoid: 'Más de tres tamaños en un mismo bloque.'
+            ]
           },
           {
-            id: 'grid',
+            id: 'icons',
             group: 'foundation',
             number: '03',
-            name: 'Retícula y espacio',
-            summary:
-              'Todo se alinea a una retícula de ancho limitado, con esquinas rectas y líneas finas.',
-            specs: [
-              { label: 'Ancho máximo', value: '1440 px' },
-              { label: 'Márgenes', value: '24 a 72 px según el ancho' },
-              { label: 'Esquinas', value: 'Rectas · 0 px' },
-              { label: 'Líneas', value: '1 px' },
-              { label: 'Sombras', value: 'Ninguna' }
-            ],
-            use: 'Alinear cada pieza a los márgenes de la retícula.',
-            avoid: 'Esquinas redondeadas, sombras o tarjetas flotantes.'
-          },
-          {
-            id: 'shape',
-            group: 'foundation',
-            number: '04',
-            name: 'Formas e iconos',
-            summary:
-              'Pocas formas, todas rectas: el cuadrado como marcador y la flecha para avanzar.',
-            specs: [
-              {
-                label: 'Cuadrado',
-                value:
-                  'Marca el avance y lo que aplica; en rojo si es el actual'
-              },
-              {
-                label: 'Flecha',
-                value: '→ para pasar de un estado al siguiente'
-              },
-              {
-                label: 'Etiqueta roja',
-                value: 'Rectángulo de 30 px de alto · 12 px · mayúsculas'
-              }
-            ],
-            use: 'Un cuadrado rojo significa «esto aplica» o «aquí vas».',
-            avoid: 'Iconos rellenos, ilustrados o con esquinas redondeadas.'
+            name: 'Iconos'
           },
           {
             id: 'motion',
             group: 'foundation',
-            number: '05',
-            name: 'Movimiento',
-            summary:
-              'Siempre hacia adelante y con aceleración suave: las piezas llegan escalonadas.',
-            specs: [
-              {
-                label: 'Dirección',
-                value: 'De izquierda a derecha y de abajo hacia arriba'
-              },
-              {
-                label: 'Curva',
-                value: 'cubic-bezier(0.16, 1, 0.3, 1)'
-              },
-              { label: 'Entrada', value: 'Escalonada · 80 ms entre piezas' },
-              {
-                label: 'Botón',
-                value: 'El relleno sube desde abajo al pasar el cursor'
-              },
-              {
-                label: 'Reducir movimiento',
-                value: 'Todo aparece ya en su lugar'
-              }
-            ],
-            use: 'Mover solo lo que ayuda a entender el orden.',
-            avoid: 'Rebotes, giros o movimientos que no avanzan.'
+            number: '04',
+            name: 'Movimiento'
           },
           {
             id: 'access',
             group: 'foundation',
-            number: '06',
-            name: 'Accesibilidad',
-            summary: 'Contraste alto, foco visible y botones fáciles de tocar.',
-            specs: [
-              {
-                label: 'Contraste',
-                value:
-                  'Negro sobre blanco 21 : 1 · gris sobre blanco 7 : 1 · blanco sobre rojo 4,6 : 1'
-              },
-              {
-                label: 'Foco',
-                value: 'Contorno rojo de 2 px, separado 3 px'
-              },
-              { label: 'Botones', value: '52 px de alto' },
-              {
-                label: 'Movimiento',
-                value: 'Respeta la opción «reducir movimiento»'
-              }
-            ],
-            use: 'Que todo se pueda recorrer con el teclado.',
-            avoid:
-              'Quitar el contorno de foco o dar información solo con color.'
+            number: '05',
+            name: 'Accesibilidad'
           },
           {
             id: 'button',
             group: 'essential',
             number: '01',
-            name: 'Botón',
-            summary:
-              'Tres tipos: primario en rojo, de contorno y de texto. Solo uno primario por pantalla.',
-            specs: [
-              { label: 'Alto', value: '52 px · 28 px de relleno a los lados' },
-              {
-                label: 'Primario',
-                value:
-                  'Fondo rojo · texto blanco · al pasar, se rellena de negro'
-              },
-              { label: 'De contorno', value: 'Borde de 1,5 px · texto negro' },
-              {
-                label: 'De texto',
-                value: '13 px · negrita · mayúsculas · subrayado de 1,5 px'
-              },
-              { label: 'Deshabilitado', value: '35 % de opacidad' }
-            ],
-            use: 'Un verbo corto: Continuar, Ver resultado.',
-            avoid: 'Dos botones rojos juntos o textos largos.'
+            name: 'Botón'
           },
           {
             id: 'chip',
             group: 'essential',
             number: '02',
-            name: 'Etiqueta y opción',
-            summary:
-              'Las respuestas cortas se eligen con etiquetas rectas, de una en una.',
-            specs: [
-              { label: 'Alto', value: '32 px' },
-              { label: 'Borde', value: '1 px' },
-              { label: 'Texto', value: '13 px · semibold' },
-              {
-                label: 'Elegida',
-                value: 'Fondo negro · texto blanco'
-              }
-            ],
-            use: 'Respuestas de una o dos palabras.',
-            avoid: 'Frases largas o más de seis opciones en una fila.'
+            name: 'Etiqueta y opción'
           },
           {
             id: 'question',
             group: 'essential',
             number: '03',
-            name: 'Panel de pregunta',
-            summary:
-              'Una pregunta por pantalla, con su respuesta, el avance y la opción «aún no lo sé».',
-            specs: [
-              { label: 'Pregunta', value: 'Titular en oración' },
-              {
-                label: 'Avance',
-                value: 'Un cuadrado por paso · el actual en rojo'
-              },
-              {
-                label: 'Acciones',
-                value: 'Primario a la izquierda · de texto al lado'
-              },
-              {
-                label: 'Regla roja',
-                value: 'Línea de 2 px en el borde izquierdo del panel'
-              }
-            ],
-            use: '«Aún no lo sé» siempre es una respuesta válida.',
-            avoid: 'Más de una pregunta o pedir datos personales.'
+            name: 'Panel de pregunta'
           },
           {
             id: 'card',
             group: 'essential',
             number: '04',
-            name: 'Tarjeta de modelo',
-            summary:
-              'El modelo en mayúsculas, su precio sugerido y una etiqueta que dice qué tan bien encaja.',
-            specs: [
-              { label: 'Nombre', value: '26 a 30 px · negrita · mayúsculas' },
-              { label: 'Precio', value: '«Desde» + precio sugerido' },
-              { label: 'Etiqueta', value: 'Roja · 30 px de alto · 12 px' },
-              { label: 'Borde', value: '1 px · sin sombra' }
-            ],
-            use: 'Un destacado y dos alternativas.',
-            avoid: 'Más de tres modelos o precios sin la palabra «sugerido».'
-          },
-          {
-            id: 'reasons',
-            group: 'essential',
-            number: '05',
-            name: 'Razones',
-            summary:
-              'Cada recomendación explica por qué, en frases cortas y ligadas a lo que la persona respondió.',
-            specs: [
-              { label: 'Marcador', value: 'Cuadrado de 20 px' },
-              { label: 'Separación', value: '12 px entre razones' },
-              { label: 'Cantidad', value: 'Entre dos y cuatro' }
-            ],
-            use: 'Decir «tiene espacio para tu familia», no «tiene 5 puestos».',
-            avoid: 'Beneficios que la persona no pidió o datos sin fuente.'
-          },
-          {
-            id: 'compare',
-            group: 'essential',
-            number: '06',
-            name: 'Comparador',
-            summary:
-              'Una barra abajo reúne los modelos elegidos y el botón para compararlos.',
-            specs: [
-              { label: 'Mínimo', value: 'Dos modelos' },
-              { label: 'Máximo', value: 'Tres modelos' },
-              {
-                label: 'Botón',
-                value: 'Deshabilitado hasta tener dos modelos'
-              },
-              { label: 'Diferencias', value: 'Lista con marcador de 20 px' }
-            ],
-            use: 'Mostrar solo las diferencias que importan.',
-            avoid: 'Tablas con todos los datos técnicos.'
-          },
-          {
-            id: 'legal',
-            group: 'essential',
-            number: '07',
-            name: 'Nota legal',
-            summary:
-              'Una línea discreta que aclara que es un concepto y de dónde salen los datos.',
-            specs: [
-              { label: 'Texto', value: '13 px · gris #58595B' },
-              { label: 'Margen', value: '32 px arriba' }
-            ],
-            use: 'Decir que es un concepto y citar la fuente de los precios.',
-            avoid: 'Esconderla o escribirla en mayúsculas.'
+            name: 'Tarjeta de modelo'
           }
         ]
       }

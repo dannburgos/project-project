@@ -78,53 +78,8 @@
   @apply text-4xl leading-none font-bold;
 }
 
-.ty-ds__spec-summary {
-  @apply max-w-2xl text-base leading-[1.45];
-  color: var(--ds-gray);
-}
-
 .ty-ds__specimen {
   @apply flex flex-col;
-}
-
-.ty-ds__specs {
-  @apply flex flex-col;
-}
-
-.ty-ds__row {
-  @apply grid gap-1 border-t py-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,2.4fr)] sm:gap-6;
-  border-color: var(--ds-line);
-}
-
-.ty-ds__row-label {
-  @apply text-sm font-semibold;
-  color: var(--ds-gray);
-}
-
-.ty-ds__row-value {
-  @apply text-base leading-[1.4];
-}
-
-.ty-ds__rules {
-  @apply grid gap-3 border-t pt-5 md:grid-cols-2 md:gap-8;
-  border-color: var(--ds-line);
-}
-
-.ty-ds__rule {
-  @apply text-base leading-[1.45];
-}
-
-.ty-ds__rule-key {
-  @apply mr-1 font-bold;
-}
-
-.ty-ds__rule-key--avoid {
-  color: var(--ty-red);
-}
-
-.ty-ds__note {
-  @apply text-sm;
-  color: var(--ty-muted);
 }
 
 /* ─── Computador: menú y hoja en una retícula ──────────────────────── */
@@ -133,10 +88,6 @@
   .ty-ds {
     @apply grid items-start gap-x-10 gap-y-8;
     grid-template-columns: 240px minmax(0, 1fr);
-  }
-
-  .ty-ds__note {
-    @apply col-span-full;
   }
 }
 
@@ -381,136 +332,37 @@
   @apply text-xs font-semibold tracking-[0.12em] uppercase;
 }
 
-/* Retícula: columnas, márgenes, espacio y esquinas */
-.ty-dsx-grid {
+/* Iconos */
+.ty-dsx-icons {
   @apply flex flex-col gap-8;
 }
 
-.ty-dsx-grid__frame {
-  @apply relative flex h-56 flex-col justify-between border p-6;
-  border-color: var(--ds-line);
-  background: var(--ds-subtle);
-}
-
-.ty-dsx-grid__columns {
-  @apply absolute inset-x-6 inset-y-6 grid gap-3;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
-.ty-dsx-grid__column {
-  background: rgb(235 10 30 / 0.14);
-}
-
-.ty-dsx-grid__tag,
-.ty-dsx-grid__content {
-  @apply relative z-10 inline-flex self-start px-2 py-1 text-xs font-semibold tracking-[0.1em] uppercase;
-  background: var(--ds-paper);
-}
-
-.ty-dsx-grid__tag--margin {
-  @apply absolute top-1 left-1 z-10;
-}
-
-.ty-dsx-grid__content {
-  @apply self-end;
-}
-
-.ty-dsx-grid__row {
-  @apply grid gap-8 md:grid-cols-2;
-}
-
-.ty-dsx-grid__block {
+.ty-dsx-icons__group {
   @apply flex flex-col gap-4;
 }
 
-.ty-dsx-grid__spacing {
-  @apply flex items-end gap-4;
+.ty-dsx-icons__grid {
+  @apply grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5;
 }
 
-.ty-dsx-grid__step {
-  @apply flex flex-col items-start gap-2;
+.ty-dsx-icons__tile {
+  @apply flex flex-col gap-2;
 }
 
-.ty-dsx-grid__bar {
-  @apply block bg-[var(--ty-red)];
-  width: var(--bar-size, 8px);
-  height: var(--bar-size, 8px);
-}
-
-.ty-dsx-grid__bar--8 {
-  --bar-size: 8px;
-}
-
-.ty-dsx-grid__bar--16 {
-  --bar-size: 16px;
-}
-
-.ty-dsx-grid__bar--24 {
-  --bar-size: 24px;
-}
-
-.ty-dsx-grid__bar--32 {
-  --bar-size: 32px;
-}
-
-.ty-dsx-grid__bar--48 {
-  --bar-size: 48px;
-}
-
-.ty-dsx-grid__bar--72 {
-  --bar-size: 72px;
-}
-
-.ty-dsx-grid__size {
-  @apply text-sm font-semibold tabular-nums;
-}
-
-.ty-dsx-grid__corners {
-  @apply flex gap-4;
-}
-
-.ty-dsx-grid__corner {
-  @apply flex h-24 w-32 items-center justify-center border-2 text-sm font-semibold;
-  border-color: var(--ds-ink);
-}
-
-.ty-dsx-grid__corner--rounded {
-  @apply rounded-3xl opacity-35;
-  border-style: dashed;
-}
-
-/* Formas */
-.ty-dsx-shape {
-  @apply grid gap-3 sm:grid-cols-2 lg:grid-cols-4;
-}
-
-.ty-dsx-shape__tile {
-  @apply flex flex-col gap-3;
-}
-
-.ty-dsx-shape__art {
-  @apply flex h-40 items-center justify-center gap-1.5 border text-6xl font-bold;
+.ty-dsx-icons__art {
+  @apply flex h-24 items-center justify-center border transition-colors;
   border-color: var(--ds-line);
   background: var(--ds-subtle);
 }
 
-.ty-dsx-shape__art--cross {
-  @apply font-light;
-}
-
-.ty-dsx-shape__square {
-  @apply size-5;
-  background: var(--ds-line);
-}
-
-.ty-dsx-shape__square--on {
-  background: var(--ty-red);
-}
-
-.ty-dsx-shape__tag {
-  @apply inline-flex h-[30px] items-center px-3 text-xs font-bold tracking-[0.08em] uppercase;
-  background: var(--ty-red);
+.ty-dsx-icons__tile:hover .ty-dsx-icons__art {
+  background: var(--ds-ink);
   color: var(--ty-white);
+}
+
+.ty-dsx-icons__name {
+  @apply text-sm leading-[1.3] font-semibold;
+  color: var(--ds-gray);
 }
 
 /* Movimiento */
@@ -518,76 +370,159 @@
   @apply flex flex-col gap-8;
 }
 
+/* Tres demos que se repiten solas, todas con el mismo compás (--loop) */
+.ty-dsx-motion {
+  --loop: 3600ms;
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-3;
+}
+
+.ty-dsx-motion__demo {
+  @apply flex flex-col gap-1;
+}
+
 .ty-dsx-motion__stage {
-  @apply relative flex flex-col gap-4 border p-6;
+  @apply relative mb-2 flex h-36 items-center justify-center overflow-hidden border;
   border-color: var(--ds-line);
   background: var(--ds-subtle);
 }
 
-.ty-dsx-motion__cards {
-  @apply grid gap-3 sm:grid-cols-4;
+.ty-dsx-motion__name {
+  @apply text-base font-semibold;
 }
 
-.ty-dsx-motion__card {
-  @apply flex h-28 flex-col justify-between border p-4 text-base font-semibold;
+.ty-dsx-motion__spec {
+  @apply text-sm leading-[1.35];
+  color: var(--ds-gray);
+}
+
+/* El botón se rellena y se vacía solo; al pasar el cursor se queda lleno */
+.ty-dsx-motion__button {
+  animation: ty-dsx-fill var(--loop) infinite;
+}
+
+.ty-dsx-motion__button:hover {
+  animation: none;
+  background-size: 100% 100%;
+}
+
+/* Cuatro piezas que llegan desde la izquierda y desde abajo, una tras otra */
+.ty-dsx-motion__pieces {
+  @apply flex gap-2;
+}
+
+.ty-dsx-motion__piece {
+  @apply block h-16 w-10 border;
   border-color: var(--ds-line);
   background: var(--ds-paper);
-  animation: ty-dsx-rise 800ms var(--ds-ease) both;
+  animation: ty-dsx-enter var(--loop) infinite;
   animation-delay: calc(var(--i, 0) * 80ms);
 }
 
-.ty-dsx-motion__number {
-  @apply text-xs tabular-nums;
-  color: var(--ty-red);
+/* Cinco cuadrados que se encienden en rojo de izquierda a derecha, con su
+   línea */
+.ty-dsx-motion__steps {
+  @apply relative flex items-center gap-6;
 }
 
-.ty-dsx-motion__replay {
-  @apply cursor-pointer self-start border px-3.5 py-2 text-sm font-semibold;
-  border-color: var(--ty-red);
-  color: var(--ty-red);
+.ty-dsx-motion__line {
+  @apply absolute inset-x-2.5 top-1/2 block h-0.5 origin-left;
+  background: var(--ty-red);
+  animation: ty-dsx-sweep var(--loop) infinite;
 }
 
-.ty-dsx-motion__row {
-  @apply grid gap-8 md:grid-cols-2;
+.ty-dsx-motion__mark {
+  @apply relative block size-5 border-2;
+  border-color: var(--ds-ink);
+  background: var(--ds-paper);
+  animation: ty-dsx-mark var(--loop) infinite;
+  animation-delay: calc(var(--i, 0) * 240ms);
 }
 
-.ty-dsx-motion__block {
-  @apply flex flex-col items-start gap-3;
-}
-
-.ty-dsx-motion__curve {
-  @apply size-32 overflow-visible;
-}
-
-.ty-dsx-motion__axis {
-  fill: none;
-  stroke: var(--ds-line);
-  stroke-width: 1;
-}
-
-.ty-dsx-motion__path {
-  fill: none;
-  stroke: var(--ty-red);
-  stroke-width: 2;
-}
-
-@keyframes ty-dsx-rise {
-  from {
+@keyframes ty-dsx-enter {
+  0% {
     opacity: 0;
-    translate: 0 24px;
-    clip-path: inset(0 0 100% 0);
+    translate: -16px 16px;
+    animation-timing-function: var(--ds-ease);
   }
 
-  to {
+  16%,
+  84% {
     opacity: 1;
     translate: 0 0;
-    clip-path: inset(0 0 0 0);
+    animation-timing-function: ease-in;
+  }
+
+  100% {
+    opacity: 0;
+    translate: 12px 0;
+  }
+}
+
+@keyframes ty-dsx-sweep {
+  0% {
+    scale: 0 1;
+    animation-timing-function: var(--ds-ease);
+  }
+
+  40%,
+  86% {
+    scale: 1 1;
+  }
+
+  100% {
+    scale: 1 1;
+    opacity: 0;
+  }
+}
+
+@keyframes ty-dsx-mark {
+  0% {
+    background: var(--ds-paper);
+    border-color: var(--ds-ink);
+  }
+
+  8%,
+  84% {
+    background: var(--ty-red);
+    border-color: var(--ty-red);
+  }
+
+  100% {
+    background: var(--ds-paper);
+    border-color: var(--ds-ink);
+  }
+}
+
+@keyframes ty-dsx-fill {
+  0%,
+  25% {
+    background-size: 100% 0;
+    animation-timing-function: var(--ds-ease);
+  }
+
+  40%,
+  70% {
+    background-size: 100% 100%;
+    animation-timing-function: var(--ds-ease);
+  }
+
+  85%,
+  100% {
+    background-size: 100% 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ty-dsx-motion__card {
+  .ty-dsx-motion__button,
+  .ty-dsx-motion__piece,
+  .ty-dsx-motion__line,
+  .ty-dsx-motion__mark {
     animation: none;
+  }
+
+  .ty-dsx-motion__mark {
+    background: var(--ty-red);
+    border-color: var(--ty-red);
   }
 
   .ty-dsx-button--primary {
@@ -658,10 +593,27 @@
   background: var(--ty-red);
 }
 
-.ty-dsx-question__actions {
-  @apply flex flex-wrap items-center gap-6;
+/* El panel y, al lado, el avance en tres momentos */
+.ty-dsx-question-sheet {
+  @apply flex flex-col gap-8;
 }
 
+.ty-dsx-question__states {
+  @apply flex flex-col gap-4;
+}
+
+.ty-dsx-question__list {
+  @apply grid gap-6 sm:grid-cols-3;
+}
+
+.ty-dsx-question__state {
+  @apply flex flex-col gap-3;
+}
+
+.ty-dsx-question__caption {
+  @apply text-sm font-semibold;
+  color: var(--ds-gray);
+}
 /* Tarjetas de modelo */
 .ty-dsx-cards {
   @apply grid gap-3 md:grid-cols-3;
@@ -683,59 +635,5 @@
 
 .ty-dsx-card__price {
   @apply text-base;
-  color: var(--ds-gray);
-}
-
-/* Razones */
-.ty-dsx-reasons {
-  @apply flex max-w-xl flex-col gap-4;
-}
-
-.ty-dsx-reasons__item {
-  @apply relative pl-9 text-xl leading-[1.35];
-}
-
-.ty-dsx-reasons__item::before {
-  @apply absolute top-1 left-0 size-5 content-[''];
-  background: var(--ty-red);
-}
-
-/* Comparador */
-.ty-dsx-compare {
-  @apply flex flex-col gap-6;
-}
-
-.ty-dsx-compare__bar {
-  @apply flex flex-wrap items-center justify-between gap-4 border-t pt-5;
-  border-color: var(--ds-line);
-}
-
-.ty-dsx-compare__count {
-  @apply flex flex-col text-base;
-}
-
-.ty-dsx-compare__hint {
-  @apply text-sm;
-  color: var(--ds-gray);
-}
-
-/* Nota legal */
-.ty-dsx-legal {
-  @apply flex max-w-xl flex-col items-start gap-0 border p-6;
-  border-color: var(--ds-line);
-}
-
-.ty-dsx-legal__content {
-  @apply text-xl font-semibold;
-}
-
-.ty-dsx-legal__gap {
-  @apply my-1 flex h-8 items-center border-y border-dashed px-3 text-xs font-semibold tabular-nums;
-  border-color: var(--ty-red);
-  color: var(--ty-red);
-}
-
-.ty-dsx-legal__text {
-  @apply text-[13px];
   color: var(--ds-gray);
 }

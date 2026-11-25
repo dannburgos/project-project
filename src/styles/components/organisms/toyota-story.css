@@ -971,10 +971,13 @@
 
 /* La pregunta del capítulo es la protagonista de la celda */
 .ty-opener__summary {
-  @apply max-w-xl font-semibold;
-  /* Subtítulo: la pregunta del capítulo cabe en dos líneas en computador */
+  @apply font-semibold;
+  /* Subtítulo: la pregunta del capítulo siempre va en dos líneas en
+     computador; el ancho en em sigue al tamaño del texto */
+  max-width: 18em;
   font-size: clamp(24px, 2.2vw, 32px);
   line-height: 1.1;
+  text-wrap: balance;
 }
 
 /* En celular, menos celdas: se quitan las que solo son ventana o relleno y

@@ -18,32 +18,9 @@ export function useTypeSample(initial: string) {
   };
 }
 
-// Cambia cada vez que hay que repetir una animación de muestra
-export function useReplay() {
-  const [playKey, setPlayKey] = useState(0);
-  const handleReplay = () => setPlayKey(current => current + 1);
-  return { playKey, handleReplay };
-}
-
 // Una opción elegida a la vez (etiquetas, respuestas)
 export function useSingleChoice(initial: number | null) {
   const [selected, setSelected] = useState<number | null>(initial);
   const handleSelect = (index: number) => setSelected(index);
   return { selected, handleSelect };
-}
-
-// Varias opciones, hasta un máximo (comparador)
-export function useMultiChoice(max: number) {
-  const [selected, setSelected] = useState<readonly number[]>([]);
-
-  const handleToggle = (index: number) =>
-    setSelected(current =>
-      current.includes(index)
-        ? current.filter(item => item !== index)
-        : current.length < max
-          ? [...current, index]
-          : current
-    );
-
-  return { selected, handleToggle };
 }

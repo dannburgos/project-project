@@ -2,11 +2,12 @@
 
 import type { CSSProperties } from 'react';
 
+import { ToyotaIcon } from '@/components/atoms/toyota-icon';
 import type {
   ToyotaDesignItem,
   ToyotaDesignSample
 } from '@/content/toyota-story.types';
-import { useReplay, useTypeSample } from '@/hooks/use-design-specimen';
+import { useTypeSample } from '@/hooks/use-design-specimen';
 import {
   formatContrastRatio,
   getContrastRatio
@@ -45,10 +46,8 @@ export function ToyotaDsFoundation({
       );
     case 'type':
       return <TypeSpecimen item={item} sample={sample.type} />;
-    case 'grid':
-      return <GridSpecimen sample={sample.grid} />;
-    case 'shape':
-      return <ShapeSpecimen sample={sample.shape} />;
+    case 'icons':
+      return <IconsSpecimen sample={sample.icons} />;
     case 'motion':
       return <MotionSpecimen sample={sample.motion} />;
     case 'access':
@@ -73,7 +72,7 @@ function ColorSpecimen({
 }: ColorSpecimenProps) {
   return (
     <ul className="ty-dsx-color">
-      {item.specs
+      {(item.specs ?? [])
         .filter(spec => spec.swatch)
         .map(spec => {
           const hex = spec.swatch ?? '';
@@ -124,7 +123,7 @@ function TypeSpecimen({
         />
       </label>
       <ul className="ty-dsx-type__list">
-        {item.specs.map((spec, index) => (
+        {(item.specs ?? []).map((spec, index) => (
           <li key={spec.label} className="ty-dsx-type__row">
             <p className="ty-dsx-type__caption">
               <span className="ty-dsx-label">{spec.label}</span>
@@ -145,142 +144,89 @@ function TypeSpecimen({
   );
 }
 
-const COLUMN_COUNT = 12;
-
-// Retícula, escala de espacio y esquinas rectas
-function GridSpecimen({ sample }: { sample: ToyotaDesignSample['grid'] }) {
+// Los iconos del sistema, por grupos: cada uno con su nombre
+function IconsSpecimen({ sample }: { sample: ToyotaDesignSample['icons'] }) {
   return (
-    <div className="ty-dsx-grid">
-      <div className="ty-dsx-grid__frame">
-        <span className="ty-dsx-grid__tag ty-dsx-grid__tag--margin">
-          {sample.marginLabel}
-        </span>
-        <div className="ty-dsx-grid__columns" aria-hidden="true">
-          {Array.from({ length: COLUMN_COUNT }, (_, index) => (
-            <span key={index} className="ty-dsx-grid__column" />
-          ))}
-        </div>
-        <span className="ty-dsx-grid__tag">{sample.columnLabel}</span>
-        <span className="ty-dsx-grid__content">{sample.contentLabel}</span>
-      </div>
-
-      <div className="ty-dsx-grid__row">
-        <div className="ty-dsx-grid__block">
-          <p className="ty-dsx-label">{sample.spacingLabel}</p>
-          <ul className="ty-dsx-grid__spacing">
-            {sample.spacing.map(size => (
-              <li key={size} className="ty-dsx-grid__step">
-                <span
-                  className={cn(
-                    'ty-dsx-grid__bar',
-                    `ty-dsx-grid__bar--${size}`
-                  )}
-                />
-                <span className="ty-dsx-grid__size">{size}</span>
+    <div className="ty-dsx-icons">
+      {sample.groups.map(group => (
+        <div key={group.label} className="ty-dsx-icons__group">
+          <p className="ty-dsx-label">{group.label}</p>
+          <ul className="ty-dsx-icons__grid">
+            {group.items.map(item => (
+              <li key={item.id} className="ty-dsx-icons__tile">
+                <span className="ty-dsx-icons__art">
+                  <ToyotaIcon name={item.id} />
+                </span>
+                <span className="ty-dsx-icons__name">{item.name}</span>
               </li>
             ))}
           </ul>
         </div>
-        <div className="ty-dsx-grid__block">
-          <p className="ty-dsx-label">{sample.cornersLabel}</p>
-          <div className="ty-dsx-grid__corners">
-            <span className="ty-dsx-grid__corner ty-dsx-grid__corner--square">
-              {sample.squareLabel}
-            </span>
-            <span className="ty-dsx-grid__corner ty-dsx-grid__corner--rounded">
-              {sample.roundedLabel}
-            </span>
-          </div>
-        </div>
-      </div>
+      ))}
     </div>
   );
 }
 
-// Las cuatro formas del sistema, grandes
-function ShapeSpecimen({ sample }: { sample: ToyotaDesignSample['shape'] }) {
+// Tres reglas de movimiento (como en el sistema de PetRide): cada una con su
+// demo que se repite sola, su nombre y su duración
+function MotionSpecimen({ sample }: { sample: ToyotaDesignSample['motion'] }) {
   return (
-    <ul className="ty-dsx-shape">
-      <li className="ty-dsx-shape__tile">
-        <div className="ty-dsx-shape__art">
-          <span className="ty-dsx-shape__square ty-dsx-shape__square--on" />
-          <span className="ty-dsx-shape__square ty-dsx-shape__square--on" />
-          <span className="ty-dsx-shape__square" />
-          <span className="ty-dsx-shape__square" />
-          <span className="ty-dsx-shape__square" />
-        </div>
-        <p className="ty-dsx-label">{sample.squareLabel}</p>
-      </li>
-      <li className="ty-dsx-shape__tile">
-        <div className="ty-dsx-shape__art ty-dsx-shape__art--arrow">→</div>
-        <p className="ty-dsx-label">{sample.arrowLabel}</p>
-      </li>
-      <li className="ty-dsx-shape__tile">
-        <div className="ty-dsx-shape__art">
-          <span className="ty-dsx-shape__tag">{sample.tag}</span>
-        </div>
-        <p className="ty-dsx-label">{sample.tagLabel}</p>
-      </li>
-      <li className="ty-dsx-shape__tile">
-        <div className="ty-dsx-shape__art ty-dsx-shape__art--cross">+</div>
-        <p className="ty-dsx-label">{sample.crossLabel}</p>
-      </li>
+    <ul className="ty-dsx-motion">
+      {sample.demos.map(demo => (
+        <li key={demo.id} className="ty-dsx-motion__demo">
+          <span
+            className={cn(
+              'ty-dsx-motion__stage',
+              `ty-dsx-motion__stage--${demo.id}`
+            )}
+            aria-hidden="true"
+          >
+            <MotionShape id={demo.id} label={demo.label} />
+          </span>
+          <span className="ty-dsx-motion__name">{demo.name}</span>
+          <span className="ty-dsx-motion__spec">{demo.spec}</span>
+        </li>
+      ))}
     </ul>
   );
 }
 
-// La entrada escalonada, la curva y el botón que se rellena; se repite
-function MotionSpecimen({ sample }: { sample: ToyotaDesignSample['motion'] }) {
-  const { playKey, handleReplay } = useReplay();
+const MOTION_PIECES = 4;
+const MOTION_STEPS = 5;
 
+// Las piezas que se mueven en cada demo; la animación la pone el CSS
+function MotionShape({ id, label }: { id: string; label?: string }) {
+  if (id === 'fill') {
+    return (
+      <span className="ty-dsx-button ty-dsx-button--primary ty-dsx-motion__button">
+        {label}
+      </span>
+    );
+  }
+  if (id === 'enter') {
+    return (
+      <span className="ty-dsx-motion__pieces">
+        {Array.from({ length: MOTION_PIECES }, (_, index) => (
+          <span
+            key={index}
+            className="ty-dsx-motion__piece"
+            style={{ '--i': index } as CSSProperties}
+          />
+        ))}
+      </span>
+    );
+  }
   return (
-    <div className="ty-dsx-motion">
-      <div className="ty-dsx-motion__stage">
-        <ul key={playKey} className="ty-dsx-motion__cards">
-          {sample.cards.map((card, index) => (
-            <li
-              key={card}
-              className="ty-dsx-motion__card"
-              style={{ '--i': index } as CSSProperties}
-            >
-              <span className="ty-dsx-motion__number">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              {card}
-            </li>
-          ))}
-        </ul>
-        <button
-          type="button"
-          className="ty-dsx-motion__replay"
-          onClick={handleReplay}
-        >
-          {sample.replay}
-        </button>
-      </div>
-      <div className="ty-dsx-motion__row">
-        <div className="ty-dsx-motion__block">
-          <p className="ty-dsx-label">{sample.curveLabel}</p>
-          <svg
-            className="ty-dsx-motion__curve"
-            viewBox="0 0 100 100"
-            aria-hidden="true"
-          >
-            <path
-              d="M0 100 L100 100 M0 0 L0 100"
-              className="ty-dsx-motion__axis"
-            />
-            <path d="M0 100 C16 0 30 0 100 0" className="ty-dsx-motion__path" />
-          </svg>
-        </div>
-        <div className="ty-dsx-motion__block">
-          <p className="ty-dsx-label">{sample.buttonLabel}</p>
-          <span className="ty-dsx-button ty-dsx-button--primary">
-            {sample.buttonText}
-          </span>
-        </div>
-      </div>
-    </div>
+    <span className="ty-dsx-motion__steps">
+      <span className="ty-dsx-motion__line" />
+      {Array.from({ length: MOTION_STEPS }, (_, index) => (
+        <span
+          key={index}
+          className="ty-dsx-motion__mark"
+          style={{ '--i': index } as CSSProperties}
+        />
+      ))}
+    </span>
   );
 }
 

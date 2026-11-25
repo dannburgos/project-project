@@ -13,20 +13,11 @@ type ToyotaDesignSystemProps = {
 // Sistema de diseño interactivo (referencias: los sistemas de Sonopizza y
 // PetRide, hojas con muestras vivas): a la izquierda, el menú de fundamentos y
 // esenciales; a la derecha, la hoja del elemento elegido, con su muestra en
-// grande, sus valores y qué usar y evitar.
+// grande.
 export function ToyotaDesignSystem({ system }: ToyotaDesignSystemProps) {
   const { active, copiedValue, handleSelect, handleCopy } = useDesignInspector(
     system.items
   );
-
-  // La muestra ya enseña los valores de color y de tipografía: la tabla solo
-  // lleva lo que la muestra no dice
-  const rows =
-    active.id === 'color'
-      ? active.specs.filter(spec => !spec.swatch)
-      : active.id === 'type'
-        ? []
-        : active.specs;
 
   const groups = [
     { label: system.foundationsLabel, group: 'foundation' as const },
@@ -72,7 +63,6 @@ export function ToyotaDesignSystem({ system }: ToyotaDesignSystemProps) {
             · {active.number}
           </p>
           <h4 className="ty-ds__sheet-name">{active.name}</h4>
-          <p className="ty-ds__spec-summary">{active.summary}</p>
         </header>
 
         <div className="ty-ds__specimen">
@@ -89,35 +79,7 @@ export function ToyotaDesignSystem({ system }: ToyotaDesignSystemProps) {
             <ToyotaDsEssential item={active} sample={system.sample} />
           )}
         </div>
-
-        {rows.length > 0 && (
-          <dl className="ty-ds__specs">
-            {rows.map(spec => (
-              <div key={spec.label} className="ty-ds__row">
-                <dt className="ty-ds__row-label">{spec.label}</dt>
-                <dd className="ty-ds__row-value">{spec.value}</dd>
-              </div>
-            ))}
-          </dl>
-        )}
-
-        <div className="ty-ds__rules">
-          <p className="ty-ds__rule">
-            <b className="ty-ds__rule-key ty-ds__rule-key--use">
-              {system.labels.use}
-            </b>{' '}
-            {active.use}
-          </p>
-          <p className="ty-ds__rule">
-            <b className="ty-ds__rule-key ty-ds__rule-key--avoid">
-              {system.labels.avoid}
-            </b>{' '}
-            {active.avoid}
-          </p>
-        </div>
       </section>
-
-      <p className="ty-ds__note">{system.note}</p>
     </div>
   );
 }

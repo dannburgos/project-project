@@ -9,22 +9,16 @@ type ToyotaFlowProps = {
 
 // Flujo de usuario como diagrama. En computador, una retícula de una columna
 // por paso: arriba la banda con las seis etapas del concepto, luego el camino
-// principal (su línea se dibuja con el scroll),
-// debajo el ciclo que vuelve atrás y las salidas hacia Toyota. En celular
-// todo va en una columna.
+// principal (su línea se dibuja con el scroll) y, debajo, las salidas hacia
+// Toyota. En celular todo va en una columna.
 export function ToyotaFlow({ flow }: ToyotaFlowProps) {
-  const { steps, loop, exits } = flow;
-  const layout = {
-    '--flow-columns': steps.length,
-    '--loop-start': loop.to + 1,
-    '--loop-span': loop.from - loop.to + 1
-  } as CSSProperties;
+  const { steps, exits } = flow;
+  const layout = { '--flow-columns': steps.length } as CSSProperties;
 
   return (
     <figure className="ty-flow" style={layout} data-ty-group>
       <div className="ty-flow__grid">
         {/* Las seis etapas del concepto, sobre los pasos que abarca cada una */}
-        <p className="ty-flow__stages-label">{flow.stagesLabel}</p>
         <ol className="ty-flow__stages">
           {flow.stages.map(stage => (
             <li
@@ -65,14 +59,6 @@ export function ToyotaFlow({ flow }: ToyotaFlowProps) {
               </li>
             ))}
           </ol>
-        </div>
-
-        {/* Ciclo: de «Tu perfil» se vuelve a «Asesoría» */}
-        <div className="ty-flow__loop" data-ty-item>
-          <span className="ty-flow__loop-arc" aria-hidden="true" />
-          <p className="ty-flow__loop-text">
-            <b>{loop.label}</b> {loop.text}
-          </p>
         </div>
 
         {/* Salidas: lo que ya existe en Toyota */}

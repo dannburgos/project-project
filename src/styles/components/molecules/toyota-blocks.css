@@ -133,30 +133,6 @@
 
 /* Pregunta guía como manifiesto: se enciende palabra por palabra */
 /* Job Statement: una línea por parte, con su palabra clave en rojo */
-/* ─── Cifras ──────────────────────────────────────────────────────── */
-
-.ty-stats {
-  @apply grid gap-8 lg:gap-6;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-/* Número grande y, a su lado, la etiqueta con la misma línea base */
-.ty-stats__item {
-  @apply flex items-end gap-4 border-t pt-6;
-  border-color: var(--ty-line);
-}
-
-.ty-stats__value {
-  @apply order-first font-black tabular-nums;
-  font-size: clamp(64px, 7vw, 128px);
-  line-height: 0.78;
-  color: var(--ty-red);
-}
-
-.ty-stats__label {
-  @apply max-w-44 text-base leading-[1.3] font-semibold;
-}
-
 /* ─── Recorrido de pasos ──────────────────────────────────────────── */
 
 /* En celular, en columna con la línea a la izquierda; desde tableta, de
@@ -558,68 +534,80 @@
   color: var(--ty-fg);
 }
 
-/* ─── Matriz de etiquetas ─────────────────────────────────────────── */
+/* ─── Ejemplo de la lógica de recomendación ───────────────────────── */
 
-.ty-matrix {
-  @apply w-full overflow-x-auto overflow-y-hidden;
+.ty-logic {
+  @apply flex flex-col gap-6;
 }
 
-.ty-matrix__grid {
-  @apply w-full border-collapse text-left;
-  min-width: 880px;
-}
-
-.ty-matrix__caption {
-  @apply mb-4 text-left text-2xl font-semibold;
-}
-
-.ty-matrix__corner,
-.ty-matrix__tag {
-  @apply pb-3 text-xs font-semibold tracking-[0.08em] uppercase;
+.ty-logic__label {
+  @apply text-sm font-semibold tracking-[0.14em] uppercase;
   color: var(--ty-muted);
 }
 
-.ty-matrix__tag {
-  @apply text-center;
-}
-
-.ty-matrix__row {
-  @apply border-t;
+/* Tres pasos en fila en computador; en celular, apilados */
+.ty-logic__steps {
+  @apply grid grid-cols-1 border-t border-l;
   border-color: var(--ty-line);
 }
 
-.ty-matrix__row:last-child {
-  @apply border-b;
+.ty-logic__step {
+  @apply flex flex-col gap-3 border-r border-b p-6;
+  border-color: var(--ty-line);
 }
 
-.ty-matrix__model {
-  @apply flex flex-col gap-0.5 py-2.5 pr-6;
+.ty-logic__number {
+  @apply text-sm font-semibold tabular-nums;
+  color: var(--ty-red);
 }
 
-.ty-matrix__name {
-  @apply text-base font-semibold;
+.ty-logic__title {
+  @apply text-xl leading-[1.25] font-semibold;
 }
 
-.ty-matrix__price {
-  @apply text-xs;
+.ty-logic__text {
+  @apply text-base leading-[1.45];
   color: var(--ty-muted);
 }
 
-.ty-matrix__cell {
-  @apply py-2.5 text-center;
+.ty-logic__tags {
+  @apply flex flex-wrap gap-2;
 }
 
-/* Cuadrado (forma del logo de plataforma de Toyota): grande y en rojo si el
-   modelo tiene la etiqueta; si no, solo un punto tenue, para que la vista
-   quede limpia */
-.ty-matrix__dot {
-  @apply inline-block size-1.5 align-middle;
-  background: var(--ty-line);
+.ty-logic__tag {
+  @apply border px-3.5 py-2 text-sm font-semibold;
+  border-color: var(--ty-line);
 }
 
-.ty-matrix__dot--on {
-  @apply size-5;
-  background: var(--ty-red);
+.ty-logic__models {
+  @apply flex flex-col;
+}
+
+.ty-logic__model {
+  @apply grid items-baseline gap-x-3 border-t py-2 text-base;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  border-color: var(--ty-line);
+  color: var(--ty-muted);
+}
+
+.ty-logic__name {
+  @apply font-semibold;
+  color: var(--ty-fg);
+}
+
+.ty-logic__points {
+  @apply w-12 text-right font-semibold tabular-nums;
+}
+
+.ty-logic__model--winner,
+.ty-logic__model--winner .ty-logic__points {
+  color: var(--ty-red);
+}
+
+@media (min-width: 768px) {
+  .ty-logic__steps {
+    @apply grid-cols-3;
+  }
 }
 
 /* ─── Capas de la estrategia de IA ────────────────────────────────── */
@@ -753,11 +741,6 @@
 
 /* Banda de etapas: en celular, etiquetas en fila; en computador, un tramo por
    etapa sobre los pasos que abarca */
-.ty-flow__stages-label {
-  @apply text-xs font-semibold tracking-[0.14em] uppercase;
-  color: var(--ty-muted);
-}
-
 .ty-flow__stages {
   @apply flex flex-wrap gap-2;
 }
@@ -771,26 +754,6 @@
 .ty-flow__stage--highlight {
   border-color: var(--ty-red);
   color: var(--ty-red);
-}
-
-/* Ciclo: en celular es una nota con su flecha; en computador, un arco */
-.ty-flow__loop {
-  @apply flex flex-col gap-2 border-l-2 pl-4;
-  border-color: var(--ty-red);
-}
-
-.ty-flow__loop-arc {
-  @apply hidden;
-}
-
-.ty-flow__loop-text {
-  @apply text-sm leading-[1.4];
-  color: var(--ty-muted);
-}
-
-.ty-flow__loop-text b {
-  @apply font-semibold;
-  color: var(--ty-fg);
 }
 
 .ty-flow__exits {
@@ -824,12 +787,8 @@
     display: contents;
   }
 
-  .ty-flow__stages-label {
-    @apply col-span-full row-start-1 pb-3;
-  }
-
   .ty-flow__stages {
-    @apply col-span-full row-start-2 mb-5 grid gap-1;
+    @apply col-span-full row-start-1 mb-5 grid gap-1;
     grid-template-columns: repeat(var(--flow-columns), minmax(0, 1fr));
   }
 
@@ -840,7 +799,7 @@
   /* La línea es una celda más de la retícula, en la fila de los pasos: va del
      centro del primer paso al del último */
   .ty-flow__line {
-    @apply col-span-full row-start-3 h-0.5 w-auto origin-left self-start;
+    @apply col-span-full row-start-2 h-0.5 w-auto origin-left self-start;
     position: static;
     margin-top: 19px;
     margin-inline: calc(100% / (var(--flow-columns) * 2));
@@ -848,7 +807,7 @@
   }
 
   .ty-flow__step {
-    @apply row-start-3 flex flex-col items-center gap-0 px-2 text-center;
+    @apply row-start-2 flex flex-col items-center gap-0 px-2 text-center;
   }
 
   .ty-flow__node {
@@ -864,32 +823,9 @@
     @apply mt-2 text-sm leading-[1.35];
   }
 
-  /* Ciclo: un arco bajo «Tu perfil» y «Asesoría» que vuelve hacia atrás, con
-     la flecha apuntando a «Asesoría» */
-  .ty-flow__loop {
-    @apply row-start-4 gap-3 border-l-0 pt-3 pl-0;
-    grid-column: var(--loop-start) / span var(--loop-span);
-  }
-
-  .ty-flow__loop-arc {
-    @apply relative block h-8 border-x-2 border-b-2;
-    margin-inline: calc(100% / (var(--loop-span) * 2));
-    border-color: var(--ty-red);
-  }
-
-  .ty-flow__loop-arc::before {
-    @apply absolute -top-1 -left-[7px] block size-0 content-[''];
-    border-inline: 6px solid transparent;
-    border-bottom: 8px solid var(--ty-red);
-  }
-
-  .ty-flow__loop-text {
-    @apply px-4 text-center text-sm;
-  }
-
   /* Salidas, bajo el último paso */
   .ty-flow__exits {
-    @apply relative row-start-4 items-stretch px-2 pt-6 text-center;
+    @apply relative row-start-3 items-stretch px-2 pt-6 text-center;
     grid-column: -2 / -1;
   }
 
