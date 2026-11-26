@@ -22,15 +22,14 @@ export type QuboItem = {
 export type QuboTable = {
   columns: readonly string[];
   rows: readonly (readonly string[])[];
-  // Columna que se resalta (la de Pulso en las comparaciones)
-  highlightColumn?: number;
 };
 
 // Encabezado de un capítulo: número, eyebrow, titular y bajada
 export type QuboHead = {
   number: string;
   eyebrow: string;
-  title: string;
+  // Sin título, el capítulo se anuncia solo con su eyebrow (y lo lee el lector de pantalla)
+  title?: string;
   lead?: string;
 };
 
@@ -38,17 +37,13 @@ export type QuboSection = {
   id: string;
   number: string;
   name: string;
+  // Id del capítulo del que cuelga, si es un sub-capítulo (Usuario, dentro de Research)
+  parentId?: string;
 };
 
 export type QuboLabels = {
   navigation: string;
   menu: string;
-  pending: string;
-  pendingNote: string;
-  note: string;
-  open: string;
-  sources: string;
-  limitations: string;
 };
 
 export type QuboCover = {
@@ -79,7 +74,6 @@ export type QuboProblem = {
 };
 
 export type QuboHypothesis = {
-  number: string;
   title: string;
   signal: string;
   evidence: string;
@@ -92,147 +86,108 @@ export type QuboResearch = {
   head: QuboHead;
   comparisonLabel: string;
   comparison: QuboTable;
-  gap: readonly QuboItem[];
-  otherReferences: string;
   hypothesesLabel: string;
-  hypotheses: readonly QuboHypothesis[];
+  hypothesis: QuboHypothesis;
   hypothesisLabels: {
     signal: string;
     evidence: string;
     decision: string;
   };
-  methodsLabel: string;
-  methods: QuboTable;
-  questionsLabel: string;
-  questions: readonly string[];
-  findingsLabel: string;
-  findingsFormat: readonly string[];
+};
+
+// Rasgo de la persona, dicho en primera persona
+export type QuboPersonaTrait = {
+  label: string;
+  text: string;
 };
 
 export type QuboPersona = {
   name: string;
   role: string;
-  hypothesisTag: string;
-  facts: readonly QuboFact[];
+  photo: QuboVisual;
+  quote: string;
+  traits: readonly QuboPersonaTrait[];
 };
 
-// 04 · Usuario
 export type QuboUser = {
   head: QuboHead;
-  primary: QuboFact;
-  secondary: QuboFact;
-  jobLabel: string;
-  job: string;
-  dimensions: readonly QuboItem[];
-  hiresLabel: string;
-  hires: string;
   persona: QuboPersona;
-  unknownLabel: string;
-  unknown: readonly string[];
-};
-
-export type QuboPrinciple = {
-  number: string;
-  title: string;
-  meaning: string;
-  discards: string;
-  where: string;
-  from: string;
 };
 
 // 05 · Estrategia y principios
+// Paso del ciclo del negocio, con la decisión de diseño que lo respalda
+export type QuboCycleStep = {
+  title: string;
+  text: string;
+  decision: string;
+};
+
 export type QuboStrategy = {
   head: QuboHead;
   valueLabel: string;
   value: string;
-  whyLabel: string;
-  why: readonly QuboItem[];
   earnLabel: string;
-  earn: readonly QuboItem[];
-  northStarLabel: string;
-  northStar: string;
-  rulesLabel: string;
-  rulesNote: string;
-  rules: QuboTable;
-  risksLabel: string;
-  risks: readonly QuboItem[];
-  tensionLabel: string;
-  tension: string;
-  outLabel: string;
-  out: readonly string[];
-  cycleLabel: string;
-  cycle: readonly string[];
-  principlesHead: QuboHead;
-  principles: readonly QuboPrinciple[];
-  principleLabels: {
-    discards: string;
-    where: string;
-    from: string;
-  };
+  decisionLabel: string;
+  earn: readonly QuboCycleStep[];
 };
 
-export type QuboOption = {
+// Nodo del mapa de la app. `kind` dice cómo interviene Pulso: nuevo con
+// Pulso, existente que Pulso toca, o sin cambios.
+export type QuboNodeKind = 'new' | 'touch' | 'plain';
+
+export type QuboSiteNode = {
   label: string;
-  text: string;
-  isChosen?: boolean;
+  kind: QuboNodeKind;
+  screen?: string;
 };
 
-export type QuboDecision = {
-  number: string;
-  tag: string;
-  title: string;
-  options: readonly QuboOption[];
-  why: string;
-  assume: string;
-  validate: string;
-  extras?: readonly QuboFact[];
+export type QuboSiteGroup = {
+  label?: string;
+  nodes: readonly QuboSiteNode[];
 };
 
-// 06 · Decisiones clave
-export type QuboDecisions = {
+export type QuboSiteBranch = {
+  node: QuboSiteNode;
+  groups: readonly QuboSiteGroup[];
+};
+
+// 06 · Arquitectura de la información
+export type QuboArchitecture = {
   head: QuboHead;
-  decisions: readonly QuboDecision[];
-  labels: {
-    options: string;
-    chosen: string;
-    why: string;
-    assume: string;
-    validate: string;
-  };
+  root: string;
+  branches: readonly QuboSiteBranch[];
+  legendLabel: string;
+  legend: Record<QuboNodeKind, string>;
 };
 
-export type QuboMoment = {
-  number: string;
+// Camino alterno que cuelga debajo de un paso (un error, un rechazo…)
+export type QuboFlowBranch = {
+  steps: readonly QuboFlowStep[];
+  // Si vuelve a un paso anterior de la misma fila: cuántas columnas atrás
+  loopBack?: number;
+  // A dónde lleva al terminar, cuando no se dibuja el regreso
+  goes?: string;
+};
+
+// Paso del user flow, con la pantalla donde se ve
+export type QuboFlowStep = {
+  label: string;
+  screens?: string;
+  note?: string;
+  isStart?: boolean;
+  branch?: QuboFlowBranch;
+};
+
+export type QuboFlowStage = {
   name: string;
   tagline: string;
-  steps: readonly string[];
-  branches?: readonly {
-    condition: string;
-    steps: readonly string[];
-  }[];
+  steps: readonly QuboFlowStep[];
 };
 
-// 07 · Flujos y arquitectura
-export type QuboFlows = {
+// 07 · User flow
+export type QuboUserFlow = {
   head: QuboHead;
-  moments: readonly QuboMoment[];
-  edgeLabel: string;
-  edge: QuboTable;
-  architectureLabel: string;
-  architectureLead: string;
-  tabs: QuboTable;
-  architectureWhy: string;
-  internalLabel: string;
-  internal: readonly string[];
-  visual: QuboVisual;
-};
-
-export type QuboScreen = {
-  number: string;
-  name: string;
-  solves: string;
-  micro: string;
-  level: 'A' | 'B';
+  stages: readonly QuboFlowStage[];
 };
 
 export type QuboHotspot = {
@@ -252,128 +207,155 @@ export type QuboHeroScreen = {
   hotspots: readonly QuboHotspot[];
 };
 
-export type QuboScreenMoment = {
-  name: string;
-  tagline: string;
-  screens: readonly QuboScreen[];
-};
-
-// 08 · Diseño final
-export type QuboDesign = {
+// 09 · Prototipo: las pantallas héroe, con puntos que explican cada parte
+export type QuboPrototype = {
   head: QuboHead;
-  levelsLabel: string;
-  levels: readonly QuboItem[];
-  moments: readonly QuboScreenMoment[];
-  screenLabels: {
-    solves: string;
-    micro: string;
-    levelA: string;
-    levelB: string;
-  };
-  heroLabel: string;
-  heroLead: string;
   heroes: readonly QuboHeroScreen[];
   hotspotHint: string;
-  edgeLabel: string;
-  edge: readonly string[];
-  supportLabel: string;
-  support: readonly string[];
-  total: string;
-  priority: string;
 };
 
 export type QuboSwatch = {
   name: string;
   hex: string;
   use: string;
-  // Color del texto sobre el muestrario, para que se lea
-  onColor: string;
 };
 
-// 09 · Mini design system y accesibilidad
+export type QuboTypeStyle = {
+  name: string;
+  sample: string;
+  spec: string;
+};
+
+export type QuboSwatchGroup = {
+  title: string;
+  swatches: readonly QuboSwatch[];
+};
+
+export type QuboIconId =
+  | 'store'
+  | 'wallet'
+  | 'qr'
+  | 'sales'
+  | 'percent'
+  | 'receipt'
+  | 'calendar'
+  | 'shield'
+  | 'chat'
+  | 'bell'
+  | 'user'
+  | 'help';
+
+export type QuboOption = {
+  id: string;
+  name: string;
+};
+
+export type QuboFieldState = 'empty' | 'focus' | 'filled' | 'error';
+
+export type QuboFieldSample = {
+  state: QuboFieldState;
+  caption: string;
+  value: string;
+  message: string;
+};
+
+export type QuboScreenState = {
+  caption: string;
+  title: string;
+  text: string;
+  action?: string;
+};
+
+export type QuboSystemFoundations = {
+  title: string;
+  color: {
+    title: string;
+    note: string;
+    groups: readonly QuboSwatchGroup[];
+  };
+  type: {
+    title: string;
+    family: string;
+    weights: string;
+    steps: readonly QuboTypeStyle[];
+  };
+  shape: {
+    title: string;
+    spacingTitle: string;
+    spacing: readonly number[];
+    radiusTitle: string;
+    radii: readonly QuboFact[];
+    shadowTitle: string;
+    shadows: readonly QuboFact[];
+  };
+  icons: {
+    title: string;
+    icons: readonly { id: QuboIconId; name: string }[];
+  };
+  motion: {
+    title: string;
+    rules: readonly (QuboOption & { spec: string })[];
+  };
+};
+
+export type QuboSystemComponents = {
+  title: string;
+  buttons: {
+    title: string;
+    label: string;
+    variants: readonly QuboOption[];
+    states: readonly QuboOption[];
+  };
+  fields: {
+    title: string;
+    label: string;
+    placeholder: string;
+    samples: readonly QuboFieldSample[];
+  };
+  cards: {
+    title: string;
+    pulse: { label: string; amount: string; progress: number; note: string };
+    offer: {
+      tag: string;
+      rows: readonly QuboFact[];
+      note: string;
+    };
+    sale: { title: string; date: string; amount: string; tag: string };
+  };
+  navigation: {
+    title: string;
+    back: string;
+    header: string;
+    step: string;
+    stepCount: number;
+    currentStep: number;
+    tabs: readonly { id: QuboIconId; name: string }[];
+  };
+  feedback: {
+    title: string;
+    toast: { caption: string; text: string };
+    banner: { caption: string; text: string; action: string };
+    modal: {
+      caption: string;
+      title: string;
+      text: string;
+      confirm: string;
+      dismiss: string;
+    };
+    sheet: { caption: string; title: string; text: string; action: string };
+  };
+  screens: {
+    title: string;
+    states: readonly QuboScreenState[];
+  };
+};
+
+// 07 · Sistema de diseño: la app es en modo oscuro. Mismas categorías y
+// cantidad de elementos que el de PetRide.
 export type QuboSystem = {
   head: QuboHead;
-  baseLabel: string;
-  base: readonly QuboSwatch[];
-  addedLabel: string;
-  addedLead: string;
-  added: readonly QuboSwatch[];
-  limeLabel: string;
-  lime: string;
-  limeRule: string;
-  contrastsLabel: string;
-  contrasts: QuboTable;
-  adjustmentsLabel: string;
-  adjustments: QuboTable;
-  typeLabel: string;
-  typeSample: string;
-  typeSampleNote: string;
-  typeRules: readonly string[];
-  shapeLabel: string;
-  shape: readonly QuboItem[];
-  iconsLabel: string;
-  icons: string;
-  componentsLabel: string;
-  components: QuboTable;
-  accessibilityLabel: string;
-  accessibility: readonly QuboItem[];
-};
-
-// 10 · Validación, impacto y aprendizajes
-export type QuboValidation = {
-  head: QuboHead;
-  testLabel: string;
-  test: readonly QuboFact[];
-  tasksLabel: string;
-  tasks: QuboTable;
-  rulesLabel: string;
-  rules: QuboTable;
-  planBLabel: string;
-  planB: string;
-  iterationsLabel: string;
-  iterations: QuboTable;
-  iterationsHint: string;
-  metricsLabel: string;
-  northStarLabel: string;
-  northStar: string;
-  northStarWhy: string;
-  stagesLabel: string;
-  stages: QuboTable;
-  protectionLabel: string;
-  protection: QuboTable;
-  impactLabel: string;
-  businessLabel: string;
-  business: readonly string[];
-  merchantLabel: string;
-  merchant: readonly string[];
-  eventsLabel: string;
-  events: readonly string[];
-  measureNote: string;
-};
-
-export type QuboLink = {
-  title: string;
-  url: string;
-};
-
-export type QuboLearnings = {
-  head: QuboHead;
-  learningsLabel: string;
-  learningsFormat: readonly string[];
-  differentLabel: string;
-  differentHint: string;
-  nextLabel: string;
-  nextLead: string;
-  next: QuboTable;
-  aiLabel: string;
-  ai: QuboTable;
-  notDelegatedLabel: string;
-  notDelegated: string;
-  sourcesLabel: string;
-  sources: readonly QuboLink[];
-  limitationsLabel: string;
-  limitations: readonly string[];
-  closing: string;
+  foundations: QuboSystemFoundations;
+  components: QuboSystemComponents;
 };
 
 export type QuboStory = {
@@ -385,10 +367,8 @@ export type QuboStory = {
   research: QuboResearch;
   user: QuboUser;
   strategy: QuboStrategy;
-  decisions: QuboDecisions;
-  flows: QuboFlows;
-  design: QuboDesign;
+  architecture: QuboArchitecture;
+  userFlow: QuboUserFlow;
   system: QuboSystem;
-  validation: QuboValidation;
-  learnings: QuboLearnings;
+  prototype: QuboPrototype;
 };

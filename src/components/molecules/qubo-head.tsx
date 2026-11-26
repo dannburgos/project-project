@@ -13,8 +13,8 @@ export function QuboHead({ head, titleId }: QuboHeadProps) {
         <span className="qb-head__number">{head.number}</span>
         {head.eyebrow}
       </p>
-      <h2 id={titleId} className="qb-head__title">
-        {head.title}
+      <h2 id={titleId} className={head.title ? 'qb-head__title' : 'qb-sr'}>
+        {head.title ?? head.eyebrow}
       </h2>
       {head.lead && <p className="qb-head__lead">{head.lead}</p>}
     </header>

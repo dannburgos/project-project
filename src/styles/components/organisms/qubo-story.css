@@ -1,21 +1,26 @@
-/* Caso Pulso by Qubo Bank. Marca: azul oscuro #2b2a6f, azul #5454ea, azul claro
-   #b5caff, azul noche #04042a y lima #e1f44b, con Manrope. Tres mundos: claro
-   (blanco), tinte (azul muy suave) y oscuro (azul noche). El lima nunca va
-   sobre fondo claro: vive solo en el oscuro o como fondo con texto oscuro.
-   Tamaños en múltiplos de 2. */
+/* Caso Pulso by Qubo Bank. Marca: verde menta #55d396, verde #169a50, grafito
+   #272c2a, negro #040605 y blanco, con General Sans (Regular y Medium). El caso
+   va en modo oscuro, como la app: tres mundos sobre negro y grafito. El verde
+   #169a50 solo va como fondo grande (con blanco encima apenas llega a 3,6:1);
+   el texto destacado va en menta. Tamaños en múltiplos de 2. */
 .qb-story {
-  --qb-indigo: #2b2a6f;
-  --qb-blue: #5454ea;
-  --qb-sky: #b5caff;
-  --qb-ink: #04042a;
-  --qb-lime: #e1f44b;
+  --qb-mint: #55d396;
+  --qb-green: #169a50;
+  --qb-graphite: #272c2a;
+  --qb-black: #040605;
   --qb-white: #ffffff;
-  --qb-tint: #f2f5ff;
-  --qb-success: #17794d;
-  --qb-warning-bg: #fef3c7;
-  --qb-warning: #92400e;
-  --qb-error: #b3261e;
-  --qb-secondary: #4a4a6a;
+  /* Menta con un leve degradado, para el CTA principal y los rellenos menta */
+  --qb-mint-gradient: linear-gradient(
+    145deg,
+    #7de3b1 0%,
+    #55d396 55%,
+    #3fbf82 100%
+  );
+  /* Alias para los estilos que ya existían */
+  --qb-ink: var(--qb-black);
+  --qb-indigo: var(--qb-graphite);
+  --qb-blue: var(--qb-mint);
+  --qb-lime: var(--qb-mint);
   --qb-gutter: 24px;
   --qb-content: 1200px;
   --qb-radius: 12px;
@@ -56,42 +61,31 @@
   white-space: nowrap;
 }
 
-/* Mundos: cada uno define sus tintas, líneas, tarjetas y cajas grises */
-.qb-chapter--light {
-  --qb-bg: var(--qb-white);
-  --qb-fg: var(--qb-ink);
-  --qb-muted: var(--qb-secondary);
-  --qb-line: rgb(4 4 42 / 0.16);
-  --qb-card: var(--qb-tint);
-  --qb-accent: var(--qb-blue);
-  --qb-on-accent: var(--qb-white);
-  --qb-placeholder: #e6e7ef;
-  --qb-placeholder-text: var(--qb-secondary);
+/* Mundos: negro, grafito y negro con brillo verde. Cada uno define sus
+   tintas, líneas, tarjetas y cajas grises */
+.qb-chapter--light,
+.qb-chapter--tint,
+.qb-chapter--dark,
+.qb-cover {
+  --qb-fg: var(--qb-white);
+  --qb-muted: rgb(255 255 255 / 0.72);
+  --qb-line: rgb(255 255 255 / 0.14);
+  --qb-accent: var(--qb-mint);
+  --qb-on-accent: var(--qb-black);
+  --qb-placeholder: rgb(255 255 255 / 0.08);
+  --qb-placeholder-text: rgb(255 255 255 / 0.72);
+}
+
+.qb-chapter--light,
+.qb-chapter--dark,
+.qb-cover {
+  --qb-bg: var(--qb-black);
+  --qb-card: var(--qb-graphite);
 }
 
 .qb-chapter--tint {
-  --qb-bg: var(--qb-tint);
-  --qb-fg: var(--qb-ink);
-  --qb-muted: var(--qb-secondary);
-  --qb-line: rgb(4 4 42 / 0.16);
-  --qb-card: var(--qb-white);
-  --qb-accent: var(--qb-blue);
-  --qb-on-accent: var(--qb-white);
-  --qb-placeholder: #e1e2ec;
-  --qb-placeholder-text: var(--qb-secondary);
-}
-
-.qb-chapter--dark,
-.qb-cover {
-  --qb-bg: var(--qb-ink);
-  --qb-fg: var(--qb-white);
-  --qb-muted: rgb(255 255 255 / 0.72);
-  --qb-line: rgb(255 255 255 / 0.2);
-  --qb-card: rgb(255 255 255 / 0.06);
-  --qb-accent: var(--qb-lime);
-  --qb-on-accent: var(--qb-ink);
-  --qb-placeholder: rgb(255 255 255 / 0.1);
-  --qb-placeholder-text: rgb(255 255 255 / 0.72);
+  --qb-bg: var(--qb-graphite);
+  --qb-card: var(--qb-black);
 }
 
 /* Revelado al scroll: solo existe con JavaScript y sin «reducir movimiento» */
@@ -113,6 +107,16 @@
   padding: 80px var(--qb-gutter);
   background: var(--qb-bg);
   color: var(--qb-fg);
+}
+
+.qb-chapter + .qb-chapter {
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.qb-chapter--dark {
+  background:
+    radial-gradient(60% 40% at 50% 0%, rgb(22 154 80 / 0.22), transparent 70%),
+    var(--qb-bg);
 }
 
 @media (min-width: 768px) {
@@ -140,7 +144,7 @@
   align-items: center;
   gap: 12px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--qb-accent);
@@ -154,7 +158,7 @@
 
 .qb-head__title {
   font-size: clamp(32px, 4.6vw, 72px);
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1.05;
   letter-spacing: -0.03em;
   text-wrap: balance;
@@ -166,19 +170,6 @@
   line-height: 1.5;
   color: var(--qb-muted);
   text-wrap: pretty;
-}
-
-.qb-subhead {
-  display: grid;
-  gap: 16px;
-  padding-top: 32px;
-}
-
-.qb-subhead__title {
-  font-size: clamp(28px, 3.2vw, 48px);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
 }
 
 /* Portada: hero con degradado de la marca, franja y créditos */
@@ -195,18 +186,14 @@
   inset: -20%;
   z-index: -1;
   background:
-    radial-gradient(40% 40% at 20% 30%, rgb(84 84 234 / 0.8), transparent 70%),
     radial-gradient(
-      32% 32% at 82% 18%,
-      rgb(225 244 75 / 0.34),
+      40% 40% at 20% 80%,
+      rgb(85 211 150 / 0.55),
       transparent 70%
     ),
-    radial-gradient(50% 50% at 70% 80%, rgb(43 42 111 / 0.95), transparent 70%),
-    radial-gradient(
-      30% 30% at 10% 90%,
-      rgb(181 202 255 / 0.28),
-      transparent 70%
-    );
+    radial-gradient(36% 36% at 85% 90%, rgb(22 154 80 / 0.6), transparent 70%),
+    radial-gradient(50% 50% at 70% 20%, rgb(39 44 42 / 0.9), transparent 70%),
+    radial-gradient(30% 30% at 10% 10%, rgb(85 211 150 / 0.12), transparent 70%);
   filter: blur(40px);
   animation: qb-drift 18s ease-in-out infinite alternate;
 }
@@ -242,7 +229,7 @@
 
 .qb-cover__eyebrow {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--qb-lime);
@@ -255,21 +242,21 @@
 
 .qb-cover__name {
   font-size: clamp(88px, 18vw, 240px);
-  font-weight: 800;
+  font-weight: 500;
   line-height: 0.9;
   letter-spacing: -0.05em;
 }
 
 .qb-cover__byline {
   font-size: clamp(20px, 2.4vw, 32px);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--qb-lime);
 }
 
 .qb-cover__tagline {
   max-width: 600px;
   font-size: clamp(22px, 2.6vw, 36px);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.25;
   letter-spacing: -0.02em;
   text-wrap: balance;
@@ -332,12 +319,12 @@
   gap: 12px;
   min-height: 48px;
   padding: 12px 24px;
-  border: 1px solid rgb(4 4 42 / 0.12);
+  border: 1px solid rgb(255 255 255 / 0.14);
   border-radius: 999px;
-  background: var(--qb-white);
-  color: var(--qb-ink);
+  background: var(--qb-graphite);
+  color: var(--qb-white);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
 }
@@ -347,7 +334,7 @@
 }
 
 .qb-index__total {
-  color: var(--qb-secondary);
+  color: rgb(255 255 255 / 0.6);
   font-weight: 500;
 }
 
@@ -357,7 +344,7 @@
   bottom: 0;
   left: 24px;
   height: 2px;
-  background: rgb(4 4 42 / 0.12);
+  background: rgb(255 255 255 / 0.14);
 }
 
 .qb-index__progress::after {
@@ -376,9 +363,9 @@
   display: grid;
   min-width: 240px;
   padding: 8px;
-  border: 1px solid rgb(4 4 42 / 0.12);
+  border: 1px solid rgb(255 255 255 / 0.14);
   border-radius: 16px;
-  background: var(--qb-white);
+  background: var(--qb-graphite);
   transform: translate(-50%, 8px);
   opacity: 0;
   visibility: hidden;
@@ -402,7 +389,7 @@
   min-height: 48px;
   padding: 8px 16px;
   border-radius: 8px;
-  color: var(--qb-ink);
+  color: var(--qb-white);
   font-size: 16px;
   font-weight: 500;
   text-align: left;
@@ -410,21 +397,21 @@
 }
 
 .qb-index__item:hover {
-  background: var(--qb-tint);
+  background: rgb(255 255 255 / 0.06);
 }
 
 .qb-index__item--current {
-  background: var(--qb-indigo);
-  color: var(--qb-white);
-  font-weight: 700;
+  background: var(--qb-mint);
+  color: var(--qb-black);
+  font-weight: 500;
 }
 
 .qb-index__item-number {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--qb-blue);
 }
 
 .qb-index__item--current .qb-index__item-number {
-  color: var(--qb-lime);
+  color: var(--qb-black);
 }

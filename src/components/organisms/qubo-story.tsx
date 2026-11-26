@@ -1,26 +1,35 @@
-import { Manrope as manropeFont } from 'next/font/google';
+import localFont from 'next/font/local';
 
 import { QuboMotion } from '@/components/atoms/qubo-motion';
 import { QuboIndex } from '@/components/molecules/qubo-index';
+import { QuboArchitecture } from '@/components/organisms/qubo-architecture';
 import { QuboCover } from '@/components/organisms/qubo-cover';
-import { QuboDecisions } from '@/components/organisms/qubo-decisions';
-import { QuboDesign } from '@/components/organisms/qubo-design';
-import { QuboFlows } from '@/components/organisms/qubo-flows';
-import { QuboLearnings } from '@/components/organisms/qubo-learnings';
 import { QuboOpportunity } from '@/components/organisms/qubo-opportunity';
 import { QuboProblem } from '@/components/organisms/qubo-problem';
+import { QuboPrototype } from '@/components/organisms/qubo-prototype';
 import { QuboResearch } from '@/components/organisms/qubo-research';
 import { QuboStrategy } from '@/components/organisms/qubo-strategy';
 import { QuboSystem } from '@/components/organisms/qubo-system';
 import { QuboUser } from '@/components/organisms/qubo-user';
-import { QuboValidation } from '@/components/organisms/qubo-validation';
+import { QuboUserFlow } from '@/components/organisms/qubo-user-flow';
 import type { QuboStory as QuboStoryContent } from '@/content/qubo-story.types';
 import { cn } from '@/lib/utils';
 
-// Manrope es la tipografía de Qubo (de Light a ExtraBold)
-const manrope = manropeFont({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
+// General Sans es la tipografía de Qubo (Regular y Medium, de Fontshare,
+// servida desde el proyecto)
+const generalSans = localFont({
+  src: [
+    {
+      path: '../../fonts/general-sans/GeneralSans-Regular.woff2',
+      weight: '400',
+      style: 'normal'
+    },
+    {
+      path: '../../fonts/general-sans/GeneralSans-Medium.woff2',
+      weight: '500',
+      style: 'normal'
+    }
+  ],
   variable: '--font-qubo',
   display: 'swap'
 });
@@ -36,34 +45,19 @@ export function QuboStory({ story }: QuboStoryProps) {
   const id = (index: number) => story.sections[index].id;
 
   return (
-    <div className={cn('qb-story', manrope.variable)}>
+    <div className={cn('qb-story', generalSans.variable)}>
       <QuboIndex sections={story.sections} labels={story.labels} />
 
       <QuboCover cover={story.cover} />
       <QuboOpportunity id={id(0)} opportunity={story.opportunity} />
       <QuboProblem id={id(1)} problem={story.problem} />
-      <QuboResearch
-        id={id(2)}
-        research={story.research}
-        labels={story.labels}
-      />
+      <QuboResearch id={id(2)} research={story.research} />
       <QuboUser id={id(3)} user={story.user} />
       <QuboStrategy id={id(4)} strategy={story.strategy} />
-      <QuboDecisions id={id(5)} decisions={story.decisions} />
-      <QuboFlows id={id(6)} flows={story.flows} />
-      <QuboDesign id={id(7)} design={story.design} />
-      <QuboSystem id={id(8)} system={story.system} />
-      <QuboValidation
-        id={id(9)}
-        validation={story.validation}
-        labels={story.labels}
-      />
-      <QuboLearnings
-        id={`${id(9)}-close`}
-        learnings={story.learnings}
-        labels={story.labels}
-      />
-
+      <QuboArchitecture id={id(5)} architecture={story.architecture} />
+      <QuboUserFlow id={id(6)} userFlow={story.userFlow} />
+      <QuboSystem id={id(7)} system={story.system} />
+      <QuboPrototype id={id(8)} prototype={story.prototype} />
       <QuboMotion />
     </div>
   );

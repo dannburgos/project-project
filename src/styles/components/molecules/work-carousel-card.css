@@ -38,13 +38,13 @@
 }
 
 .work-card--qubo {
-  /* Qubo Bank: azul claro, azul, azul oscuro y azul noche */
+  /* Qubo Bank: menta, verde, grafito y negro */
   background: linear-gradient(
     160deg,
-    #b5caff 0%,
-    #5454ea 35%,
-    #2b2a6f 65%,
-    #04042a 100%
+    #55d396 0%,
+    #169a50 35%,
+    #272c2a 70%,
+    #040605 100%
   );
 }
 
