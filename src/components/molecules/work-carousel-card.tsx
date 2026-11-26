@@ -7,6 +7,7 @@ export type WorkCarouselTone =
   | 'blue'
   | 'indigo'
   | 'red'
+  | 'qubo'
   | 'neutral';
 
 type WorkCarouselCardProps = {
@@ -25,6 +26,7 @@ const TONE_CLASS: Record<WorkCarouselTone, string> = {
   blue: 'work-card--blue',
   indigo: 'work-card--indigo',
   red: 'work-card--red',
+  qubo: 'work-card--qubo',
   neutral: 'work-card--neutral'
 };
 

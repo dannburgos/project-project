@@ -134,11 +134,11 @@ export const siteContent = {
     carouselRole: 'carrusel',
     // Pantalla inicial de Work, en gris, antes del primer proyecto
     introEyebrow: 'Portafolio',
-    introText: '6 proyectos. Usa el scroll o las flechas para recorrerlos.',
+    introText: '7 proyectos. Usa el scroll o las flechas para recorrerlos.',
     previous: 'Proyecto anterior',
     next: 'Proyecto siguiente',
     showProject: 'Mostrar',
-    projectCount: 6
+    projectCount: 7
   },
   caseStudy: {
     backToWork: 'Volver a Work',
@@ -338,6 +338,7 @@ const projectNames: readonly (string | undefined)[] = [
   'PetRide',
   'Sonopizza',
   'Toyota',
+  'Pulso by Qubo Bank',
   'Sistema de diseño',
   'Nodus'
 ];
@@ -346,6 +347,7 @@ const projectSlugs: readonly (string | undefined)[] = [
   'petride',
   'sonopizza',
   'toyota',
+  'qubo-pulso',
   'design-system',
   'nodus'
 ];
@@ -356,17 +358,25 @@ const projectIndustries: readonly (string | undefined)[] = [
   'App de transporte para viajar con mascotas',
   'Rediseño de app móvil para pedir pizza',
   'Rediseño de experiencia web para descubrir vehículos',
+  'Crédito para microcomercios que se paga con cada venta',
   'Sistema de diseño de ejemplo para un producto digital'
 ];
 
 // Tono del fondo del banner de cada caso (degradado con profundidad). Los
 // proyectos sin tono usan el banner negro.
-export type ProjectTone = 'green' | 'purple' | 'blue' | 'indigo' | 'red';
+export type ProjectTone =
+  | 'green'
+  | 'purple'
+  | 'blue'
+  | 'indigo'
+  | 'red'
+  | 'qubo';
 const projectTones: readonly (ProjectTone | undefined)[] = [
   'green',
   'indigo',
   'blue',
   'red',
+  'qubo',
   undefined,
   'purple'
 ];
@@ -383,6 +393,7 @@ const projectCovers: readonly (ProjectCover | undefined)[] = [
   { label: 'Imagen principal · persona viajando con su mascota en PetRide' },
   { label: 'Imagen principal · pizza de Sonopizza con la mascota' },
   { label: 'Imagen principal · módulo «Encuentra tu Toyota»' },
+  { label: 'Imagen principal · celular con el Pulso avanzando en Qubo' },
   { label: 'Imagen principal · mosaico del sistema de diseño' }
 ];
 
@@ -392,6 +403,7 @@ const projectSummaries: readonly (string | undefined)[] = [
   'Moverte con tu mascota sin preguntar si la aceptan.',
   'Pedir pizza debería ser tan fácil como antojarse.',
   'De elegir un modelo a descubrir el vehículo adecuado.',
+  'El crédito que late con tu tienda.',
   'Una sola fuente de verdad para diseñar y construir.'
 ];
 
@@ -402,6 +414,7 @@ const projectTags: readonly (readonly string[] | undefined)[] = [
   ['App móvil', 'Movilidad'],
   ['App móvil', 'Rediseño'],
   ['Web desktop', 'Rediseño de experiencia'],
+  ['App móvil', 'Fintech'],
   ['Sistema de diseño', 'Componentes']
 ];
 

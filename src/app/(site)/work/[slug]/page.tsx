@@ -7,6 +7,7 @@ import { CaseMoreProjects } from '@/components/organisms/case-more-projects';
 import { CaseStory } from '@/components/organisms/case-story';
 import { DesignSystemStory } from '@/components/organisms/design-system-story';
 import { PetrideStory } from '@/components/organisms/petride-story';
+import { QuboStory } from '@/components/organisms/qubo-story';
 import { SonopizzaStory } from '@/components/organisms/sonopizza-story';
 import { ToyotaStory } from '@/components/organisms/toyota-story';
 import { ClosingContact } from '@/components/organisms/closing-contact';
@@ -15,6 +16,7 @@ import { getCaseStory } from '@/content/case-stories';
 import { getCaseStudy } from '@/content/case-studies';
 import { designSystemStory } from '@/content/cases/design-system-story';
 import { petrideStory } from '@/content/cases/petride-story';
+import { quboStory } from '@/content/cases/qubo-story';
 import { sonopizzaStory } from '@/content/cases/sonopizza-story';
 import { toyotaStory } from '@/content/cases/toyota-story';
 import { exampleProjects, type ExampleProject } from '@/content/site';
@@ -51,7 +53,8 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
         project.tone === 'purple' && 'case-page--purple',
         project.tone === 'blue' && 'case-page--blue',
         project.tone === 'indigo' && 'case-page--indigo',
-        project.tone === 'red' && 'case-page--red'
+        project.tone === 'red' && 'case-page--red',
+        project.tone === 'qubo' && 'case-page--qubo'
       )}
     >
       <PageCurtain variant="flush">
@@ -61,6 +64,8 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
           <PetrideStory story={petrideStory} />
         ) : project.slug === 'toyota' ? (
           <ToyotaStory story={toyotaStory} />
+        ) : project.slug === 'qubo-pulso' ? (
+          <QuboStory story={quboStory} />
         ) : project.slug === 'design-system' ? (
           <DesignSystemStory story={designSystemStory} />
         ) : story ? (

@@ -37,6 +37,17 @@
   background: #eb0a1e;
 }
 
+.work-card--qubo {
+  /* Qubo Bank: azul claro, azul, azul oscuro y azul noche */
+  background: linear-gradient(
+    160deg,
+    #b5caff 0%,
+    #5454ea 35%,
+    #2b2a6f 65%,
+    #04042a 100%
+  );
+}
+
 .work-card--neutral {
   background: linear-gradient(160deg, #6b7280 0%, #3f4652 45%, #23272f 100%);
 }

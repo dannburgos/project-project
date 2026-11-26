@@ -50,6 +50,8 @@
 @import './components/organisms/petride-story.css';
 @import './components/organisms/toyota-story.css';
 @import './components/molecules/toyota-blocks.css';
+@import './components/organisms/qubo-story.css';
+@import './components/molecules/qubo-blocks.css';
 @import './components/organisms/design-system-story.css';
 @import './components/organisms/pet-design-system.css';
 @import './components/organisms/work-carousel.css';
