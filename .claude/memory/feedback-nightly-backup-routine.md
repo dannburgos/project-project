@@ -14,7 +14,7 @@ Dann acordó el 2026-11-20 lo siguiente. Mientras siga en este computador, cada 
 2. Hacer commit y push de la rama actual.
 3. Rehacer `~/Desktop/portafolio-proyecto.zip`, el proyecto liviano de unos 65 MB. Excluye `node_modules`, `.next`, los originales, `.playwright-mcp`, `tsconfig.tsbuildinfo` y `.DS_Store`. Dann lo sube a su Drive y reemplaza el del día anterior.
 
-`~/Desktop/portafolio-originales.zip` se hizo una sola vez y lleva `public/petride/img `, `public/sonopizza/pizzas/`, `design-exports/` y `public/sketches/`.
+`~/Desktop/portafolio-originales.zip` se hizo una sola vez y lleva `public/petride/img `, `public/sonopizza/pizzas/`, `design-exports/` y `public/sketches/`. Desde el 2026-11-23 también debe llevar `public/toyota/originales/`: hay que rehacerlo cuando lleguen fotos nuevas.
 
 **Why:** pueden quitarle los accesos sin aviso. Dann quiere perder como mucho un día de trabajo.
 

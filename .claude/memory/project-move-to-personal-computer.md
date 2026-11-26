@@ -10,7 +10,7 @@ metadata:
 
 Desde 2026-11-20 Dann sabe que en pocos días dejará su trabajo. Hoy trabaja en el computador y la cuenta de Claude de la empresa. El portafolio se mudará a su computador personal y a una cuenta Pro personal, que todavía no ha creado. No sabe en qué momento le quitarán los accesos.
 
-El repo `dannburgos/project-project` está en su GitHub personal y es **público**. Dann confirmó que esa cuenta de GitHub usa su correo y su celular personales, no los del trabajo. Solo existen en este computador: `public/petride/img ` (392 MB, fotos originales; el nombre termina con espacio), `design-exports/` (28 MB), `public/sonopizza/pizzas/` (21 MB), `public/sketches/` y esta memoria.
+El repo `dannburgos/project-project` está en su GitHub personal y es **público**. Dann confirmó que esa cuenta de GitHub usa su correo y su celular personales, no los del trabajo. Solo existen en este computador: `public/petride/img ` (392 MB, fotos originales; el nombre termina con espacio), `design-exports/` (28 MB), `public/sonopizza/pizzas/` (21 MB), `public/sketches/`, `public/toyota/originales/` (fotos originales de Toyota) y esta memoria.
 
 **Why:** si le cortan el acceso de golpe, se pierde lo que no esté en GitHub ni en su Drive personal.
 
